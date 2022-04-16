@@ -6,35 +6,35 @@ const initialState = {
     user: [],
     isAuth: false,
     loading: false,
-    error: null
+    error: ""
 }
 
 export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) => {
-   console.log(arg)
+    // console.log("diapatch::", arg)
     try {
         const data = {
             mob_num: arg.values.mobile_no,
             password: arg.values.password,
         };
-        console.log(data)
+        //console.log(data)
         const loginRes = await axios.post(`/myhelpers/register/${arg.values.role}`, data)
-        // .then((res) => {
-        //     console.log("responce " ,res);
-        // })
-        console.log("loginRes", loginRes)
+
+        // console.log("loginRes", loginRes)
         return loginRes
+
     }
     catch (error) {
-        console.log(error)
+        // console.log(error.response.data)
+        throw new Error(error.response.data)
     }
 })
+
 const loginSlice = createSlice({
     name: 'userLogin',
     initialState,//: initialState
     reducers: {
-        logout(state, action) {
-            state.isAuth = false
-
+        errorReducer(state) {
+            state.error= ""
         },
     },
     extraReducers: {
@@ -43,12 +43,14 @@ const loginSlice = createSlice({
         },
         [loginThunk.fulfilled]: (state, action) => {
             state.loading = false
-            console.log(action.payload.data)
+             state.isAuth = true
             state.user = [action.payload.data]
         },
-        [loginThunk.rejected]: (state, action) => {
+        [loginThunk.rejected]: (state, error) => {
             state.loading = false
-            state.error = action.payload
+            // console.log("rejected::", error.error.message)
+            
+            state.error = error.error.message
         },
 
     }

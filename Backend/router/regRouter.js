@@ -18,15 +18,14 @@ router.post("/myhelpers/register/:role", async (req, res) => {
         //console.log(found)
         if (found) {
             const fnd_role = found.r_id.charAt(0)
-            if (role === fnd_role)
-            {
+            if (role === fnd_role) {
                 return res.status(200).send(found)
-                
             }
-            else
-            {
-                return res.status(200).send("your role is wrong ")
-                }
+            else {
+                //return res.status(400).send()
+                throw new Error ("you are unauthorized for this role")
+            }
+
             //const updatepro = await ProductModel.findOneAndUpdate({ password: req.body.password }, updt, { new: true })
         }
         else {
@@ -55,7 +54,8 @@ router.post("/myhelpers/register/:role", async (req, res) => {
             return res.status(200).send(newUser);
         }
     } catch (error) {
-        res.status(400).send(error)
+        // console.log(error.message)
+        res.status(400).send(error.message)
     }
 
 })

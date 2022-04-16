@@ -7,7 +7,7 @@ import React from 'react'
 
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
-import { Card,  Typography } from '@mui/material';
+import { Card, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -18,30 +18,15 @@ import abc from "./loginImg.jpg";
 import { Grid } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginThunk } from '../store/login-slice'
-import { useState } from 'react';
+import { loginActions } from '../store/login-slice';
+import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 
 const Login = () => {
 
     const params = useParams()
-    // const user = useSelector(state => state.user)
     const navigate = useNavigate()
-    const { user } = useSelector((state) => ({ ...state.loginStore}))
-    console.log(user)
-    if(user.length !== 0){
-    if (user[0].r_id.charAt(0) === "C")
-    {
-        localStorage.setItem("role", "Client");
-        navigate("/clientProfile",{replace:true})
-    }
-    else
-    {
-        localStorage.setItem("role", "Helper");
-        navigate("/HelperProfile", { replace: true })
-    }
-    
-    }
-    
+
     const dispatch = useDispatch()
     // dispatch({ type: 'login' });
     const [values, setValues] = useState({
@@ -49,6 +34,38 @@ const Login = () => {
         password: '',
         role: params.role,
     });
+
+
+    let { user, error, loading } = useSelector((state) => ({ ...state.loginStore }))
+    // const [msg, setmsg] = useState(false);
+
+    useEffect(() => {
+        if (params.role != 'Client' && params.role != 'Helper') {
+            navigate("/")
+        }
+        if (error.length !== 0) {
+            // console.log(error)
+            alert(error)
+            dispatch(loginActions.errorReducer())
+        }
+
+        if (user.length !== 0) {
+            console.log(user)
+            if (user[0].r_id.charAt(0) === "C")
+            {
+                localStorage.setItem("role", "Client")
+                console.log("client")
+            }
+            else {
+                console.log("Helper")
+                localStorage.setItem("role", "Helper")
+            }
+            console.log("navigate")
+            navigate("/clientProfile")
+        }
+    }, [user, error])
+
+
     const [showpswd, setshowpswd] = useState({
         showPassword: false
     })
@@ -56,8 +73,10 @@ const Login = () => {
     // setValues({ ...values, role: params.role })
     const loginSubmitHandler = (event) => {
         event.preventDefault()
-        console.log("value : ",{values})
-        dispatch(loginThunk({values}))
+
+        //console.log("value : ",{values})
+        dispatch(loginThunk({ values }))
+        setValues((prevState) => { return { ...prevState, mobile_no: "", password: "" } })
     }
     // const handleChange = (prop) => (event) => {
     //     setValues({ ...values, [prop]: event.target.value });
@@ -70,12 +89,13 @@ const Login = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-    // let abc 
-    // const nav = useNavigate()
-
+    const backHandler = () => {
+        navigate("/", { replace: true })
+    }
 
     return (
         <Grid >
+           
             <Card
                 sx={{
                     maxWidth: 650, maxHeight: 440,
@@ -97,19 +117,16 @@ const Login = () => {
 
                         </Grid>
                         <Grid item xs={2} justifyContent="right" >
-                            <NavLink tag={Link} to="/role" style={{ textDecoration: 'none' }}><Button variant="contained" color="error">Back</Button></NavLink>
+                            <NavLink to="/" style={{ textDecoration: 'none' }}><Button variant="contained" color="error">Back</Button></NavLink>
                         </Grid>
 
                     </Grid>
-                    <Grid xs={1} sm={1} justifyContent="right" >
+                    <Grid xs={1} sm={1} justifyContent="right" item>
 
                     </Grid>
                     <Grid align="center" sx={{ margin: '15% 25%' }}>
                         <Typography variant="h4" sx={{ color: "#FF6701" }}>
-                            Sign In as {
-                                values.role === "Client" || values.role === "Helper" ?
-                                    values.role : alert("route url is incorrect")
-                            }
+                            Sign In as {values.role}
                             {/* {abc ? nav("/role")    :  console.log(abc)} */}
                         </Typography>
 
@@ -123,11 +140,10 @@ const Login = () => {
                                         sx={{ marginTop: 2 }}
                                         required
                                         fullWidth
-
                                         id="mobile_no"
                                         label="Mobile Number"
                                         value={values.mobile_no}
-                                        onChange={(val) => { setValues({ ...values, mobile_no: val.target.value }) }}
+                                        onChange={(val) => { setValues((prevState) => { return { ...prevState, mobile_no: val.target.value } }) }}
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
@@ -167,7 +183,7 @@ const Login = () => {
                                 </Grid>
                             </Grid>
                             <Grid xs={12} sm={12} item>
-                                <Button type='submit' variant="contained" color="warning" fullWidht sx={{ height: 50, marginTop: 3 }}>
+                                <Button type='submit' variant="contained" color="warning" fullWidth sx={{ height: 50, marginTop: 3 }}>
                                     Login
                                 </Button>
 
@@ -177,7 +193,7 @@ const Login = () => {
                     </Grid>
                 </CardContent>
             </Card>
-        </Grid>
+        </Grid >
 
     );
 }

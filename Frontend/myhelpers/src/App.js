@@ -8,27 +8,31 @@ import Login from './components/login';
 import CardJS from './components/clients/Card';
 import Dashboard from './components/Dashboard';
 import { useSelector } from 'react-redux'
-import {BrowserRouter,Routes,Route} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Component } from 'react';
 
 function App() {
-  const isAuth = useSelector(state=> state.loginStore.isAuth)
+  const {isAuth} = useSelector(state => state.loginStore.isAuth)
+
+  const CheckRoute = (props) => {
+    console.log(props)
+  }
   return (
     <div className="App">
       <Header />
       <BrowserRouter>
         <Routes>
-          <Route path="/role" element={!isAuth && <Content />} />
-          <Route path="/login/:role" element={!isAuth && <Login />} />
-          <Route path="/clientProfile" element={<ClientProfile />} />
-          <Route path="/helperProfile" element={<HelperProfile />} />
+          <Route path="/" element={!isAuth && <Content />} />
+          <Route path={`/login/:role`} element={!isAuth && <Login />} />
+          <Route path="/clientProfile" element={isAuth && <ClientProfile />} />
+          <Route path="/helperProfile" element={isAuth &&<HelperProfile />} />
+          <Route path="*" element={"error"} />
         </Routes>
       </BrowserRouter>
-      
-      
-      <Dashboard />
-      <CardJS />
-{/*       
+
+      {/* <Dashboard />
+      <CardJS /> */}
+      {/*       
       <ClientProfile />
       <HelperProfile /> */}
 

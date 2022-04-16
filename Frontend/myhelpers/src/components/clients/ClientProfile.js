@@ -9,12 +9,14 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
-import { Card, Container, Grid, InputLabel, Typography } from '@mui/material';
+import { Backdrop, Card, Container, Grid, InputLabel, Typography } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import PhotoCameraSharpIcon from '@mui/icons-material/PhotoCameraSharp';
+import HelperProfile from '../helpers/HelperProfile';
+import { useEffect } from 'react';
 
 const Input = styled('input')({
     display: 'none',
@@ -22,7 +24,8 @@ const Input = styled('input')({
 
 const ClientProfile = () => {
     // const classes = useStyles();
-    let xyz = localStorage.getItem('role')
+    const xyz = localStorage.getItem('role')
+    console.log(xyz)
     const validate = () => {
         let temp = {}
         temp.firstname = values.firstname ? "" : "This field is required"
@@ -37,9 +40,18 @@ const ClientProfile = () => {
         showPassword: false,
     });
 
+    const [open, setOpen] = React.useState(false);
+    useEffect(() => {
+        const body = document.querySelector('body');
+        body.style.overflow = open ? 'hidden' : 'auto';
+    }, [open])
     const addWorkHandler = () => {
-        
+        setOpen(true);
     }
+    const handleClose = () => {
+        setOpen(false);
+    };
+
 
     return (
         <Grid>
@@ -265,18 +277,30 @@ const ClientProfile = () => {
                             </Grid>
                         </Grid>
 
-                        <Grid xs={12}  item>
+                        {/* {xyz === "Client" ? */}
+
+                        {/* : */}
+
+                        <Grid xs={12} sm={12} item>
                             <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
                                 Save
                             </Button>
                         </Grid>
-                        {xyz === "Helper" ?
-                        <Grid xs={12}sm ={6} item>
-                            <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
-                                Add Work Detail
-                            </Button>
-                        </Grid>: <div></div>}
+                        {/* }    */}
+
                     </form>
+                    <Grid xs={12} sm={6} item>
+                        <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
+                            Add Work Detail
+                        </Button>
+                        <Backdrop
+                            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                            open={open}
+
+                        >
+                            <HelperProfile click={handleClose} />
+                        </Backdrop>
+                    </Grid>
                 </CardContent>
             </Card>
         </Grid>
