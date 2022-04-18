@@ -1,10 +1,10 @@
 import {  configureStore } from '@reduxjs/toolkit'
-import loginReducer from './login-slice';
-import { getDefaultMiddleware } from '@reduxjs/toolkit';
-
+import loginReducer from './slices/login-slice';
+import profileReducer from './slices/profile-slice'
 const store = configureStore({
     reducer: {
         loginStore: loginReducer,
+        c_profile: profileReducer,
 
     },
     middleware: getDefaultMiddleware =>

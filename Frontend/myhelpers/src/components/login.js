@@ -17,10 +17,10 @@ import Button from '@mui/material/Button';
 import abc from "./loginImg.jpg";
 import { Grid } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import { loginThunk } from '../store/login-slice'
-import { loginActions } from '../store/login-slice';
+import { loginThunk } from '../store/slices/login-slice'
+import { loginActions } from '../store/slices/login-slice';
 import { useState, useEffect } from 'react';
-import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
+import {  NavLink, useNavigate, useParams } from 'react-router-dom';
 
 const Login = () => {
 
@@ -31,16 +31,16 @@ const Login = () => {
     // dispatch({ type: 'login' });
     const [values, setValues] = useState({
         mobile_no: '',
-        password: '',
+        otp: '',
         role: params.role,
     });
 
 
-    let { user, error, loading } = useSelector((state) => ({ ...state.loginStore }))
+    let { user, error,token } = useSelector((state) => ({ ...state.loginStore }))
     // const [msg, setmsg] = useState(false);
 
     useEffect(() => {
-        if (params.role != 'Client' && params.role != 'Helper') {
+        if (values.role !== 'Client' && values.role !== 'Helper') {
             navigate("/")
         }
         if (error.length !== 0) {
@@ -54,21 +54,20 @@ const Login = () => {
             if (user[0].r_id.charAt(0) === "C")
             {
                 localStorage.setItem("role", "Client")
-                console.log("client")
+                // console.log("client")
             }
             else {
-                console.log("Helper")
+                // console.log("Helper")
                 localStorage.setItem("role", "Helper")
             }
-            console.log("navigate")
+            // console.log("navigate")
+            dispatch(loginActions.isAuthReducer())
+            localStorage.setItem("logToken", token)
             navigate("/clientProfile")
         }
-    }, [user, error])
+    }, [user, error,values,dispatch,navigate])
 
 
-    const [showpswd, setshowpswd] = useState({
-        showPassword: false
-    })
 
     // setValues({ ...values, role: params.role })
     const loginSubmitHandler = (event) => {
@@ -76,22 +75,19 @@ const Login = () => {
 
         //console.log("value : ",{values})
         dispatch(loginThunk({ values }))
-        setValues((prevState) => { return { ...prevState, mobile_no: "", password: "" } })
+        setValues((prevState) => { return { ...prevState, mobile_no: "", otp: "" } })
     }
     // const handleChange = (prop) => (event) => {
     //     setValues({ ...values, [prop]: event.target.value });
     // };
 
-    const handleClickShowPassword = () => {
-        setshowpswd({ showPassword: !showpswd.showPassword });
-    };
-
+   
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-    const backHandler = () => {
-        navigate("/", { replace: true })
-    }
+    // const backHandler = () => {
+    //     navigate("/", { replace: true })
+    // }
 
     return (
         <Grid >
@@ -153,13 +149,13 @@ const Login = () => {
                                         }}
                                     />
                                 </Grid>
-                                <Grid xs={12} sm={12} item>
-                                    <TextField
+                                    <Grid xs={12} sm={12} item>
+                                    {<TextField
                                         fullWidth
                                         sx={{ marginTop: 2 }}
                                         required
                                         variant='outlined'
-                                        label="Password"
+                                        label="One Time Password"
                                         id="outlined-adornment-password"
                                         type={showpswd.showPassword ? 'text' : 'password'}
                                         value={values.password}
@@ -179,13 +175,15 @@ const Login = () => {
                                             )
                                         }}
 
-                                    />
+                                    />}
                                 </Grid>
                             </Grid>
+                            
+                            
                             <Grid xs={12} sm={12} item>
-                                <Button type='submit' variant="contained" color="warning" fullWidth sx={{ height: 50, marginTop: 3 }}>
+                                {<Button type='submit' variant="contained" color="warning" fullWidth sx={{ height: 50, marginTop: 3 }}>
                                     Login
-                                </Button>
+                                </Button>}
 
                             </Grid>
 

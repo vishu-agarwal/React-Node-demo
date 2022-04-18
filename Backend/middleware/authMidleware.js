@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const regModel = require("../model/tblReg")
+//const regModel = require("../model/tblReg")
 
 const auth = async (req, res, next) => {
     console.log(req.method, req.path);
@@ -9,7 +9,7 @@ const auth = async (req, res, next) => {
         const token = req.header("Authorization").replace("Bearer ", "")
         //console.log("token : " + token);
 
-        const decode = jwt.verify(token, process.env.TokenKey)
+        const decode = jwt.verify(token, process.env.JSON_TOKEN)
         //console.log(decode);
 
         const user = await userModel.findOne({ _id: decode.id, 'tokens.token': token })

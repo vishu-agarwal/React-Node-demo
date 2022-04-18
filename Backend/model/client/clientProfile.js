@@ -25,6 +25,20 @@ const clientSchema = new mongoose.Schema({
     //     type: Buffer,
     //     required: true,
     // },
+    dob: {
+        type: Date,
+        required: true,
+        validate: {
+            validator: function (value) {
+                return (
+                    value.getTime() < Date.now() - 365 * 24 * 60 * 60 * 1000
+                );
+            },
+            message:
+                "An age must be at least 1 year from now .",
+        }
+    },
+  
     email: {
         type: String,
         unique: true,
@@ -36,30 +50,50 @@ const clientSchema = new mongoose.Schema({
         },
         lowercase: true
     },
+    gender: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+    },
+    isMarried: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    physical_disable: {
+        type: Boolean,
+        required:true,
+        default: false,
+    },
     address: [
         {
             state: {
                 type: String,
                 required: true,
+                trim:true,
                 lowercase: true,
             },
             city: {
                 type: String,
                 required: true,
-                lowercase: true,
-            },
-            landmark: {
-                type: String,
-                required: true,
-                lowercase: true,
                 trim: true,
+                lowercase: true,
             },
             pincode:
             {
                 type: Number,
                 required: true,
                 min: 6,
+                
                 trim: true
+            },
+            landmark: {
+                type: String,
+                required: true,
+                lowercase: true,
+                trim: true,
+             
             },
             h_name: {
                 type: String,
@@ -95,6 +129,16 @@ const clientSchema = new mongoose.Schema({
     timestamps: true
 })
 
+// check alternate password and registered no is not same
+clientSchema.statics.findByCredentials = async (mob_num,r_id) => {
+    console.log("Check mobile no");
+    const ismbl = await regModel.find({r_id,mob_num})//short hand syntax
+     console.log(ismbl);
+    if (ismbl.length !== 0){ 
+        throw new Error("Alternate Mobile No. should be different from Registerd No.")
+    }
+    return ismbl
+}
 //remove delete user as well as profile
 clientSchema.pre('remove',async function (next) {
     const user = this

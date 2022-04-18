@@ -3,13 +3,13 @@ import axios from 'axios'
 
 
 const initialState = {
-    user: [],
-    isAuth: false,
+    userProfile: [],
+    
     loading: false,
     error: ""
 }
 
-export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) => {
+export const profileThunk = createAsyncThunk("userProfile/profileThunk", async (arg) => {
     // console.log("diapatch::", arg)
     try {
         const data = {
@@ -29,32 +29,35 @@ export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) =
     }
 })
 
-const loginSlice = createSlice({
-    name: 'userLogin',
+const profileSlice = createSlice({
+    name: 'userProfile',
     initialState,//: initialState
     reducers: {
         errorReducer(state) {
-            state.error= ""
+            state.error = ""
+        },
+        isAuthReducer(state) {
+            state.isAuth = true
         },
     },
     extraReducers: {
-        [loginThunk.pending]: (state, action) => {
+        [profileThunk.pending]: (state, action) => {
             state.loading = true
         },
-        [loginThunk.fulfilled]: (state, action) => {
+        [profileThunk.fulfilled]: (state, action) => {
             state.loading = false
-             state.isAuth = true
+            //  state.isAuth = true
             state.user = [action.payload.data]
         },
-        [loginThunk.rejected]: (state, error) => {
+        [profileThunk.rejected]: (state, error) => {
             state.loading = false
             // console.log("rejected::", error.error.message)
-            
+
             state.error = error.error.message
         },
 
     }
 
 })
-export const loginActions = loginSlice.actions
-export default loginSlice.reducer
+export const profileActions = profileSlice.actions
+export default profileSlice.reducer

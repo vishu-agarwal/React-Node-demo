@@ -17,6 +17,11 @@ import Avatar from '@mui/material/Avatar';
 import PhotoCameraSharpIcon from '@mui/icons-material/PhotoCameraSharp';
 import HelperProfile from '../helpers/HelperProfile';
 import { useEffect } from 'react';
+import Stack from '@mui/material/Stack';
+import DatePicker from '@mui/x-date-pickers/DatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const Input = styled('input')({
     display: 'none',
@@ -25,7 +30,7 @@ const Input = styled('input')({
 const ClientProfile = () => {
     // const classes = useStyles();
     const xyz = localStorage.getItem('role')
-    console.log(xyz)
+    // console.log(xyz)
     const validate = () => {
         let temp = {}
         temp.firstname = values.firstname ? "" : "This field is required"
@@ -51,6 +56,11 @@ const ClientProfile = () => {
     const handleClose = () => {
         setOpen(false);
     };
+    const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
+
+    const handleChange = (newValue) => {
+        setValue(newValue);
+    };
 
 
     return (
@@ -64,7 +74,8 @@ const ClientProfile = () => {
                     marginTop: 15
                 }}>
                 <CardContent>
-                    <Typography variant="h4" component='div' fontSize='30px'>Your Profile</Typography>
+                    <Typography variant="h4"  >Profile</Typography>
+                    <Typography variant="h5"  >Registered no</Typography>
                     <form>
                         <Grid container spacing={1}>
 
@@ -113,12 +124,17 @@ const ClientProfile = () => {
                             </Grid>
                             <Grid xs={12} sm={6} item>
                                 <TextField
+                                    id="date"
+                                    label="Date Of Birthday"
+                                    type="date"
                                     required
-                                    variant='outlined'
-                                    id="dob"
-                                    label="Birthday"
                                     fullWidth
+                                  
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
+
                             </Grid>
 
                             <Grid xs={12} sm={6} item>

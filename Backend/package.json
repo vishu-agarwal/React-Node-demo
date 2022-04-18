@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^7.6.2",
+    "@vonage/server-sdk": "^2.10.11",
     "bcryptjs": "^2.4.3",
     "chalk": "^5.0.1",
     "cors": "^2.8.5",

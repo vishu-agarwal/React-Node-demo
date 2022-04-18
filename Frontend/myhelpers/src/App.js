@@ -8,15 +8,17 @@ import Login from './components/login';
 import CardJS from './components/clients/Card';
 import Dashboard from './components/Dashboard';
 import { useSelector } from 'react-redux'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import { Component } from 'react';
 
 function App() {
-  const {isAuth} = useSelector(state => state.loginStore.isAuth)
+  const  isAuth  = useSelector(state => state.loginStore.isAuth)
+  console.log(isAuth)
 
   const CheckRoute = (props) => {
     console.log(props)
   }
+  
   return (
     <div className="App">
       <Header />
@@ -29,12 +31,6 @@ function App() {
           <Route path="*" element={"error"} />
         </Routes>
       </BrowserRouter>
-
-      {/* <Dashboard />
-      <CardJS /> */}
-      {/*       
-      <ClientProfile />
-      <HelperProfile /> */}
 
     </div>
   );
