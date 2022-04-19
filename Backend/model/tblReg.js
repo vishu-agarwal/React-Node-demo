@@ -22,7 +22,7 @@ const regSchema = new mongoose.Schema({
             validator: function (val) {
                 return val.toString().length === 10
             },
-            message: val => { throw new Error(`${val.value} has to be 10 digits`) }
+            message: val =>  `${val.value} has to be 10 digits`
         }
 
     }

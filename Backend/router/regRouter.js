@@ -5,13 +5,7 @@ const router = new express.Router()
 const regModel = require("../model/tblReg")
 const optModel = require("../model/tempOtpModel")
 
-const Vonage = require('@vonage/server-sdk')
-const vonage = new Vonage({
-    apiKey: process.env.VONAGE_SMS_KEY,
-    apiSecret: process.env.VONAGE_API_SECRET
-})
-
-
+const regController = require("../controller/regController")
 //home
 router.get("/myhelpers", async (req, res) => {
     console.log("home");
@@ -20,107 +14,30 @@ router.get("/myhelpers", async (req, res) => {
 
 //generate otp
 
-router.post("/myhelpers/login/otp/:role", async (req, res) => {
-    try {
-        const rid = req.params.role.charAt(0)
-        const mbl = req.body.mob_num
-        const found = await regModel.find({ mob_num: mbl })
-        if (found.length !== 0) {
-            const fnd_role = found.r_id.charAt(0)
-            if (rid === fnd_role) {
-                // return res.status(200).send(found)
-                const from = "MyHelpersSMSAPI"
-                const to = mbl
-                const otp = Math.floor(100000 + Math.random() * 900000)
-                const text = 'MyHelpers Login OTP is :: ' + otp + '   '
-
-                vonage.message.sendSms(from, to, text, (err, responseData) => {
-                    if (err) {
-                        console.log(err);
-                        throw new Error(err)
-                    } else {
-                        if (responseData.messages[0]['status'] === "0") {
-                            console.log("Message sent successfully.");
-                            const user = {
-                                mob_num: mbl,
-                                opt
-                            }
-                            // console.log("final user :: ",user);
-                            const newUser = new optModel(user)
-                            await newUser.save()
-                            // return res.status(200).send(newUser);
-                            return res.status(200).send({ message: "OTP Message sent successfully." })
-                        } else {
-                            console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
-                            throw new Error(`Message failed with error: ${responseData.messages[0]['error-text']}`)
-                        }
-                    }
-                })
-            }
-            else {
-                //return res.status(400).send()
-                throw new Error("you are unauthorized for this role")
-            }
-        }
-        else {
-
-            const from = "MyHelpersSMSAPI"
-            const to = req.body.mob_num
-            const otp = Math.floor(100000 + Math.random() * 900000)
-            const text = 'MyHelpers Login OTP is :: ' + otp + '   '
-
-            vonage.message.sendSms(from, to, text, (err, responseData) => {
-                if (err) {
-                    console.log(err);
-                    throw new Error(err)
-                } else {
-                    if (responseData.messages[0]['status'] === "0") {
-                        console.log("Message sent successfully.");
-                        const user = {
-                            mob_num: mbl,
-                            opt
-                        }
-                        const newUser = new optModel(user)
-
-                        // console.log(newUser);
-                        await newUser.save()
-                        // return res.status(200).send(newUser);
-                        return res.status(200).send({ message: "OTP Message sent successfully." })
-                    } else {
-                        console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
-                        throw new Error(`Message failed with error: ${responseData.messages[0]['error-text']}`)
-                    }
-                }
-            })
-        }
-    }
-    catch (error) {
-        res.status(400).send(error.message)
-    }
-})
+router.post("/myhelpers/otp/:role", regController.otpLoginController)
 
 //register user
 router.post("/myhelpers/register/:role", async (req, res) => {
     console.log(req.params.role)
     const role = req.params.role.charAt(0)
-    // console.log(role)
+     console.log(role)
     try {
         const found = await regModel.find({ mob_num: req.body.mob_num });
         // console.log(found)
         if (found.length !== 0) {
-            // const fnd_role = found.r_id.charAt(0)
-            // if (role === fnd_role) {
-            //     // return res.status(200).send(found)
+            const fnd_role = found[0].r_id.charAt(0)
+            if (role === fnd_role) {
+                // return res.status(200).send(found)
 
             const token = await found.generateAuthToken()
             return res.status(200).send({ found, token })
-            // }
-            // else {
-            //     //return res.status(400).send()
-            //     throw new Error("you are unauthorized for this role")
-            // }
+            }
+            else {
+                //return res.status(400).send()
+                throw new Error("you are unauthorized for this role")
+            }
 
-            //const updatepro = await ProductModel.findOneAndUpdate({ password: req.body.password }, updt, { new: true })
+            // const updatepro = await ProductModel.findOneAndUpdate({ password: req.body.password }, updt, { new: true })
         }
         else {
 
@@ -146,7 +63,7 @@ router.post("/myhelpers/register/:role", async (req, res) => {
             // console.log(newUser);
             await newUser.save()
             // return res.status(200).send(newUser);
-            const token = await newUSer.generateAuthToken()
+            const token = await newUser.generateAuthToken()
             return res.status(200).send({ newUser, token })
         }
     } catch (error) {

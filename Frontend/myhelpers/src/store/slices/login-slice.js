@@ -4,11 +4,30 @@ import axios from 'axios'
 
 const initialState = {
     user: [],
-    token:"",
+    token: "",
     isAuth: false,
     loading: false,
     error: ""
 }
+
+export const otpThunk = createAsyncThunk("userLogin/otpThunk", async (arg) => {
+    console.log("diapatch::", arg)
+    try {
+        const data = {
+            mob_num: arg.values.mobile_no,
+            // password: arg.values.password,
+        };
+        console.log(data)
+        const otpRes = await axios.post(`/myhelpers/otp/${arg.values.role}`, data)
+        console.log("loginRes", otpRes)
+        return otpRes
+
+    }
+    catch (error) {
+        // console.log(error.response.data)
+        throw new Error(error.response.data)
+    }
+})
 
 export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) => {
     // console.log("diapatch::", arg)
@@ -35,7 +54,7 @@ const loginSlice = createSlice({
     initialState,//: initialState
     reducers: {
         errorReducer(state) {
-            state.error= ""
+            state.error = ""
         },
         isAuthReducer(state) {
             state.isAuth = true
@@ -50,7 +69,7 @@ const loginSlice = createSlice({
             //  state.isAuth = true
             state.token = action.payload.data.token
             // console.log(state.token)
-             
+
             state.user = [action.payload.data.user]
         },
         [loginThunk.rejected]: (state, error) => {

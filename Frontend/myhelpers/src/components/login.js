@@ -8,19 +8,19 @@ import React from 'react'
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import { Card, Typography } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
+
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
 import abc from "./loginImg.jpg";
 import { Grid } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginThunk } from '../store/slices/login-slice'
-import { loginActions } from '../store/slices/login-slice';
+import { loginActions } from '../store/slices/login-slice'
+import { otpActions } from '../store/slices/otp-slice';
+import { otpThunk } from '../store/slices/otp-slice';
 import { useState, useEffect } from 'react';
-import {  NavLink, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 const Login = () => {
 
@@ -31,12 +31,13 @@ const Login = () => {
     // dispatch({ type: 'login' });
     const [values, setValues] = useState({
         mobile_no: '',
-        otp: '',
         role: params.role,
     });
 
 
-    let { user, error,token } = useSelector((state) => ({ ...state.loginStore }))
+    let { user, error, token } = useSelector((state) => ({ ...state.loginStore }))
+
+    let { otpUser, otpError, isOtp } = useSelector((state) => ({ ...state.otpStore }))
     // const [msg, setmsg] = useState(false);
 
     useEffect(() => {
@@ -48,11 +49,18 @@ const Login = () => {
             alert(error)
             dispatch(loginActions.errorReducer())
         }
-
+        if (otpError.length !== 0) {
+            // console.log(error)
+            alert(otpError)
+            dispatch(otpActions.errorReducer())
+        }
+        if (otpUser.length !== 0)
+        {
+            dispatch(otpActions.isOtpReducer())
+            }
         if (user.length !== 0) {
             console.log(user)
-            if (user[0].r_id.charAt(0) === "C")
-            {
+            if (user[0].r_id.charAt(0) === "C") {
                 localStorage.setItem("role", "Client")
                 // console.log("client")
             }
@@ -65,33 +73,22 @@ const Login = () => {
             localStorage.setItem("logToken", token)
             navigate("/clientProfile")
         }
-    }, [user, error,values,dispatch,navigate])
+    }, [user, error, values, dispatch, navigate,otpUser,otpError])
 
 
-
+    const sendOtpHandler = (e) => {
+        dispatch(otpThunk({ values }))
+    }
     // setValues({ ...values, role: params.role })
     const loginSubmitHandler = (event) => {
         event.preventDefault()
 
         //console.log("value : ",{values})
         dispatch(loginThunk({ values }))
-        setValues((prevState) => { return { ...prevState, mobile_no: "", otp: "" } })
+        setValues((prevState) => { return { ...prevState, mobile_no: "" } })
     }
-    // const handleChange = (prop) => (event) => {
-    //     setValues({ ...values, [prop]: event.target.value });
-    // };
-
-   
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-    // const backHandler = () => {
-    //     navigate("/", { replace: true })
-    // }
-
     return (
         <Grid >
-           
             <Card
                 sx={{
                     maxWidth: 650, maxHeight: 440,
@@ -125,7 +122,6 @@ const Login = () => {
                             Sign In as {values.role}
                             {/* {abc ? nav("/role")    :  console.log(abc)} */}
                         </Typography>
-
                         <form onSubmit={loginSubmitHandler}>
 
                             <Grid container >
@@ -149,42 +145,37 @@ const Login = () => {
                                         }}
                                     />
                                 </Grid>
-                                    <Grid xs={12} sm={12} item>
-                                    {<TextField
-                                        fullWidth
-                                        sx={{ marginTop: 2 }}
-                                        required
-                                        variant='outlined'
-                                        label="One Time Password"
-                                        id="outlined-adornment-password"
-                                        type={showpswd.showPassword ? 'text' : 'password'}
-                                        value={values.password}
-                                        onChange={(val) => { setValues({ ...values, password: val.target.value }) }}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={handleClickShowPassword}
-                                                        onMouseDown={handleMouseDownPassword}
-                                                        edge="end"
-                                                    >
-                                                        {showpswd.showPassword ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            )
-                                        }}
-
-                                    />}
+                                <Grid xs={12} sm={12} item>
+                                    {isOtp &&
+                                        <TextField
+                                            fullWidth
+                                            sx={{ marginTop: 2 }}
+                                            required
+                                            variant='outlined'
+                                            label="One Time Password (OTP)"
+                                            id="outlined-adornment-password"
+                                            value={values.otp}
+                                            onChange={(val) => { setValues({ ...values, otp: val.target.value }) }}
+                                        />
+                                    }
                                 </Grid>
                             </Grid>
-                            
-                            
-                            <Grid xs={12} sm={12} item>
-                                {<Button type='submit' variant="contained" color="warning" fullWidth sx={{ height: 50, marginTop: 3 }}>
-                                    Login
-                                </Button>}
 
+
+                            <Grid xs={12} sm={12} item>
+                                {!isOtp ?
+                                    <Button onClick={sendOtpHandler} variant="contained" color="primary" fullWidth sx={{ height: 50, marginTop: 3 }}>
+                                        Send OTP
+                                    </Button>
+                                    :
+                                    <Button type='submit' variant="contained" color="warning" fullWidth sx={{ height: 50, marginTop: 3 }}>
+                                        Login
+                                    </Button>
+                                }
+                                {isOtp &&
+                                    <Button onClick={sendOtpHandler} color="success" fullWidth sx={{ height: 50, marginTop: 3 }}>
+                                    Resend Otp
+                                </Button>}
                             </Grid>
 
                         </form>
