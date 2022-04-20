@@ -1,71 +1,62 @@
 const regModel = require("../model/tblReg")
-const optModel = require("../model/tempOtpModel")
 
-const fast2sms = require('fast-two-sms')
 
-async function otpFunction(mbl) {
-    // return new Promise(async (resolve, reject) => {
-    const to = mbl
-    const otp = Math.floor(100000 + Math.random() * 900000)
-    const text = 'MyHelpers Login OTP is :: ' + otp + ' . \nIt is expired after One minute! '
+const loginController = async (req, res) => {
+    // console.log(req.params.role)
+    const role = req.params.role.charAt(0)
+    let newUser 
+    // console.log(role)
     try {
-        const response = await fast2sms.sendMessage({ authorization: process.env.SMS_API_KEY, message: text, numbers: [to] })
-        if (response) {
-            return otp
-        }
-        else {
-            throw new Error("Some problem while sending OTP !")
-        }
-        // fast2sms.sendMessage({ authorization: process.env.SMS_API_KEY, message: text, numbers: [to] })
-        //     .then((res) => {
-        //         console.log(res)
-        //         return resolve(res)
-        //     }).catch((error) => {
-        //         console.log(error)
-        //         return reject("Some problem while sending OTP!")
-        //     })      
-    } catch (error) {
-        console(error);
-        return error;
-    }
-}
-const otpLoginController = async (req, res) => {
-    try {
-        console.log("otp login controller ")
-        const rid = req.params.role.charAt(0)
-        const mbl = req.body.mob_num
-        // console.log(mbl.toString().length)
-        if (mbl.toString().length !== 10) {
-            throw new Error("Mobile no should be 10 digits.")
-        }
-        const found = await regModel.find({ mob_num: mbl })
+        const found = await regModel.find({ mob_num: req.body.mob_num });
+         console.log(found)
         if (found.length !== 0) {
             const fnd_role = found[0].r_id.charAt(0)
-            if (rid !== fnd_role) {
-
+            if (role === fnd_role) {
+                newUser = new regModel(...found)
+                console.log(newUser)
+                // const token = await found.generateAuthToken()
+                // return res.status(200).send({ found, token })
+            }
+            else {
+                //return res.status(400).send()
                 throw new Error("you are unauthorized for this role")
             }
         }
-        const otp = await otpFunction(mbl)
-        console.log(otp)
-        const user =
-        {
-            mob_num: mbl,
-            otp
+        else {
+
+            const id = await regModel.findOne().sort({ createdAt: -1 })
+            // console.log("id ::",id)
+            let rid
+            if (id) {
+                rid = id.r_id.slice(1)
+                console.log("rid from id", rid);
+            }
+            else {
+                rid = 100
+                // console.log("rid inital ::",rid);
+            }
+            // console.log(role)
+            // const assignrole = await regModel.assignRole(req.params.role)
+            const r_id = role + ++rid
+            // console.log(r_id);
+            const user = { r_id, ...req.body }
+            // console.log("final user :: ",user);
+            newUser = new regModel(user)
+            // console.log(newUser);
+            await newUser.save()
+            // return res.status(200).send(newUser);
+            
         }
-        const newUser = new optModel(user)
-        await newUser.save()
-        setTimeout(async function () { 
-            console.log("delete timeout...")
-            const del = await optModel.deleteMany({ mob_num: mbl })
-            console.log(del)
-         }, 1000*60);
-        return res.status(200).send("OTP Message sent successfully.")
+        const token = await newUser.generateAuthToken()
+        return res.status(200).send({ newUser, token })
     }
     catch (error) {
+        // console.log(error.message)
         res.status(400).send(error.message)
     }
+
 }
+
 module.exports = {
-    otpLoginController
+    loginController
 }

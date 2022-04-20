@@ -3,7 +3,8 @@ import axios from 'axios'
 
 
 const initialState = {
-    otpUser: [],
+    otpUser: '',
+    message:"",
     isOtp : false,
     loading: false,
     otpError: ""
@@ -45,7 +46,9 @@ const otpSlice = createSlice({
         },
         [otpThunk.fulfilled]: (state, action) => {
             state.loading = false
-            state.otpUser = [action.payload.data.user]
+            // console.log(action.payload.data.message)
+            state.message = action.payload.data.message
+            state.otpUser = action.payload.data.otp
         },
         [otpThunk.rejected]: (state, error) => {
             state.loading = false

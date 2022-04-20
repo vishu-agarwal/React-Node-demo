@@ -3,9 +3,10 @@ const router = new express.Router()
 //let count = 100
 //model File
 const regModel = require("../model/tblReg")
-const optModel = require("../model/tempOtpModel")
-
+//controllers
+const otpController = require("../controller/otpController")
 const regController = require("../controller/regController")
+
 //home
 router.get("/myhelpers", async (req, res) => {
     console.log("home");
@@ -14,64 +15,10 @@ router.get("/myhelpers", async (req, res) => {
 
 //generate otp
 
-router.post("/myhelpers/otp/:role", regController.otpLoginController)
+router.post("/myhelpers/otp/:role", otpController.otpLoginController)
 
 //register user
-router.post("/myhelpers/register/:role", async (req, res) => {
-    console.log(req.params.role)
-    const role = req.params.role.charAt(0)
-     console.log(role)
-    try {
-        const found = await regModel.find({ mob_num: req.body.mob_num });
-        // console.log(found)
-        if (found.length !== 0) {
-            const fnd_role = found[0].r_id.charAt(0)
-            if (role === fnd_role) {
-                // return res.status(200).send(found)
-
-            const token = await found.generateAuthToken()
-            return res.status(200).send({ found, token })
-            }
-            else {
-                //return res.status(400).send()
-                throw new Error("you are unauthorized for this role")
-            }
-
-            // const updatepro = await ProductModel.findOneAndUpdate({ password: req.body.password }, updt, { new: true })
-        }
-        else {
-
-            const id = await regModel.findOne().sort({ createdAt: -1 })
-            // console.log("id ::",id)
-            let rid
-            if (id) {
-                rid = id.r_id.slice(1)
-                console.log("rid from id", rid);
-            }
-            else {
-                rid = 100
-                // console.log("rid inital ::",rid);
-            }
-            // console.log(role)
-            // const assignrole = await regModel.assignRole(req.params.role)
-            const r_id = role + ++rid
-            // console.log(r_id);
-            const user = { r_id, ...req.body }
-            // console.log("final user :: ",user);
-            const newUser = new regModel(user)
-
-            // console.log(newUser);
-            await newUser.save()
-            // return res.status(200).send(newUser);
-            const token = await newUser.generateAuthToken()
-            return res.status(200).send({ newUser, token })
-        }
-    } catch (error) {
-        // console.log(error.message)
-        res.status(400).send(error.message)
-    }
-
-})
+router.post("/myhelpers/register/:role", regController.loginController)
 //fetch users
 router.get("/myhelpers/fetchuser", async (req, res) => {
     const list = await regModel.find()

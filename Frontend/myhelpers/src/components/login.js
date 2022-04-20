@@ -34,11 +34,11 @@ const Login = () => {
         role: params.role,
     });
 
+    const [otp, setotp] = useState('')
 
     let { user, error, token } = useSelector((state) => ({ ...state.loginStore }))
 
     let { otpUser, otpError, isOtp } = useSelector((state) => ({ ...state.otpStore }))
-    // const [msg, setmsg] = useState(false);
 
     useEffect(() => {
         if (values.role !== 'Client' && values.role !== 'Helper') {
@@ -54,10 +54,9 @@ const Login = () => {
             alert(otpError)
             dispatch(otpActions.errorReducer())
         }
-        if (otpUser.length !== 0)
-        {
+        if (otpUser.length !== 0) {
             dispatch(otpActions.isOtpReducer())
-            }
+        }
         if (user.length !== 0) {
             console.log(user)
             if (user[0].r_id.charAt(0) === "C") {
@@ -73,8 +72,7 @@ const Login = () => {
             localStorage.setItem("logToken", token)
             navigate("/clientProfile")
         }
-    }, [user, error, values, dispatch, navigate,otpUser,otpError])
-
+    }, [user, error, values, dispatch, navigate, otpUser, otpError])
 
     const sendOtpHandler = (e) => {
         dispatch(otpThunk({ values }))
@@ -82,10 +80,16 @@ const Login = () => {
     // setValues({ ...values, role: params.role })
     const loginSubmitHandler = (event) => {
         event.preventDefault()
-
+        // console.log("otp is :: ",typeof(otpUser),typeof(parseInt(otp)))
+        if (otp == parseInt(otpUser)) {
+            dispatch(loginThunk({ values }))
+            setValues((prevState) => { return { ...prevState, mobile_no: "" } })
+            setotp("")
+        }
+        else {
+            return alert("Opps! \n OTP did not match.")
+        }
         //console.log("value : ",{values})
-        dispatch(loginThunk({ values }))
-        setValues((prevState) => { return { ...prevState, mobile_no: "" } })
     }
     return (
         <Grid >
@@ -102,20 +106,15 @@ const Login = () => {
                     borderRadius: 10,
                 }}
                 elevation={4}>
-
                 <CardContent >
                     <Grid container direction={'row'} spacing={0}>
-
                         <Grid item xs={10} >
-
                         </Grid>
                         <Grid item xs={2} justifyContent="right" >
                             <NavLink to="/" style={{ textDecoration: 'none' }}><Button variant="contained" color="error">Back</Button></NavLink>
                         </Grid>
-
                     </Grid>
                     <Grid xs={1} sm={1} justifyContent="right" item>
-
                     </Grid>
                     <Grid align="center" sx={{ margin: '15% 25%' }}>
                         <Typography variant="h4" sx={{ color: "#FF6701" }}>
@@ -123,9 +122,7 @@ const Login = () => {
                             {/* {abc ? nav("/role")    :  console.log(abc)} */}
                         </Typography>
                         <form onSubmit={loginSubmitHandler}>
-
                             <Grid container >
-
                                 <Grid xs={12} sm={12} item>
                                     <TextField
 
@@ -148,14 +145,13 @@ const Login = () => {
                                 <Grid xs={12} sm={12} item>
                                     {isOtp &&
                                         <TextField
-                                            fullWidth
                                             sx={{ marginTop: 2 }}
                                             required
-                                            variant='outlined'
+                                            fullWidth
+                                            id="otp"
                                             label="One Time Password (OTP)"
-                                            id="outlined-adornment-password"
-                                            value={values.otp}
-                                            onChange={(val) => { setValues({ ...values, otp: val.target.value }) }}
+                                            value={otp}
+                                            onChange={(val) => { setotp(val.target.value) }}
                                         />
                                     }
                                 </Grid>
@@ -168,14 +164,15 @@ const Login = () => {
                                         Send OTP
                                     </Button>
                                     :
-                                    <Button type='submit' variant="contained" color="warning" fullWidth sx={{ height: 50, marginTop: 3 }}>
+                                    <Button type='submit' variant="contained" color="warning" fullWidth sx={{ height: 50, marginTop: 1 }}>
                                         Login
                                     </Button>
                                 }
                                 {isOtp &&
-                                    <Button onClick={sendOtpHandler} color="success" fullWidth sx={{ height: 50, marginTop: 3 }}>
-                                    Resend Otp
-                                </Button>}
+                                    <Button onClick={sendOtpHandler} color="primary" fullWidth sx={{ marginTop: 0 }}>
+                                        Resend Otp
+                                    </Button>
+                                }
                             </Grid>
 
                         </form>
