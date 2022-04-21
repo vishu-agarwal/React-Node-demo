@@ -4,23 +4,40 @@ import axios from 'axios'
 
 const initialState = {
     userProfile: [],
-    
     loading: false,
     error: ""
 }
 
-export const profileThunk = createAsyncThunk("userProfile/profileThunk", async (arg) => {
-    // console.log("diapatch::", arg)
+export const createProfileThunk = createAsyncThunk("userProfile/createProfileThunk", async (arg) => {
+    console.log("diapatch::", arg)
     try {
+        const r_id = localStorage.getItem("r_id")
         const data = {
-            mob_num: arg.values.mobile_no,
-            password: arg.values.password,
+            name: arg.values.fname + ' ' + arg.values.lname,
+            dob: arg.values.dob,
+            email: arg.values.email,
+            gender: arg.values.gender,
+            isMarried: arg.values.married,
+            physical_disable: arg.values.physic_dis,
+            address: [
+                {
+                    state: arg.values.state,
+                    city: arg.values.city,
+                    pincode: arg.values.pincode,
+                    landmark: arg.values.street,
+                    house_name: arg.values.house_name,
+                    houseNo: arg.values.house_no,
+                }
+            ],
+            alt_mob_num: arg.values.altmbl,
+            about: arg.values.about
+
         };
-        //console.log(data)
-        const loginRes = await axios.post(`/myhelpers/register/${arg.values.role}`, data)
+        console.log("data", data)
+        const userRes = await axios.post(`/myhelpers/crtProfile/C105`, data)
 
         // console.log("loginRes", loginRes)
-        return loginRes
+        return userRes
 
     }
     catch (error) {
@@ -41,23 +58,21 @@ const profileSlice = createSlice({
         },
     },
     extraReducers: {
-        [profileThunk.pending]: (state, action) => {
+        [createProfileThunk.pending]: (state, action) => {
             state.loading = true
         },
-        [profileThunk.fulfilled]: (state, action) => {
+        [createProfileThunk.fulfilled]: (state, action) => {
             state.loading = false
             //  state.isAuth = true
             state.user = [action.payload.data]
         },
-        [profileThunk.rejected]: (state, error) => {
+        [createProfileThunk.rejected]: (state, error) => {
             state.loading = false
-            // console.log("rejected::", error.error.message)
+            console.log("rejected::", error.error.message)
 
             state.error = error.error.message
         },
-
     }
-
 })
 export const profileActions = profileSlice.actions
 export default profileSlice.reducer

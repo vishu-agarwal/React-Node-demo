@@ -60,7 +60,7 @@ const Login = () => {
         if (user.length !== 0) {
             console.log(user)
             if (user[0].r_id.charAt(0) === "C") {
-                localStorage.setItem("role", "Client")
+                localStorage.setItem("r_id", )
                 // console.log("client")
             }
             else {
@@ -70,6 +70,7 @@ const Login = () => {
             // console.log("navigate")
             dispatch(loginActions.isAuthReducer())
             localStorage.setItem("logToken", token)
+            localStorage.setItem("r_id",user[0].r_id)
             navigate("/clientProfile")
         }
     }, [user, error, values, dispatch, navigate, otpUser, otpError])

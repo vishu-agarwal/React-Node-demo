@@ -26,7 +26,8 @@ function App() {
         <Routes>
           <Route path="/" element={!isAuth && <Content />} />
           <Route path={`/login/:role`} element={!isAuth && <Login />} />
-          <Route path="/clientProfile" element={isAuth && <ClientProfile />} />
+          {/* <Route path="/clientProfile" element={isAuth && <ClientProfile />} /> */}
+          <Route path="/clientProfile" element={ <ClientProfile />} />
           <Route path="/helperProfile" element={isAuth &&<HelperProfile />} />
           <Route path="*" element={"error"} />
         </Routes>
