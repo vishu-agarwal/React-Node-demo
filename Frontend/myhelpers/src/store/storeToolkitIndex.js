@@ -6,7 +6,7 @@ const store = configureStore({
     reducer: {
         loginStore: loginReducer,
         otpStore: otpReducer,
-        c_profile: profileReducer,
+        profileStore: profileReducer,
 
     },
     middleware: getDefaultMiddleware =>

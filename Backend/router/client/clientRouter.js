@@ -8,7 +8,7 @@ const profileController = require("../../controller/profileController")
 router.post("/myhelpers/crtProfile/:rid", profileController.createProfile)
 //upload avatar 
 
-router.post("/myhelper/upldAvatar/:r_id",
+router.post("/myhelper/upldAvatar/:rid",
 // note--------------   avatar is name of react field where file is upload
     profileController.uploadImg.single('avatar'),//   midleware for upload file
     profileController.avatarUpload,
@@ -16,7 +16,7 @@ router.post("/myhelper/upldAvatar/:r_id",
     // res.status(400).send(error.message)
     // }
 )
-router.post("/myhelper/upldAadhar/:r_id",
+router.post("/myhelper/upldAadhar/:rid",
     // note--------------   avatar is name of react field where file is upload
     profileController.uploadPdf.single('aadharCard'),//   midleware for upload file
     profileController.aadharUpload,

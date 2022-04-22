@@ -26,6 +26,7 @@ import Dialog from '@mui/material/Dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import DisplayWorkingFields from './DisplayWorkingFields';
 
 
 const Input = styled('input')({
@@ -54,7 +55,7 @@ const language = [
     'Malyalam',
     'Kannad'
 ];
-const HelperProfile = (props) => {
+const WorkProfile = (props) => {
     // const classes = useStyles();
 
     const [values, setValues] = React.useState({
@@ -75,7 +76,7 @@ const HelperProfile = (props) => {
         );
     };
     const addWorkHandler = () => {
-        
+
     }
     return (
         <React.Fragment>
@@ -83,13 +84,12 @@ const HelperProfile = (props) => {
             <Grid >
                 <Card
                     sx={{
-                        maxWidth: 800, maxHeight: 8000,
+                        maxWidth: 750, maxHeight: 8000,
                         margin: '0 auto',
-                        paddingTop: 1,
-
-                        borderRadius: 10,
+                        paddingTop: 0,
+                        borderRadius: 5,
                     }}>
-                    <CardContent>
+                    <CardContent >
 
                         <Grid container direction={'row'} spacing={0}>
 
@@ -104,10 +104,10 @@ const HelperProfile = (props) => {
 
                         <Typography variant="h4" component='div' fontSize='30px'>Professional Profile</Typography>
                         <Typography color='orange' variant='body1' component='p'>Please fill up this form is necessary to move forward !</Typography>
-                        <form>
+                        <form >
                             {/* <Typography variant='subtitle1' marginLeft={1.5}  align='left' color='InfoText'>Personal Details : </Typography> */}
                             <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Working Details : </Typography>
-                            <Grid container spacing={1}>
+                            <Grid sx={{ marginBottom: 3 }} container spacing={1}>
 
                                 <Grid xs={12} sm={6} item>
                                     <TextField
@@ -132,54 +132,9 @@ const HelperProfile = (props) => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid xs={12} sm={4} item>
-                                    <FormControl fullWidth>
-                                        <InputLabel htmlFor="grouped-native-select">Working Category</InputLabel>
-                                        <Select native defaultValue="" id="grouped-native-select" label="Working Category">
-
-                                            <option value={1}>Cook(2 Adult, 1 Child)</option>
-                                            <option value={1}>Sweeping(1 BHK)</option>
-                                            <option value={2}>Mopping(1 BHK)</option>
-                                            <option value={2}>Laundary(2 Adult, 1 Child)</option>
-                                            <option value={2}>Washroom Cleaning(1)</option>
-                                            <option value={3}>Driver</option>
-                                            <option value={4}>Japa Maid</option>
-                                            <option value={4}>Vessel cleaning(3 people)</option>
-                                            <option value={4}>Baby sitter</option>
-                                            <option value={4}>Parent Care Taker(1 person)</option>
-                                            <option value={4}>Store Helper</option>
-                                            <option value={4}>Peon</option>
-                                            <option value={4}>Lift Operator</option>
-                                            <option value={4}>WatchMan(1 buiding)</option>
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid xs={12} sm={3.5} item>
-                                    <FormControl fullWidth>
-                                        <InputLabel htmlFor="grouped-native-select">Exprience</InputLabel>
-                                        <Select native defaultValue="" id="grouped-native-select" label="Exprience">
-                                            <option value={1}>Fresher(No Exprience)</option>
-                                            <option value={1}>4-8 Months</option>
-                                            <option value={1}>1 Year</option>
-                                            <option value={2}>3 Years</option>
-                                            <option value={2}>5 Years</option>
-                                            <option value={2}>More than 5 Year</option>
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid xs={12} sm={3.5} item>
-                                    <TextField
-                                        required
-                                        variant='outlined'
-                                        placeholder='Rs.'
-                                        id="salary"
-                                        label="Expected salary Range"
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid xs={12} sm={1} item>
-                                    <Button variant="contained" sx={{ marginTop: 1, marginLeft: 0.5 }} fullWidth onClick={addWorkHandler}>+</Button>
-                                </Grid>
+                            </Grid>
+                            <Grid container spacing={1} style={{ maxHeight: '200px', overflow: 'auto' }}>
+                                <DisplayWorkingFields />
                             </Grid>
                             <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Education Details : </Typography>
                             <Grid container spacing={1}>
@@ -242,4 +197,4 @@ const HelperProfile = (props) => {
     );
 }
 
-export default HelperProfile
+export default WorkProfile

@@ -19,15 +19,21 @@ import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import HelperProfile from '../helpers/HelperProfile';
+import WorkProfile from '../helpers/WorkProfile';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import profileImg from '../profiile1.jpg';
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { createProfileThunk } from '../../store/slices/profile-slice';
+import profileActions from '../../store/slices/profile-slice'
+import { createProfileThunk, avatarThunk, aadharThunk } from '../../store/slices/profile-slice';
+import CancelSharpIcon from '@mui/icons-material/CancelSharp';
+
 const Input = styled('input')({
     display: 'none',
 });
+
+
 const theme = createTheme({
 
     palette: {
@@ -43,9 +49,9 @@ const ClientProfile = () => {
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    // let { otpUser, otpError, isOtp } = useSelector((state) => ({ ...state.otpStore }))
+    let { message,userProfile,error } = useSelector((state) => ({ ...state.profileStore }))
     // const classes = useStyles();
-    const xyz = localStorage.getItem('role')
+    let role = "Helper"
     // console.log(xyz)
 
     const [values, setValues] = useState({
@@ -72,7 +78,22 @@ const ClientProfile = () => {
     useEffect(() => {
         const body = document.querySelector('body');
         body.style.overflow = open ? 'hidden' : 'auto';
-    }, [open])
+
+        if (message.length !== 0) {
+            alert(message)
+            setClicked(true)
+        }
+        if (error.length !== 0) {
+            // console.log(error)
+            alert(error)
+            dispatch(profileActions.errorReducer())
+        }
+        if (userProfile.length !== 0)
+        {
+            
+            }
+
+    }, [open, message])
 
     const addWorkHandler = () => {
         setOpen(true);
@@ -94,7 +115,8 @@ const ClientProfile = () => {
     // const handleChange = (newValue) => {
     //     setValue(newValue);
     // };
-
+    const [clicked, setClicked] = useState(false)
+    const [enable, setenable] = useState(false)
     const [file, setfile] = useState({
         upldfile: [],
         dispFile: ''
@@ -107,14 +129,41 @@ const ClientProfile = () => {
 
     const profileSaveHandler = (e) => {
         e.preventDefault()
-        console.log(values)
-        dispatch(createProfileThunk({values}))
+        if (clicked) {
+            if (aadhar.dispFile) {
+                const formdata = new FormData()
+
+                formdata.append('aadharCard', aadhar.upldfile)
+                // console.log(formdata)
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+                // console.log("config :: ", config)
+                dispatch(aadharThunk(formdata, config))
+                dispatch(createProfileThunk({ values }))
+                // setClicked(true)
+                // console.log("values:: ", values)
+            }
+            else {
+                alert("please Choose Aadhar Card PDf !")
+            }
+            // console.log(values)
+
+
+        }
+        else {
+            alert("Please click on upload photo button before save!")
+        }
     }
+
     const avatarFileType = ["image/png", "image/jpeg"]
     // const avatarFileSize = 
     const onAvatarChang = (e) => {
+
         // console.log("onchange")
-        console.log(e.target.files[0])
+        // console.log(e.target.files[0])
         let avatarFile = e.target.files[0]
         if (avatarFile && avatarFileType.includes(avatarFile.type)) {
             // size in bytes
@@ -124,6 +173,7 @@ const ClientProfile = () => {
                     upldfile: avatarFile,
                     dispFile: URL.createObjectURL(avatarFile)
                 })
+                setenable(true)
             }
             else {
                 alert("select file with size below 500 KB!")
@@ -135,8 +185,9 @@ const ClientProfile = () => {
     }
 
     const avatarSubmit = () => {
+
         // e.preventDefault()
-        console.log("form submit")
+        // console.log("form submit")
         if (file.dispFile) {
             const formdata = new FormData()
 
@@ -147,17 +198,11 @@ const ClientProfile = () => {
                     'content-type': 'multipart/form-data'
                 }
             }
-            console.log("config :: ", config)
-            axios.post(`/myhelper/upldAvatar/C105`, formdata, config).then((res) => {
-                console.log("response :: ", res)
-                if (res) {
-                    alert("uploaded !")
-                }
-            })
-                .catch((error) => {
-                    // console.log(error.response.data)
-                    alert(error.response.data)
-                })
+            // console.log("config :: ", config)
+
+            dispatch(avatarThunk(formdata, config))
+            setenable(false)
+            // setClicked(true)
             // console.log("values:: ", values)
         }
         else {
@@ -167,7 +212,7 @@ const ClientProfile = () => {
     const aadharFileType = ['application/pdf']
     const onAadharChange = (val) => {
         let aadharFile = val.target.files[0]
-        console.log(aadharFile)
+        console.log("aadharFile:: ", aadharFile)
         if (aadharFile && aadharFileType.includes(aadharFile.type)) {
             if (aadharFile.size <= 1048576) {
                 setaadhar((prevState) => {
@@ -186,17 +231,29 @@ const ClientProfile = () => {
             alert("Please select only  PDF file! ")
         }
     }
+    const onCancel = () => {
+        console.log("setaadhar")
+        // window.location.reload()
+        setaadhar({
+            upldfile: [],
+            dispFile: ''
+        })
+    }
+    const hiddenFileInput = React.useRef(null);
 
-
+    const handleClick = event => {
+        hiddenFileInput.current.click();
+    };
     return (
         <Grid>
             <Card
                 elevation={8}
                 sx={{
-                    maxWidth: 800, maxHeight: 5000,
+                    maxWidth: 800, maxHeight: 8000,
                     margin: '0 auto',
                     paddingTop: 1,
-                    marginTop: 15
+                    marginTop: 1,
+                    marginBottom:1,
                 }}>
                 <CardContent>
                     <Typography variant="h4"  >Profile</Typography>
@@ -229,9 +286,9 @@ const ClientProfile = () => {
                                 </Badge>
                             </Grid>
                         </Grid>
-                        <Button variant="contained" sx={{ marginTop: 1 }} color="error" onClick={avatarSubmit}>Upload Photo </Button>
+                        {enable && <Button variant="contained" sx={{ marginTop: 1 }} color="warning" onClick={avatarSubmit}>Upload Photo </Button>}
 
-                        <Typography color='orange' variant='body1' component='p' marginTop={1}>Please fill up this form is necessary to move forward !</Typography>
+                        <Typography color='green' variant='body1' component='p' marginTop={1}>Please fill up this form is necessary to move forward !</Typography>
                         <Typography variant='subtitle1' marginLeft={1.5} align='left' color='InfoText'>Personal Details : </Typography>
 
                         <Grid container spacing={1}>
@@ -433,10 +490,12 @@ const ClientProfile = () => {
                             </Grid> */}
                             <Grid xs={6} item>
                                 <label htmlFor="contained-button-file">
-                                    <Input id="contained-button-file" type="file" name="aadharCard"
+                                    <Input id="contained-button-file" type="file" required name="aadharCard"
+                                        ref={hiddenFileInput}
                                         onChange={onAadharChange}
+                                        style={{ display: 'none' }}
                                     />
-                                    <Button color="warning" fullWidth variant="contained" component="span">
+                                    <Button color="warning" fullWidth variant="contained" component="span" >
                                         Choose Aadhar Card File (PDF Only)*
                                     </Button>
                                 </label>
@@ -447,7 +506,13 @@ const ClientProfile = () => {
 
 
                                 {aadhar.dispFile}
-
+                                {aadhar.dispFile &&
+                                    <IconButton onClick={onCancel} aria-label="upload picture" component="span">
+                                        {/* <ThemeProvider theme={theme}> */}
+                                        <CancelSharpIcon color="error" fontSize="medium" />
+                                        {/* </ThemeProvider> */}
+                                    </IconButton>
+                                }
                             </Grid>
 
                             <Grid xs={12} item>
@@ -470,26 +535,30 @@ const ClientProfile = () => {
 
                         {/* : */}
 
-                        <Grid xs={12} sm={12} item>
+                        {role === "Client" &&
+                            <Grid xs={12} sm={12} item>
                             <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
                                 Save
                             </Button>
-                        </Grid>
+                        </Grid>}
                         {/* }    */}
 
                     </form>
-                    <Grid xs={12} sm={6} item>
+                    {role === "Helper" &&
+                        <Grid xs={12} sm={6} item>
                         <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
-                            Add Work Detail
+                            Add Work Details
                         </Button>
                         <Backdrop
                             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                             open={open}
 
                         >
-                            <HelperProfile click={handleClose} />
+                            {/* <HelperProfile click={handleClose} /> */}
+                                <WorkProfile click={handleClose} />
+                                
                         </Backdrop>
-                    </Grid>
+                    </Grid>}
                 </CardContent>
             </Card>
         </Grid>

@@ -4,14 +4,40 @@ import axios from 'axios'
 
 const initialState = {
     userProfile: [],
+    message:'',
     loading: false,
     error: ""
 }
-
-export const createProfileThunk = createAsyncThunk("userProfile/createProfileThunk", async (arg) => {
-    console.log("diapatch::", arg)
+export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (formdata, config) => {
+    // console.log("avatarDispatch:: ", formdata,config)
     try {
-        const r_id = localStorage.getItem("r_id")
+        const rid = localStorage.getItem("r_id")
+
+        const res = await axios.post(`/myhelper/upldAvatar/H107`, formdata, config)
+        // console.log("response :: ", res)
+        return res
+
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
+export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (formdata, config) => {
+    // console.log("avatarDispatch:: ", formdata,config)
+    try {
+        const rid = localStorage.getItem("r_id")
+
+        const res = await axios.post(`/myhelper/upldAadhar/H107`, formdata, config)
+        // console.log("response :: ", res)
+        return res
+
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})    
+export const createProfileThunk = createAsyncThunk("userProfile/createProfileThunk", async (arg) => {
+    // console.log("profilediapatch::", arg)
+    try {
+        const rid = localStorage.getItem("r_id")
         const data = {
             name: arg.values.fname + ' ' + arg.values.lname,
             dob: arg.values.dob,
@@ -33,8 +59,8 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
             about: arg.values.about
 
         };
-        console.log("data", data)
-        const userRes = await axios.post(`/myhelpers/crtProfile/C105`, data)
+        // console.log("data", data)
+        const userRes = await axios.post(`/myhelpers/crtProfile/H107`, data)
 
         // console.log("loginRes", loginRes)
         return userRes
@@ -58,21 +84,54 @@ const profileSlice = createSlice({
         },
     },
     extraReducers: {
+        //avatar
+        [avatarThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [avatarThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.message = [action.payload.data    ]
+        },
+        [avatarThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+
+            state.error = error.error.message
+        },
+        //aadhar
+        [aadharThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [aadharThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.message = [action.payload.data]
+        },
+        [aadharThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+
+            state.error = error.error.message
+        },
+        //userProfileData
         [createProfileThunk.pending]: (state, action) => {
             state.loading = true
         },
         [createProfileThunk.fulfilled]: (state, action) => {
             state.loading = false
             //  state.isAuth = true
-            state.user = [action.payload.data]
+            state.userProfile = [action.payload.data]
         },
         [createProfileThunk.rejected]: (state, error) => {
             state.loading = false
-            console.log("rejected::", error.error.message)
+            // console.log("rejected::", error.error.message)
 
             state.error = error.error.message
         },
+
     }
 })
+
 export const profileActions = profileSlice.actions
 export default profileSlice.reducer

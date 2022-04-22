@@ -1,4 +1,5 @@
 const profileModel = require("../model/client/clientProfile")
+const regModel = require("../model/tblReg")
 
 const multer = require("multer")
 
@@ -6,20 +7,19 @@ const createProfile = async (req, res) => {
     console.log("profile::");
     try {
 
-        const isunique = await profileModel.find({ r_id: req.params.rid })
-        if (isunique.length !== 0) {
-            throw new Error("this proflile already available !!!")
-        }
-        const findMbl = await profileModel.findByCredentials(req.body.alt_mob_num, req.params.rid)
-        // console.log(findMbl)
         const r_id = req.params.rid
-        const newpro = new profileModel({
-            r_id,
-            ...req.body,
-        })
-        console.log(newpro);
-        await newpro.save();
-        res.status(200).send(newpro)
+        const isunique = await profileModel.find({ r_id })
+        if (isunique.length === 0) {
+            throw new Error("Please first upload profile photo !!!")
+        }
+        const findMbl = await profileModel.findByCredentials(req.body.alt_mob_num, r_id)
+        // console.log(findMbl)
+        const saveProfile = await profileModel.findOneAndUpdate({ r_id }, { ...req.body }, { new: true })
+        if (!saveProfile) {
+            throw new Error("Some Problem while saving profile data!")
+        }
+        console.log(saveProfile)
+        res.status(200).send(saveProfile)
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -28,22 +28,21 @@ const createProfile = async (req, res) => {
 //set destination and fie name
 const imgConfig = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null,'image/')
+        callback(null, 'image/')
     },
     filename: (req, file, callback) => {
         const ext = file.mimetype.split('/')[1]
-        callback(null,`image-${Date.now()}.${ext}`)
+        callback(null, `image-${Date.now()}.${ext}`)
     },
 })
 //check file is image or not
-const isImage = (req,file,callback) => {
+const isImage = (req, file, callback) => {
     if (file.mimetype.startsWith('image')) {
-            callback(null, true)
+        callback(null, true)
     }
-    else
-    {
+    else {
         callback(new Error("Please select only image file !"))
-        }
+    }
 }
 const uploadImg = multer({
     // fileFilter: isImage,
@@ -57,16 +56,30 @@ const avatarUpload = async (req, res) => {
     try {
         console.log("req.file", req.file)
         // await req.user.save()
+        // console.log(req.params.rid)
         const r_id = req.params.rid
-        const newpro = new profileModel({
-            r_id: r_id,
-            avatar: req.file.filename,
-        })
+        const foundUser = await regModel.findOne({ r_id })
+        if (!foundUser) {
+            throw new Error("Please first register youself!")
+        }
 
-        await newpro.save();
-        console.log(newpro);
-    
-        res.status(200).send("sucessfully uploaded")
+        console.log("found :: ", foundUser)
+        const found = await profileModel.findOne({ r_id })
+        if (found) {
+            const updt = await profileModel.findOneAndUpdate({ r_id }, {
+                avatar: req.file.path
+            }, { new: true })
+        }
+        else {
+            const newpro = new profileModel({
+                r_id,
+                avatar: req.file.path,
+            })
+
+            await newpro.save();
+            console.log(newpro);
+        }
+        res.status(200).send("Profile Photo sucessfully uploaded")
     }
     catch (error) {
         res.status(400).send(error.message)
@@ -86,7 +99,7 @@ const pdfConfig = multer.diskStorage({
 //check file is pdf or not
 const isPdf = (req, file, callback) => {
     if (file.mimetype.startsWith('application/pdf')) {
-        
+
         callback(null, true)
     }
     else {
@@ -101,18 +114,28 @@ const uploadPdf = multer({
 
 const aadharUpload = async (req, res) => {
 
-    console.log("req.file", req.file)
-    // await req.user.save()
-    const r_id = req.params.rid
-    const newpro = new profileModel({
-        r_id: r_id,
-        aadhar_card: req.file.filename,
-    })
-
-    // await newpro.save();
-    console.log(newpro);
-
-    res.status(200).send("sucessfully uploaded")
+    try {
+        console.log("req.file", req.file)
+        // await req.user.save()
+        // console.log(req.params.rid)
+        const r_id = req.params.rid
+        const found = await profileModel.findOne({ r_id })
+        if (!found) {
+            throw new Error("Please first upload profile photo !!!")
+        }
+        
+        const updt = await profileModel.findOneAndUpdate({ r_id }, {
+            aadhar_card: req.file.path
+        }, { new: true })
+        if (!updt) {
+            throw new Error("Some Problem while uploading aadharCard!")
+        }
+        
+        res.status(200).send("Aadhar Card sucessfully uploaded")
+    }
+    catch (error) {
+        res.status(400).send(error.message)
+    }
 }
 module.exports = {
     createProfile,

@@ -12,7 +12,7 @@ const clientSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: true,
+      // required: true,
       lowercase: true,
       trim: true,
     },
@@ -26,7 +26,7 @@ const clientSchema = new mongoose.Schema(
     },
     dob: {
       type: String,
-      required: true,
+      // required: true,
       // validate: {
       //   validator: function (value) {
       //     return value.getTime() < Date.now() - 365 * 24 * 60 * 60 * 1000;
@@ -37,66 +37,66 @@ const clientSchema = new mongoose.Schema(
 
     email: {
       type: String,
-      unique: true,
-      required: true,
-      validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error('UserName is Invalid');
-        }
-      },
+      // unique: true,
+      // required: true,
+      // validate(value) {
+      //   if (!validator.isEmail(value)) {
+      //     throw new Error('UserName is Invalid');
+      //   }
+      // },
       lowercase: true,
     },
     gender: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
       lowercase: true,
     },
     isMarried: {
       type: Boolean,
-      required: true,
+      // required: true,
       default: false,
     },
     physical_disable: {
       type: Boolean,
-      required: true,
+      // required: true,
       default: false,
     },
     address: [
       {
         state: {
           type: String,
-          required: true,
+          // required: true,
           trim: true,
           lowercase: true,
         },
         city: {
           type: String,
-          required: true,
+          // required: true,
           trim: true,
           lowercase: true,
         },
         pincode: {
           type: Number,
-          required: true,
+          // required: true,
           min: 6,
 
           trim: true,
         },
         landmark: {
           type: String,
-          required: true,
+          // required: true,
           lowercase: true,
           trim: true,
         },
         house_name: {
           type: String,
-          required: true,
+          // required: true,
           trim: true,
         },
         houseNo: {
           type: String,
-          required: true,
+          // required: true,
           uppercase: true,
           trim: true,
         },
@@ -104,7 +104,7 @@ const clientSchema = new mongoose.Schema(
     ],
     alt_mob_num: {
       type: Number,
-      required: false,
+      // required: false,
       trim: true,
       validate: {
         validator: function (val) {
@@ -116,7 +116,7 @@ const clientSchema = new mongoose.Schema(
     about: {
       type: String,
       max: 300,
-      required: true,
+      // required: true,
     },
   },
   {
