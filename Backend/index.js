@@ -13,6 +13,9 @@ const regRoute = require("./router/regRouter")
 app.use(regRoute)
 const cProfileRoute = require("./router/client/clientRouter")
 app.use(cProfileRoute)
+const WorkProfileRoute = require("./router/helpers/helperRouter")
+app.use(WorkProfileRoute)
+
 
 const port = process.env.PORT
 

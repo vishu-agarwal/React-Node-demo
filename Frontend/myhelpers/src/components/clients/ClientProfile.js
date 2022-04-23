@@ -21,7 +21,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import HelperProfile from '../helpers/HelperProfile';
 import WorkProfile from '../helpers/WorkProfile';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import profileImg from '../profiile1.jpg';
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -241,9 +241,11 @@ const ClientProfile = () => {
     }
     const hiddenFileInput = React.useRef(null);
 
-    const handleClick = event => {
-        hiddenFileInput.current.click();
-    };
+    // const handleClick = event => {
+    //     hiddenFileInput.current.click();
+    // };
+
+
     return (
         <Grid>
             <Card
@@ -535,12 +537,12 @@ const ClientProfile = () => {
 
                         {/* : */}
 
-                        {role === "Client" &&
+                      
                             <Grid xs={12} sm={12} item>
                             <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
                                 Save
                             </Button>
-                        </Grid>}
+                        </Grid>
                         {/* }    */}
 
                     </form>

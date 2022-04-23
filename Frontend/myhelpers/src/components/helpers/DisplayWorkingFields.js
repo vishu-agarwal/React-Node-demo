@@ -1,11 +1,11 @@
 
 import { Fragment, useState } from 'react';
 import React from 'react'
-import CardContent from '@mui/material/CardContent';
+
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
-import { Card, Container, Grid, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+
+import { Grid} from '@mui/material';
+
 import InputLabel from '@mui/material/InputLabel';
 
 import FormControl from '@mui/material/FormControl';
@@ -14,16 +14,16 @@ import Select from '@mui/material/Select';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const DisplayWorkingFields = () => {
-    const [fields, setFields] = useState(
-        [
-            {
-                category: "",
-                exprience: "",
-                salary: "",
-            }
-        ]
-    );
+const DisplayWorkingFields = ({fields,setFields}) => {
+    // const [fields, setFields] = useState(
+    //     [
+    //         {
+    //             category: "",
+    //             exprience: "",
+    //             salary: "",
+    //         }
+    //     ]
+    // );
 
     const handleChange = (e, index) => {
         const { name, value } = e.target
