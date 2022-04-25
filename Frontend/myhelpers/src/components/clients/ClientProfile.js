@@ -20,13 +20,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import HelperProfile from '../helpers/HelperProfile';
 import WorkProfile from '../helpers/WorkProfile';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 // import axios from 'axios';
 import profileImg from '../profiile1.jpg';
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import profileActions from '../../store/slices/profile-slice'
-import { createProfileThunk, avatarThunk, aadharThunk } from '../../store/slices/profile-slice';
+import { createProfileThunk, avatarThunk, aadharThunk, fetchProfileThunk } from '../../store/slices/profile-slice';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 
 const Input = styled('input')({
@@ -49,7 +49,7 @@ const ClientProfile = () => {
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    let { message,userProfile,error } = useSelector((state) => ({ ...state.profileStore }))
+    let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // const classes = useStyles();
     let role = "Helper"
     // console.log(xyz)
@@ -71,9 +71,43 @@ const ClientProfile = () => {
         pincode: '',
         about: '',
     });
+    const [clicked, setClicked] = useState(false)
+    const [enable, setenable] = useState(false)
+    const [file, setfile] = useState({
+        upldfile: [],
+        dispFile: ''
+    })
 
+    const [aadhar, setaadhar] = useState({
+        upldfile: [],
+        dispFile: ''
+    })
+    // const fetchData = useCallback(() => {
+    //     setValues({
+    //         fname: userProfile[0].name.split(" ")[0],
+    //         lname: userProfile[0].name.split(" ")[1],
+    //         dob: userProfile[0].dob,
+    //         altmbl: userProfile[0].alt_mob_num,
+    //         email: userProfile[0].email,
+    //         gender: userProfile[0].gender,
+    //         married: userProfile[0].isMarried,
+    //         physic_dis: userProfile[0].physical_disable,
+    //         house_no: userProfile[0].address[0].houseNo,
+    //         house_name: userProfile[0].address[0].house_name,
+    //         street: userProfile[0].address[0].landmark,
+    //         city: userProfile[0].address[0].city,
+    //         state: userProfile[0].address[0].state,
+    //         pincode: userProfile[0].address[0].pincode,
+    //         about: userProfile[0].about,
+    //     })
+
+    // }, [userProfile])
     //helper profile Modal state
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        dispatch(fetchProfileThunk())
+    }, [])
 
     useEffect(() => {
         const body = document.querySelector('body');
@@ -88,13 +122,40 @@ const ClientProfile = () => {
             alert(error)
             dispatch(profileActions.errorReducer())
         }
-        if (userProfile.length !== 0)
-        {
-            
-            }
 
-    }, [open, message])
+    }, [open, message, error])
 
+    const str2blob = txt => new Blob([txt]);
+    useEffect(() => {
+        if (userProfile.length !== 0) {
+            setValues({
+                fname: userProfile[0].name.split(" ")[0],
+                lname: userProfile[0].name.split(" ")[1],
+                dob: userProfile[0].dob,
+                altmbl: userProfile[0].alt_mob_num,
+                email: userProfile[0].email,
+                gender: userProfile[0].gender,
+                married: userProfile[0].isMarried,
+                physic_dis: userProfile[0].physical_disable,
+                house_no: userProfile[0].address[0].houseNo,
+                house_name: userProfile[0].address[0].house_name,
+                street: userProfile[0].address[0].landmark,
+                city: userProfile[0].address[0].city,
+                state: userProfile[0].address[0].state,
+                pincode: userProfile[0].address[0].pincode,
+                about: userProfile[0].about,
+                
+            })
+            setfile({
+                ...file,
+                dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+                
+            })
+        }
+    }, [userProfile])
+
+   
+    console.log(values,file.dispFile)
     const addWorkHandler = () => {
         setOpen(true);
     }
@@ -115,17 +176,7 @@ const ClientProfile = () => {
     // const handleChange = (newValue) => {
     //     setValue(newValue);
     // };
-    const [clicked, setClicked] = useState(false)
-    const [enable, setenable] = useState(false)
-    const [file, setfile] = useState({
-        upldfile: [],
-        dispFile: ''
-    })
-
-    const [aadhar, setaadhar] = useState({
-        upldfile: [],
-        dispFile: ''
-    })
+    
 
     const profileSaveHandler = (e) => {
         e.preventDefault()
@@ -163,8 +214,8 @@ const ClientProfile = () => {
     const onAvatarChang = (e) => {
 
         // console.log("onchange")
-        // console.log(e.target.files[0])
         let avatarFile = e.target.files[0]
+        console.log(URL.createObjectURL(avatarFile))
         if (avatarFile && avatarFileType.includes(avatarFile.type)) {
             // size in bytes
             if (avatarFile.size <= 512000) {
@@ -255,7 +306,7 @@ const ClientProfile = () => {
                     margin: '0 auto',
                     paddingTop: 1,
                     marginTop: 1,
-                    marginBottom:1,
+                    marginBottom: 1,
                 }}>
                 <CardContent>
                     <Typography variant="h4"  >Profile</Typography>
@@ -537,8 +588,8 @@ const ClientProfile = () => {
 
                         {/* : */}
 
-                      
-                            <Grid xs={12} sm={12} item>
+
+                        <Grid xs={12} sm={12} item>
                             <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
                                 Save
                             </Button>
@@ -548,19 +599,19 @@ const ClientProfile = () => {
                     </form>
                     {role === "Helper" &&
                         <Grid xs={12} sm={6} item>
-                        <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
-                            Add Work Details
-                        </Button>
-                        <Backdrop
-                            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                            open={open}
+                            <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
+                                Add Work Details
+                            </Button>
+                            <Backdrop
+                                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                open={open}
 
-                        >
-                            {/* <HelperProfile click={handleClose} /> */}
+                            >
+                                {/* <HelperProfile click={handleClose} /> */}
                                 <WorkProfile click={handleClose} />
-                                
-                        </Backdrop>
-                    </Grid>}
+
+                            </Backdrop>
+                        </Grid>}
                 </CardContent>
             </Card>
         </Grid>

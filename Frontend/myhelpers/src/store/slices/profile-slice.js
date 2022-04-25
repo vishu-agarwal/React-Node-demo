@@ -71,6 +71,18 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
         throw new Error(error.response.data)
     }
 })
+export const fetchProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk",async (arg) => {
+    try {
+        
+        const fetchRes = await axios.get(`/myhelpers/userProfile/fetch/H107`)
+
+        console.log("Fwtch Response:: ", fetchRes)
+        return fetchRes
+
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
 
 const profileSlice = createSlice({
     name: 'userProfile',
@@ -121,7 +133,7 @@ const profileSlice = createSlice({
         [createProfileThunk.fulfilled]: (state, action) => {
             state.loading = false
             //  state.isAuth = true
-            state.userProfile = [action.payload.data]
+            state.userProfile = [...action.payload.data]
         },
         [createProfileThunk.rejected]: (state, error) => {
             state.loading = false
@@ -129,7 +141,21 @@ const profileSlice = createSlice({
 
             state.error = error.error.message
         },
+        //fetchProfileData
+        [fetchProfileThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [fetchProfileThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.userProfile = action.payload.data
+        },
+        [fetchProfileThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
 
+            state.error = error.error.message
+        },
     }
 })
 

@@ -4,27 +4,24 @@ const router = new express.Router()
 
 const workProfileController = require("../../controller/workProfileController")
 //model File
-const profileModel = require("../../model/helpers/helperProfile")
+const profileModel = require("../../model/client/clientProfile")
 
 router.post("/myhelpers/createWorkProfile/:rid", workProfileController.createWorkProfile)
 
 //fecth profile
-router.get("/myhelpers/helper/fetch/:rid", async (req, res) => {
+router.get("/myhelpers/fetchWorkDetail/:rid", workProfileController.fetchWorkDetails)
 
-    try {
 
-        const isunique = await profileModel.find({ r_id: req.params.rid })
-        if (isunique.length === 0) {
-            return res.status(201).send("this proflile not available !!!");
-        }
-        else {
-            return res.status(201).send(isunique)
-        }
-    } catch (error) {
-        res.status(404).send(error.message)
-    }
 
-})
+
+
+
+
+router.get('/', async(req, res) => {
+    const isunique = await profileModel.find({ r_id: 'H107' })
+    console.log(isunique)
+    res.json({data:isunique[0].avatar})
+});
 //update profile
 router.put("/myhelpers/helper/update/:rid", async (req, res) => {
     //which field are allowed to update

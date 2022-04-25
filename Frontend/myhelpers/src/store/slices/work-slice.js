@@ -38,6 +38,20 @@ export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk",
         throw new Error(error.response.data)
     }
 })
+export const fetchWorkThunk = createAsyncThunk("workProfile/fetchWorkThunk", async (arg) => {
+    try {
+
+        const fetchRes = await axios.get(`/myhelpers/fetchWorkDetail/H107`)
+
+        console.log("Fetch work Response:: ", fetchRes)
+        return fetchRes
+
+    } catch (error) {
+        console.log(error.response.data)
+        throw new Error(error.response.data)
+    }
+})
+
 
 const workSlice = createSlice({
     name: 'workProfile',
@@ -59,6 +73,21 @@ const workSlice = createSlice({
             // state.workProfile = [action.payload.data]
         },
         [workProfileThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+
+            state.error = error.error.message
+        },
+        //fetchWorkData
+        [fetchWorkThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [fetchWorkThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.workData = action.payload.data
+        },
+        [fetchWorkThunk.rejected]: (state, error) => {
             state.loading = false
             // console.log("rejected::", error.error.message)
 

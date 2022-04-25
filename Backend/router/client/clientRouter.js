@@ -27,22 +27,7 @@ router.post("/myhelper/upldAadhar/:rid",
 
 
 //fecth profile
-router.get("/myhelpers/client/fetch/:rid", async (req, res) => {
-
-    try {
-
-        const isunique = await profileModel.find({ r_id: req.params.rid })
-        if (isunique.length === 0) {
-            return res.status(201).send("this proflile not available !!!");
-        }
-        else {
-            return res.status(201).send(isunique)
-        }
-    } catch (error) {
-        res.status(404).send(error.message)
-    }
-
-})
+router.get("/myhelpers/userProfile/fetch/:rid", profileController.fetchProfile)
 
 
 

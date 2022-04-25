@@ -19,9 +19,9 @@ import ListItemText from '@mui/material/ListItemText';
 
 
 import DisplayWorkingFields from './DisplayWorkingFields';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import workProfileActions from '../../store/slices/work-slice'
-import { workProfileThunk } from '../../store/slices/work-slice';
+import { workProfileThunk, fetchWorkThunk } from '../../store/slices/work-slice';
 
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -58,7 +58,8 @@ const WorkProfile = (props) => {
 
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-
+    let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
+    const [lang, setlang] = useState([]);
     const [values, setValues] = useState({
 
         porf_mbl: '',
@@ -68,15 +69,81 @@ const WorkProfile = (props) => {
     });
     const [fields, setFields] = useState(
         [
-            {
-                category: "",
-                exprience: "",
-                salary: "",
-            }
+            // {
+            //     category: "",
+            //     exprience: "",
+            //     salary: "",
+            // }
         ]
     );
     // console.log(fields)
-    const [lang, setlang] = useState([]);
+
+    useEffect(() => {
+        dispatch(fetchWorkThunk())
+    }, [])
+
+    useEffect(() => {
+
+
+        if (message.length !== 0) {
+            alert(message)
+
+        }
+        // if (error.length !== 0) {
+        //     // console.log(error)
+        //     alert(error)
+        //     dispatch(workProfileActions.errorReducer())
+        // }
+
+    }, [message, error])
+
+
+    useEffect(() => {
+        if (workData.length !== 0) {
+            setValues({
+                porf_mbl: workData[0].profession_mbl,
+                workTime: workData[0].workTime,
+                study: workData[0].education,
+                otherStudy: workData[0].other_education
+
+            })
+            let list =
+                workData[0].languages.map((value, index) => {
+                    return value.language
+                })
+            setlang(
+                list
+            );
+
+            let workDetails = workData[0]?.workDetails?.filter((data) => data)
+            setFields(workDetails)
+            // let workDetails =
+            //     workData[0]?.workDetails?.map((value, index) => {
+            //         // return value;
+            //         debugger
+            //         setFields(
+            //             [...fields,
+            //             {
+            //                 salary: value.salary,
+            //                 category: value.category,
+            //                 experience: value.experience
+            //             }
+            //             ]
+            //         );
+
+            //     }
+            //     )
+            console.log(workDetails, "workDetails")
+        }
+    }, [workData])
+
+    // console.log(workData)
+
+
+    console.log(fields, "fielsa")
+    // console.log(workField)
+
+    console.log(fields)
 
     const langHandleChange = (event) => {
         const {
@@ -87,6 +154,8 @@ const WorkProfile = (props) => {
             typeof value === 'string' ? value.split(',') : value,
         );
     };
+
+
     const onWorkSubmit = (e) => {
         e.preventDefault()
         const arg = {
@@ -165,6 +234,7 @@ const WorkProfile = (props) => {
                                 <DisplayWorkingFields
                                     fields={fields}
                                     setFields={setFields}
+
                                 />
                             </Grid>
                             <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Education Details : </Typography>

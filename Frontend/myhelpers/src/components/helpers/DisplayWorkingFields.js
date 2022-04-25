@@ -4,17 +4,18 @@ import React from 'react'
 
 import TextField from '@mui/material/TextField';
 
-import { Grid} from '@mui/material';
+import { Grid } from '@mui/material';
 
 import InputLabel from '@mui/material/InputLabel';
-
+import { useEffect } from 'react';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import Select from '@mui/material/Select';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { fetchWorkThunk } from '../../store/slices/work-slice';
 
-const DisplayWorkingFields = ({fields,setFields}) => {
+const DisplayWorkingFields = ({ fields, setFields }) => {
     // const [fields, setFields] = useState(
     //     [
     //         {
@@ -24,13 +25,52 @@ const DisplayWorkingFields = ({fields,setFields}) => {
     //         }
     //     ]
     // );
+    // useEffect(() => {
+    //     if (workData.length !== 0) {
+    //         let workField =
+    //             workData[0].workDetails.map(
+    //                 (value, index) => {
+    //                     // let b = [value].map((val, ind) => {
+    //                     //     return val
+    //                     // })
+    //                     // return b
+    //                     return value
+    //                 }
+    //             )
+    //         let c = workField.map((val, ind) => {
+    //             //     setFields({
+    //             //     ...fields,
+    //             //     category: val.category,
+    //             //     exprience: val.exprience,
+    //             //     salary: val.salary
+    //             // });
+    //             setFields((prevState) => {
+    //                 return {
+    //                     ...prevState,
+    //                     category: val.category,
+    //                     exprience: val.exprience,
+    //                     salary: val.salary
+    //                 }
+    //             })
+
+    //     })
+    // console.log(fields)
+    // setFields({
+    //     ...fields,
+    //     category: workField.category,
+    //     exprience: workField.exprience,
+    //     salary: workField.salary
+    // });
+    // }
+    //     }, [workData])
+
 
     const handleChange = (e, index) => {
         const { name, value } = e.target
         const list = [...fields]
         list[index][name] = value
         setFields(list)
-        
+
     };
     // console.log(fields)
     const handleRemove = (index) => {
@@ -64,6 +104,7 @@ const DisplayWorkingFields = ({fields,setFields}) => {
         <Fragment >
             {
                 fields.map((x, i) => {
+                    console.log(x,"dropdown value")
                     return (
                         <Fragment key={i}>
                             <Grid xs={12} sm={4} item>

@@ -24,7 +24,21 @@ const createProfile = async (req, res) => {
         res.status(400).send(error.message)
     }
 }
+const fetchProfile = async (req, res) => {
+    try {
 
+        const isunique = await profileModel.find({ r_id: req.params.rid })
+        if (isunique.length === 0) {
+            throw new Error("Please add your profile!");
+        }
+        else {
+            return res.status(200).send(isunique)
+        }
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+
+}
 //set destination and fie name
 const imgConfig = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -139,6 +153,7 @@ const aadharUpload = async (req, res) => {
 }
 module.exports = {
     createProfile,
+    fetchProfile,
     avatarUpload,
     uploadImg,
     aadharUpload,
