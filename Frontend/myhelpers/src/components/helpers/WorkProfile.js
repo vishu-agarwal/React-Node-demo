@@ -21,10 +21,12 @@ import ListItemText from '@mui/material/ListItemText';
 import DisplayWorkingFields from './DisplayWorkingFields';
 import { useState, useEffect } from 'react';
 import workProfileActions from '../../store/slices/work-slice'
-import { workProfileThunk, fetchWorkThunk } from '../../store/slices/work-slice';
+
+import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
 
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 
 const Input = styled('input')({
     display: 'none',
@@ -69,13 +71,17 @@ const WorkProfile = (props) => {
     });
     const [fields, setFields] = useState(
         [
-            // {
-            //     category: "",
-            //     exprience: "",
-            //     salary: "",
-            // }
+            {
+                category: "",
+                exprience: "",
+                salary: "",
+            }
         ]
     );
+    //edit button show or hide
+    const [editHide, setEditHide] = useState(true)
+    //fields enable or diable on hide button
+    const [fieldsDisable, setDisable] = useState(false)
     // console.log(fields)
 
     useEffect(() => {
@@ -117,23 +123,8 @@ const WorkProfile = (props) => {
 
             let workDetails = workData[0]?.workDetails?.filter((data) => data)
             setFields(workDetails)
-            // let workDetails =
-            //     workData[0]?.workDetails?.map((value, index) => {
-            //         // return value;
-            //         debugger
-            //         setFields(
-            //             [...fields,
-            //             {
-            //                 salary: value.salary,
-            //                 category: value.category,
-            //                 experience: value.experience
-            //             }
-            //             ]
-            //         );
-
-            //     }
-            //     )
-            console.log(workDetails, "workDetails")
+            setEditHide(false)
+            setDisable(true)
         }
     }, [workData])
 
@@ -143,7 +134,7 @@ const WorkProfile = (props) => {
     console.log(fields, "fielsa")
     // console.log(workField)
 
-    console.log(fields)
+    console.log("redux data :: ", workData)
 
     const langHandleChange = (event) => {
         const {
@@ -156,7 +147,7 @@ const WorkProfile = (props) => {
     };
 
 
-    const onWorkSubmit = (e) => {
+    const onSaveWorkSubmit = (e) => {
         e.preventDefault()
         const arg = {
             values,
@@ -166,7 +157,34 @@ const WorkProfile = (props) => {
         console.log(arg)
 
         dispatch(workProfileThunk(arg))
-        props.click()
+        //Edit button display
+        setEditHide(false)
+        setDisable(true)
+        //close this form model
+        // props.click()
+
+    }
+
+    const onUpdateWorkSubmit = (e) => {
+        e.preventDefault()
+        const arg = {
+            values,
+            lang,
+            fields
+        }
+        console.log(arg)
+
+        dispatch(updateWorkThunk(arg))
+        //Edit button display
+        setEditHide(false)
+        setDisable(TouchRipple)
+        //close this form model
+        // props.click()
+
+    }
+    const onEditClick = () => {
+        setDisable(!fieldsDisable)
+
     }
     return (
         <React.Fragment>
@@ -182,25 +200,31 @@ const WorkProfile = (props) => {
                     <CardContent >
 
                         <Grid container direction={'row'} spacing={0}>
+                            <Grid item xs={2} justifyContent="left" >
+                                {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit":"Done"}</Button>}
+                            </Grid>
 
-                            <Grid item xs={10} >
+                            <Grid item xs={8} >
 
                             </Grid>
                             <Grid item xs={2} justifyContent="right" >
-                                <Button variant="contained" color="error" onClick={props.click}>Back</Button>
+                                <Button variant="contained" color="error" onClick={props.click}>Close</Button>
                             </Grid>
 
                         </Grid>
 
                         <Typography variant="h4" component='div' fontSize='30px'>Professional Profile</Typography>
                         <Typography color='orange' variant='body1' component='p'>Please fill up this form is necessary to move forward !</Typography>
-                        <form onSubmit={onWorkSubmit}>
+
+                        <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>
                             {/* <Typography variant='subtitle1' marginLeft={1.5}  align='left' color='InfoText'>Personal Details : </Typography> */}
                             <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Working Details : </Typography>
+
                             <Grid container spacing={1}>
 
                                 <Grid xs={12} sm={6} item>
                                     <TextField
+                                        disabled={fieldsDisable}
                                         required
                                         variant='outlined'
                                         id="mobile no"
@@ -215,6 +239,7 @@ const WorkProfile = (props) => {
                                     <FormControl fullWidth>
                                         <InputLabel htmlFor="grouped-native-select">Working Time</InputLabel>
                                         <Select native id="grouped-native-select" label="Working Time"
+                                            disabled={fieldsDisable}
                                             value={values.workTime}
                                             onChange={(val) => { setValues((prevState) => { return { ...prevState, workTime: val.target.value } }) }}
                                         >
@@ -234,7 +259,7 @@ const WorkProfile = (props) => {
                                 <DisplayWorkingFields
                                     fields={fields}
                                     setFields={setFields}
-
+                                    fieldsDisable={fieldsDisable}
                                 />
                             </Grid>
                             <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Education Details : </Typography>
@@ -243,6 +268,7 @@ const WorkProfile = (props) => {
                                     <FormControl fullWidth>
                                         <InputLabel id="demo-multiple-checkbox-label">Language Known</InputLabel>
                                         <Select
+                                            disabled={fieldsDisable}
                                             labelId="demo-multiple-checkbox-label"
                                             id="demo-multiple-checkbox"
                                             multiple
@@ -266,6 +292,7 @@ const WorkProfile = (props) => {
                                     <FormControl fullWidth>
                                         <InputLabel htmlFor="grouped-native-select">Studied Upto</InputLabel>
                                         <Select native id="grouped-native-select" label="Studied Upto"
+                                            disabled={fieldsDisable}
                                             value={values.study}
                                             onChange={(val) => { setValues((prevState) => { return { ...prevState, study: val.target.value } }) }}
                                         >
@@ -281,6 +308,7 @@ const WorkProfile = (props) => {
                                 </Grid>
                                 <Grid xs={12} sm={6} item>
                                     <TextField
+                                        disabled={fieldsDisable}
                                         required
                                         variant='outlined'
                                         id="other"
@@ -294,7 +322,7 @@ const WorkProfile = (props) => {
                             </Grid>
                             <Grid xs={12} item>
                                 <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
-                                    Save
+                                    {editHide ? "Save" : !fieldsDisable && "Update"}
                                 </Button>
                             </Grid>
                         </form>

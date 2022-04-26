@@ -15,55 +15,8 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
 
-const DisplayWorkingFields = ({ fields, setFields }) => {
-    // const [fields, setFields] = useState(
-    //     [
-    //         {
-    //             category: "",
-    //             exprience: "",
-    //             salary: "",
-    //         }
-    //     ]
-    // );
-    // useEffect(() => {
-    //     if (workData.length !== 0) {
-    //         let workField =
-    //             workData[0].workDetails.map(
-    //                 (value, index) => {
-    //                     // let b = [value].map((val, ind) => {
-    //                     //     return val
-    //                     // })
-    //                     // return b
-    //                     return value
-    //                 }
-    //             )
-    //         let c = workField.map((val, ind) => {
-    //             //     setFields({
-    //             //     ...fields,
-    //             //     category: val.category,
-    //             //     exprience: val.exprience,
-    //             //     salary: val.salary
-    //             // });
-    //             setFields((prevState) => {
-    //                 return {
-    //                     ...prevState,
-    //                     category: val.category,
-    //                     exprience: val.exprience,
-    //                     salary: val.salary
-    //                 }
-    //             })
-
-    //     })
-    // console.log(fields)
-    // setFields({
-    //     ...fields,
-    //     category: workField.category,
-    //     exprience: workField.exprience,
-    //     salary: workField.salary
-    // });
-    // }
-    //     }, [workData])
-
+const DisplayWorkingFields = ({ fields, setFields,fieldsDisable }) => {
+  
 
     const handleChange = (e, index) => {
         const { name, value } = e.target
@@ -111,6 +64,7 @@ const DisplayWorkingFields = ({ fields, setFields }) => {
                                 <FormControl fullWidth>
                                     <InputLabel htmlFor="grouped-native-select">Working Category</InputLabel>
                                     <Select native
+                                        disabled={fieldsDisable}
                                         name="category"
                                         value={x.category}
                                         onChange={e => handleChange(e, i)}
@@ -137,6 +91,7 @@ const DisplayWorkingFields = ({ fields, setFields }) => {
                                 <FormControl fullWidth>
                                     <InputLabel htmlFor="grouped-native-select">Exprience</InputLabel>
                                     <Select native label="Exprience"
+                                        disabled={fieldsDisable}
                                         name="exprience"
                                         value={x.exprience}
                                         onChange={e => handleChange(e, i)}
@@ -153,7 +108,7 @@ const DisplayWorkingFields = ({ fields, setFields }) => {
                             </Grid>
                             <Grid xs={12} sm={3.5} item>
                                 <TextField
-
+                                    disabled={fieldsDisable}
                                     required
                                     variant='outlined'
                                     placeholder='Rs.'
@@ -166,7 +121,8 @@ const DisplayWorkingFields = ({ fields, setFields }) => {
 
                                 />
                             </Grid>
-                            <Grid xs={12} sm={1} item>
+                            {!fieldsDisable &&
+                                < Grid xs={12} sm={1} item>
                                 {/* <Button variant="contained" sx={{ marginTop: 1, marginLeft: 0.5 }} fullWidth onClick={addWorkHandler}>+</Button> */}
                                 {fields.length !== 1 &&
                                     <IconButton color="error" onClick={() => handleRemove(i)} component="span">
@@ -186,7 +142,7 @@ const DisplayWorkingFields = ({ fields, setFields }) => {
                                     </IconButton>
 
                                 }
-                            </Grid>
+                            </Grid>}
                         </Fragment>
                     );
                 })

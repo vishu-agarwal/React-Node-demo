@@ -10,23 +10,14 @@ const createWorkProfile = async (req, res) => {
         if (!r_id.charAt(0) === "H") {
             throw new Error("You are not authorized to add work details!")
         }
-        const found = await workProfileModel.find({ r_id })
-        if (found.length !== 0) {
-            const workDetail = await workProfileModel.findOneAndUpdate({ r_id }, { ...req.body }, { new: true })
-            if (!workDetail) {
-                throw new Error("Some Problem while saving profile data!")
-            }
-
-        }
-        else {
 
             const workDetail = { r_id, ...req.body }
             // console.log("final user :: ",user);
             const workProfile = new workProfileModel(workDetail)
             console.log(workProfile);
             await workProfile.save()
-        }
-        res.status(200).send(workProfile)
+            res.status(200).send("Successfully WorkDetails saved!")
+      
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -46,7 +37,28 @@ const fetchWorkDetails = async (req, res) => {
     }
 
 }
+const updateWorkDetails = async (req, res) => {
+    //which field are allowed to update
+    try {
+        const r_id = req.params.rid
+        const found = await workProfileModel.find({ r_id })
+        if (found.length === 0) {
+            throw new Error("Please first save you Working Details!")
+        }        
+        const workDetail = await workProfileModel.findOneAndUpdate({ r_id }, { ...req.body }, { new: true })
+        if (!workDetail) {
+            throw new Error("Some Problem while uupdating working details!")
+        }
+        res.status(200).send("update WorkDetails successfully!")
+        // return res.send(isunique)
+    } catch (error) {
+        res.status(404).send(error.message)
+    }
+}
+
+
 module.exports = {
     createWorkProfile,
-fetchWorkDetails
+    fetchWorkDetails,
+updateWorkDetails,
 }
