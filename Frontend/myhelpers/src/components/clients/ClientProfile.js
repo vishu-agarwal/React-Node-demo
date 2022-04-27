@@ -18,7 +18,7 @@ import PhotoCameraSharpIcon from '@mui/icons-material/PhotoCameraSharp';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import HelperProfile from '../helpers/HelperProfile';
+
 import WorkProfile from '../helpers/WorkProfile';
 import { useEffect, useState, useCallback } from 'react';
 // import axios from 'axios';

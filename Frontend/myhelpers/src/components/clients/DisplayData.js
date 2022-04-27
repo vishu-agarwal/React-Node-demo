@@ -46,6 +46,7 @@ const DisplayData = () => {
 
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
+
     console.log(workSearch)
     console.log(filterWork)
     return (
@@ -120,7 +121,7 @@ const DisplayData = () => {
 
                 </Grid>
             </Grid>
-            <Grid item xs={10} sm={10}>
+            <Grid item xs={10} sm={4} align="center" >
                 {/* card display in two or 3 rows */}
                 <Card />
             </Grid>

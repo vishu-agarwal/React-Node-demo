@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import { Component } from 'react';
 import bgimg from "./background1.jpg";
 import DisplayData from './components/clients/DisplayData';
+import ViewProfileDetail from './components/clients/ViewProfileDetail';
 function App() {
   const isAuth = useSelector(state => state.loginStore.isAuth)
   // console.log(isAuth)
@@ -38,6 +39,7 @@ function App() {
           {/* <Route path="/clientProfile" element={isAuth && <ClientProfile />} /> */}
             <Route path="/clientProfile" element={<ClientProfile />} />
             <Route path="/display" element={<DisplayData />} />
+            <Route path="/viewDetails" element={<ViewProfileDetail/>} />
           <Route path="/helperProfile" element={isAuth &&<HelperProfile />} />
           <Route path="*" element={"error"} />
         </Routes>
