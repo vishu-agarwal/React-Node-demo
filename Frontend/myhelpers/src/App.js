@@ -10,29 +10,39 @@ import Dashboard from './components/Dashboard';
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import { Component } from 'react';
-
+import bgimg from "./background1.jpg";
+import DisplayData from './components/clients/DisplayData';
 function App() {
-  const  isAuth  = useSelector(state => state.loginStore.isAuth)
-  console.log(isAuth)
+  const isAuth = useSelector(state => state.loginStore.isAuth)
+  // console.log(isAuth)
 
   const CheckRoute = (props) => {
-    console.log(props)
+    // console.log(props)
   }
   
   return (
-    <div className="App">
+    <div className="App"
+      // backgroundImage= {`url(${bgimg})`}
+      // backgroundRepeat= "no-repeat"
+      // backgroundSize = "100%" 
+      
+    >
+        
       <Header />
+      
+      <div>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={!isAuth && <Content />} />
           <Route path={`/login/:role`} element={!isAuth && <Login />} />
           {/* <Route path="/clientProfile" element={isAuth && <ClientProfile />} /> */}
-          <Route path="/clientProfile" element={ <ClientProfile />} />
+            <Route path="/clientProfile" element={<ClientProfile />} />
+            <Route path="/display" element={<DisplayData />} />
           <Route path="/helperProfile" element={isAuth &&<HelperProfile />} />
           <Route path="*" element={"error"} />
         </Routes>
       </BrowserRouter>
-
+      </div>
     </div>
   );
 }
