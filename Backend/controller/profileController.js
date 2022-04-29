@@ -40,19 +40,19 @@ const fetchProfile = async (req, res) => {
 
 
 }
-//update rating
-const updateStar = async (req, res) => {
-    try {
-console.log(req.body.rate)
-        const updtStar = await profileModel.findOneAndUpdate({ r_id: req.params.rid }, { rate: req.body.rate }, { new: true })
-        console.log(updtStar)
-        return res.status(200).send()
-    }
-    catch (error) {
-        res.status(400).send(error.message)
-    }
+// //update rating
+// const updateStar = async (req, res) => {
+//     try {
+// console.log(req.body.rate)
+//         const updtStar = await profileModel.findOneAndUpdate({ r_id: req.params.rid }, { rate: req.body.rate }, { new: true })
+//         console.log(updtStar)
+//         return res.status(200).send()
+//     }
+//     catch (error) {
+//         res.status(400).send(error.message)
+//     }
 
-}
+// }
 
 
 

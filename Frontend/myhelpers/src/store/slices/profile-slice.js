@@ -8,19 +8,19 @@ const initialState = {
     loading: false,
     error: ""
 }
-export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
-    try {
-        const data = {
-            rate:arg.rate
-        }
+// export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
+//     try {
+//         const data = {
+//             rate:arg.rate
+//         }
         
-        const res = await axios.patch(`/myhelper/updateStar/${arg.rid}`,data)
-        return res;
-    }
-    catch (error) {
-        throw new Error(error.response.data)
-    }
-})
+//         const res = await axios.patch(`/myhelper/updateStar/${arg.rid}`,data)
+//         return res;
+//     }
+//     catch (error) {
+//         throw new Error(error.response.data)
+//     }
+// })
 export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (formdata, config) => {
     // console.log("avatarDispatch:: ", formdata,config)
     try {
@@ -169,21 +169,21 @@ const profileSlice = createSlice({
 
             // state.error = error.error.message
         },
-        //update stars
-        [starThunk.pending]: (state, action) => {
-            state.loading = true
-        },
-        [starThunk.fulfilled]: (state, action) => {
-            state.loading = false
-            //  state.isAuth = true
-            state.message = action.payload.data
-        },
-        [starThunk.rejected]: (state, error) => {
-            state.loading = false
-            // console.log("rejected::", error.error.message)
+        // //update stars
+        // [starThunk.pending]: (state, action) => {
+        //     state.loading = true
+        // },
+        // [starThunk.fulfilled]: (state, action) => {
+        //     state.loading = false
+        //     //  state.isAuth = true
+        //     state.message = action.payload.data
+        // },
+        // [starThunk.rejected]: (state, error) => {
+        //     state.loading = false
+        //     // console.log("rejected::", error.error.message)
 
-            // state.error = error.error.message
-        },
+        //     // state.error = error.error.message
+        // },
     }
 })
 

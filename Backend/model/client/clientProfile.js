@@ -118,10 +118,7 @@ const clientSchema = new mongoose.Schema(
       max: 300,
       // required: true,
     },
-    rate: {
-      type: Number,
-      default: 2
-    }
+ 
   },
   {
     timestamps: true,

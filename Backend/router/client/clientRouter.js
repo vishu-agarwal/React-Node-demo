@@ -29,8 +29,8 @@ router.post("/myhelper/upldAadhar/:rid",
 //fecth profile
 router.get("/myhelpers/userProfile/fetch/:rid", profileController.fetchProfile)
 
-//update star
-router.patch("/myhelper/updateStar/:rid", profileController.updateStar)
+// //update star
+// router.patch("/myhelper/updateStar/:rid", profileController.updateStar)
 
 
 //update profile
