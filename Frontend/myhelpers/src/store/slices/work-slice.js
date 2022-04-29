@@ -13,7 +13,7 @@ export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk",
     // // console.log("values::", values)
     // console.log("languages", lang)
     // const obj = { ...arg.lang };
-    // console.log("workFields::", arg)
+    console.log("workFields::", arg)
     try {
         const rid = localStorage.getItem("r_id")
         const lang = arg.lang.map(l => ({ language: l }));
@@ -27,7 +27,7 @@ export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk",
             languages: lang
         };
         // console.log("data", data)
-        const workDataRes = await axios.post(`/myhelpers/createWorkProfile/H107`, data)
+        const workDataRes = await axios.post(`/myhelpers/createWorkProfile/H102`, data)
 
         // console.log("Response::", workDataRes)
         return workDataRes
@@ -41,8 +41,8 @@ export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk",
 //fetch workDetails thunk
 export const fetchWorkThunk = createAsyncThunk("workProfile/fetchWorkThunk", async (arg) => {
     try {
-
-        const fetchRes = await axios.get(`/myhelpers/fetchWorkDetail/H107`)
+// console.log("abc")
+        const fetchRes = await axios.get(`/myhelpers/fetchWorkDetail/${arg}`)
 
         // console.log("Fetch work Response:: ", fetchRes)
         return fetchRes
@@ -67,7 +67,7 @@ export const updateWorkThunk = createAsyncThunk("workProfile/updateWorkThunk", a
                 workDetails: arg.fields,
                 languages: lang
             };
-        const updateRes = await axios.put(`/myhelpers/updateWorkDetail/H107`,data)
+        const updateRes = await axios.put(`/myhelpers/updateWorkDetail/H102`,data)
 
         console.log("update work Response:: ", updateRes)
         return updateRes

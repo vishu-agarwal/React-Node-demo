@@ -8,7 +8,7 @@ const helperSchema = new mongoose.Schema({
 
     r_id: {
         type: String,
-        ref: "tblReg"
+        ref: "tblC_Profile"
     },
     profession_mbl: {
         type: Number,

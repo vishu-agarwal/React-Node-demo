@@ -24,10 +24,10 @@ const createWorkProfile = async (req, res) => {
 }
 const fetchWorkDetails = async (req, res) => {
     try {
-
+console.log("work params id :: ",req.params.rid)
         const isunique = await workProfileModel.find({ r_id: req.params.rid })
         if (isunique.length === 0) {
-            throw new Error("Please add your Work Details first!");
+            throw new Error("No Work Details available!");
         }
         else {
             return res.status(200).send(isunique)

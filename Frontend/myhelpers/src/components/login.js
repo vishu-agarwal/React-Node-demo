@@ -60,7 +60,7 @@ const Login = () => {
         if (user.length !== 0) {
             console.log(user)
             if (user[0].r_id.charAt(0) === "C") {
-                localStorage.setItem("r_id", )
+                localStorage.setItem("role", "Client")
                 // console.log("client")
             }
             else {

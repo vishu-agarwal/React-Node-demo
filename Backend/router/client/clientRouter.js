@@ -9,7 +9,7 @@ router.post("/myhelpers/crtProfile/:rid", profileController.createProfile)
 //upload avatar 
 
 router.post("/myhelper/upldAvatar/:rid",
-// note--------------   avatar is name of react field where file is upload
+    // note--------------   avatar is name of react field where file is upload
     profileController.uploadImg.single('avatar'),//   midleware for upload file
     profileController.avatarUpload,
     // (error, req, res, next) => {
@@ -29,7 +29,8 @@ router.post("/myhelper/upldAadhar/:rid",
 //fecth profile
 router.get("/myhelpers/userProfile/fetch/:rid", profileController.fetchProfile)
 
-
+//update star
+router.patch("/myhelper/updateStar/:rid", profileController.updateStar)
 
 
 //update profile

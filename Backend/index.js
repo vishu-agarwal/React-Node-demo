@@ -15,7 +15,8 @@ const cProfileRoute = require("./router/client/clientRouter")
 app.use(cProfileRoute)
 const WorkProfileRoute = require("./router/helpers/helperRouter")
 app.use(WorkProfileRoute)
-
+const DisplayRoute = require("./router/displayRouter")
+app.use(DisplayRoute)
 
 const port = process.env.PORT
 

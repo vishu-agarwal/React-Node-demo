@@ -55,6 +55,7 @@ const languageName = [
     'Kannad'
 ];
 const WorkProfile = (props) => {
+    const rid = localStorage.getItem("r_id")
     // const classes = useStyles();
     const navigate = useNavigate()
 
@@ -85,7 +86,7 @@ const WorkProfile = (props) => {
     // console.log(fields)
 
     useEffect(() => {
-        dispatch(fetchWorkThunk())
+        dispatch(fetchWorkThunk(rid))
     }, [])
 
     useEffect(() => {
@@ -131,10 +132,10 @@ const WorkProfile = (props) => {
     // console.log(workData)
 
 
-    console.log(fields, "fielsa")
-    // console.log(workField)
+    // console.log(fields, "fielsa")
+    // // console.log(workField)
 
-    console.log("redux data :: ", workData)
+    // console.log("redux data :: ", workData)
 
     const langHandleChange = (event) => {
         const {
@@ -148,13 +149,14 @@ const WorkProfile = (props) => {
 
 
     const onSaveWorkSubmit = (e) => {
+        console.log("save works")
         e.preventDefault()
         const arg = {
             values,
             lang,
             fields
         }
-        console.log(arg)
+        console.log("abc",arg)
 
         dispatch(workProfileThunk(arg))
         //Edit button display

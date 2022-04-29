@@ -9,71 +9,19 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { Grid } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import Rating from '@mui/material/Rating';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchWorkThunk } from '../../store/slices/work-slice';
-import workProfileActions from '../../store/slices/work-slice'
-
 import profileActions from '../../store/slices/profile-slice'
-import { createProfileThunk, avatarThunk, aadharThunk, fetchProfileThunk } from '../../store/slices/profile-slice';
-
-const CardJS = () => {
+import { starThunk } from '../../store/slices/profile-slice';
+const CardJS = (props) => {
 
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
-    let { userProfile } = useSelector((state) => ({ ...state.profileStore }))
-    const [values, setValues] = useState({
-        name: '',
-        porf_mbl: '',
-        age: '',
-        work: '',
-        experience: '',
-        time: '',
-    });
+    // let { userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     const [star, setStar] = useState(0)
-    useEffect(() => {
-        dispatch(fetchProfileThunk())
-    }, [])
-    useEffect(() => {
-        dispatch(fetchWorkThunk())
-    }, [])
-    // console.log(workData[0].workDetails)
-    useEffect(() => {
-        if (message.length !== 0) {
-            alert(message)
-
-        }
-        if (error.length !== 0) {
-            // console.log(error)
-            alert(error)
-            dispatch(workProfileActions.errorReducer())
-        }
-
-    }, [message, error])
-    useEffect(() => {
-        if (workData.length !== 0) {
-            let abc
-            let list =
-                workData[0].workDetails.map((value, index) => {
-                    return value.category.split("(")[0] + ", "
-                })
-
-            setValues({
-                porf_mbl: workData[0].profession_mbl,
-                time: workData[0].workTime,
-                work: list,
-                name: userProfile[0].name,
-
-            })
-            console.log(list)
-
-        }
-    }, [workData])
 
     //save icon state
     const [saveIcon, setSaveIcon] = useState(false)
@@ -82,19 +30,36 @@ const CardJS = () => {
         setSaveIcon(!saveIcon)
     }
 
+    const onViewClick = () => {
+        navigate(`/viewHelperDetails/${props.values.r_id}`)
+    }
+
+    const onRateClick = () => {
+    
+        const arg = {
+            rid: props.values.r_id,
+            rate: star
+        }
+        dispatch(starThunk(arg))
+        
+    }
+
+
     return (
         <>
             <Card sx={{
-                maxWidth: "100%", maxHeight: 200,
-                marginTop:3,
+                maxWidth: "80%", maxHeight: "100%",
+                marginTop: 3,
                 borderRadius: 3
-            }} elevation={8}>
+            }} elevation={8}
+
+            >
                 <CardContent sx={{ padding: 1 }}>
                     <Grid container direction={'row'} spacing={0} >
                         <Grid item xs={11} sm={11}>
 
-                            <Typography color="green" variant="h6" paddingLeft={3} gutterBottom align="left">
-                                {values.name.toUpperCase()}
+                            <Typography color="green" variant="h6" paddingLeft={1} gutterBottom align="left">
+                                {String(props.values.name).toUpperCase()}
                             </Typography>
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
@@ -118,30 +83,40 @@ const CardJS = () => {
                                 alt="Paella dish"
                             />
 
-                            <Rating name="size-small" defaultValue={2} size="medium" />
+                            <Rating name="size-small"
+                                value={parseInt(props.values.rate)}
+                                onChange={(val) => setStar(parseInt(val.target.value))} size="medium"
+                            onClick={onRateClick}
+                            />
                             {/* {value !== null && (
                                     <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
-                                    )} */}
+                                    )} */
+                                // console.log(star)        
+                            }
 
 
                         </Grid>
 
-                        <Grid item xs={8} sm={7} align="left" >
+                        <Grid item xs={8} sm={7} align="left" paddingLeft={1}>
                             <Typography variant="h5" component="div"></Typography>
-                            <Typography gutterBottom sx={{ fontSize: 12 }} >
-                                Mobile No :{values.porf_mbl}
+                            <Typography gutterBottom sx={{ fontSize: 15 }} >
+                                Mobile No : {props.values.profession_mbl}
                             </Typography>
-                            <Typography gutterBottom sx={{ fontSize: 12 }}  >
+                            <Typography gutterBottom sx={{ fontSize: 15 }}  >
                                 Age : Age
                             </Typography>
-                            <Typography gutterBottom sx={{ fontSize: 12 }} >
-                                {values.work}
+                            <Typography gutterBottom sx={{ fontSize: 15 }} >
+                                Work : {
+                                    props.values.workDetails.map((value, index) => {
+                                        return value.category.split("(")[0] + ", "
+                                    })
+                                }
                             </Typography>
 
-                            <Typography gutterBottom sx={{ fontSize: 12 }}  >
-                                Prefer Time : {values.time}
+                            <Typography gutterBottom sx={{ fontSize: 15 }}  >
+                                Prefer Time : {props.values.workTime}
                             </Typography>
-                            <Button sx={{ float: "right", padding: 0, paddingTop: "5%", fontSize: 15 }} >View Details </Button>
+                            <Button sx={{ float: "right", padding: 0, paddingTop: "5%", fontSize: 15 }} onClick={onViewClick}>View Details </Button>
                         </Grid>
 
                     </Grid>

@@ -82,26 +82,7 @@ const ClientProfile = () => {
         upldfile: [],
         dispFile: ''
     })
-    // const fetchData = useCallback(() => {
-    //     setValues({
-    //         fname: userProfile[0].name.split(" ")[0],
-    //         lname: userProfile[0].name.split(" ")[1],
-    //         dob: userProfile[0].dob,
-    //         altmbl: userProfile[0].alt_mob_num,
-    //         email: userProfile[0].email,
-    //         gender: userProfile[0].gender,
-    //         married: userProfile[0].isMarried,
-    //         physic_dis: userProfile[0].physical_disable,
-    //         house_no: userProfile[0].address[0].houseNo,
-    //         house_name: userProfile[0].address[0].house_name,
-    //         street: userProfile[0].address[0].landmark,
-    //         city: userProfile[0].address[0].city,
-    //         state: userProfile[0].address[0].state,
-    //         pincode: userProfile[0].address[0].pincode,
-    //         about: userProfile[0].about,
-    //     })
-
-    // }, [userProfile])
+ 
     //helper profile Modal state
     const [open, setOpen] = useState(false);
 
@@ -179,6 +160,7 @@ const ClientProfile = () => {
     
 
     const profileSaveHandler = (e) => {
+        console.log("save call")
         e.preventDefault()
         if (clicked) {
             if (aadhar.dispFile) {
@@ -319,7 +301,7 @@ const ClientProfile = () => {
                                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                     badgeContent={
                                         <label htmlFor="icon-button-file">
-                                            <Input accept="image/*" id="icon-button-file" type="file" name="avatar" required onChange={onAvatarChang} />
+                                            <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} />
                                             <IconButton color="primary" aria-label="upload picture" component="span">
                                                 {/* <ThemeProvider theme={theme}> */}
                                                 <EditRoundedIcon color="error" fontSize="large" />
@@ -543,7 +525,7 @@ const ClientProfile = () => {
                             </Grid> */}
                             <Grid xs={6} item>
                                 <label htmlFor="contained-button-file">
-                                    <Input id="contained-button-file" type="file" required name="aadharCard"
+                                    <Input id="contained-button-file" type="file"  name="aadharCard"
                                         ref={hiddenFileInput}
                                         onChange={onAadharChange}
                                         style={{ display: 'none' }}

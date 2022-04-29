@@ -7,7 +7,12 @@ import { useState, useEffect } from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import Card from"./Card"
+import CardJS from "./Card"
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchAllThunk } from '../../store/slices/display-slice';
+import workProfileActions from '../../store/slices/work-slice'
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
+
 
 const workSearchBy = [
     { label: 'All' },
@@ -43,12 +48,61 @@ const filterTime = [
 ];
 
 const DisplayData = () => {
+    const navigate = useNavigate()
+
+    const dispatch = useDispatch()
+    // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
+    let { displayData, message, error } = useSelector((state) => ({ ...state.displayStore }))
+
+    // const [values,message, setValues] = useState({
+    //     name: '',
+    //     porf_mbl: '',
+    //     age: '',
+    //     work: '',
+    //     experience: '',
+    //     time: '',
+    // });
+    useEffect(() => {
+        dispatch(fetchAllThunk())
+    }, [])
+
+    // console.log(workData[0].workDetails)
+    useEffect(() => {
+        // if (message.length !== 0) {
+        //     alert(message)
+
+        // }
+        if (error.length !== 0) {
+            // console.log(error)
+            alert(error)
+            dispatch(workProfileActions.errorReducer())
+        }
+
+    }, [message, error])
+    useEffect(() => {
+        if (displayData.length !== 0) {
+            console.log(displayData)
+            // let abc
+            // let list =
+            //     workData[0].workDetails.map((value, index) => {
+            //         return value.category.split("(")[0] + ", "
+            //     })
+
+            // setValues({
+            //     porf_mbl: workData[0].profession_mbl,
+            //     time: workData[0].workTime,
+            //     work: list,
+            //     name: userProfile[0].name,
+
+            // })
+            // console.log(list)
+
+        }
+    }, [displayData])
 
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
 
-    console.log(workSearch)
-    console.log(filterWork)
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={5}>
             <Grid item xs={10} sm={10} >
@@ -64,7 +118,7 @@ const DisplayData = () => {
                             onInputChange={(e, value) => {
                                 setWorkSearch(value)
                                 setFilterWork('')
-                                console.log("set filter value :: ", filterWork)
+                                // console.log("set filter value :: ", filterWork)
                             }}
                             // onChange={(val) => setWorkSearch(val)}
 
@@ -118,15 +172,21 @@ const DisplayData = () => {
 
                         }
                     </Grid>
-
                 </Grid>
             </Grid>
-            <Grid item xs={10} sm={4} align="center" >
-                {/* card display in two or 3 rows */}
-                <Card />
+            <Grid margin={0} container direction="row" >
+
+                {displayData.map((values, index) => {
+                    return <Grid item xs={12} sm={4} align="center" key={index}>
+                        {/* card display in two or 3 rows */}
+
+                        <CardJS values={values} />
+                    </Grid>
+                })
+                }
+
             </Grid>
         </Grid>
-
     )
 }
 

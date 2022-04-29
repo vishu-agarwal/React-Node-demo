@@ -38,7 +38,24 @@ const fetchProfile = async (req, res) => {
         res.status(400).send(error.message)
     }
 
+
 }
+//update rating
+const updateStar = async (req, res) => {
+    try {
+console.log(req.body.rate)
+        const updtStar = await profileModel.findOneAndUpdate({ r_id: req.params.rid }, { rate: req.body.rate }, { new: true })
+        console.log(updtStar)
+        return res.status(200).send()
+    }
+    catch (error) {
+        res.status(400).send(error.message)
+    }
+
+}
+
+
+
 //set destination and fie name
 const imgConfig = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -137,14 +154,14 @@ const aadharUpload = async (req, res) => {
         if (!found) {
             throw new Error("Please first upload profile photo !!!")
         }
-        
+
         const updt = await profileModel.findOneAndUpdate({ r_id }, {
             aadhar_card: req.file.path
         }, { new: true })
         if (!updt) {
             throw new Error("Some Problem while uploading aadharCard!")
         }
-        
+
         res.status(200).send("Aadhar Card sucessfully uploaded")
     }
     catch (error) {
@@ -158,4 +175,5 @@ module.exports = {
     uploadImg,
     aadharUpload,
     uploadPdf,
+    updateStar,
 }

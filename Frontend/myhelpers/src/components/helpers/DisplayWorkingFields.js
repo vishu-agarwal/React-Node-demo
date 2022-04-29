@@ -13,7 +13,13 @@ import IconButton from '@mui/material/IconButton';
 import Select from '@mui/material/Select';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { fetchWorkThunk } from '../../store/slices/work-slice';
+
+import workProfileActions from '../../store/slices/work-slice'
+
+import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
+
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 const DisplayWorkingFields = ({ fields, setFields,fieldsDisable }) => {
   

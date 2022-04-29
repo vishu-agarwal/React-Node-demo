@@ -8,12 +8,25 @@ const initialState = {
     loading: false,
     error: ""
 }
+export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
+    try {
+        const data = {
+            rate:arg.rate
+        }
+        
+        const res = await axios.patch(`/myhelper/updateStar/${arg.rid}`,data)
+        return res;
+    }
+    catch (error) {
+        throw new Error(error.response.data)
+    }
+})
 export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (formdata, config) => {
     // console.log("avatarDispatch:: ", formdata,config)
     try {
         const rid = localStorage.getItem("r_id")
 
-        const res = await axios.post(`/myhelper/upldAvatar/H107`, formdata, config)
+        const res = await axios.post(`/myhelper/upldAvatar/H102`, formdata, config)
         // console.log("response :: ", res)
         return res
 
@@ -26,7 +39,7 @@ export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (fo
     try {
         const rid = localStorage.getItem("r_id")
 
-        const res = await axios.post(`/myhelper/upldAadhar/H107`, formdata, config)
+        const res = await axios.post(`/myhelper/upldAadhar/H102`, formdata, config)
         // console.log("response :: ", res)
         return res
 
@@ -60,7 +73,7 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
 
         };
         // console.log("data", data)
-        const userRes = await axios.post(`/myhelpers/crtProfile/H107`, data)
+        const userRes = await axios.post(`/myhelpers/crtProfile/H102`, data)
 
         // console.log("loginRes", loginRes)
         return userRes
@@ -74,7 +87,7 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
 export const fetchProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk",async (arg) => {
     try {
         
-        const fetchRes = await axios.get(`/myhelpers/userProfile/fetch/H107`)
+        const fetchRes = await axios.get(`/myhelpers/userProfile/fetch/${arg}`)
 
         console.log("Fwtch Response:: ", fetchRes)
         return fetchRes
@@ -154,7 +167,22 @@ const profileSlice = createSlice({
             state.loading = false
             // console.log("rejected::", error.error.message)
 
-            state.error = error.error.message
+            // state.error = error.error.message
+        },
+        //update stars
+        [starThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [starThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.message = action.payload.data
+        },
+        [starThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+
+            // state.error = error.error.message
         },
     }
 })
