@@ -8,6 +8,31 @@ const fetchAllData = async (req, res) => {
         role = req.params.role
         if (role === "Client") {
             //   fetchHelper = await helperModel.find()
+
+            // const abc = await profileModel.find()
+
+            // const totIds = abc.map((item) => {
+            //     if (item.r_id.charAt(0) === "H"){
+            //         return item.rating.map((id) =>
+            //             id.user_id
+            //         ).length
+            //     }
+            // }
+            // );
+
+            // const totRates = abc.map((item) =>
+            //     item.rating.map((id) =>
+            //         id.rate
+            //     ).reduce((prev, curr) => prev + curr, 0)
+            // );
+            // const result = totRates.map(function (n, i) { return n / totIds[i]; })
+            // console.log(totIds, totRates, result)
+            // const rates = result.map((item) => {
+            //     return isNaN(item) ? item = 0 : item
+
+            // })
+            // // console.log(rate)
+
             const fetchHelper = await helperModel.aggregate([
                 {
                     $lookup:
@@ -29,7 +54,7 @@ const fetchAllData = async (req, res) => {
                         "workDetails.category": 1,
                         "name": "$abc.name",
                         "dob": "$abc.dob",
-                        
+                        "rating": "$abc.rating"
                     }
                 }
 
@@ -37,8 +62,7 @@ const fetchAllData = async (req, res) => {
             if (fetchHelper.length === 0) {
                 throw new Error("Data not found !")
             }
-            // const name = await profileModel.find({ r_id: fetchHelper.r_id })
-            // console.log(name)
+            // console.log(fetchHelper)
             res.status(200).send(fetchHelper)
         }
         else {

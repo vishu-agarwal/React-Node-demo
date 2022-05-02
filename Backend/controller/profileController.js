@@ -63,7 +63,7 @@ const updateStar = async (req, res) => {
                     { new: true }
                 )
                 console.log("new Update ::", updtStar)
-                res.status(200).send(updtStar)
+                res.status(200).send()
                 
                 }
             
@@ -71,12 +71,10 @@ const updateStar = async (req, res) => {
                 found.rating[idIndex].rate = req.body.rate
 
                 const update = await found.save();
-                res.status(200).send(update);
+                console.log("old user :: \n",update)
+                res.status(200).send();
             } 
 
-        }
-        else {
-            res.send();
         }
 
         //    const abc = found.rating.map((item) =>

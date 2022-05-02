@@ -99,7 +99,7 @@ const DisplayData = () => {
 
         }
     }, [displayData])
-
+    let rates
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
 
@@ -177,10 +177,35 @@ const DisplayData = () => {
             <Grid margin={0} container direction="row" >
 
                 {displayData.map((values, index) => {
-                    return <Grid item xs={12} sm={4} align="center" key={index}>
-                        {/* card display in two or 3 rows */}
+                        {
+                            rates = values.rating[0] !== undefined ?
+                                values.rating[0].map((id) =>
+                                    id.rate
+                                ).reduce((prev, curr) => prev + curr, 0)
+                                /
+                                values.rating[0].map((id) =>
+                                    id.user_id
+                                ).length
 
-                        <CardJS values={values} />
+                                : null
+                        }
+                    return <Grid item xs={12} sm={4} align="center" key={index}>
+
+                        {/* 
+                        // values.rating[0] !== undefined ? console.log("rates :: ",
+                            //     values.rating[0].map((id) =>
+                            //         id.rate
+                            //     ).reduce((prev, curr) => prev + curr, 0)
+
+                            // ) : ''
+                        <Grid> {console.log(
+                            values.rating[0].map((id) =>
+                               console.log( id.user_id)
+                            ).length
+                        )
+                        }</Grid> */}
+
+                        <CardJS values={values} rates={rates} />
                     </Grid>
                 })
                 }

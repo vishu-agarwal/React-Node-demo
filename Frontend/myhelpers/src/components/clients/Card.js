@@ -13,15 +13,15 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-// import profileActions from '../../store/slices/profile-slice'
-// import { starThunk } from '../../store/slices/profile-slice';
+import profileActions from '../../store/slices/profile-slice'
+import { starThunk } from '../../store/slices/profile-slice';
 const CardJS = (props) => {
 
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
     // let { userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    const [star, setStar] = useState(0)
+    const [star, setStar] = useState(0.5)
 
     //save icon state
     const [saveIcon, setSaveIcon] = useState(false)
@@ -35,16 +35,20 @@ const CardJS = (props) => {
     }
 
     const onRateClick = () => {
-    
+
         const arg = {
             rid: props.values.r_id,
             rate: star
         }
-        // dispatch(starThunk(arg))
-        
+        // console.log(arg);
+        console.log("stars update..........................")
+        dispatch(starThunk(arg))
     }
 
-
+    useEffect(() => {
+        console.log("setStars-------------------------")
+   setStar(props.rates) 
+},[])
     return (
         <>
             <Card sx={{
@@ -83,20 +87,22 @@ const CardJS = (props) => {
                                 alt="Paella dish"
                             />
 
-                            <Rating name="size-small"
-                                value={parseInt(props.values.rate)}
-                                onChange={(val) => setStar(parseInt(val.target.value))} size="medium"
-                            onClick={onRateClick}
+                            <Rating name="half-rating" precision={0.5} 
+                                // value={parseInt(props.values.rate)}
+                                value={star}
+                                onChange={(val) =>
+                                    setStar(parseFloat(val.target.value))
+                                                                        
+                                    }
+                                size="medium"
+                                onClick={onRateClick}
                             />
                             {/* {value !== null && (
                                     <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
                                     )} */
                                 // console.log(star)        
                             }
-
-
                         </Grid>
-
                         <Grid item xs={8} sm={7} align="left" paddingLeft={1}>
                             <Typography variant="h5" component="div"></Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }} >

@@ -15,6 +15,7 @@ export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async 
         const fetchRes = await axios.get(`/myhelpers/fetchAllData/Client`)
 
         // console.log("Fwtch Response:: ", fetchRes)
+        
         return fetchRes
 
     } catch (error) {
@@ -41,6 +42,7 @@ const displaySlice = createSlice({
             state.loading = false
             //  state.isAuth = true
             state.displayData = action.payload.data
+            // console.log(state.displayData)
         },
         [fetchAllThunk.rejected]: (state, error) => {
             state.loading = false
