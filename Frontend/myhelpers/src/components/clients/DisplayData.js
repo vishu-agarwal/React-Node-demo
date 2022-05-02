@@ -52,7 +52,7 @@ const DisplayData = () => {
 
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    let { displayData, message, error } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
 
     // const [values,message, setValues] = useState({
     //     name: '',
@@ -99,7 +99,7 @@ const DisplayData = () => {
 
         }
     }, [displayData])
-    let rates
+    let rates, status
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
 
@@ -176,7 +176,11 @@ const DisplayData = () => {
             </Grid>
             <Grid margin={0} container direction="row" >
 
-                {displayData.map((values, index) => {
+                {status = saveUser.map((user) =>
+                    console.log(user.user_id)
+                )
+                    ,
+                    displayData.map((values, index) => {
                         {
                             rates = values.rating[0] !== undefined ?
                                 values.rating[0].map((id) =>
@@ -188,10 +192,12 @@ const DisplayData = () => {
                                 ).length
 
                                 : null
-                        }
-                    return <Grid item xs={12} sm={4} align="center" key={index}>
 
-                        {/* 
+
+                        }
+                        return <Grid item xs={12} sm={4} align="center" key={index}>
+
+                            {/* 
                         // values.rating[0] !== undefined ? console.log("rates :: ",
                             //     values.rating[0].map((id) =>
                             //         id.rate
@@ -205,9 +211,9 @@ const DisplayData = () => {
                         )
                         }</Grid> */}
 
-                        <CardJS values={values} rates={rates} />
-                    </Grid>
-                })
+                            <CardJS values={values} rates={rates} status={status} />
+                        </Grid>
+                    })
                 }
 
             </Grid>

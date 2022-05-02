@@ -13,21 +13,23 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import profileActions from '../../store/slices/profile-slice'
+import { saveThunk } from '../../store/slices/display-slice';
+
 import { starThunk } from '../../store/slices/profile-slice';
 const CardJS = (props) => {
 
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    // let { userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
+    // let { status, error } = useSelector((state) => ({ ...state.displayStore }))
     const [star, setStar] = useState(0.5)
 
     //save icon state
     const [saveIcon, setSaveIcon] = useState(false)
     //save icon click event
     const onSaveClick = () => {
-        setSaveIcon(!saveIcon)
+        dispatch(saveThunk(props.values.r_id))
+        props.status ? setSaveIcon(true) : setSaveIcon(false)
     }
 
     const onViewClick = () => {

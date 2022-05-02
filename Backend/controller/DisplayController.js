@@ -79,22 +79,25 @@ const fetchAllData = async (req, res) => {
 //save user data 
 const saveUserData = async (req, res) => {
     try {
-    // console.log("save user")
+        // console.log("save user")
+
         const found = await saveModel.findOne({ r_id: req.params.rid })
-        console.log(found)
+        console.log(req.body.length !== 0)
         if (found) {
+            if (req.body === null) { res.status(200).send(found) }
+
             const userFound = await saveModel.find({ r_id: found.r_id, "saveUser.user_id": req.body.user_id })
             // console.log("user Found",userFound)
             if (userFound.length !== 0) {
-                const update = await saveModel.findOneAndUpdate({ r_id: found.r_id, "save.user_id": req.body.user_id },{$pull:{saveUser:{user_id:req.body.user_id}}},{new:true})
-                console.log("removw user :: ",update)
+                const update = await saveModel.findOneAndUpdate({ r_id: found.r_id, "save.user_id": req.body.user_id }, { $pull: { saveUser: { user_id: req.body.user_id } } }, { new: true })
+                // console.log("removw user :: ", update)
                 return res.status(200).send()
             }
-        //   console.log(req.body)
+            //   console.log(req.body)
             const user = found.saveUser.concat(req.body)
-    
+
             const update = await saveModel.findOneAndUpdate({ r_id: req.params.rid }, { saveUser: user }, { new: true })
-            console.log("update newUser :: ", update);
+            // console.log("update newUser :: ", update);
             return res.status(200).send()
 
         }
@@ -104,8 +107,8 @@ const saveUserData = async (req, res) => {
         })
 
         await newUser.save();
-        console.log("newUser :: ", newUser);
-        return res.status(200).send(newUser)
+        // console.log("newUser :: ", newUser);
+        return res.status(200).send()
     }
     catch (error) {
         return res.status(400).send(error.message)

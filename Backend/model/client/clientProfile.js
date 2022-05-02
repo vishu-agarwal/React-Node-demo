@@ -119,7 +119,7 @@ const clientSchema = new mongoose.Schema(
       // required: true,
     },
     rating: [
-      {
+      {// userId is which users give rates this user
         user_id: {
           type: String,
         },
@@ -129,6 +129,7 @@ const clientSchema = new mongoose.Schema(
         }
    }
     ],
+    
     
   },
   {
