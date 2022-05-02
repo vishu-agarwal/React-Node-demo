@@ -29,7 +29,7 @@ const fetchAllData = async (req, res) => {
                         "workDetails.category": 1,
                         "name": "$abc.name",
                         "dob": "$abc.dob",
-                        "rate": "$abc.rate"
+                        
                     }
                 }
 

@@ -118,7 +118,18 @@ const clientSchema = new mongoose.Schema(
       max: 300,
       // required: true,
     },
- 
+    rating: [
+      {
+        user_id: {
+          type: String,
+        },
+        rate: {
+          type: Number,
+        
+        }
+   }
+    ],
+    
   },
   {
     timestamps: true,

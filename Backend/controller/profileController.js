@@ -40,19 +40,84 @@ const fetchProfile = async (req, res) => {
 
 
 }
-// //update rating
-// const updateStar = async (req, res) => {
-//     try {
-// console.log(req.body.rate)
-//         const updtStar = await profileModel.findOneAndUpdate({ r_id: req.params.rid }, { rate: req.body.rate }, { new: true })
-//         console.log(updtStar)
-//         return res.status(200).send()
-//     }
-//     catch (error) {
-//         res.status(400).send(error.message)
-//     }
 
-// }
+//update rating
+const updateStar = async (req, res) => {
+    try {
+        // console.log(req.body.rating)
+        const found = await profileModel.findOne({ r_id: req.params.rid });
+
+        if (found) {
+
+            const idIndex = found.rating.findIndex((c) => c.user_id === req.body.user_id);
+            // console.log("found old user", idIndex);
+            if (idIndex < 0)
+            {
+                console.log("found new user");
+                const rate = found.rating.concat(req.body)
+                const updtStar = await profileModel.findOneAndUpdate(
+                    { r_id: req.params.rid },
+
+                    { rating: rate }
+                    ,
+                    { new: true }
+                )
+                console.log("new Update ::", updtStar)
+                res.status(200).send(updtStar)
+                
+                }
+            
+            else if (found.rating[idIndex].user_id === req.body.user_id) {
+                found.rating[idIndex].rate = req.body.rate
+
+                const update = await found.save();
+                res.status(200).send(update);
+            } 
+
+        }
+        else {
+            res.send();
+        }
+
+        //    const abc = found.rating.map((item) =>
+        //     item.user_id === req.body.user_id ? item.rate === req.body.rate : item.rate === item.rate
+        //     )
+        //     // const rating
+        //     console.log("rate update :: ",abc)
+
+        //     if (found) {
+
+        //         const update = {
+        //             ...found,
+        //            rating: abc
+        //         }
+        //         found.save(update)
+        //         // const isRated = await profileModel.findOneAndUpdate({ r_id: found.r_id, `rating[${abc}].user_id` : req.body.user_id }
+        //         //     // ,
+        //         //     // { "rating.rate":req.body.rate}
+        //         //     // ,
+        //         //     // { new: true }
+        //         // )
+        //         console.log("old Update ::", update)
+        //         // if (!isRated) {
+        //             // const rate = found.rating.concat(req.body)
+        //             // const updtStar = await profileModel.findOneAndUpdate(
+        //             //     { r_id: req.params.rid },
+
+        //             //     { rating: rate }
+        //             //     ,
+        //             //     { new: true }
+        //             // )
+        //             // console.log("new Update ::", updtStar)
+        //         // }
+        //     }
+        //     return res.status(200).send()
+    }
+    catch (error) {
+        res.status(400).send(error.message)
+    }
+
+}
 
 
 
@@ -175,5 +240,5 @@ module.exports = {
     uploadImg,
     aadharUpload,
     uploadPdf,
-    // updateStar,
+    updateStar,
 }

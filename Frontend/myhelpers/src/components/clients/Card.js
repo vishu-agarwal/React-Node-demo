@@ -13,8 +13,8 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import profileActions from '../../store/slices/profile-slice'
-import { starThunk } from '../../store/slices/profile-slice';
+// import profileActions from '../../store/slices/profile-slice'
+// import { starThunk } from '../../store/slices/profile-slice';
 const CardJS = (props) => {
 
     const navigate = useNavigate()
@@ -40,7 +40,7 @@ const CardJS = (props) => {
             rid: props.values.r_id,
             rate: star
         }
-        dispatch(starThunk(arg))
+        // dispatch(starThunk(arg))
         
     }
 
