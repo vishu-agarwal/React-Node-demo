@@ -8,7 +8,8 @@ const DisplayController = require("../controller/DisplayController")
 router.get("/myhelpers/fetchAllData/:role", DisplayController.fetchAllData)
 //save Route
 router.post("/myhelpers/saveUser/:rid",DisplayController.saveUserData)
-
+//fetch saveData
+router.get("/myhelpers/fetchSaveUser/:rid",DisplayController.fetchSaveUser)
 
 
 

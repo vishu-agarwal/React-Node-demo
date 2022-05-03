@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CardJS from "./Card"
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAllThunk } from '../../store/slices/display-slice';
+import { fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
 import workProfileActions from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
@@ -64,6 +64,7 @@ const DisplayData = () => {
     // });
     useEffect(() => {
         dispatch(fetchAllThunk())
+        dispatch(fetchSaveUserThunk())
     }, [])
 
     // console.log(workData[0].workDetails)
@@ -81,7 +82,7 @@ const DisplayData = () => {
     }, [message, error])
     useEffect(() => {
         if (displayData.length !== 0) {
-            console.log(displayData)
+            console.log("displayData :: ", displayData)
             // let abc
             // let list =
             //     workData[0].workDetails.map((value, index) => {
@@ -98,7 +99,16 @@ const DisplayData = () => {
             // console.log(list)
 
         }
+        
     }, [displayData])
+    useEffect(() => {
+      
+        if (saveUser.length !== 0) {
+            console.log("saveUser ::", saveUser);
+            // saveUser.map((val)=> values.r_id === val.user_id)
+            // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
+        }
+    }, [ saveUser])
     let rates, status
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
@@ -175,11 +185,9 @@ const DisplayData = () => {
                 </Grid>
             </Grid>
             <Grid margin={0} container direction="row" >
-
-                {status = saveUser.map((user) =>
-                    console.log(user.user_id)
-                )
-                    ,
+               
+                {
+                    // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
                     displayData.map((values, index) => {
                         {
                             rates = values.rating[0] !== undefined ?
@@ -192,8 +200,8 @@ const DisplayData = () => {
                                 ).length
 
                                 : null
-
-
+                            
+                                status = saveUser.length !== 0 ? saveUser.map((val)=> values.r_id === val.user_id).includes(true) ? true:false : false
                         }
                         return <Grid item xs={12} sm={4} align="center" key={index}>
 
@@ -209,8 +217,7 @@ const DisplayData = () => {
                                console.log( id.user_id)
                             ).length
                         )
-                        }</Grid> */}
-
+                        }</Grid> */},
                             <CardJS values={values} rates={rates} status={status} />
                         </Grid>
                     })

@@ -23,7 +23,19 @@ export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async 
         throw new Error(error.response.data)
     }
 })
+export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThunk", async (arg) => {
+    try {
 
+        const fetchRes = await axios.get(`/myhelpers/fetchSaveUser/C106`)
+
+        // console.log("Fwtch Response:: ", fetchRes)
+
+        return fetchRes
+
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
 export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) => {
     const data = {
         user_id : arg
@@ -66,10 +78,25 @@ const displaySlice = createSlice({
         [saveThunk.fulfilled]: (state, action) => {
             state.loading = false
             //  state.isAuth = true
-            state.saveUser = action.payload.data
+            // state.saveUser = action.payload.data
             // console.log(state.displayData)
         },
         [saveThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+            state.error = error.error.message
+        },
+        //fetch saveUser
+        [fetchSaveUserThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [fetchSaveUserThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.saveUser = action.payload.data.saveUser
+            // console.log(state.saveUser)
+        },
+        [fetchSaveUserThunk.rejected]: (state, error) => {
             state.loading = false
             // console.log("rejected::", error.error.message)
             state.error = error.error.message

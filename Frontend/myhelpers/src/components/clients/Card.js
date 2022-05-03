@@ -17,19 +17,19 @@ import { saveThunk } from '../../store/slices/display-slice';
 
 import { starThunk } from '../../store/slices/profile-slice';
 const CardJS = (props) => {
-
+// console.log("status::",props.status)
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
     // let { status, error } = useSelector((state) => ({ ...state.displayStore }))
     const [star, setStar] = useState(0.5)
-
     //save icon state
-    const [saveIcon, setSaveIcon] = useState(false)
+    // const [saveIcon, setSaveIcon] = useState(false)
+    
+    // props.status ? setSaveIcon(true) : setSaveIcon(false)
     //save icon click event
     const onSaveClick = () => {
         dispatch(saveThunk(props.values.r_id))
-        props.status ? setSaveIcon(true) : setSaveIcon(false)
     }
 
     const onViewClick = () => {
@@ -71,7 +71,7 @@ const CardJS = (props) => {
                         <Grid item xs={1} sm={1} justifyContent="right" >
 
                             <Tooltip title="Save">
-                                {saveIcon ?
+                                {props.status ?
                                     <BookmarkIcon fontSize="medium" onClick={onSaveClick} />
                                     :
                                     <BookmarkBorderIcon fontSize="medium" onClick={onSaveClick} />

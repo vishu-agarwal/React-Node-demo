@@ -90,14 +90,14 @@ const saveUserData = async (req, res) => {
             // console.log("user Found",userFound)
             if (userFound.length !== 0) {
                 const update = await saveModel.findOneAndUpdate({ r_id: found.r_id, "save.user_id": req.body.user_id }, { $pull: { saveUser: { user_id: req.body.user_id } } }, { new: true })
-                // console.log("removw user :: ", update)
+                console.log("removw user :: ", update)
                 return res.status(200).send()
             }
             //   console.log(req.body)
             const user = found.saveUser.concat(req.body)
 
             const update = await saveModel.findOneAndUpdate({ r_id: req.params.rid }, { saveUser: user }, { new: true })
-            // console.log("update newUser :: ", update);
+            console.log("update newUser :: ", update);
             return res.status(200).send()
 
         }
@@ -107,16 +107,29 @@ const saveUserData = async (req, res) => {
         })
 
         await newUser.save();
-        // console.log("newUser :: ", newUser);
+        console.log("newUser :: ", newUser);
         return res.status(200).send()
     }
     catch (error) {
         return res.status(400).send(error.message)
     }
 }
-
+const fetchSaveUser = async(req,res) => {
+    try {
+        const found = await saveModel.findOne({ r_id: req.params.rid })
+        // console.log(req.params.rid)
+       
+           return res.status(200).send(found)
+       
+    }
+    catch (error)
+   {
+       return res.status(400).send(error.message)
+    }
+}
 module.exports = {
 
     fetchAllData,
-    saveUserData
+    saveUserData,
+    fetchSaveUser
 }
