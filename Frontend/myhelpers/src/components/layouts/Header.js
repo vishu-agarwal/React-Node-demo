@@ -17,6 +17,7 @@ import Zoom from '@mui/material/Zoom';
 import PropTypes from 'prop-types';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { useSelector } from 'react-redux'
+import { NavLink, useNavigate, useParams, Link } from 'react-router-dom';
 
 function ScrollTop(props) {
     const { children, window } = props;
@@ -67,11 +68,11 @@ ScrollTop.propTypes = {
 
 
 const pages = ['Home', 'Find Helpers', 'About Us'];
-const settings = ['Profile', 'ShortListed', 'Hired', 'Logout'];
 
 const Header = (props) => {
 
-    const isAuth = useSelector(state => state.loginStore.isAuth)
+
+    const isAuth = true//useSelector(state => state.loginStore.isAuth)
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -91,6 +92,7 @@ const Header = (props) => {
         setAnchorElUser(null);
     };
 
+    // const navigate = useNavigate()
     return (
         <>
             <AppBar position="fixed" sx={{ marginTop: 0, background: 'black' }} >
@@ -153,7 +155,7 @@ const Header = (props) => {
                         >
                             My Helpers
                         </Typography>
-                        
+
                         <Box sx={{
                             flexGrow: 50
                         }} />
@@ -171,46 +173,48 @@ const Header = (props) => {
                             </Box>
                         }
                         {isAuth &&
-                        <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="My Profile">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="" />
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{ mt: '45px' }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                            >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box>
+                            <Box sx={{ flexGrow: 0 }}>
+                                <Tooltip title="My Profile">
+                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                        <Avatar alt="Remy Sharp" src="" />
+                                    </IconButton>
+                                </Tooltip>
+                                <Menu
+                                    sx={{ mt: '45px' }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                >
+
+                                    <MenuItem >Profile</MenuItem>
+                                    <MenuItem >Shortlisted</MenuItem>
+                                    <MenuItem >Hired</MenuItem>
+                                    <MenuItem >Logout</MenuItem>
+
+
+                                </Menu>
+                            </Box>
                         }
                     </Toolbar>
                 </Container>
             </AppBar>
             <Toolbar id="back-to-top-anchor" />
             {isAuth &&
-            <ScrollTop {...props}>
-                <Fab color="secondary" size="small" aria-label="scroll back to top">
-                    <KeyboardArrowUpIcon />
-                </Fab>
-            </ScrollTop>}
+                <ScrollTop {...props}>
+                    <Fab color="secondary" size="small" aria-label="scroll back to top">
+                        <KeyboardArrowUpIcon />
+                    </Fab>
+                </ScrollTop>}
         </>
     );
 };

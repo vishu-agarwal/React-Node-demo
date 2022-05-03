@@ -25,9 +25,10 @@ import CallIcon from '@mui/icons-material/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
 import workProfileActions from '../../store/slices/work-slice'
+import { hireUserThunk, fetchSaveUserThunk, saveThunk } from '../../store/slices/display-slice';
 
 import profileActions from '../../store/slices/profile-slice'
-import { fetchProfileThunk } from '../../store/slices/profile-slice';
+import { fetchProfileThunk, starThunk } from '../../store/slices/profile-slice';
 
 const ViewProfileDetail = () => {
     const navigate = useNavigate()
@@ -37,6 +38,7 @@ const ViewProfileDetail = () => {
     const rid = params.rid;
 
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
+    let { saveUser } = useSelector((state) => ({ ...state.displayStore }))
     let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
     let { userProfile } = useSelector((state) => ({ ...state.profileStore }))
     const [values, setValues] = useState({
@@ -59,14 +61,24 @@ const ViewProfileDetail = () => {
         study: '',
         otherStudy: '',
         language: '',
+
     });
-    const [star, setStar] = useState(0)
+    const [status, setStatus] = useState(false)
+    const [star, setStar] = useState(0.5)
     useEffect(() => {
         dispatch(fetchProfileThunk(rid))
-    }, [])
-    useEffect(() => {
         dispatch(fetchWorkThunk(rid))
+        dispatch(fetchSaveUserThunk())
     }, [])
+
+    useEffect(() => {
+
+        if (saveUser.length !== 0) {
+            console.log("saveUser ::", saveUser);
+            // saveUser.map((val)=> values.r_id === val.user_id)
+            // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
+        }
+    }, [saveUser])
     // console.log(workData[0].workDetails)
     useEffect(() => {
         if (message.length !== 0) {
@@ -80,6 +92,7 @@ const ViewProfileDetail = () => {
         }
 
     }, [message, error])
+
     useEffect(() => {
         if (userProfile.length !== 0) {
             if (workData.length !== 0) {
@@ -87,6 +100,20 @@ const ViewProfileDetail = () => {
                     workData[0].languages.map((value, index) => {
                         return value.language + ", "
                     })
+
+                setStar(userProfile.rating !== undefined ?
+                    userProfile[0].rating.map((id) =>
+                        id.rate
+                    ).reduce((prev, curr) => prev + curr, 0)
+                    /
+                    userProfile[0].rating.map((id) =>
+                        id.user_id
+                    ).length
+
+                    : 0.5)
+
+                setStatus(saveUser.length !== 0 ? saveUser.map((val) => userProfile[0].r_id === val.user_id).includes(true) ? true : false : false)
+                // console.log(status)
 
                 setValues({
                     name: userProfile[0].name,
@@ -108,13 +135,14 @@ const ViewProfileDetail = () => {
                     study: workData[0].education,
                     otherStudy: workData[0].other_education,
                     language: list
+
                 })
                 let workDetails = workData[0]?.workDetails?.filter((data) => data)
                 setFields(workDetails)
             }
         }
     }, [userProfile, workData])
-
+    // console.log(status)
     const [fields, setFields] = useState(
         [
             {
@@ -124,22 +152,32 @@ const ViewProfileDetail = () => {
             }
         ]
     );
-
-
-
-
-    //save icon state
-    const [saveIcon, setSaveIcon] = useState(false)
     //save icon click event
     const onSaveClick = () => {
-        setSaveIcon(!saveIcon)
+        dispatch(saveThunk(rid))
+    }
+    const onRateClick = (val) => {
+
+        setStar(parseFloat(val.target.value))
+
+        const arg = {
+            rid: rid,
+            rate: star
+        }
+        console.log("argument :: ", arg);
+        // console.log("stars update..........................")
+        dispatch(starThunk(arg))
+
+    }
+    //hire button enable disble
+    const [enableHire, setEnableHire] = useState(true)
+    const onHireUser = () => {
+        dispatch(hireUserThunk(rid))
+        setEnableHire(false)
     }
 
     return (
         <>
-            <Grid container paddingTop={"2%"} paddingLeft={"3%"}>
-                <Button variant="contained" color="error" onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
-            </Grid>
             <Card sx={{
                 paddingLeft: "10%",
                 paddingRight: "10%",
@@ -147,7 +185,12 @@ const ViewProfileDetail = () => {
             }} elevation={0}>
                 <CardContent >
                     <Grid container direction={'row'} justifyContent="center">
-                        <Grid item xs={12} sm={4} paddingRight={"10%"} paddingLeft={"5%"} >
+
+                        <Grid container >
+                            <Button variant="contained" color="error" onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
+                            <Button variant="contained" color="error" onClick={() => navigate("/shortlist")}><ArrowBackIosRoundedIcon /> Back</Button>
+                        </Grid>
+                        <Grid item xs={12} sm={4} paddingRight={"5%"} paddingLeft={"3%"} >
                             <CardMedia
                                 component="img"
                                 height={300}
@@ -155,7 +198,7 @@ const ViewProfileDetail = () => {
                                 image="https://images.unsplash.com/photo-1599103892985-253246c5558e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
                                 alt="Paella dish"
                             />
-                            <Button sx={{ marginTop: "4%" }} color="warning" size="small" variant="contained">Hire</Button>
+                            <Button sx={{ marginTop: "4%" }} color="warning" size="small" variant="contained" onClick={onHireUser}>Hire</Button>
 
                         </Grid>
                         <Grid item xs={12} sm={8} align="left" >
@@ -165,12 +208,21 @@ const ViewProfileDetail = () => {
                                     <Typography variant="h3" color="primary" component="div">
                                         {values.name.toUpperCase()}
                                     </Typography>
-                                    <Rating sx={{ marginBottom: 2, marginLeft: 3 }} name="size-small" defaultValue={2} size="medium" />
+                                    <Rating name="half-rating" precision={0.5}
+                                        // value={parseInt(props.values.rate)}
+                                        value={star}
+                                        onChange={(val) =>
+                                            // setStar(parseFloat(val.target.value)),
+                                            onRateClick(val)
+                                        }
+                                        size="medium"
+                                    // onClick={(val)=>onRateClick(val)}
+                                    />
                                 </Grid>
                                 <Grid item xs={12} sm={1} >
                                     <Typography align="right">
                                         <Tooltip title="Save">
-                                            {saveIcon ?
+                                            {status ?
                                                 <BookmarkIcon fontSize="large" onClick={onSaveClick} />
                                                 :
                                                 <BookmarkBorderIcon fontSize="large" onClick={onSaveClick} />
@@ -236,9 +288,9 @@ const ViewProfileDetail = () => {
                                         </Grid>
                                     </Grid>
 
-                                    </Grid>
+                                </Grid>
 
-                                    <Grid item xs={12} sm={6} align="left" >
+                                <Grid item xs={12} sm={6} align="left" >
                                     <Grid container direction={'row'} spacing={2}>
                                         <Grid item xs={4} sm={4} align="left" >
                                             <Typography color="green" gutterBottom variant="button"  >
@@ -359,6 +411,7 @@ const ViewProfileDetail = () => {
                                                 <TableCell sx={{ fontSize: "100%", color: "green" }}>{row.salary}</TableCell>
                                             </TableRow>
                                         ))}
+
                                     </TableBody>
                                 </Table>
                             </TableContainer>

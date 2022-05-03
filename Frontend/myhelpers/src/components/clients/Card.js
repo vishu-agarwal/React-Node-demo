@@ -17,7 +17,7 @@ import { saveThunk } from '../../store/slices/display-slice';
 
 import { starThunk } from '../../store/slices/profile-slice';
 const CardJS = (props) => {
-// console.log("status::",props.status)
+    // console.log("status::",props.status)
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
@@ -25,7 +25,7 @@ const CardJS = (props) => {
     const [star, setStar] = useState(0.5)
     //save icon state
     // const [saveIcon, setSaveIcon] = useState(false)
-    
+
     // props.status ? setSaveIcon(true) : setSaveIcon(false)
     //save icon click event
     const onSaveClick = () => {
@@ -36,27 +36,30 @@ const CardJS = (props) => {
         navigate(`/viewHelperDetails/${props.values.r_id}`)
     }
 
-    const onRateClick = () => {
+    const onRateClick = (val) => {
+
+        setStar(parseFloat(val.target.value))
 
         const arg = {
             rid: props.values.r_id,
             rate: star
         }
-        // console.log(arg);
-        console.log("stars update..........................")
+        console.log("argument :: ", arg);
+        // console.log("stars update..........................")
         dispatch(starThunk(arg))
+
     }
 
     useEffect(() => {
-        console.log("setStars-------------------------")
-   setStar(props.rates) 
-},[])
+        // console.log("setStars-------------------------")
+        setStar(props.rates)
+    }, [props.rates])
     return (
         <>
             <Card sx={{
                 maxWidth: "80%", maxHeight: "100%",
-                marginTop: 3,
-                borderRadius: 3
+                marginTop: 1,
+                borderRadius: 5
             }} elevation={8}
 
             >
@@ -66,12 +69,19 @@ const CardJS = (props) => {
 
                             <Typography color="green" variant="h6" paddingLeft={1} gutterBottom align="left">
                                 {String(props.values.name).toUpperCase()}
+                                {console.log(props.hireStatus !== undefined ? props.hireStatus : '')}
                             </Typography>
+                            {props.hireStatus !== undefined ?
+                                <Typography color={ props.hireStatus ? "green" : "yellow"} variant="button" paddingLeft={1} gutterBottom align="left">
+                                    {props.status ? "Hired!": "Pending!"}
+
+                                </Typography>
+                                : ''}
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
 
                             <Tooltip title="Save">
-                                {props.status ?
+                                {props.SaveStatus ?
                                     <BookmarkIcon fontSize="medium" onClick={onSaveClick} />
                                     :
                                     <BookmarkBorderIcon fontSize="medium" onClick={onSaveClick} />
@@ -83,21 +93,21 @@ const CardJS = (props) => {
                         <Grid item xs={4} sm={5} paddingBottom={2}>
                             <CardMedia
                                 component="img"
-                                height="90%"
+                                height="100%"
                                 sx={{ width: "90%" }}
                                 image="https://images.unsplash.com/photo-1599103892985-253246c5558e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
                                 alt="Paella dish"
                             />
 
-                            <Rating name="half-rating" precision={0.5} 
+                            <Rating name="half-rating" precision={0.5}
                                 // value={parseInt(props.values.rate)}
                                 value={star}
                                 onChange={(val) =>
-                                    setStar(parseFloat(val.target.value))
-                                                                        
-                                    }
+                                    // setStar(parseFloat(val.target.value)),
+                                    onRateClick(val)
+                                }
                                 size="medium"
-                                onClick={onRateClick}
+                            // onClick={(val)=>onRateClick(val)}
                             />
                             {/* {value !== null && (
                                     <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>

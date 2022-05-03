@@ -14,6 +14,9 @@ import bgimg from "./background1.jpg";
 import DisplayData from './components/clients/DisplayData';
 import ViewProfileDetail from './components/clients/ViewProfileDetail';
 import ViewClientProfile from './components/clients/ViewClientProfile';
+import ShortListed from './components/ShortListed';
+import HireUser from './components/HireUser';
+import WorkRequest from './components/WorkRequests';
 function App() {
   const isAuth = useSelector(state => state.loginStore.isAuth)
   // console.log(isAuth)
@@ -42,6 +45,9 @@ function App() {
             <Route path="/display" element={<DisplayData />} />
             <Route path="/viewClientDetails" element={<ViewClientProfile />} />
             <Route path="/viewHelperDetails/:rid" element={<ViewProfileDetail />} />
+            <Route path="/shortlist" element={<ShortListed />} />
+            <Route path="/hireUsers" element={<HireUser />} />
+            <Route path="/requests" element={<WorkRequest />} />
             <Route path="/helperProfile" element={isAuth && <HelperProfile />} />
             <Route path="*" element={"error"} />
           </Routes>

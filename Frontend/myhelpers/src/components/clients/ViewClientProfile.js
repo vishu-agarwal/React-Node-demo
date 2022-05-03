@@ -25,7 +25,7 @@ import CallIcon from '@mui/icons-material/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
 import workProfileActions from '../../store/slices/work-slice'
-
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import profileActions from '../../store/slices/profile-slice'
 import { fetchProfileThunk } from '../../store/slices/profile-slice';
 function createData(skill, experience, price) {
@@ -122,7 +122,9 @@ const ViewClientProfile = () => {
         }} elevation={0}>
             <CardContent >
                 <Grid container direction={'row'} justifyContent="center">
-
+                    <Grid container >
+                        <Button variant="contained" color="error" onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
+                    </Grid>
                     <Grid item xs={12} sm={4} align="center" paddingRight={"10%"} paddingLeft={"5%"} >
                         <CardMedia
                             component="img"

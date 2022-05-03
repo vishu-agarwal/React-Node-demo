@@ -52,7 +52,7 @@ const DisplayData = () => {
 
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    let { displayData, saveUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser,hireUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
 
     // const [values,message, setValues] = useState({
     //     name: '',
@@ -83,20 +83,7 @@ const DisplayData = () => {
     useEffect(() => {
         if (displayData.length !== 0) {
             console.log("displayData :: ", displayData)
-            // let abc
-            // let list =
-            //     workData[0].workDetails.map((value, index) => {
-            //         return value.category.split("(")[0] + ", "
-            //     })
-
-            // setValues({
-            //     porf_mbl: workData[0].profession_mbl,
-            //     time: workData[0].workTime,
-            //     work: list,
-            //     name: userProfile[0].name,
-
-            // })
-            // console.log(list)
+        
 
         }
         
@@ -108,8 +95,11 @@ const DisplayData = () => {
             // saveUser.map((val)=> values.r_id === val.user_id)
             // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
         }
-    }, [ saveUser])
-    let rates, status
+    }, [saveUser])
+    
+
+
+    let rates, status,hireStatus
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
 
@@ -123,11 +113,11 @@ const DisplayData = () => {
                             id="combo-box-demo"
                             options={workSearchBy}
                             defaultValue={workSearchBy[0]}
-                            getOptionLabel={(option) => option.label || ''}
+                            // getOptionLabel={(option) => option.label || ''}
                             // getOptionSelected={(option, value) => option.label === value.label}
                             onInputChange={(e, value) => {
                                 setWorkSearch(value)
-                                setFilterWork('')
+                                // setFilterWork('')
                                 // console.log("set filter value :: ", filterWork)
                             }}
                             // onChange={(val) => setWorkSearch(val)}
@@ -148,7 +138,7 @@ const DisplayData = () => {
                                     id="combo-box-demo"
 
                                     options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : ['']}
-                                    getOptionLabel={(option) => option.label || ''}
+                                    // getOptionLabel={(option) => option.label || ''}
                                     onInputChange={(e, value) => { setFilterWork(value) }}
                                     renderInput={(params) =>
                                         // console.log("params :: ",params);
@@ -156,8 +146,6 @@ const DisplayData = () => {
                                             label="Filter By"
                                             value={filterWork}
                                         />
-
-
                                     }
                                 />
                                 :
@@ -201,7 +189,9 @@ const DisplayData = () => {
 
                                 : null
                             
-                                status = saveUser.length !== 0 ? saveUser.map((val)=> values.r_id === val.user_id).includes(true) ? true:false : false
+                            status = saveUser.length !== 0 ? saveUser.map((val) => values.r_id === val.user_id).includes(true) ? true : false : false
+                            hireStatus = hireUser.length !== 0 ? hireUser.map((val) => values.r_id === val.user_id): false
+                            console.log("hireStatus::",hireStatus)
                         }
                         return <Grid item xs={12} sm={4} align="center" key={index}>
 
@@ -218,7 +208,7 @@ const DisplayData = () => {
                             ).length
                         )
                         }</Grid> */},
-                            <CardJS values={values} rates={rates} status={status} />
+                            <CardJS values={values} rates={rates} saveStatus={status} />
                         </Grid>
                     })
                 }
