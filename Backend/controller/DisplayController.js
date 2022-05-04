@@ -164,10 +164,24 @@ const hireUser = async (req, res) => {
         return res.status(400).send(error.message)
     }
 }
+
+const requestForWork = () => {
+    const userFound = await saveModel.findOne({ r_id: found.r_id, "hireUser.user_id": req.body.user_id })
+    console.log("user Found", userFound)
+    if (userFound) {
+        const update = await saveModel.findOneAndUpdate(
+            { r_id: found.r_id, "hireUser.user_id": req.body.user_id },
+            { $pull: { hireUser: { user_id: req.body.user_id } } },
+            { new: true })
+        console.log("remove user :: ", update)
+        return res.status(200).send()
+    }
+}
 module.exports = {
 
     fetchAllData,
     saveUserData,
     fetchSaveUser,
     hireUser,
+    requestForWork
 }

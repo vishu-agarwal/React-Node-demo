@@ -39,7 +39,7 @@ const ShortListed = (props) => {
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
-    let { displayData, saveUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser,hireUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
 
     // const [values,message, setValues] = useState({
     //     name: '',
@@ -99,7 +99,7 @@ const ShortListed = (props) => {
 
     // }, [message, error])
 
-    let rates, status
+    let rates ,hireStatus
     return (
         <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -146,10 +146,10 @@ const ShortListed = (props) => {
                                                         : null
                                                 }
 
-
+                                                hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
                                                 return <Grid marginBottom={1} item xs={12} sm={12} align="center" key={index}>
 
-                                                    <CardJS values={values} rates={rates} saveStatus={true} />
+                                                    <CardJS values={values} rates={rates} saveStatus={true} hireStatus={hireStatus} />
                                                 </Grid>
                                             }
                                         })

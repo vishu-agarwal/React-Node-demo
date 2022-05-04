@@ -190,8 +190,9 @@ const DisplayData = () => {
                                 : null
                             
                             status = saveUser.length !== 0 ? saveUser.map((val) => values.r_id === val.user_id).includes(true) ? true : false : false
-                            hireStatus = hireUser.length !== 0 ? hireUser.map((val) => values.r_id === val.user_id): false
-                            console.log("hireStatus::",hireStatus)
+                            // hireStatus = hireUser.length !== 0 ? hireUser.map((val) => values.r_id === val.user_id).includes(true) ?  : false: false
+                            hireStatus = hireUser.lenght !==0 ? hireUser.filter(val => values.r_id === val.user_id ).map((val)=> val.status) : ''
+                            // console.log("hireStatus::",hireStatus)
                         }
                         return <Grid item xs={12} sm={4} align="center" key={index}>
 
@@ -208,7 +209,7 @@ const DisplayData = () => {
                             ).length
                         )
                         }</Grid> */},
-                            <CardJS values={values} rates={rates} saveStatus={status} />
+                            <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
                         </Grid>
                     })
                 }

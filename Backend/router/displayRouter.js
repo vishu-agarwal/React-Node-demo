@@ -12,6 +12,7 @@ router.post("/myhelpers/saveUser/:rid",DisplayController.saveUserData)
 router.get("/myhelpers/fetchSaveUser/:rid",DisplayController.fetchSaveUser)
 // hire user
 router.post("/myhelpers/hireUser/:rid", DisplayController.hireUser)
-
+// requestfor work
+router.get("/myhelpers/requestWork/:rid",DisplayController.requestForWork)
 
 module.exports = router
