@@ -17,7 +17,7 @@ const clientSchema = new mongoose.Schema(
       trim: true,
     },
     avatar: {
-      type: String,
+      type: Object,
       // required: true,
     },
     aadhar_card: {
@@ -128,9 +128,7 @@ const clientSchema = new mongoose.Schema(
         
         }
    }
-    ],
-    
-    
+    ],    
   },
   {
     timestamps: true,

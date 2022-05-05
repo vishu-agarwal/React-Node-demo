@@ -14,5 +14,6 @@ router.get("/myhelpers/fetchSaveUser/:rid",DisplayController.fetchSaveUser)
 router.post("/myhelpers/hireUser/:rid", DisplayController.hireUser)
 // requestfor work
 router.get("/myhelpers/requestWork/:rid",DisplayController.requestForWork)
-
+//search router
+router.get("/myhelpers/search/:field/:searchValue", DisplayController.searching)
 module.exports = router

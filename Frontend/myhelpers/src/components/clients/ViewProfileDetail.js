@@ -61,7 +61,7 @@ const ViewProfileDetail = () => {
         study: '',
         otherStudy: '',
         language: '',
-
+avatar:'',
     });
     const [status, setStatus] = useState(false)
     const [star, setStar] = useState(0.5)
@@ -113,8 +113,8 @@ const ViewProfileDetail = () => {
                     : 0.5)
 
                 setStatus(saveUser.length !== 0 ? saveUser.map((val) => userProfile[0].r_id === val.user_id).includes(true) ? true : false : false)
-                // console.log(status)
-
+                
+                console.log(userProfile[0].avatar)
                 setValues({
                     name: userProfile[0].name,
                     dob: userProfile[0].dob,
@@ -134,7 +134,8 @@ const ViewProfileDetail = () => {
                     workTime: workData[0].workTime,
                     study: workData[0].education,
                     otherStudy: workData[0].other_education,
-                    language: list
+                    language: list,
+                    avatar : userProfile[0].avatar
 
                 })
                 let workDetails = workData[0]?.workDetails?.filter((data) => data)
@@ -195,8 +196,8 @@ const ViewProfileDetail = () => {
                                 component="img"
                                 height={300}
                                 sx={{ marginTop: 5, width: "100%" }}
-                                image="https://images.unsplash.com/photo-1599103892985-253246c5558e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
-                                alt="Paella dish"
+                                image={`http://localhost:3001/${values.avatar}`}
+                                alt="Profile Image"
                             />
                             <Button sx={{ marginTop: "4%" }} color="warning" size="small" variant="contained" onClick={onHireUser}>Hire</Button>
 

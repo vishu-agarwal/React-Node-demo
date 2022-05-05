@@ -7,7 +7,7 @@ require("./mongooseCon")
 const app = express()
 app.use(express.json())
 
-app.use(express.static('image'))
+app.use('/image',express.static('image'))
 
 const regRoute = require("./router/regRouter")
 app.use(regRoute)

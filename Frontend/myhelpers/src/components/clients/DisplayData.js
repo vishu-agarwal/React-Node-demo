@@ -52,7 +52,7 @@ const DisplayData = () => {
 
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    let { displayData, saveUser,hireUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser, hireUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
 
     // const [values,message, setValues] = useState({
     //     name: '',
@@ -83,26 +83,26 @@ const DisplayData = () => {
     useEffect(() => {
         if (displayData.length !== 0) {
             console.log("displayData :: ", displayData)
-        
+
 
         }
-        
+
     }, [displayData])
     useEffect(() => {
-      
+
         if (saveUser.length !== 0) {
             console.log("saveUser ::", saveUser);
             // saveUser.map((val)=> values.r_id === val.user_id)
             // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
         }
     }, [saveUser])
-    
 
 
-    let rates, status,hireStatus
+
+    let rates, status, hireStatus
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
-
+    const [searchText, setSearchText] = useState('')
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={5}>
             <Grid item xs={10} sm={10} >
@@ -115,9 +115,13 @@ const DisplayData = () => {
                             defaultValue={workSearchBy[0]}
                             // getOptionLabel={(option) => option.label || ''}
                             // getOptionSelected={(option, value) => option.label === value.label}
-                            onInputChange={(e, value) => {
-                                setWorkSearch(value)
-                                // setFilterWork('')
+                            onInputChange={(e, values) => {
+
+                                // if (document.getElementById('er')) {
+                                //     document.getElementById('er').value = "";
+                                // }
+                                setWorkSearch(values)
+
                                 // console.log("set filter value :: ", filterWork)
                             }}
                             // onChange={(val) => setWorkSearch(val)}
@@ -139,10 +143,21 @@ const DisplayData = () => {
 
                                     options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : ['']}
                                     // getOptionLabel={(option) => option.label || ''}
-                                    onInputChange={(e, value) => { setFilterWork(value) }}
+                                    onInputChange={(e, value) => setFilterWork(value)}
+                                    // filterOptions={(options, params) => {
+
+                                    // const opt = options.filter(r => tags.filter(x => x === r).length === 0)
+                                    // const filtered = filter(opt, params);
+                                    // // Suggest the creation of a new value
+                                    // if (params.inputValue !== '' && tags.filter(x => x === params.inputValue).length === 0) {
+                                    //     filtered.push(params.inputValue)
+                                    // }
+                                    // return filtered
+                                    // }}
                                     renderInput={(params) =>
-                                        // console.log("params :: ",params);
+
                                         <TextField {...params}
+                                            id="er"
                                             label="Filter By"
                                             value={filterWork}
                                         />
@@ -166,6 +181,8 @@ const DisplayData = () => {
                                             </InputAdornment>
                                         )
                                     }}
+                                    value={searchText}
+                                    onChange={(val) => setSearchText(val.target.value)}
                                 />
 
                         }
@@ -173,7 +190,7 @@ const DisplayData = () => {
                 </Grid>
             </Grid>
             <Grid margin={0} container direction="row" >
-               
+
                 {
                     // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
                     displayData.map((values, index) => {
@@ -188,10 +205,10 @@ const DisplayData = () => {
                                 ).length
 
                                 : null
-                            
+
                             status = saveUser.length !== 0 ? saveUser.map((val) => values.r_id === val.user_id).includes(true) ? true : false : false
                             // hireStatus = hireUser.length !== 0 ? hireUser.map((val) => values.r_id === val.user_id).includes(true) ?  : false: false
-                            hireStatus = hireUser.lenght !==0 ? hireUser.filter(val => values.r_id === val.user_id ).map((val)=> val.status) : ''
+                            hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
                             // console.log("hireStatus::",hireStatus)
                         }
                         return <Grid item xs={12} sm={4} align="center" key={index}>

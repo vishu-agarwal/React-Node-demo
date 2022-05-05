@@ -5,35 +5,10 @@ const saveModel = require("../model/tblSaveUser")
 //fetch all user data
 const fetchAllData = async (req, res) => {
     try {
-
+        console.log("call fetchHelper function")
         role = req.params.role
         if (role === "Client") {
-            //   fetchHelper = await helperModel.find()
-
-            // const abc = await profileModel.find()
-
-            // const totIds = abc.map((item) => {
-            //     if (item.r_id.charAt(0) === "H"){
-            //         return item.rating.map((id) =>
-            //             id.user_id
-            //         ).length
-            //     }
-            // }
-            // );
-
-            // const totRates = abc.map((item) =>
-            //     item.rating.map((id) =>
-            //         id.rate
-            //     ).reduce((prev, curr) => prev + curr, 0)
-            // );
-            // const result = totRates.map(function (n, i) { return n / totIds[i]; })
-            // console.log(totIds, totRates, result)
-            // const rates = result.map((item) => {
-            //     return isNaN(item) ? item = 0 : item
-
-            // })
-            // // console.log(rate)
-
+            console.log("call fetchHelper function")
             const fetchHelper = await helperModel.aggregate([
                 {
                     $lookup:
@@ -55,6 +30,7 @@ const fetchAllData = async (req, res) => {
                         "workDetails.category": 1,
                         "name": "$abc.name",
                         "dob": "$abc.dob",
+                        "avatar": "$abc.avatar",
                         "rating": "$abc.rating"
                     }
                 }
@@ -64,12 +40,12 @@ const fetchAllData = async (req, res) => {
                 throw new Error("Data not found !")
             }
             // console.log(fetchHelper)
-            res.status(200).send(fetchHelper)
+            return res.status(200).send(fetchHelper)
         }
 
 
     } catch (error) {
-        res.status(400).send(error.message)
+        return res.status(400).send(error.message)
     }
 
 }
@@ -136,7 +112,7 @@ const hireUser = async (req, res) => {
 
             // console.log(req.body)
             const userFound = await saveModel.findOne({ r_id: found.r_id, "hireUser.user_id": req.body.user_id })
-            console.log("user Found",userFound)
+            console.log("user Found", userFound)
             if (userFound) {
                 const update = await saveModel.findOneAndUpdate(
                     { r_id: found.r_id, "hireUser.user_id": req.body.user_id },
@@ -145,7 +121,7 @@ const hireUser = async (req, res) => {
                 console.log("remove user :: ", update)
                 return res.status(200).send()
             }
-            const user = found.hireUser.concat({user_id : req.body.user_id,status:false})
+            const user = found.hireUser.concat({ user_id: req.body.user_id, status: false })
             const update = await saveModel.findOneAndUpdate({ r_id: req.params.rid }, { hireUser: user }, { new: true })
             console.log("update newUser :: ", update);
             return res.status(200).send()
@@ -153,7 +129,7 @@ const hireUser = async (req, res) => {
         }
         const newUser = new saveModel({
             r_id: req.params.rid,
-            hireUser: [{ user_id: req.body.user_id,status:false }],
+            hireUser: [{ user_id: req.body.user_id, status: false }],
         })
 
         await newUser.save();
@@ -165,7 +141,7 @@ const hireUser = async (req, res) => {
     }
 }
 
-const requestForWork = () => {
+const requestForWork = async (req, res) => {
     const userFound = await saveModel.findOne({ r_id: found.r_id, "hireUser.user_id": req.body.user_id })
     console.log("user Found", userFound)
     if (userFound) {
@@ -177,11 +153,85 @@ const requestForWork = () => {
         return res.status(200).send()
     }
 }
+
+const searching = async (req, res) => {
+    let field = req.params.field
+    // req.params.seachValue
+    console.log(field, req.params.searchValue)
+    let field2 = ""
+    field === "Location" ? field = "address.pincode" : field === "Name" ? field = "name" : field === "Work Category" ? field2 = "workDetails.category" : field === "Work Timing" ? field2 = "workTime" : ""
+    if (field2) {
+        console.log("field2::",field2)
+        const found = await helperModel.find({ [field2]: req.params.searchValue })
+        console.log(found)
+        if (found.length === 0) {
+            console.log(found)
+            req.params.role = "Client"
+            fetchAllData(req, res)
+        }
+        else {
+            
+//             const all = await profileModel.find()
+//             const idIndex = all.findIndex((c) => c.r_id === found);
+// console.log("index::",idIndex)
+            const foundHelper = found.map(async (val) => await profileModel.find({ r_id: val.r_id }))
+            // const foundHelper = await profileModel.find({ r_id: found[1].r_id })
+            console.log("found :: ", foundHelper)
+            if (foundHelper.length !== 0) {
+
+                const fetchHelper = {
+                    r_id: foundHelper[0].r_id,
+                    workTime: found[0].workTime,
+                    profession_mbl: foundHelper[0].profession_mbl,
+                    "workDetails.category": found[0].workDetails[0].category,
+                    "name": foundHelper[0].name,
+                    "dob": foundHelper[0].dob,
+                    "avatar": foundHelper[0].avatar,
+                    "rating": foundHelper[0].rating
+                }
+
+                return res.status(200).send(fetchHelper)
+            }
+        }
+    }
+    else if (field) {
+        console.log("field::",field)
+        const found = await profileModel.find({ [field]: req.params.searchValue })
+        if (found.length === 0) {
+            console.log("not found :: ",found)
+            req.params.role = "Client"
+            fetchAllData(req, res)
+        }
+
+        else {
+            const foundHelper = await helperModel.find({ r_id: found.r_id })
+            console.log("not found :: ", foundHelper)
+            if (foundHelper.length !== 0) {
+
+                const fetchHelper = {
+                    r_id: foundHelper.r_id,
+                    workTime: foundHelper.workTime,
+                    profession_mbl: found.profession_mbl,
+                    "workDetails.category": foundHelper.workDetails.category,
+                    "name": found.name,
+                    "dob": found.dob,
+                    "avatar": found.avatar,
+                    "rating": found.rating
+                }
+
+                return res.status(200).send(fetchHelper)
+            }
+            
+        }
+    }
+}
+
 module.exports = {
 
     fetchAllData,
     saveUserData,
     fetchSaveUser,
     hireUser,
-    requestForWork
+    requestForWork,
+    searching
 }

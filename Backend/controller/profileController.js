@@ -26,10 +26,10 @@ const createProfile = async (req, res) => {
 }
 const fetchProfile = async (req, res) => {
     try {
-
+console.log("params id ",req.params.rid)
         const isunique = await profileModel.find({ r_id: req.params.rid })
         if (isunique.length === 0) {
-            throw new Error("Please add your profile!");
+            throw new Error("This Profile is not available!");
         }
         else {
             return res.status(200).send(isunique)
@@ -63,7 +63,7 @@ const updateStar = async (req, res) => {
                     { new: true }
                 )
                 console.log("new Update ::", updtStar)
-                res.status(200).send()
+                return res.status(200).send()
                 
                 }
             
@@ -72,7 +72,7 @@ const updateStar = async (req, res) => {
 
                 const update = await found.save();
                 console.log("old user :: \n",update)
-                res.status(200).send();
+                return res.status(200).send();
             } 
 
         }
@@ -112,7 +112,7 @@ const updateStar = async (req, res) => {
         //     return res.status(200).send()
     }
     catch (error) {
-        res.status(400).send(error.message)
+      return  res.status(400).send(error.message)
     }
 
 }
@@ -148,16 +148,17 @@ const uploadImg = multer({
 
 const avatarUpload = async (req, res) => {
     try {
-        console.log("req.file", req.file)
         // await req.user.save()
-        // console.log(req.params.rid)
+        console.log(req.file)
+        const url = req.protocol + '://' + req.get('host')
+        console.log("req.file", url + '/image/' + req.file.filename)
         const r_id = req.params.rid
         const foundUser = await regModel.findOne({ r_id })
         if (!foundUser) {
             throw new Error("Please first register youself!")
         }
 
-        console.log("found :: ", foundUser)
+        // console.log("found :: ", foundUser)
         const found = await profileModel.findOne({ r_id })
         if (found) {
             const updt = await profileModel.findOneAndUpdate({ r_id }, {
@@ -173,6 +174,7 @@ const avatarUpload = async (req, res) => {
             await newpro.save();
             console.log(newpro);
         }
+        
         res.status(200).send("Profile Photo sucessfully uploaded")
     }
     catch (error) {

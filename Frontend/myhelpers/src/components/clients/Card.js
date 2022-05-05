@@ -69,7 +69,7 @@ const CardJS = (props) => {
 
                             <Typography color="green" variant="h6" paddingLeft={1} gutterBottom align="left">
                                 {String(props.values.name).toUpperCase()}
-                                
+
                             </Typography>
 
                         </Grid>
@@ -90,8 +90,8 @@ const CardJS = (props) => {
                                 component="img"
                                 height="100%"
                                 sx={{ width: "90%" }}
-                                image="https://images.unsplash.com/photo-1599103892985-253246c5558e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
-                                alt="Paella dish"
+                                image={props.values.avatar[0]}
+                                alt="Profile Image"
                             />
 
                             <Rating name="half-rating" precision={0.5}
@@ -132,15 +132,13 @@ const CardJS = (props) => {
                             {
                                 props.hireStatus.length !== 0 ?
                                     // console.log("status::",)
-                                    // <Typography gutterBottom sx={{ fontSize: 15 }}  >
-                                    //     {"Hire Status :"}
-                                    // </Typography>
-                                <Typography color={props.hireStatus[0] ? "#1b5e20" : "#faaf00"} variant="h6" paddingLeft={1} gutterBottom align="left">
-                                    {props.hireStatus[0] ? "Hired!" : "Pending!"}
-                                </Typography>
+                                    <>
+                                        <Typography gutterBottom sx={{ fontSize: 15 }} display="inline">Hire Status :</Typography>
+                                        <Typography gutterBottom color={props.hireStatus[0] ? "#1b5e20" : "#faaf00"} sx={{ fontSize: 15 }} display="inline"> {props.hireStatus[0] ? "Hired!" : "Pending!"}</Typography>                                   
+                                    </>
                                     : ''
                             }
-                            <Button sx={{ float: "right", padding: 0, paddingTop: "5%", fontSize: 15 }} onClick={onViewClick}>View Details </Button>
+                            <Button sx={{ float: "right", padding: 0, paddingTop: 3, fontSize: 15 }} onClick={onViewClick}>View Details </Button>
                         </Grid>
 
                     </Grid>

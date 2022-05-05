@@ -106,7 +106,7 @@ const ClientProfile = () => {
 
     }, [open, message, error])
 
-    const str2blob = txt => new Blob([txt]);
+    // const str2blob = txt => new Blob([txt]);
     useEffect(() => {
         if (userProfile.length !== 0) {
             setValues({
@@ -129,14 +129,15 @@ const ClientProfile = () => {
             })
             setfile({
                 ...file,
-                dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+                // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+                dispFile:userProfile[0].avatar
                 
             })
         }
     }, [userProfile])
 
    
-    console.log(values,file.dispFile)
+    // console.log(values,file.dispFile)
     const addWorkHandler = () => {
         setOpen(true);
     }
@@ -174,6 +175,7 @@ const ClientProfile = () => {
                     }
                 }
                 // console.log("config :: ", config)
+                setOnClick(true)
                 dispatch(aadharThunk(formdata, config))
                 dispatch(createProfileThunk({ values }))
                 // setClicked(true)
@@ -197,7 +199,7 @@ const ClientProfile = () => {
 
         // console.log("onchange")
         let avatarFile = e.target.files[0]
-        console.log(URL.createObjectURL(avatarFile))
+        console.log(avatarFile)
         if (avatarFile && avatarFileType.includes(avatarFile.type)) {
             // size in bytes
             if (avatarFile.size <= 512000) {
@@ -233,7 +235,7 @@ const ClientProfile = () => {
             }
             // console.log("config :: ", config)
 
-            dispatch(avatarThunk(formdata, config))
+            dispatch(avatarThunk(formdata, config,file.upldfile))
             setenable(false)
             // setClicked(true)
             // console.log("values:: ", values)
@@ -272,6 +274,7 @@ const ClientProfile = () => {
             dispFile: ''
         })
     }
+    const [onClick,setOnClick]=useState(false)
     const hiddenFileInput = React.useRef(null);
 
     // const handleClick = event => {
@@ -337,11 +340,11 @@ const ClientProfile = () => {
                                     fullWidth
                                     value={values.fname}
                                     onChange={(val) => { setValues((prevState) => { return { ...prevState, fname: val.target.value } }) }}
+                                    helperText={onClick && values.fname.length === '' ? "please enter a value" : ''}
                                 />
                             </Grid>
                             <Grid xs={12} sm={6} item>
                                 <TextField
-
                                     required
                                     variant='outlined'
                                     id="lastname"
@@ -581,7 +584,7 @@ const ClientProfile = () => {
                     </form>
                     {role === "Helper" &&
                         <Grid xs={12} sm={6} item>
-                            <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
+                            <Button variant="contained" color='primary' onClick={addWorkHandler}  fullWidth sx={{ marginTop: 2 }}>
                                 Add Work Details
                             </Button>
                             <Backdrop
