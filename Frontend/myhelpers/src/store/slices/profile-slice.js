@@ -11,7 +11,7 @@ const initialState = {
 export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
     try {
         const data = {
-            user_id:"C101",
+            user_id:"C106",
             rate:arg.rate
         }
         

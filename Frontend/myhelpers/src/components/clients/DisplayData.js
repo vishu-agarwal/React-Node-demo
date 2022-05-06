@@ -9,13 +9,13 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CardJS from "./Card"
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
+import { fetchAllThunk, fetchSaveUserThunk, searchThunk } from '../../store/slices/display-slice';
 import workProfileActions from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 
 const workSearchBy = [
-    { label: 'All' },
+    // { label: 'All' },
     { label: 'Work Category' },
     { label: 'Work Timing' },
     { label: 'Location' },
@@ -54,18 +54,14 @@ const DisplayData = () => {
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     let { displayData, saveUser, hireUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
 
-    // const [values,message, setValues] = useState({
-    //     name: '',
-    //     porf_mbl: '',
-    //     age: '',
-    //     work: '',
-    //     experience: '',
-    //     time: '',
-    // });
+    let rates, status, hireStatus
+    const [workSearch, setWorkSearch] = useState('')
+    const [filterWork, setFilterWork] = useState('')
+  
     useEffect(() => {
         dispatch(fetchAllThunk())
         dispatch(fetchSaveUserThunk())
-    }, [])
+    }, [workSearch])
 
     // console.log(workData[0].workDetails)
     useEffect(() => {
@@ -97,22 +93,27 @@ const DisplayData = () => {
         }
     }, [saveUser])
 
+    const searchChange = (e) => {
 
+        // e.preventDefault();
+        console.log(workSearch, filterWork)
+        const arg = {
+            workSearch, filterWork
+        }
+        dispatch(searchThunk(arg))
+    }
 
-    let rates, status, hireStatus
-    const [workSearch, setWorkSearch] = useState('')
-    const [filterWork, setFilterWork] = useState('')
-    const [searchText, setSearchText] = useState('')
+    // const [searchText, setSearchText] = useState('')
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={5}>
-            <Grid item xs={10} sm={10} >
-                <Grid container spacing={3}>
+            <Grid item xs={11} sm={11} >
+                <Grid container spacing={2}>
                     <Grid item xs={12} sm={2.5}>
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
                             options={workSearchBy}
-                            defaultValue={workSearchBy[0]}
+                            // defaultValue={workSearchBy[0]}
                             // getOptionLabel={(option) => option.label || ''}
                             // getOptionSelected={(option, value) => option.label === value.label}
                             onInputChange={(e, values) => {
@@ -135,57 +136,76 @@ const DisplayData = () => {
 
                     <Grid item xs={12} sm={2.5}>
                         {
-                            workSearch === "Work Category" || workSearch === "Work Timing" ?
 
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-
-                                    options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : ['']}
-                                    // getOptionLabel={(option) => option.label || ''}
-                                    onInputChange={(e, value) => setFilterWork(value)}
-                                    // filterOptions={(options, params) => {
-
-                                    // const opt = options.filter(r => tags.filter(x => x === r).length === 0)
-                                    // const filtered = filter(opt, params);
-                                    // // Suggest the creation of a new value
-                                    // if (params.inputValue !== '' && tags.filter(x => x === params.inputValue).length === 0) {
-                                    //     filtered.push(params.inputValue)
-                                    // }
-                                    // return filtered
-                                    // }}
-                                    renderInput={(params) =>
-
-                                        <TextField {...params}
-                                            id="er"
-                                            label="Filter By"
-                                            value={filterWork}
-                                        />
-                                    }
-                                />
+                            workSearch === "" ?
+                                ""
                                 :
-                                <TextField
-                                    id="search-bar"
-                                    className="text"
-                                    onInput={(e) => {
-                                        // setSearchQuery(e.target.value);
-                                    }}
-                                    label={` ${workSearch === "Location" ? "Enter Pincode" : workSearch === "Name" ? "Enter Name" : "Search Input"}`}
-                                    variant="outlined"
-                                    placeholder="Search..."
-                                    fullWidth
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <SearchIcon />
-                                            </InputAdornment>
-                                        )
-                                    }}
-                                    value={searchText}
-                                    onChange={(val) => setSearchText(val.target.value)}
-                                />
+
+                                workSearch === "Work Category" || workSearch === "Work Timing" ?
+
+                                    <Autocomplete
+                                        disablePortal
+                                        id="combo-box-demo"
+
+                                        options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : ['']}
+                                        // getOptionLabel={(option) => option.label || ''}
+                                        onInputChange={(e, value) => setFilterWork(value)}
+                                        // filterOptions={(options, params) => {
+
+                                        // const opt = options.filter(r => tags.filter(x => x === r).length === 0)
+                                        // const filtered = filter(opt, params);
+                                        // // Suggest the creation of a new value
+                                        // if (params.inputValue !== '' && tags.filter(x => x === params.inputValue).length === 0) {
+                                        //     filtered.push(params.inputValue)
+                                        // }
+                                        // return filtered
+                                        // }}
+                                        renderInput={(params) =>
+
+                                            <TextField {...params}
+                                                id="er"
+                                                label="Filter By"
+                                                value={filterWork}
+                                            />
+                                        }
+                                        onChange={() => searchChange()}
+                                    />
+
+                                    :
+                                    <>
+                                        {/* <Grid container>
+                                            <Grid item xs={11} sm={11}> */}
+                                        <TextField
+                                            id="search-bar"
+                                            className="text"
+
+                                            label={` ${workSearch === "Location" ? "Enter Pincode" : workSearch === "Name" ? "Enter Name" : "Search Input"}`}
+                                            variant="outlined"
+                                            placeholder="Search..."
+                                            fullWidth
+                                            // InputProps={{
+                                            //     endAdornment: (
+                                            //         <InputAdornment position="end">
+                                            //             <SearchIcon onClick={(e) => searchChange(e)} />
+                                            //         </InputAdornment>
+                                            //     )
+                                            // }}
+                                            value={filterWork}
+                                            onChange={(val) => setFilterWork(val.target.value)}
+                                        />
+                                        {/* </Grid>
+                                           
+                                            {/* </Grid>
+                                        </Grid> */}
+                                    </>
 
                         }
+                    </Grid>
+                    <Grid item xs={12} sm={0.5} marginTop={3}>
+                        {workSearch !== "" &&
+                            <InputAdornment position="end">
+                                <SearchIcon onClick={(e) => searchChange(e)} />
+                            </InputAdornment>}
                     </Grid>
                 </Grid>
             </Grid>
@@ -232,7 +252,7 @@ const DisplayData = () => {
                 }
 
             </Grid>
-        </Grid>
+        </Grid >
     )
 }
 

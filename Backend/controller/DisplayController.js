@@ -33,13 +33,14 @@ const fetchAllData = async (req, res) => {
                         "avatar": "$abc.avatar",
                         "rating": "$abc.rating"
                     }
-                }
+                },
+                
 
             ])
             if (fetchHelper.length === 0) {
                 throw new Error("Data not found !")
             }
-            // console.log(fetchHelper)
+            console.log(fetchHelper)
             return res.status(200).send(fetchHelper)
         }
 
@@ -154,74 +155,93 @@ const requestForWork = async (req, res) => {
     }
 }
 
+// const foundHelperFunc = (val) => {
+//     return new Promise((resolve, reject) => {
+
+//         profileModel.find({ r_id: val.r_id }).then((res) => {
+//             resolve(res)
+//         }).catch((e) => {
+//             reject(e)
+//         })
+//     })
+// }
+
 const searching = async (req, res) => {
-    let field = req.params.field
+    
+    let field = req.query.field
     // req.params.seachValue
-    console.log(field, req.params.searchValue)
+    console.log(field, req.query.searchValue)
     let field2 = ""
     field === "Location" ? field = "address.pincode" : field === "Name" ? field = "name" : field === "Work Category" ? field2 = "workDetails.category" : field === "Work Timing" ? field2 = "workTime" : ""
     if (field2) {
-        console.log("field2::",field2)
-        const found = await helperModel.find({ [field2]: req.params.searchValue })
+        console.log("field2::", field2)
+        const found = await helperModel.find({ [field2]: req.query.searchValue })
         console.log(found)
         if (found.length === 0) {
             console.log(found)
             req.params.role = "Client"
-            fetchAllData(req, res)
+          return  fetchAllData(req, res)
         }
         else {
-            
-//             const all = await profileModel.find()
-//             const idIndex = all.findIndex((c) => c.r_id === found);
-// console.log("index::",idIndex)
-            const foundHelper = found.map(async (val) => await profileModel.find({ r_id: val.r_id }))
-            // const foundHelper = await profileModel.find({ r_id: found[1].r_id })
-            console.log("found :: ", foundHelper)
-            if (foundHelper.length !== 0) {
-
-                const fetchHelper = {
-                    r_id: foundHelper[0].r_id,
-                    workTime: found[0].workTime,
-                    profession_mbl: foundHelper[0].profession_mbl,
-                    "workDetails.category": found[0].workDetails[0].category,
-                    "name": foundHelper[0].name,
-                    "dob": foundHelper[0].dob,
-                    "avatar": foundHelper[0].avatar,
-                    "rating": foundHelper[0].rating
+            let fetch = []
+            const foundHelper = await Promise.all(
+                found.map((val) => {
+                    return profileModel.find({ r_id: val.r_id }).then((res) => {
+                        fetch.push({
+                            r_id: val.r_id,
+                            workDetails:[ val.workDetails.map((cat) => { return { category: cat.category } })],
+                            workTime: val.workTime,
+                            profession_mbl: val.profession_mbl,
+                            name: res.map((val) => val.name),
+                            dob: res.map((val) => val.dob),
+                            avatar: res.map((val) => val.avatar),
+                            rating: res.map((val) => val.rating)
+                        })
+                    }).catch((error) => {
+                        return res.status(400).send(error.massage)
+                    })
                 }
-
-                return res.status(200).send(fetchHelper)
-            }
+                ))
+            // console.log("fetch ::", fetch)
+            return res.status(200).send(fetch)
         }
     }
     else if (field) {
-        console.log("field::",field)
-        const found = await profileModel.find({ [field]: req.params.searchValue })
+        // console.log("field::", req.params.searchValue)
+        const found = await profileModel.find({ [field]: req.query.searchValue })
+        console.log("found::",found)
         if (found.length === 0) {
-            console.log("not found :: ",found)
+            console.log("not found :: ", found)
             req.params.role = "Client"
-            fetchAllData(req, res)
+           return fetchAllData(req, res)
         }
 
         else {
-            const foundHelper = await helperModel.find({ r_id: found.r_id })
-            console.log("not found :: ", foundHelper)
-            if (foundHelper.length !== 0) {
-
-                const fetchHelper = {
-                    r_id: foundHelper.r_id,
-                    workTime: foundHelper.workTime,
-                    profession_mbl: found.profession_mbl,
-                    "workDetails.category": foundHelper.workDetails.category,
-                    "name": found.name,
-                    "dob": found.dob,
-                    "avatar": found.avatar,
-                    "rating": found.rating
+            let fetch = []
+            const foundHelper = await Promise.all(
+                found.map((val) => {
+                    return helperModel.find({ r_id: val.r_id })
+                        .then((res) => {
+                            console.log(res)
+                        fetch.push({
+                            r_id: res.map((val)=>val.r_id),
+                            workDetails: res.map((val)=>val.workDetails.map((cat) => { return { category: cat.category } })),
+                            workTime: res.map((val)=>val.workTime),
+                            profession_mbl: res.map((val)=>val.profession_mbl),
+                            name: val.name,
+                            dob: val.dob,
+                            avatar: val.avatar,
+                            rating:[val.rating]
+                        })
+                            // console.log(fetch)
+                    }).catch((error) => {
+                        return res.status(400).send(error)
+                    })
                 }
-
-                return res.status(200).send(fetchHelper)
-            }
-            
+                ))
+            // console.log(foundHelper)
+            // console.log("fetch ::", fetch)
+            return res.status(200).send(fetch)
         }
     }
 }

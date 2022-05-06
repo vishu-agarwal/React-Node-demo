@@ -54,6 +54,23 @@ const CardJS = (props) => {
         // console.log("setStars-------------------------")
         setStar(props.rates)
     }, [props.rates])
+
+    const ageDate = () => {
+        var today = new Date();
+        console.log(today)
+        var birthDate = new Date(props.values.dob);
+        console.log(birthDate)
+        var age = today.getFullYear() - birthDate.getFullYear();
+        console.log(age)
+        var m = today.getMonth() - birthDate.getMonth();
+        console.log(m)
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        console.log(age)
+        return age;
+}
+
     return (
         <>
             <Card sx={{
@@ -116,13 +133,28 @@ const CardJS = (props) => {
                                 Mobile No : {props.values.profession_mbl}
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
-                                Age : Age
+                                {/* //yyyy-mm-dd */}
+                                Age :
+                                {
+                                    ageDate()
+                                }
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
                                 Work : {
-                                    props.values.workDetails.map((value, index) => {
-                                        return value.category.split("(")[0] + ", "
-                                    })
+                                    Array.isArray(props.values.workDetails[0]) ?
+                                        props.values.workDetails[0].map((value, index) =>
+                                            // console.log(value)
+
+                                            value.category.split("(")[0] + ", "
+                                        )
+
+                                        :
+                                        props.values.workDetails.map((value, index) =>
+
+                                            // console.log(value)
+                                            value.category.split("(")[0] + ", "
+                                        )
+                                    // console.log(props.values)
                                 }
                             </Typography>
 
@@ -134,7 +166,7 @@ const CardJS = (props) => {
                                     // console.log("status::",)
                                     <>
                                         <Typography gutterBottom sx={{ fontSize: 15 }} display="inline">Hire Status :</Typography>
-                                        <Typography gutterBottom color={props.hireStatus[0] ? "#1b5e20" : "#faaf00"} sx={{ fontSize: 15 }} display="inline"> {props.hireStatus[0] ? "Hired!" : "Pending!"}</Typography>                                   
+                                        <Typography gutterBottom color={props.hireStatus[0] ? "#1b5e20" : "#faaf00"} sx={{ fontSize: 15 }} display="inline"> {props.hireStatus[0] ? "Hired!" : "Pending!"}</Typography>
                                     </>
                                     : ''
                             }

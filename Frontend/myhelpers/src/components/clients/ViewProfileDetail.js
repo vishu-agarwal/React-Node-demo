@@ -1,4 +1,5 @@
-import * as React from "react";
+import * as React from 'react';
+import Backdrop from '@mui/material/Backdrop';
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -29,6 +30,7 @@ import { hireUserThunk, fetchSaveUserThunk, saveThunk } from '../../store/slices
 
 import profileActions from '../../store/slices/profile-slice'
 import { fetchProfileThunk, starThunk } from '../../store/slices/profile-slice';
+import HireForm from './HireForm';
 
 const ViewProfileDetail = () => {
     const navigate = useNavigate()
@@ -63,6 +65,9 @@ const ViewProfileDetail = () => {
         language: '',
 avatar:'',
     });
+    //for open module
+    const [open, setOpen] = useState(false);
+
     const [status, setStatus] = useState(false)
     const [star, setStar] = useState(0.5)
     useEffect(() => {
@@ -81,17 +86,19 @@ avatar:'',
     }, [saveUser])
     // console.log(workData[0].workDetails)
     useEffect(() => {
-        if (message.length !== 0) {
-            alert(message)
+        const body = document.querySelector('body');
+        body.style.overflow = open ? 'hidden' : 'auto';
+        // if (message.length !== 0) {
+        //     alert(message)
 
-        }
-        if (error.length !== 0) {
-            // console.log(error)
-            alert(error)
-            dispatch(workProfileActions.errorReducer())
-        }
+        // }
+        // if (error.length !== 0) {
+        //     // console.log(error)
+        //     alert(error)
+        //     dispatch(workProfileActions.errorReducer())
+        // }
 
-    }, [message, error])
+    }, [message, error,open])
 
     useEffect(() => {
         if (userProfile.length !== 0) {
@@ -172,11 +179,16 @@ avatar:'',
     }
     //hire button enable disble
     const [enableHire, setEnableHire] = useState(true)
+    // const onHireUser = () => {
+    //     dispatch(hireUserThunk(rid))
+    //     setEnableHire(false)
+    // }
     const onHireUser = () => {
-        dispatch(hireUserThunk(rid))
-        setEnableHire(false)
+        setOpen(true);
     }
-
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
         <>
             <Card sx={{
@@ -200,6 +212,15 @@ avatar:'',
                                 alt="Profile Image"
                             />
                             <Button sx={{ marginTop: "4%" }} color="warning" size="small" variant="contained" onClick={onHireUser}>Hire</Button>
+                            <Backdrop
+                                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                open={open}
+
+                            >
+                                {/* <HelperProfile click={handleClose} /> */}
+                                <HireForm click={handleClose} />
+
+                            </Backdrop>
 
                         </Grid>
                         <Grid item xs={12} sm={8} align="left" >

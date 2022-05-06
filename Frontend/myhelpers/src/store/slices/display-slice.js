@@ -37,6 +37,19 @@ export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThun
         throw new Error(error.response.data)
     }
 })
+export const searchThunk = createAsyncThunk("displayAll/searchThunk", async (arg) => {
+    try {
+        // console.log(searchText)
+        const fetchRes = await axios.get(`/myhelpers/search?field=${arg.workSearch}&searchValue=${arg.filterWork}`)
+
+        console.log("Fwtch Response:: ", fetchRes)
+
+        return fetchRes
+
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
 export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) => {
     const data = {
         user_id : arg
@@ -78,6 +91,21 @@ const displaySlice = createSlice({
             // console.log(state.displayData)
         },
         [fetchAllThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+            state.error = error.error.message
+        },
+        //search result
+        [searchThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [searchThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.displayData = action.payload.data
+            // console.log(state.displayData)
+        },
+        [searchThunk.rejected]: (state, error) => {
             state.loading = false
             // console.log("rejected::", error.error.message)
             state.error = error.error.message
