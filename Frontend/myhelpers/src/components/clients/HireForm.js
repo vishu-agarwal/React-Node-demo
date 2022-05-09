@@ -37,6 +37,8 @@ import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import FormHelperText from '@mui/material/FormHelperText';
+
 
 const Input = styled('input')({
     display: 'none',
@@ -51,18 +53,6 @@ const MenuProps = {
         },
     },
 };
-const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-];
 
 
 const HireForm = (props) => {
@@ -73,7 +63,7 @@ const HireForm = (props) => {
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
-    const [lang, setlang] = useState([]);
+    const [work, setWork] = useState([]);
     const [values, setValues] = useState({
 
         porf_mbl: '',
@@ -81,15 +71,15 @@ const HireForm = (props) => {
         study: '',
         otherStudy: '',
     });
-    const [fields, setFields] = useState(
-        [
-            {
-                category: "",
-                exprience: "",
-                salary: "",
-            }
-        ]
-    );
+    // const [fields, setFields] = useState(
+    //     [
+    //         {
+    //             category: "",
+    //             exprience: "",
+    //             salary: "",
+    //         }
+    //     ]
+    // );
     //edit button show or hide
     const [editHide, setEditHide] = useState(true)
     //fields enable or diable on hide button
@@ -142,39 +132,39 @@ const HireForm = (props) => {
 
 
     const onSaveWorkSubmit = (e) => {
-        console.log("save works")
-        e.preventDefault()
-        const arg = {
-            values,
-            lang,
-            fields
-        }
-        console.log("abc", arg)
+        // console.log("save works")
+        // e.preventDefault()
+        // const arg = {
+        //     values,
+        //     w,
+        //     fields
+        // }
+        // console.log("abc", arg)
 
-        dispatch(workProfileThunk(arg))
-        //Edit button display
-        setEditHide(false)
-        setDisable(true)
+        // dispatch(workProfileThunk(arg))
+        // //Edit button display
+        // setEditHide(false)
+        // setDisable(true)
         //close this form model
         // props.click()
 
     }
 
     const onUpdateWorkSubmit = (e) => {
-        e.preventDefault()
-        const arg = {
-            values,
-            lang,
-            fields
-        }
-        console.log(arg)
+        // e.preventDefault()
+        // const arg = {
+        //     values,
+        //     lang,
+        //     fields
+        // }
+        // console.log(arg)
 
-        dispatch(updateWorkThunk(arg))
-        //Edit button display
-        setEditHide(false)
-        setDisable(TouchRipple)
-        //close this form model
-        // props.click()
+        // dispatch(updateWorkThunk(arg))
+        // //Edit button display
+        // setEditHide(false)
+        // setDisable(TouchRipple)
+        // //close this form model
+        // // props.click()
 
     }
     const onEditClick = () => {
@@ -182,21 +172,39 @@ const HireForm = (props) => {
 
     }
 
+    const [errorEnable, setErrorEnable] = useState({
+
+        work: false,
+        workTime: false,
+        study: false,
+        otherStudy: false,
+        language: false,
+        category: false,
+       
+    })
 
 
-    const [personName, setPersonName] = React.useState([]);
-
-    const handleChange = (event) => {
+    const [errorText, setErrorText] = useState("");
+    const workChange = (event) => {
         const {
             target: { value },
         } = event;
-        setPersonName(
+        setWork(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
+        // console.log("language::", event.target.value)
+        if (event.target.value.length === 0) {
+            // console.log("wrong::", event.target.value)
+            setErrorEnable({ ...errorEnable, work: true })
+            setErrorText("Please choose it!")
+        }
+        else {
+            // console.log("correct::", event.target.value)
+            setErrorEnable({ ...errorEnable, work: false })
+
+        }
     };
-
-
 
     return (
         <React.Fragment>
@@ -232,26 +240,27 @@ const HireForm = (props) => {
                             <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Work : </Typography>
                             <Grid container spacing={1} >
                                 <Grid xs={12} sm={12} item>
-                                    <FormControl fullWidth required>
+                                    <FormControl fullWidth required error={errorEnable.work}>
                                         <InputLabel id="demo-multiple-checkbox-label">Work</InputLabel>
                                         <Select
                                             labelId="demo-multiple-checkbox-label"
                                             id="demo-multiple-checkbox"
                                             multiple
                                             // required
-                                            value={personName}
-                                            onChange={handleChange}
+                                            value={work}
+                                            onChange={workChange}
                                             input={<OutlinedInput label="Work" />}
                                             renderValue={(selected) => selected.join(', ')}
                                             MenuProps={MenuProps}
                                         >
-                                            {names.map((name) => (
-                                                <MenuItem key={name} value={name}>
-                                                    <Checkbox checked={personName.indexOf(name) > -1} />
-                                                    <ListItemText primary={name} />
+                                            {props.fields.map((row,index) => (
+                                                <MenuItem key={index} value={row.category}>
+                                                    <Checkbox checked={work.indexOf(row.category) > -1} />
+                                                    <ListItemText primary={row.category} />
                                                 </MenuItem>
                                             ))}
                                         </Select>
+                                        <FormHelperText>{errorEnable.work && errorText}</FormHelperText>
                                     </FormControl>
                                 </Grid>
 

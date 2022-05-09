@@ -28,6 +28,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import profileActions from '../../store/slices/profile-slice'
 import { createProfileThunk, avatarThunk, aadharThunk, fetchProfileThunk } from '../../store/slices/profile-slice';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
+import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 
 const Input = styled('input')({
     display: 'none',
@@ -54,6 +55,25 @@ const ClientProfile = () => {
     let role = "Helper"
     // console.log(xyz)
 
+
+    // // We'll update "values" as the form updates
+    // const [values, setValues] = useState(initialFormValues);
+    // // "errors" is used to check the form for errors
+    // const [errors, setErrors] = useState({});
+    // const validate = (fieldValues = values) => {
+    //     // this function will check if the form values are valid
+    // }
+    // const {
+    //     handleInputValue = (fieldValues = values) => {
+    //         // this function will be triggered by the text field's onBlur and onChange events
+    //     },
+    //     handleFormSubmit = async (e) => {
+    //         // this function will be triggered by the submit event
+    //     },
+    //     formIsValid = () => {
+    //         // this function will check if the form values and return a boolean value
+    //     }
+    // } = useFormControls();
     const [values, setValues] = useState({
         fname: '',
         lname: '',
@@ -61,8 +81,8 @@ const ClientProfile = () => {
         altmbl: '',
         email: '',
         gender: '',
-        married: false,
-        physic_dis: false,
+        married: '',
+        physic_dis: '',
         house_no: '',
         house_name: '',
         street: '',
@@ -82,7 +102,7 @@ const ClientProfile = () => {
         upldfile: [],
         dispFile: ''
     })
- 
+
     //helper profile Modal state
     const [open, setOpen] = useState(false);
 
@@ -106,6 +126,14 @@ const ClientProfile = () => {
 
     }, [open, message, error])
 
+    //edit button show or hide
+    const [editHide, setEditHide] = useState(true)
+    //fields enable or diable on hide button
+    const [fieldsDisable, setDisable] = useState(false)
+    // console.log(fields)
+
+
+
     // const str2blob = txt => new Blob([txt]);
     useEffect(() => {
         if (userProfile.length !== 0) {
@@ -125,18 +153,21 @@ const ClientProfile = () => {
                 state: userProfile[0].address[0].state,
                 pincode: userProfile[0].address[0].pincode,
                 about: userProfile[0].about,
-                
+
             })
             setfile({
                 ...file,
                 // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
-                dispFile:userProfile[0].avatar
-                
+                dispFile: userProfile[0].avatar
+
             })
+
+            setEditHide(false)
+            setDisable(true)
         }
     }, [userProfile])
 
-   
+
     // console.log(values,file.dispFile)
     const addWorkHandler = () => {
         setOpen(true);
@@ -144,24 +175,8 @@ const ClientProfile = () => {
     const handleClose = () => {
         setOpen(false);
     };
-
-    // const validate = () => {
-    //     let temp = {}
-    //     temp.firstname = values.firstname ? "" : "This field is required"
-    //     temp.lastname = values.lastname ? "" : "This field is required"
-    //     temp.email = (/$|.+@.+..+/).test(values.email) ? "" : "Email is invalid"
-    //     temp.mobile = values.mobile.length = 10 ? "" : "Should be 10 digits without 0(Zero)"
-    // }
-
-    // const [value, setValue] = React.useState(new Date('2014-08-18T21:11:54'));
-
-    // const handleChange = (newValue) => {
-    //     setValue(newValue);
-    // };
-    
-
     const profileSaveHandler = (e) => {
-        console.log("save call")
+        // console.log("save call")
         e.preventDefault()
         if (clicked) {
             if (aadhar.dispFile) {
@@ -180,6 +195,8 @@ const ClientProfile = () => {
                 dispatch(createProfileThunk({ values }))
                 // setClicked(true)
                 // console.log("values:: ", values)
+                setEditHide(false)
+                setDisable(true)
             }
             else {
                 alert("please Choose Aadhar Card PDf !")
@@ -192,14 +209,34 @@ const ClientProfile = () => {
             alert("Please click on upload photo button before save!")
         }
     }
+    const onUpdateProfileHandler = (e) => {
+        e.preventDefault()
+        // const arg = {
+        //     values,
+        //     lang,
+        //     fields
+        // }
+        // console.log(arg)
 
+        // dispatch(updateWorkThunk(arg))
+        //Edit button display
+        setEditHide(false)
+        setDisable(TouchRipple)
+        //close this form model
+        // props.click()
+
+    }
+    const onEditClick = () => {
+        setDisable(!fieldsDisable)
+
+    }
     const avatarFileType = ["image/png", "image/jpeg"]
     // const avatarFileSize = 
     const onAvatarChang = (e) => {
 
         // console.log("onchange")
         let avatarFile = e.target.files[0]
-        console.log(avatarFile)
+        // console.log(avatarFile)
         if (avatarFile && avatarFileType.includes(avatarFile.type)) {
             // size in bytes
             if (avatarFile.size <= 512000) {
@@ -235,7 +272,7 @@ const ClientProfile = () => {
             }
             // console.log("config :: ", config)
 
-            dispatch(avatarThunk(formdata, config,file.upldfile))
+            dispatch(avatarThunk(formdata, config, file.upldfile))
             setenable(false)
             // setClicked(true)
             // console.log("values:: ", values)
@@ -247,7 +284,7 @@ const ClientProfile = () => {
     const aadharFileType = ['application/pdf']
     const onAadharChange = (val) => {
         let aadharFile = val.target.files[0]
-        console.log("aadharFile:: ", aadharFile)
+        // console.log("aadharFile:: ", aadharFile)
         if (aadharFile && aadharFileType.includes(aadharFile.type)) {
             if (aadharFile.size <= 1048576) {
                 setaadhar((prevState) => {
@@ -267,21 +304,308 @@ const ClientProfile = () => {
         }
     }
     const onCancel = () => {
-        console.log("setaadhar")
+        // console.log("setaadhar")
         // window.location.reload()
         setaadhar({
             upldfile: [],
             dispFile: ''
         })
     }
-    const [onClick,setOnClick]=useState(false)
+    const [onClick, setOnClick] = useState(false)
     const hiddenFileInput = React.useRef(null);
 
     // const handleClick = event => {
     //     hiddenFileInput.current.click();
     // };
 
+    // const checkDate = (val) => {
 
+    //     var today = new Date();
+    //     // console.log(today)
+    //     var birthDate = new Date(val.target.value);
+    //     console.log(birthDate)
+    //     var age = today.getFullYear() - birthDate.getFullYear();
+    //     // console.log(age)
+    //     var m = today.getMonth() - birthDate.getMonth();
+    //     // console.log(m)
+    //     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    //         age--;
+    //     }
+    //     // console.log(age)
+    //     if (age >= 18) {
+
+    //         setValues((prevState) => {
+    //             return {
+    //                 ...prevState,
+    //                 dob: birthDate
+    //             }
+    //         })
+    //     }
+    //     else {
+    //         alert("18 age")
+    //     }
+    // }
+    const [saveEnable, setSaveEnable] = useState(false)
+    const [errorEnable, setErrorEnable] = useState({
+        fname: false,
+        lname: false,
+        dob: false,
+        altmbl: false,
+        email: false,
+        house_no: false,
+        house_name: false,
+        street: false,
+        city: false,
+        state: false,
+        pincode: false,
+    })
+
+    // const emailValid = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    const [errorText, setErrorText] = useState("");
+
+    const onChange = (event) => {
+        // const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        // if (phoneRegex.test(event.target.value)) {
+        //     console.log(event.target.value)
+        // setValues((prevState) => { return { ...prevState, altmbl: event.target.value } }) 
+
+        // alpha numeric  expression /^[a-zA-Z0-9]*$/
+        ///^[A-Za-z]+$/ only letters
+        // only numbers
+        // only alphabels and limited characters /^[a-zA-Z ]{2,30}$/;
+        //mobile no validation /^[6-9][0-9]{9}$/
+        // /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im 
+        // console.log("field id :: ", event.target.id)
+
+        if (event.target.id === "firstname") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    fname: event.target.value
+                }
+            })
+            if (/^[A-Za-z]+$/.test(event.target.value)) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, fname: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, fname: true })
+                setErrorText("Please enter valid Name!")
+            }
+        }
+        else if (event.target.id === "lastname") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    lname: event.target.value
+                }
+            })
+            if (/^[A-Za-z]+$/.test(event.target.value)) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, lname: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, lname: true })
+                setErrorText("Please enter valid Name!")
+            }
+        }
+        else if (event.target.id === "dob") {
+
+            var today = new Date();
+            console.log(today)
+            var birthDate = new Date(event.target.value);
+            console.log(birthDate.toISOString())
+            var age = today.getFullYear() - birthDate.getFullYear();
+            // console.log(age)
+            var m = today.getMonth() - birthDate.getMonth();
+            // console.log(m)
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            // console.log(age)
+            if (age >= 18) {
+
+                setErrorEnable({ ...errorEnable, dob: false })
+                setValues((prevState) => {
+                    return {
+                        ...prevState,
+                        dob: birthDate.toISOString().split('T')[0]
+                    }
+                })
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, dob: true })
+                setErrorText("Age should me 18 or more than!")
+            }
+        }
+        else if (event.target.id === "alt-mob") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    altmbl: event.target.value
+                }
+            })
+            if (/^[6-9][0-9]{9}$/.test(event.target.value)) {
+                console.log("correct!")
+                setErrorEnable({ ...errorEnable, altmbl: false })
+
+            }
+            else {
+                console.log("wrong!")
+                setErrorEnable({ ...errorEnable, altmbl: true })
+                setErrorText("Please enter valid Mobile No.!")
+            }
+        }
+        else if (event.target.id === "email") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    email: event.target.value
+                }
+            })
+            if (/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/.test(event.target.value)) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, email: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, email: true })
+                setErrorText("Please enter valid Email address!")
+            }
+        }
+        else if (event.target.id === "house-No") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    house_no: event.target.value
+                }
+            })
+            if (/^[-A-Z0-9]*$/.test(event.target.value)) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, house_no: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, house_no: true })
+                setErrorText("Please enter valid House No.!")
+            }
+        }
+        else if (event.target.id === "housername") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    house_name: event.target.value
+                }
+            })
+            if (/^[A-Z a-z]+$/.test(event.target.value)) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, house_name: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, house_name: true })
+                setErrorText("Please enter valid House Name!")
+            }
+        }
+        else if (event.target.id === "street") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    street: event.target.value
+                }
+            })
+            if (/^[a-z A-Z0-9]*$/.test(event.target.value)) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, street: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, street: true })
+                setErrorText("Please enter valid Street Name!")
+            }
+        }
+        else if (event.target.id === "city") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    city: event.target.value
+                }
+            })
+            if (/^[A-Za-z]+$/.test(event.target.value)) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, city: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, city: true })
+                setErrorText("Please enter valid City Name!")
+            }
+        }
+        else if (event.target.id === "state") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    state: event.target.value
+                }
+            })
+            if (/^[A-Za-z]+$/.test(event.target.value)) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, state: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, state: true })
+                setErrorText("Please enter valid State Name!")
+            }
+        }
+        else if (event.target.id === "pincode") {
+            setValues((prevState) => {
+                return {
+                    ...prevState,
+                    pincode: event.target.value
+                }
+            })
+            if (/^[0-9]{6}$/.test(event.target.value)) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, pincode: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, pincode: true })
+                setErrorText("Please enter valid Pincode!")
+            }
+        }
+
+        else {
+            setErrorText("")
+        }
+    };
+    useEffect(() => {
+        console.log("error::", errorEnable)
+        const areTrue = Object.values(errorEnable).every(
+            value => value !== true
+
+        );
+
+        console.log("allerror::", areTrue);
+        const isNullish = Object.values(values).every(value => value !== "");
+        console.log("null", isNullish)
+
+        aadhar.dispFile !== "" ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
+
+    }, [errorEnable, values, aadhar.dispFile])
     return (
         <Grid>
             <Card
@@ -294,20 +618,26 @@ const ClientProfile = () => {
                     marginBottom: 1,
                 }}>
                 <CardContent>
+                    <Grid container direction={'row'} spacing={0}>
+                        <Grid item xs={2}sm={2} justifyContent="left" >
+                            {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
+                        </Grid>
+                    </Grid>
                     <Typography variant="h4"  >Profile</Typography>
                     <Typography variant="h5"  >Registered no</Typography>
-                    <form onSubmit={profileSaveHandler}>
+                    <form onSubmit={editHide ? profileSaveHandler : onUpdateProfileHandler}>
                         <Grid container spacing={1}>
-                            <Grid xs={12} item>
+                            <Grid xs={12} item >
                                 <Badge
+                                    
                                     overlap="circular"
                                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                     badgeContent={
                                         <label htmlFor="icon-button-file">
-                                            <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} />
-                                            <IconButton color="primary" aria-label="upload picture" component="span">
+                                            <Input accept="image/*" id="icon-button-file" type="file" name="avatar"  onChange={onAvatarChang}  />
+                                            <IconButton color="primary" aria-label="upload picture" component="span" >
                                                 {/* <ThemeProvider theme={theme}> */}
-                                                <EditRoundedIcon color="error" fontSize="large" />
+                                                <EditRoundedIcon color="error" fontSize="large" disabled={fieldsDisable} />
                                                 {/* </ThemeProvider> */}
                                             </IconButton>
                                         </label>
@@ -315,6 +645,7 @@ const ClientProfile = () => {
                                 >
                                     {/* /static/images/avatar/2.jpg */}
                                     <Avatar alt="Profile*" style={{
+                                        
                                         // border: '2.0px solid blue',
                                         backgroundImage: `url(${profileImg})`,
                                         backgroundRepeat: "no-repeat",
@@ -324,7 +655,7 @@ const ClientProfile = () => {
                                 </Badge>
                             </Grid>
                         </Grid>
-                        {enable && <Button variant="contained" sx={{ marginTop: 1 }} color="warning" onClick={avatarSubmit}>Upload Photo </Button>}
+                        {enable && <Button variant="contained" sx={{ marginTop: 1 }} color="warning" disabled={fieldsDisable} onClick={avatarSubmit}>Upload Photo </Button>}
 
                         <Typography color='green' variant='body1' component='p' marginTop={1}>Please fill up this form is necessary to move forward !</Typography>
                         <Typography variant='subtitle1' marginLeft={1.5} align='left' color='InfoText'>Personal Details : </Typography>
@@ -338,10 +669,11 @@ const ClientProfile = () => {
                                     id="firstname"
                                     label="First Name"
                                     fullWidth
-                                    value={values.fname}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, fname: val.target.value } }) }}
-                                    helperText={onClick && values.fname.length === '' ? "please enter a value" : ''}
-                                />
+                                    value={values.fname.toUpperCase()}
+                                    disabled={fieldsDisable}
+                                    onChange={onChange}
+                                    error={errorEnable.fname}
+                                    helperText={errorEnable.fname && errorText} />
                             </Grid>
                             <Grid xs={12} sm={6} item>
                                 <TextField
@@ -350,19 +682,26 @@ const ClientProfile = () => {
                                     id="lastname"
                                     label="Last Name"
                                     fullWidth
-                                    value={values.lname}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, lname: val.target.value } }) }}
+                                    value={values.lname.toUpperCase()}
+                                    disabled={fieldsDisable}
+                                    onChange={onChange}
+                                    error={errorEnable.lname}
+                                    helperText={errorEnable.lname && errorText}
                                 />
                             </Grid>
                             <Grid xs={12} sm={6} item>
                                 <TextField
-                                    id="date"
+                                    id="dob"
+
                                     label="Date Of Birthday"
                                     type="date"
                                     required
                                     fullWidth
                                     value={values.dob}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, dob: val.target.value } }) }}
+                                    onChange={onChange}
+                                    error={errorEnable.dob}
+                                    helperText={errorEnable.dob && errorText}
+                                    disabled={fieldsDisable}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
@@ -378,10 +717,12 @@ const ClientProfile = () => {
                                     label="Alternate Mobile Number"
                                     fullWidth
                                     value={values.altmbl}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, altmbl: val.target.value } }) }}
+                                    disabled={fieldsDisable}
+                                    onChange={onChange}
+                                    error={errorEnable.altmbl}
+                                    helperText={errorEnable.altmbl && errorText}
                                 />
                             </Grid>
-
                             <Grid xs={12} sm={12} item>
                                 <TextField
                                     type='email'
@@ -391,7 +732,7 @@ const ClientProfile = () => {
                                     label="Email Address"
                                     fullWidth
                                     value={values.email}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, email: val.target.value } }) }}
+                                    // onChange={(val) => { setValues((prevState) => { return { ...prevState, email: val.target.value } }) }}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -399,38 +740,46 @@ const ClientProfile = () => {
                                             </InputAdornment>
                                         )
                                     }}
+                                    onChange={onChange}
+                                    error={errorEnable.email}
+                                    helperText={errorEnable.email && errorText}
+                                    disabled={fieldsDisable}
                                 />
                             </Grid>
                             <Grid xs={12} sm={5} item >
                                 <div align="left"><InputLabel >Gender</InputLabel></div>
                                 <RadioGroup
                                     row
+                                    disabled={fieldsDisable}
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="gender"
                                     value={values.gender}
                                     onChange={(val) => { setValues((prevState) => { return { ...prevState, gender: val.target.value } }) }}
                                 >
-                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                    <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                    <FormControlLabel value="other" control={<Radio />} label="Other" />
+                                    <FormControlLabel disabled={fieldsDisable} value="female" control={<Radio />} label="Female" />
+                                    <FormControlLabel disabled={fieldsDisable} value="male" control={<Radio />} label="Male" />
+                                    <FormControlLabel disabled={fieldsDisable} value="other" control={<Radio />} label="Other" />
                                 </RadioGroup>
                             </Grid>
                             <Grid xs={12} sm={3} item>
                                 <div align="left"><InputLabel >Marital Status</InputLabel></div>
                                 <RadioGroup
                                     row
+                                    disabled={fieldsDisable}
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="married"
                                     value={values.married}
                                     onChange={(val) => { setValues((prevState) => { return { ...prevState, married: val.target.value } }) }}
                                 >
                                     <FormControlLabel
-                                        value={true}
+                                        value="true"
+                                        disabled={fieldsDisable}
                                         control={<Radio />}
                                         label="Yes"
                                     />
                                     <FormControlLabel
-                                        value={false}
+                                        value="false"
+                                        disabled={fieldsDisable}
                                         control={<Radio />}
                                         label="No"
                                     />
@@ -440,13 +789,14 @@ const ClientProfile = () => {
                                 <div align="left"><InputLabel >Any Phiysical Disability</InputLabel></div>
                                 <RadioGroup
                                     row
+                                    disabled={fieldsDisable}
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="disability"
                                     value={values.physic_dis}
                                     onChange={(val) => { setValues((prevState) => { return { ...prevState, physic_dis: val.target.value } }) }}
                                 >
-                                    <FormControlLabel value={true} control={<Radio />} label="Yes" />
-                                    <FormControlLabel value={false} control={<Radio />} label="No" />
+                                    <FormControlLabel value="true" disabled={fieldsDisable} control={<Radio />} label="Yes" />
+                                    <FormControlLabel value="false" disabled={fieldsDisable} control={<Radio />} label="No" />
                                 </RadioGroup>
                             </Grid>
 
@@ -457,12 +807,15 @@ const ClientProfile = () => {
                                 <TextField
                                     required
                                     variant='outlined'
-                                    id="house-No. "
+                                    id="house-No"
                                     label="House/Flat-No."
                                     placeholder='A-101'
                                     fullWidth
-                                    value={values.house_no}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, house_no: val.target.value } }) }}
+                                    value={values.house_no.toUpperCase()}
+                                    disabled={fieldsDisable}
+                                    onChange={onChange}
+                                    error={errorEnable.house_no}
+                                    helperText={errorEnable.house_no && errorText}
                                 />
                             </Grid>
                             <Grid xs={12} sm={4} item>
@@ -472,8 +825,11 @@ const ClientProfile = () => {
                                     id="housername"
                                     label="House/Appartment Name"
                                     fullWidth
-                                    value={values.house_name}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, house_name: val.target.value } }) }}
+                                    value={values.house_name.toUpperCase()}
+                                    disabled={fieldsDisable}
+                                    onChange={onChange}
+                                    error={errorEnable.house_name}
+                                    helperText={errorEnable.house_name && errorText}
                                 />
                             </Grid>
                             <Grid xs={12} sm={5} item>
@@ -483,8 +839,11 @@ const ClientProfile = () => {
                                     id="street"
                                     label="Landmark/Area/Street"
                                     fullWidth
-                                    value={values.street}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, street: val.target.value } }) }}
+                                    value={values.street.toUpperCase()}
+                                    disabled={fieldsDisable}
+                                    onChange={onChange}
+                                    error={errorEnable.street}
+                                    helperText={errorEnable.street && errorText}
                                 />
                             </Grid>
                             <Grid xs={12} sm={4} item>
@@ -494,8 +853,11 @@ const ClientProfile = () => {
                                     id="city"
                                     label="City"
                                     fullWidth
-                                    value={values.city}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, city: val.target.value } }) }}
+                                    value={values.city.toUpperCase()}
+                                    disabled={fieldsDisable}
+                                    onChange={onChange}
+                                    error={errorEnable.city}
+                                    helperText={errorEnable.city && errorText}
                                 />
                             </Grid>
                             <Grid xs={12} sm={4} item>
@@ -505,8 +867,11 @@ const ClientProfile = () => {
                                     id="state"
                                     label="State"
                                     fullWidth
-                                    value={values.state}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, state: val.target.value } }) }}
+                                    value={values.state.toUpperCase()}
+                                    disabled={fieldsDisable}
+                                    onChange={onChange}
+                                    error={errorEnable.state}
+                                    helperText={errorEnable.state && errorText}
                                 />
                             </Grid>
                             <Grid xs={12} sm={4} item>
@@ -517,24 +882,28 @@ const ClientProfile = () => {
                                     label="Pincode"
                                     fullWidth
                                     value={values.pincode}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, pincode: val.target.value } }) }}
+                                    disabled={fieldsDisable}
+                                    onChange={onChange}
+                                    error={errorEnable.pincode}
+                                    helperText={errorEnable.pincode && errorText}
                                 />
                             </Grid>
                         </Grid>
                         <Typography variant='subtitle1' marginLeft={1.5} align='left' color='InfoText'>Other Details : </Typography>
-                        <Grid container spacing={1}>
+                        <Grid container spacing={2}>
                             {/* <Grid xs={2} item>
                                 <Typography>Aadhar Card* :</Typography>
                             </Grid> */}
                             <Grid xs={6} item>
                                 <label htmlFor="contained-button-file">
-                                    <Input id="contained-button-file" type="file"  name="aadharCard"
+                                    <Input id="contained-button-file" type="file" name="aadharCard"
+                                        // disabled={fieldsDisable}
                                         ref={hiddenFileInput}
                                         onChange={onAadharChange}
                                         style={{ display: 'none' }}
                                     />
-                                    <Button color="warning" fullWidth variant="contained" component="span" >
-                                        Choose Aadhar Card File (PDF Only)*
+                                    <Button color="warning" fullWidth variant="contained" disabled={fieldsDisable} component="span" >
+                                        Choose Aadhar Card File (PDF 1MB Only)*
                                     </Button>
                                 </label>
                                 {/* <Input accept="image/*" id="contained-button-file" type="file" /> */}
@@ -557,14 +926,18 @@ const ClientProfile = () => {
                                 <TextField
                                     required
                                     multiline
-                                    rows={3}
+                                    disabled={fieldsDisable}
+                                    maxRows={3}
                                     variant='outlined'
                                     id="about"
                                     label="About you"
                                     fullWidth
-                                    placeholder='Please type some information about you !'
+                                    inputProps={{
+                                        maxLength: 100
+                                    }}
+                                    placeholder='Please type some information about you OR what you want!'
                                     value={values.about}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, about: val.target.value } }) }}
+                                    onChange={(event) => setValues((prevState) => { return { ...prevState, about: event.target.value } })}
                                 />
                             </Grid>
                         </Grid>
@@ -574,18 +947,18 @@ const ClientProfile = () => {
                         {/* : */}
 
 
-                        <Grid xs={12} sm={12} item>
+                        {saveEnable && <Grid xs={12} sm={12} item>
                             <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
-                                Save
+                                {editHide ? "Save" : !fieldsDisable && "Update"}
                             </Button>
-                        </Grid>
+                        </Grid>}
                         {/* }    */}
 
                     </form>
                     {role === "Helper" &&
                         <Grid xs={12} sm={6} item>
-                            <Button variant="contained" color='primary' onClick={addWorkHandler}  fullWidth sx={{ marginTop: 2 }}>
-                                Add Work Details
+                            <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
+                                {editHide ? "Add Work Details" : !fieldsDisable && "Update Work Details"} 
                             </Button>
                             <Backdrop
                                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

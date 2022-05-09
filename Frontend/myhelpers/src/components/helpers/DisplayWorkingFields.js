@@ -20,15 +20,51 @@ import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/s
 
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import FormHelperText from '@mui/material/FormHelperText';
+const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, setErrorEnable }) => {
 
-const DisplayWorkingFields = ({ fields, setFields,fieldsDisable }) => {
-  
+    const [errorText, setErrorText] = useState("");
 
     const handleChange = (e, index) => {
+
         const { name, value } = e.target
         const list = [...fields]
-        list[index][name] = value
-        setFields(list)
+        if (name === "category") {
+            list[index][name] = value
+            setFields(list)
+            if (list[index][name] === "") {
+                setErrorEnable({ ...errorEnable, [name]: true })
+                setErrorText("Please choose it!")
+            }
+            else {
+                setErrorEnable({ ...errorEnable, [name]: false })
+            }
+        }
+        if (name === "experience") {
+            list[index][name] = value
+            setFields(list)
+            if (list[index][name] === "") {
+                setErrorEnable({ ...errorEnable, [name]: true })
+                setErrorText("Please choose it!")
+            }
+            else {
+                setErrorEnable({ ...errorEnable, [name]: false })
+            }
+        }
+        if (name === "salary") {
+            list[index][name] = value
+            setFields(list)
+            if (/^[0-9]{1,6}$/.test(list[index][name])) {
+                // console.log("correct!")
+                setErrorEnable({ ...errorEnable, salary: false })
+
+            }
+            else {
+                // console.log("wrong!")
+                setErrorEnable({ ...errorEnable, salary: true })
+                setErrorText("Please enter valid Amount!")
+            }
+        }
 
     };
     // console.log(fields)
@@ -52,7 +88,7 @@ const DisplayWorkingFields = ({ fields, setFields,fieldsDisable }) => {
         setFields([...fields, {
 
             category: "",
-            exprience: "",
+            experience: "",
             salary: "",
         }])
         setCount(count + 1)
@@ -63,11 +99,11 @@ const DisplayWorkingFields = ({ fields, setFields,fieldsDisable }) => {
         <Fragment >
             {
                 fields.map((x, i) => {
-                    console.log(x,"dropdown value")
+                    console.log(x, "dropdown value")
                     return (
                         <Fragment key={i}>
                             <Grid xs={12} sm={4} item>
-                                <FormControl fullWidth>
+                                <FormControl fullWidth error={errorEnable.category}>
                                     <InputLabel htmlFor="grouped-native-select">Working Category</InputLabel>
                                     <Select native
                                         disabled={fieldsDisable}
@@ -91,25 +127,27 @@ const DisplayWorkingFields = ({ fields, setFields,fieldsDisable }) => {
                                         <option value="Lift Operator">Lift Operator</option>
                                         <option value="WatchMan(1 buiding)">WatchMan(1 buiding)</option>
                                     </Select>
+                                    <FormHelperText>{errorEnable.category && errorText}</FormHelperText>
                                 </FormControl>
                             </Grid>
                             <Grid xs={12} sm={3.5} item>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="grouped-native-select">Exprience</InputLabel>
-                                    <Select native label="Exprience"
+                                <FormControl fullWidth error={errorEnable.experience}>
+                                    <InputLabel htmlFor="grouped-native-select">Experience</InputLabel>
+                                    <Select native label="Experience"
                                         disabled={fieldsDisable}
-                                        name="exprience"
-                                        value={x.exprience}
+                                        name="experience"
+                                        value={x.experience}
                                         onChange={e => handleChange(e, i)}
                                     >
                                         <option value=""></option>
-                                        <option value="Fresher(No Exprience)">Fresher(No Exprience)</option>
+                                        <option value="Fresher(No Exprience)">Fresher(No Experience)</option>
                                         <option value="4-8 Months">4-8 Months</option>
                                         <option value="1 Year">1 Year</option>
                                         <option value="3 Years">3 Years</option>
                                         <option value="5 Years">5 Years</option>
                                         <option value="More than 5 Year">More than 5 Year</option>
                                     </Select>
+                                    <FormHelperText>{errorEnable.experience && errorText}</FormHelperText>
                                 </FormControl>
                             </Grid>
                             <Grid xs={12} sm={3.5} item>
@@ -122,6 +160,8 @@ const DisplayWorkingFields = ({ fields, setFields,fieldsDisable }) => {
                                     value={x.salary}
                                     onChange={e => handleChange(e, i)}
 
+                                    error={errorEnable.salary}
+                                    helperText={errorEnable.salary && errorText}
                                     label="Expected salary Range"
                                     fullWidth
 
@@ -129,26 +169,26 @@ const DisplayWorkingFields = ({ fields, setFields,fieldsDisable }) => {
                             </Grid>
                             {!fieldsDisable &&
                                 < Grid xs={12} sm={1} item>
-                                {/* <Button variant="contained" sx={{ marginTop: 1, marginLeft: 0.5 }} fullWidth onClick={addWorkHandler}>+</Button> */}
-                                {fields.length !== 1 &&
-                                    <IconButton color="error" onClick={() => handleRemove(i)} component="span">
-                                        {/* <ThemeProvider theme={theme}> */}
-                                        <DeleteIcon fontSize="large" />
-                                        {/* </ThemeProvider> */}
-                                    </IconButton>
+                                    {/* <Button variant="contained" sx={{ marginTop: 1, marginLeft: 0.5 }} fullWidth onClick={addWorkHandler}>+</Button> */}
+                                    {fields.length !== 1 &&
+                                        <IconButton color="error" onClick={() => handleRemove(i)} component="span">
+                                            {/* <ThemeProvider theme={theme}> */}
+                                            <DeleteIcon fontSize="large" />
+                                            {/* </ThemeProvider> */}
+                                        </IconButton>
 
 
-                                }
-                                {!disable &&
-                                    fields.length - 1 === i &&
-                                    <IconButton color="primary" onClick={handleAdd} component="span">
-                                        {/* <ThemeProvider theme={theme}> */}
-                                        <AddIcon color="info" fontSize="large" />
-                                        {/* </ThemeProvider> */}
-                                    </IconButton>
+                                    }
+                                    {!disable &&
+                                        fields.length - 1 === i &&
+                                        <IconButton color="primary" onClick={handleAdd} component="span">
+                                            {/* <ThemeProvider theme={theme}> */}
+                                            <AddIcon color="info" fontSize="large" />
+                                            {/* </ThemeProvider> */}
+                                        </IconButton>
 
-                                }
-                            </Grid>}
+                                    }
+                                </Grid>}
                         </Fragment>
                     );
                 })
