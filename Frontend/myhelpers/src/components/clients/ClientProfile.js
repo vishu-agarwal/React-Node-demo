@@ -418,7 +418,7 @@ const ClientProfile = () => {
             var today = new Date();
             console.log(today)
             var birthDate = new Date(event.target.value);
-            console.log(birthDate.toISOString())
+            // console.log(birthDate.toISOString())
             var age = today.getFullYear() - birthDate.getFullYear();
             // console.log(age)
             var m = today.getMonth() - birthDate.getMonth();
@@ -619,7 +619,7 @@ const ClientProfile = () => {
                 }}>
                 <CardContent>
                     <Grid container direction={'row'} spacing={0}>
-                        <Grid item xs={2}sm={2} justifyContent="left" >
+                        <Grid item xs={2} sm={2} justifyContent="left" >
                             {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
                         </Grid>
                     </Grid>
@@ -629,12 +629,12 @@ const ClientProfile = () => {
                         <Grid container spacing={1}>
                             <Grid xs={12} item >
                                 <Badge
-                                    
+
                                     overlap="circular"
                                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                     badgeContent={
                                         <label htmlFor="icon-button-file">
-                                            <Input accept="image/*" id="icon-button-file" type="file" name="avatar"  onChange={onAvatarChang}  />
+                                            <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} />
                                             <IconButton color="primary" aria-label="upload picture" component="span" >
                                                 {/* <ThemeProvider theme={theme}> */}
                                                 <EditRoundedIcon color="error" fontSize="large" disabled={fieldsDisable} />
@@ -645,7 +645,7 @@ const ClientProfile = () => {
                                 >
                                     {/* /static/images/avatar/2.jpg */}
                                     <Avatar alt="Profile*" style={{
-                                        
+
                                         // border: '2.0px solid blue',
                                         backgroundImage: `url(${profileImg})`,
                                         backgroundRepeat: "no-repeat",
@@ -692,7 +692,6 @@ const ClientProfile = () => {
                             <Grid xs={12} sm={6} item>
                                 <TextField
                                     id="dob"
-
                                     label="Date Of Birthday"
                                     type="date"
                                     required
@@ -958,7 +957,7 @@ const ClientProfile = () => {
                     {role === "Helper" &&
                         <Grid xs={12} sm={6} item>
                             <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
-                                {editHide ? "Add Work Details" : !fieldsDisable && "Update Work Details"} 
+                                {editHide ? "Add Work Details" : !fieldsDisable && "Update Work Details"}
                             </Button>
                             <Backdrop
                                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

@@ -218,7 +218,7 @@ avatar:'',
 
                             >
                                 {/* <HelperProfile click={handleClose} /> */}
-                                <HireForm fields={fields} click={handleClose} />
+                                <HireForm fields={fields} workTime={values.workTime} click={handleClose} />
 
                             </Backdrop>
 

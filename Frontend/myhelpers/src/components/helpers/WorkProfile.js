@@ -364,7 +364,8 @@ const WorkProfile = (props) => {
                                             <option value="Full Day (12 Hrs)">Full Day (12 Hrs)</option>
                                             <option value="Half Day (6 Hrs)">Half Day (6 Hrs)</option>
                                             <option value="Custom (1-4 Hrs)">Custom (1-4 Hrs)</option>
-                                            <option value="Night Shift (2-12 Hrs)">Night Shift (2-12 Hrs)</option>
+                                            <option value="Custom Night Shift (After 8 PM)">Custom Night Shift (After 8 PM)</option>
+                                            <option value="Night Shift (12 Hrs)">Night Shift (12 Hrs)</option>
                                         </Select>
                                         <FormHelperText>{errorEnable.workTime && errorText }</FormHelperText>
                                     </FormControl>
