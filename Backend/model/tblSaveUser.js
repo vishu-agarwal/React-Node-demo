@@ -12,12 +12,7 @@ const saveUserSchema = new mongoose.Schema(
                 user_id: String,
             }
         ],
-        hireUser: [
-            {
-                user_id: String,
-                status:Boolean,
-            }
-        ]
+        
     },
     {
         timestamps: true,

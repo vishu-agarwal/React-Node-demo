@@ -13,7 +13,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { saveThunk } from '../../store/slices/display-slice';
+import { fetchSaveUserThunk, fetchAllThunk,saveThunk } from '../../store/slices/display-slice';
 
 import { starThunk } from '../../store/slices/profile-slice';
 const CardJS = (props) => {
@@ -28,8 +28,9 @@ const CardJS = (props) => {
 
     // props.status ? setSaveIcon(true) : setSaveIcon(false)
     //save icon click event
-    const onSaveClick = () => {
+    const onSaveClick = async() => {
         dispatch(saveThunk(props.values.r_id))
+        // dispatch(fetchSaveUserThunk())
     }
 
     const onViewClick = () => {
@@ -37,7 +38,7 @@ const CardJS = (props) => {
     }
 
     const onRateClick = (val) => {
-
+console.log("onRate")
         setStar(parseFloat(val.target.value))
 
         const arg = {
@@ -47,6 +48,7 @@ const CardJS = (props) => {
         console.log("argument :: ", arg);
         // console.log("stars update..........................")
         dispatch(starThunk(arg))
+        // dispatch(fetchAllThunk())
 
     }
 
@@ -111,7 +113,7 @@ const CardJS = (props) => {
                                 alt="Profile Image"
                             />
 
-                            <Rating name="half-rating" precision={0.5}
+                            <Rating name="half-rating" 
                                 // value={parseInt(props.values.rate)}
                                 value={star}
                                 onChange={(val) =>

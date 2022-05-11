@@ -201,7 +201,7 @@ avatar:'',
 
                         <Grid container >
                             <Button variant="contained" color="error" onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
-                            <Button variant="contained" color="error" onClick={() => navigate("/shortlist")}><ArrowBackIosRoundedIcon /> Back</Button>
+                            <Button variant="contained" color="error" onClick={() => navigate("/workRequest")}><ArrowBackIosRoundedIcon /> Back</Button>
                         </Grid>
                         <Grid item xs={12} sm={4} paddingRight={"5%"} paddingLeft={"3%"} >
                             <CardMedia
@@ -218,7 +218,7 @@ avatar:'',
 
                             >
                                 {/* <HelperProfile click={handleClose} /> */}
-                                <HireForm fields={fields} workTime={values.workTime} click={handleClose} />
+                                <HireForm user_id={workData.length !== 0 ? workData[0].r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
 
                             </Backdrop>
 

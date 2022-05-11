@@ -318,33 +318,6 @@ const ClientProfile = () => {
     //     hiddenFileInput.current.click();
     // };
 
-    // const checkDate = (val) => {
-
-    //     var today = new Date();
-    //     // console.log(today)
-    //     var birthDate = new Date(val.target.value);
-    //     console.log(birthDate)
-    //     var age = today.getFullYear() - birthDate.getFullYear();
-    //     // console.log(age)
-    //     var m = today.getMonth() - birthDate.getMonth();
-    //     // console.log(m)
-    //     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    //         age--;
-    //     }
-    //     // console.log(age)
-    //     if (age >= 18) {
-
-    //         setValues((prevState) => {
-    //             return {
-    //                 ...prevState,
-    //                 dob: birthDate
-    //             }
-    //         })
-    //     }
-    //     else {
-    //         alert("18 age")
-    //     }
-    // }
     const [saveEnable, setSaveEnable] = useState(false)
     const [errorEnable, setErrorEnable] = useState({
         fname: false,
@@ -954,7 +927,7 @@ const ClientProfile = () => {
                         {/* }    */}
 
                     </form>
-                    {role === "Helper" &&
+                    {role === "Helper" && !fieldsDisable &&
                         <Grid xs={12} sm={6} item>
                             <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
                                 {editHide ? "Add Work Details" : !fieldsDisable && "Update Work Details"}

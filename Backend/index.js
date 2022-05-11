@@ -19,6 +19,8 @@ const DisplayRoute = require("./router/displayRouter")
 app.use(DisplayRoute)
 // const saveRoute = require("./router/saveRouter")
 // app.use(saveRoute)
+const HireRoute = require("./router/hireRequestRouter")
+app.use(HireRoute)
 const port = process.env.PORT
 
 app.listen(port, () => {

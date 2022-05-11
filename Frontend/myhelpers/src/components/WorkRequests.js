@@ -22,12 +22,14 @@ import ListItemText from '@mui/material/ListItemText';
 import { useState, useEffect } from 'react';
 // import workProfileActions from '../../store/slices/work-slice'
 
-// import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
+
+import { fetchHireRequestThunk } from '../store/slices/hireRequest-slice';
 import { fetchAllThunk, fetchSaveUserThunk } from '../store/slices/display-slice';
 import workProfileActions from '../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import CardJS from './clients/Card';
+import HireRequestCard from './clients/HireRequestCard';
+import HireRequestSlice from '../store/slices/hireRequest-slice';
 // import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 
 
@@ -39,8 +41,8 @@ const WorkRequest = (props) => {
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
-    let { displayData, saveUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
-
+    let { displayData, message, error } = useSelector((state) => ({ ...state.displayStore }))
+    let { hireRequestData} = useSelector((state) => ({ ...state.hireRequestStore }))
     // const [values,message, setValues] = useState({
     //     name: '',
     //     porf_mbl: '',
@@ -50,8 +52,8 @@ const WorkRequest = (props) => {
     //     time: '',
     // });
     useEffect(() => {
-        dispatch(fetchAllThunk())
-        dispatch(fetchSaveUserThunk())
+        dispatch(fetchHireRequestThunk())
+        dispatch(fetchAllThunk())        
     }, [])
 
     // console.log(workData[0].workDetails)
@@ -74,30 +76,14 @@ const WorkRequest = (props) => {
         }
 
     }, [displayData])
+
     useEffect(() => {
+        if (hireRequestData.length !== 0) {
+            console.log("displayData :: ", hireRequestData)
 
-        if (saveUser.length !== 0) {
-            console.log("saveUser ::", saveUser);
-            // saveUser.map((val)=> values.r_id === val.user_id)
-            // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
         }
-    }, [saveUser])
 
-
-    // useEffect(() => {
-
-
-    //     if (message.length !== 0) {
-    //         alert(message)
-
-    //     }
-    //     // if (error.length !== 0) {
-    //     //     // console.log(error)
-    //     //     alert(error)
-    //     //     dispatch(workProfileActions.errorReducer())
-    //     // }
-
-    // }, [message, error])
+    }, [hireRequestData])
 
     let rates, status
     return (
@@ -109,7 +95,7 @@ const WorkRequest = (props) => {
                 <Card
                     sx={{
 
-                        maxWidth: 500, maxHeight: 1000,
+                        minWidth: 700, maxHeight: 1000,
                         margin: '0 auto',
                         paddingTop: 0,
                         borderRadius: 5,
@@ -119,7 +105,7 @@ const WorkRequest = (props) => {
                         <Grid container direction={'row'} spacing={0}>
                             <Grid item xs={12} sm={10} align="left" >
                                 <Typography variant="h3" color="black" component="div">
-                                    SORTLIST
+                                    Hire Enquiry
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={2}>
@@ -130,37 +116,29 @@ const WorkRequest = (props) => {
                         <Grid container marginTop={0} marginBottom={0} style={{ maxHeight: '510px', overflow: 'auto' }}>
                             {
                                 // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
-                                saveUser.length !== 0 && displayData.length !== 0 ?
-                                    saveUser.map((val, index) =>
+                                
+                                hireRequestData.length !== 0 ?
+                                    hireRequestData.map((val, index) =>
                                         displayData.map((values, index) => {
-                                            if (val.user_id === values.r_id) {
-                                                {
-                                                    rates = values.rating[0] !== undefined ?
-                                                        values.rating[0].map((id) =>
-                                                            id.rate
-                                                        ).reduce((prev, curr) => prev + curr, 0)
-                                                        /
-                                                        values.rating[0].map((id) =>
-                                                            id.user_id
-                                                        ).length
-                                                        : null
-                                                }
-
-
+                                            if (val.user_id === values.r_id)
+                                            {
+                                                
                                                 return <Grid marginBottom={1} item xs={12} sm={12} align="center" key={index}>
 
-                                                    <CardJS values={values} rates={rates} status={true} />
+                                                    <HireRequestCard values={val} name={values.name} />
                                                 </Grid>
-                                            }
-                                        })
+                                                }
 
+                                            // }
+                                        })
                                     )
                                     :
+                                    
                                     <Grid marginBottom={1} item xs={12} sm={12} align="center" >
 
 
                                         <Typography variant="h4" color="red" component="div">
-                                            Opps! No Single user is sortlisted
+                                            Opps! No Single user is requested
                                         </Typography>
                                     </Grid>
                             }

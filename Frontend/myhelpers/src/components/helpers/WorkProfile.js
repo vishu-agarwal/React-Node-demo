@@ -130,17 +130,6 @@ const WorkProfile = (props) => {
         }
     }, [workData])
 
-    // console.log(workData)
-
-
-    // console.log(fields, "fielsa")
-    // // console.log(workField)
-
-    // console.log("redux data :: ", workData)
-
-
-
-
     const onSaveWorkSubmit = (e) => {
         console.log("save works")
         e.preventDefault()
@@ -450,7 +439,8 @@ const WorkProfile = (props) => {
                                     />
                                 </Grid>
                             </Grid>
-                            {saveEnable && <Grid xs={12} item>
+                            {saveEnable  &&
+                                <Grid xs={12} item>
                                 <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
                                     {editHide ? "Save" : !fieldsDisable && "Update"}
                                 </Button>

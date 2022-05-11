@@ -47,7 +47,7 @@ function App() {
             <Route path="/viewHelperDetails/:rid" element={<ViewProfileDetail />} />
             <Route path="/shortlist" element={<ShortListed />} />
             <Route path="/hireUsers" element={<HireUser />} />
-            <Route path="/requests" element={<WorkRequest />} />
+            <Route path="/workRequest" element={<WorkRequest />} />
             <Route path="/helperProfile" element={isAuth && <HelperProfile />} />
             <Route path="*" element={"error"} />
           </Routes>

@@ -101,59 +101,9 @@ const fetchSaveUser = async (req, res) => {
         return res.status(400).send(error.message)
     }
 }
-const hireUser = async (req, res) => {
-    try {
-        // console.log("save user")
 
-        const found = await saveModel.findOne({ r_id: req.params.rid })
-        // console.log(req.body.user_id);
-        // console.log("found user :: ",found)
-        if (found) {
-            // if (req.body === null) { res.status(200).send(found) }
 
-            // console.log(req.body)
-            const userFound = await saveModel.findOne({ r_id: found.r_id, "hireUser.user_id": req.body.user_id })
-            console.log("user Found", userFound)
-            if (userFound) {
-                const update = await saveModel.findOneAndUpdate(
-                    { r_id: found.r_id, "hireUser.user_id": req.body.user_id },
-                    { $pull: { hireUser: { user_id: req.body.user_id } } },
-                    { new: true })
-                console.log("remove user :: ", update)
-                return res.status(200).send()
-            }
-            const user = found.hireUser.concat({ user_id: req.body.user_id, status: false })
-            const update = await saveModel.findOneAndUpdate({ r_id: req.params.rid }, { hireUser: user }, { new: true })
-            console.log("update newUser :: ", update);
-            return res.status(200).send()
 
-        }
-        const newUser = new saveModel({
-            r_id: req.params.rid,
-            hireUser: [{ user_id: req.body.user_id, status: false }],
-        })
-
-        await newUser.save();
-        console.log("newUser :: ", newUser);
-        return res.status(200).send()
-    }
-    catch (error) {
-        return res.status(400).send(error.message)
-    }
-}
-
-const requestForWork = async (req, res) => {
-    const userFound = await saveModel.findOne({ r_id: found.r_id, "hireUser.user_id": req.body.user_id })
-    console.log("user Found", userFound)
-    if (userFound) {
-        const update = await saveModel.findOneAndUpdate(
-            { r_id: found.r_id, "hireUser.user_id": req.body.user_id },
-            { $pull: { hireUser: { user_id: req.body.user_id } } },
-            { new: true })
-        console.log("remove user :: ", update)
-        return res.status(200).send()
-    }
-}
 
 // const foundHelperFunc = (val) => {
 //     return new Promise((resolve, reject) => {
@@ -250,8 +200,6 @@ module.exports = {
 
     fetchAllData,
     saveUserData,
-    fetchSaveUser,
-    hireUser,
-    requestForWork,
+    fetchSaveUser,    
     searching
 }
