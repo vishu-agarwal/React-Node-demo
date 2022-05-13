@@ -6,15 +6,18 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { Grid } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Rating from '@mui/material/Rating';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSaveUserThunk, fetchAllThunk, saveThunk } from '../../store/slices/display-slice';
-
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import { starThunk } from '../../store/slices/profile-slice';
 const HireRequestCard = (props) => {
     // console.log("status::",props.status)
@@ -26,71 +29,92 @@ const HireRequestCard = (props) => {
     const onViewClick = () => {
         navigate(`/viewHelperDetails/${props.values.user_id}`)
     }
+    const onEditHandler = () => {
 
+    }
+    const onDeleteHandler = () => {
+
+    }
     return (
         <>
             <Card sx={{
                 maxWidth: "90%", maxHeight: "90%",
                 marginTop: 1,
-                
+
             }} elevation={8}
 
             >
                 <CardContent sx={{ padding: 1 }}>
                     <Grid container direction={'row'} spacing={0} >
-                        <Grid item xs={12} sm={12}>
+                        <Grid item xs={10} sm={10}>
 
-                            <Typography color="green" variant="h4" paddingLeft={1} gutterBottom align="left">
+                            <Typography color="green" variant="h5" paddingLeft={1} gutterBottom align="left">
                                 {String(props.name).toUpperCase()}
 
                             </Typography>
 
                         </Grid>
+                        <Grid item xs={1} sm={1} justifyContent="right" >
 
+                            {/* <Tooltip title="Edit">
+
+                                <ModeEditIcon fontSize="medium" color="info" onClick={onEditHandler} />
+
+                            </Tooltip> */}
+                        </Grid>
+                        <Grid item xs={1} sm={1} justifyContent="right" >
+
+                            <Tooltip title="Delete">
+
+                                <DeleteIcon fontSize="medium" color="error" onClick={onDeleteHandler} />
+
+                            </Tooltip>
+                        </Grid>
                     </Grid>
                     <Grid container direction={'row'} >
 
                         <Grid item xs={12} sm={12} align="left" paddingLeft={1}>
-                            <Typography gutterBottom sx={{ fontSize: 17 }}  >
+                            <Typography gutterBottom sx={{ fontSize: 15 }} component={'div'} >
                                 Status : {
 
 
-                                    <Typography gutterBottom color={props.values.status ? "#1b5e20" : "#faaf00"} sx={{ fontSize: 20 }} display="inline"> {props.values.status ? "Hired!" : "Pending!"}</Typography>
+                                    <Typography gutterBottom color={props.values.status ? "#1b5e20" : "#faaf00"} sx={{ fontSize: 16 }} display="inline"> {props.values.status ? "Hired!" : "Pending!"}</Typography>
 
                                 }
-                        </Typography>
-                        <Typography gutterBottom sx={{ fontSize: 17 }} >
-                            Work : {
-                                props.values.work.map((value, index) => {
-                                    return value + ", "
-                                })}
-                        </Typography>
-                        <Typography gutterBottom sx={{ fontSize: 17 }}  >
-                            {/* //yyyy-mm-dd */}
-                            Date : {props.values.fromDate} to {props.values.toDate}
+                            </Typography>
+                            {props.values.message ?
+                                <>
+                                    <Typography gutterBottom sx={{ fontSize: 15 }}  >Message : </Typography>
+                                    <Typography gutterBottom color="error" sx={{ fontSize: 16 }} display="inline"> {props.values.message}</Typography>
+                                </>
+                                :
+                                ""
+                            }
 
-                        </Typography>
-                        <Typography gutterBottom sx={{ fontSize: 17 }} >
-                            Time : {props.values.fromTime} to {props.values.toTime}
-                        </Typography>
-                        <Typography gutterBottom sx={{ fontSize: 17 }}  >
-                            Description :{props.values.description}
-                        </Typography>
-                        {/* {
-                                props.hireStatus.length !== 0 ?
-                                    // console.log("status::",)
-                                    <>
-                                        <Typography gutterBottom sx={{ fontSize: 15 }} display="inline">Hire Status :</Typography>
-                                        <Typography gutterBottom color={props.hireStatus[0] ? "#1b5e20" : "#faaf00"} sx={{ fontSize: 15 }} display="inline"> {props.hireStatus[0] ? "Hired!" : "Pending!"}</Typography>
-                                    </>
-                                    : ''
-                            } */}
-                        <Button sx={{ float: "right", padding: 0,  fontSize: 18 }} onClick={onViewClick}>View Details </Button>
+                            <Typography gutterBottom sx={{ fontSize: 15 }} >
+                                Work : {
+                                    props.values.work.map((value, index) => {
+                                        return value + ", "
+                                    })}
+                            </Typography>
+                            <Typography gutterBottom sx={{ fontSize: 15 }}  >
+                                {/* //yyyy-mm-dd */}
+                                Date :  <CalendarMonthIcon color="info" sx={{ verticalAlign: "middle" }} /> {props.values.fromDate} to {props.values.toDate}
+
+                            </Typography>
+                            <Typography gutterBottom sx={{ fontSize: 15 }} >
+                                Time : <WatchLaterIcon color="info" sx={{ verticalAlign: "middle" }} /> {props.values.fromTime} to {props.values.toTime}
+                            </Typography>
+                            <Typography gutterBottom sx={{ fontSize: 15 }}  >
+                                Description : {props.values.description}
+                            </Typography>
+                          
+                            <Button sx={{ float: "right", padding: 0 }} size="medium" onClick={onViewClick}>View Details </Button>
+                        </Grid>
+
                     </Grid>
-
-                </Grid>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
         </>
     );
 }

@@ -28,7 +28,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { useState, useEffect } from 'react';
 import hireRequestActions from '../../store/slices/hireRequest-slice'
 
-import { sendHireRequestThunk,updateHireRequestThunk} from '../../store/slices/hireRequest-slice';
+import { sendHireRequestThunk, updateHireRequestThunk, fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
 
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -57,21 +57,14 @@ const MenuProps = {
 
 
 const HireForm = (props) => {
-    const rid = localStorage.getItem("r_id")
+
 
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hireRequestStore }))
-    const [work, setWork] = useState([]);
-    const [values, setValues] = useState({
+    let { message, singleUser, error } = useSelector((state) => ({ ...state.hireRequestStore }))
+    
 
-        fromDate: '',
-        toDate: '',
-        fromTime: '',
-        toTime: '',
-        description: ''
-    });
 
     //edit button show or hide
     const [editHide, setEditHide] = useState(true)
@@ -80,8 +73,10 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
     // console.log(fields)
 
     // useEffect(() => {
-    //     dispatch(fetchRequestThunk(rid))
-    // }, [])
+    //     console.log("userid",props.user_id)
+
+    //     dispatch(fetchSingleHireRequestThunk(props.user_id))
+    // }, [props.user_id])
 
     useEffect(() => {
 
@@ -92,55 +87,42 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
         }
         if (error.length !== 0) {
             // console.log(error)
-            alert(error)
-            dispatch(hireRequestActions.errorReducer())
+            // alert(error)
+            // dispatch(hireRequestActions.errorReducer())
         }
 
     }, [message, error])
 
 
-    // useEffect(() => {
-    //     if (hireRequest.length !== 0) {
-    //         setValues({
-    //             porf_mbl: workData[0].profession_mbl,
-    //             workTime: workData[0].workTime,
-    //             study: workData[0].education,
-    //             otherStudy: workData[0].other_education
+    useEffect(() => {
+        console.log("hireData", props.hireValues)
+        if (singleUser && singleUser.length !== 0) {
+            console.log("hireRequest")
+            props.sethireValues({
+                fromDate: singleUser.fromDate,
+                toDate: singleUser.toDate,
+                fromTime: singleUser.fromTime,
+                toTime: singleUser.toTime,
+                description: singleUser.description,
+            
 
-    //         })
-    //         let list =
-    //             workData[0].languages.map((value, index) => {
-    //                 return value.language
-    //             })
-    //         setlang(
-    //             list
-    //         );
+            })
 
-    //         let workDetails = workData[0]?.workDetails?.filter((data) => data)
-    //         setFields(workDetails)
-    //         setEditHide(false)
-    //         setDisable(true)
-    //     }
-    // }, [workData])
-
-    // console.log(workData)
-
-
-    // console.log(fields, "fielsa")
-    // // console.log(workField)
-
-    // console.log("redux data :: ", workData)
-
-
-
+            props.setWork(
+                singleUser.work
+            );
+            setEditHide(false)
+            setDisable(true)
+        }
+    }, [singleUser])
 
     const onSendRequest = (e) => {
         console.log("save works")
         e.preventDefault()
         const arg = {
-            user_id:props.user_id,
-            values,
-            work
+            user_id: props.user_id,
+            values: props.hireValues,
+            work:props.work
         }
         console.log("abc", arg)
         //create work Profile
@@ -156,10 +138,11 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
     const onUpdateRequest = (e) => {
         e.preventDefault()
         const arg = {
-            values,
-            work
+            user_id: props.user_id,
+            values: props.hireValues,
+            work:props.work
         }
-        console.log(arg)
+
 
         dispatch(updateHireRequestThunk(arg))
         //Edit button display
@@ -188,7 +171,7 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
         const {
             target: { value },
         } = event;
-        setWork(
+        props.setWork(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
@@ -211,7 +194,7 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
         if (event.target.name === "fromDate") {
             // console.log(event.target.value)
             // console.log(new Date(event.target.value) < new Date())
-            setValues((prevState) => { return { ...prevState, fromDate: event.target.value } })
+            props.sethireValues((prevState) => { return { ...prevState, fromDate: event.target.value } })
             if (isTrue) {
                 const prevDay = new Date(today.setDate(today.getDate() - 1))
                 if (new Date(event.target.value) < prevDay) {
@@ -233,8 +216,8 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
             }
         }
         else if (event.target.name === "toDate") {
-            setValues((prevState) => { return { ...prevState, toDate: event.target.value } })
-            if (new Date(event.target.value) >= new Date(values.fromDate)) {
+            props.sethireValues((prevState) => { return { ...prevState, toDate: event.target.value } })
+            if (new Date(event.target.value) >= new Date(props.hireValues.fromDate)) {
                 setErrorEnable({ ...errorEnable, toDate: false })
             }
             else {
@@ -245,9 +228,9 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
         else if (event.target.name === "fromTime") {
             // var nowTime = nowDateTime.split('T')[1].split('.')[0];
 
-            setValues((prevState) => { return { ...prevState, fromTime: event.target.value } })
+            props.sethireValues((prevState) => { return { ...prevState, fromTime: event.target.value } })
             // if (isTrue) {
-            if (new Date(values.fromDate).getDate() === today.getDate() && values.toDate.length !== 0) {
+            if (new Date(props.hireValues.fromDate).getDate() === today.getDate() && props.hireValues.toDate.length !== 0) {
 
                 const nextTime = new Date(today.setTime(today.getTime() + 3 * 60 * 60 * 1000))
                 const nowTime = nextTime.getHours() + ":" + nextTime.getMinutes() + ":" + nextTime.getSeconds()
@@ -260,7 +243,7 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                     setErrorEnable({ ...errorEnable, fromTime: false })
                 }
             }
-            else if (values.fromDate !== "" && values.toDate !== "") {// for future dates
+            else if (props.hireValues.fromDate !== "" && props.hireValues.toDate !== "") {// for future dates
                 if (props.workTime === "Custom (1-4 Hrs)") {
                     console.log(event.target.value)
                     console.log(event.target.value < "06:00" && event.target.value > "20:00")
@@ -323,15 +306,15 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
 
         }
         else if (event.target.name === "toTime") {
-            setValues((prevState) => { return { ...prevState, toTime: event.target.value } })
+            props.sethireValues((prevState) => { return { ...prevState, toTime: event.target.value } })
             // console.log("is trueeee", isTrue);
             // if (isTrue) {
-            const minfrom = moment(values.fromTime, "HH:mm").add(1, "hours").format("HH:mm")
-            const maxfrom = moment(values.fromTime, "HH:mm").add(4, "hours").format("HH:mm")
+            const minfrom = moment(props.hireValues.fromTime, "HH:mm").add(1, "hours").format("HH:mm")
+            const maxfrom = moment(props.hireValues.fromTime, "HH:mm").add(4, "hours").format("HH:mm")
             console.log(event.target.value, minfrom, maxfrom)
             // console.log("tiiime", minfrom,maxfrom)
             // console.log(event.target.value >= minfrom && event.target.value <= maxfrom)
-            if (values.fromTime !== "") {
+            if (props.hireValues.fromTime !== "") {
                 if (props.workTime === "Custom (1-4 Hrs)") {
                     if (event.target.value >= "07:00" && event.target.value <= "21:00") {
                         console.log(minfrom, maxfrom)
@@ -376,7 +359,7 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                         setErrorText("Between 6 PM to 10 PM!")
                     }
                     else {
-                        const hours = moment(values.fromTime, "HH:mm").add(12, "hours").format("HH:mm")
+                        const hours = moment(props.hireValues.fromTime, "HH:mm").add(12, "hours").format("HH:mm")
                         console.log(hours)
                         if (event.target.value === hours) {
                             setErrorEnable({ ...errorEnable, toTime: false })
@@ -394,7 +377,7 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                         setErrorText("Between 8 AM to 10 AM!")
                     }
                     else {
-                        const hours = moment(values.fromTime, "HH:mm").add(12, "hours").format("HH:mm")
+                        const hours = moment(props.hireValues.fromTime, "HH:mm").add(12, "hours").format("HH:mm")
                         console.log(hours)
                         if (event.target.value === hours) {
                             setErrorEnable({ ...errorEnable, toTime: false })
@@ -412,7 +395,7 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                         setErrorText("Between 12 PM to 9 PM!")
                     }
                     else {
-                        const hours = moment(values.fromTime, "HH:mm").add(6, "hours").format("HH:mm")
+                        const hours = moment(props.hireValues.fromTime, "HH:mm").add(6, "hours").format("HH:mm")
                         console.log(hours)
                         if (event.target.value === hours) {
                             setErrorEnable({ ...errorEnable, toTime: false })
@@ -433,19 +416,23 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
     }
     const [saveEnable, setSaveEnable] = useState(false)
     useEffect(() => {
-        console.log("error::", errorEnable)
+
         const areTrue = Object.values(errorEnable).every(
             value => value !== true
 
         );
+        const isNullish = Object.values(props.hireValues).every(value => value !== "");
 
-        console.log("allerror::", areTrue);
-        const isNullish = Object.values(values).every(value => value !== "");
-        console.log("null", isNullish)
 
-        work.length !== 0 ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
+        if (props.workTime === "Live In (24 Hrs)") {
 
-    }, [errorEnable, values, work])
+            const nullTime = props.hireValues.toDate !== "" && props.hireValues.fromDate !== "" && props.hireValues.description !== ""
+            props.work.length !== 0 ? nullTime ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
+        }
+
+        else { props.work.length !== 0 ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false) }
+
+    }, [errorEnable, props.hireValues, props.work])
     return (
         <React.Fragment>
 
@@ -486,8 +473,11 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                                             labelId="demo-multiple-checkbox-label"
                                             id="demo-multiple-checkbox"
                                             multiple
-                                            // required
-                                            value={work}
+                                            inputProps={{
+                                                readOnly: Boolean(fieldsDisable),
+
+                                            }}
+                                            value={props.work}
                                             onChange={workChange}
                                             input={<OutlinedInput label="Work" />}
                                             renderValue={(selected) => selected.join(', ')}
@@ -495,7 +485,7 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                                         >
                                             {props.fields.map((row, index) => (
                                                 <MenuItem key={index} value={row.category}>
-                                                    <Checkbox checked={work.indexOf(row.category) > -1} />
+                                                    <Checkbox checked={props.work.indexOf(row.category) > -1} />
                                                     <ListItemText primary={row.category} />
                                                 </MenuItem>
                                             ))}
@@ -535,14 +525,15 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                                         type="date"
                                         required
                                         name="fromDate"
-                                        // style={{ width: "90%" }}
+                                        inputProps={{
+                                            readOnly: Boolean(fieldsDisable),
+
+                                        }}
                                         fullWidth
-                                        value={values.fromDate}
+                                        value={props.hireValues.fromDate}
                                         onChange={onChange}
                                         error={errorEnable.fromDate}
                                         helperText={errorEnable.fromDate && errorText}
-                                        InputProps={{ inputProps: { min: new Date() } }}
-
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
@@ -557,11 +548,14 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                                         name="toDate"
                                         // style={{ width: "90%" }}
                                         fullWidth
-                                        value={values.toDate}
+                                        value={props.hireValues.toDate}
                                         onChange={onChange}
                                         error={errorEnable.toDate}
                                         helperText={errorEnable.toDate && errorText}
-                                        InputProps={{ inputProps: { min: new Date() } }}
+                                        inputProps={{
+                                            readOnly: Boolean(fieldsDisable),
+
+                                        }}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
@@ -584,9 +578,13 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                                         name="fromTime"
                                         disabled={props.workTime === "Live In (24 Hrs)" ? true : false}
                                         fullWidth
-                                        value={values.fromTime}
+                                        value={props.hireValues.fromTime}
                                         error={errorEnable.fromTime}
                                         helperText={errorEnable.fromTime && errorText}
+                                        inputProps={{
+                                            readOnly: Boolean(fieldsDisable),
+
+                                        }}
                                         onChange={onChange}
                                         InputLabelProps={{
                                             shrink: true,
@@ -600,10 +598,13 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                                         type="time"
                                         required
                                         name="toTime"
+                                        inputProps={{
+                                            readOnly: Boolean(fieldsDisable),
 
+                                        }}
                                         disabled={props.workTime === "Live In (24 Hrs)" ? true : false}
                                         fullWidth
-                                        value={values.toTime}
+                                        value={props.hireValues.toTime}
                                         onChange={onChange}
                                         error={errorEnable.toTime}
                                         helperText={errorEnable.toTime && errorText}
@@ -625,24 +626,27 @@ let { message, hireRequestData, error } = useSelector((state) => ({ ...state.hir
                                         multiline
                                         maxRows={3}
                                         inputProps={{
-                                            maxLength: 100
+                                            maxLength: 100,
+                                            readOnly: Boolean(fieldsDisable),
                                         }}
+
                                         variant='outlined'
                                         id="description"
                                         label="Add Any Description"
                                         fullWidth
                                         placeholder='Please type some work related information!'
-                                        value={values.decription}
-                                        onChange={(val) => { setValues((prevState) => { return { ...prevState, description: val.target.value } }) }}
+                                        value={props.hireValues.description}
+                                        onChange={(val) => { props.sethireValues((prevState) => { return { ...prevState, description: val.target.value } }) }}
                                     />
                                 </Grid>
                             </Grid>
-                            {saveEnable &&
+                            {(saveEnable || !editHide) && !fieldsDisable &&
                                 <Grid xs={12} item>
-                                <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
-                                    {editHide ? "Send" : !fieldsDisable && "Update and Send"}
-                                </Button>
-                            </Grid>}
+                                    <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
+                                        {editHide ? "Send" : !fieldsDisable && "Update and Send"}
+                                    </Button>
+                                </Grid>
+                            }
                         </form>
                     </CardContent>
                 </Card>

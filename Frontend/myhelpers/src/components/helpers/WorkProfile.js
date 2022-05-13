@@ -439,7 +439,7 @@ const WorkProfile = (props) => {
                                     />
                                 </Grid>
                             </Grid>
-                            {saveEnable  &&
+                            {(saveEnable || !editHide) && !fieldsDisable &&
                                 <Grid xs={12} item>
                                 <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
                                     {editHide ? "Save" : !fieldsDisable && "Update"}

@@ -62,7 +62,7 @@ const saveUserData = async (req, res) => {
             // if (req.body === null) { res.status(200).send() }
 
             const userFound = await saveModel.find({ r_id: found.r_id, "saveUser.user_id": req.body.user_id })
-            // console.log("user Found",userFound)
+            console.log("user Found",userFound)
             if (userFound.length !== 0) {
                 const update = await saveModel.findOneAndUpdate({ r_id: found.r_id, "saveUser.user_id": req.body.user_id }, { $pull: { saveUser: { user_id: req.body.user_id } } }, { new: true })
                 console.log("removw user :: ", update)

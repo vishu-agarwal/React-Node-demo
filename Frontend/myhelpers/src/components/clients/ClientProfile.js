@@ -919,7 +919,8 @@ const ClientProfile = () => {
                         {/* : */}
 
 
-                        {saveEnable && <Grid xs={12} sm={12} item>
+                        {(saveEnable || !editHide) && !fieldsDisable &&
+                            <Grid xs={12} sm={12} item>
                             <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
                                 {editHide ? "Save" : !fieldsDisable && "Update"}
                             </Button>

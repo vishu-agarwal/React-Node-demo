@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
 import workProfileActions from '../../store/slices/work-slice'
 import { hireUserThunk, fetchSaveUserThunk, saveThunk } from '../../store/slices/display-slice';
-
+import { fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
 import profileActions from '../../store/slices/profile-slice'
 import { fetchProfileThunk, starThunk } from '../../store/slices/profile-slice';
 import HireForm from './HireForm';
@@ -63,8 +63,19 @@ const ViewProfileDetail = () => {
         study: '',
         otherStudy: '',
         language: '',
-avatar:'',
+        avatar: '',
     });
+
+    const [hireValues, sethireValues] = useState({
+
+        fromDate: '',
+        toDate: '',
+        fromTime: '',
+        toTime: '',
+        description: '',
+        
+    });
+    const [hireWork, setHireWork] = useState([]);
     //for open module
     const [open, setOpen] = useState(false);
 
@@ -74,6 +85,13 @@ avatar:'',
         dispatch(fetchProfileThunk(rid))
         dispatch(fetchWorkThunk(rid))
         dispatch(fetchSaveUserThunk())
+        sethireValues({
+            fromDate: '',
+            toDate: '',
+            fromTime: '',
+            toTime: '',
+            description: '',
+        })
     }, [])
 
     useEffect(() => {
@@ -98,7 +116,7 @@ avatar:'',
         //     dispatch(workProfileActions.errorReducer())
         // }
 
-    }, [message, error,open])
+    }, [message, error, open])
 
     useEffect(() => {
         if (userProfile.length !== 0) {
@@ -120,7 +138,7 @@ avatar:'',
                     : 0.5)
 
                 setStatus(saveUser.length !== 0 ? saveUser.map((val) => userProfile[0].r_id === val.user_id).includes(true) ? true : false : false)
-                
+
                 console.log(userProfile[0].avatar)
                 setValues({
                     name: userProfile[0].name,
@@ -142,7 +160,7 @@ avatar:'',
                     study: workData[0].education,
                     otherStudy: workData[0].other_education,
                     language: list,
-                    avatar : userProfile[0].avatar
+                    avatar: userProfile[0].avatar
 
                 })
                 let workDetails = workData[0]?.workDetails?.filter((data) => data)
@@ -185,6 +203,7 @@ avatar:'',
     // }
     const onHireUser = () => {
         setOpen(true);
+        dispatch(fetchSingleHireRequestThunk(workData[0].r_id))
     }
     const handleClose = () => {
         setOpen(false);
@@ -218,7 +237,7 @@ avatar:'',
 
                             >
                                 {/* <HelperProfile click={handleClose} /> */}
-                                <HireForm user_id={workData.length !== 0 ? workData[0].r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
+                                <HireForm hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData.length !== 0 ? workData[0].r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
 
                             </Backdrop>
 

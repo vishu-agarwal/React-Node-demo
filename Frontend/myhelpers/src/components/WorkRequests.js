@@ -23,7 +23,7 @@ import { useState, useEffect } from 'react';
 // import workProfileActions from '../../store/slices/work-slice'
 
 
-import { fetchHireRequestThunk } from '../store/slices/hireRequest-slice';
+import { fetchHelperRequestsThunk } from '../store/slices/hireRequest-slice';
 import { fetchAllThunk, fetchSaveUserThunk } from '../store/slices/display-slice';
 import workProfileActions from '../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
@@ -42,7 +42,7 @@ const WorkRequest = (props) => {
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
     let { displayData, message, error } = useSelector((state) => ({ ...state.displayStore }))
-    let { hireRequestData} = useSelector((state) => ({ ...state.hireRequestStore }))
+    let { hireRequestData } = useSelector((state) => ({ ...state.hireRequestStore }))
     // const [values,message, setValues] = useState({
     //     name: '',
     //     porf_mbl: '',
@@ -52,40 +52,37 @@ const WorkRequest = (props) => {
     //     time: '',
     // });
     useEffect(() => {
-        dispatch(fetchHireRequestThunk())
-        dispatch(fetchAllThunk())        
+        
+        dispatch(fetchHelperRequestsThunk())
+        
     }, [])
 
-    // console.log(workData[0].workDetails)
+    useEffect(() => {
+
+        
+        dispatch(fetchAllThunk())
+    }, [])
     useEffect(() => {
         // if (message.length !== 0) {
         //     alert(message)
 
         // }
         if (error.length !== 0) {
-            // console.log(error)
+
             alert(error)
             dispatch(workProfileActions.errorReducer())
         }
 
     }, [message, error])
-    useEffect(() => {
-        if (displayData.length !== 0) {
-            console.log("displayData :: ", displayData)
-
-        }
-
-    }, [displayData])
 
     useEffect(() => {
         if (hireRequestData.length !== 0) {
-            console.log("displayData :: ", hireRequestData)
+            console.log("hireRequestdata :: ", hireRequestData)
 
         }
 
     }, [hireRequestData])
 
-    let rates, status
     return (
         <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -94,46 +91,45 @@ const WorkRequest = (props) => {
             <Grid >
                 <Card
                     sx={{
-
-                        minWidth: 700, maxHeight: 1000,
+                        maxWidth: 700, maxHeight: 1000,
                         margin: '0 auto',
                         paddingTop: 0,
                         borderRadius: 5,
                     }}>
                     <CardContent >
-
                         <Grid container direction={'row'} spacing={0}>
-                            <Grid item xs={12} sm={10} align="left" >
-                                <Typography variant="h3" color="black" component="div">
+                            <Grid item xs={12} sm={8} align="left" >
+                                <Typography variant="h4" color="black" >
                                     Hire Enquiry
                                 </Typography>
                             </Grid>
-                            <Grid item xs={12} sm={2}>
+                            <Grid item xs={12} sm={4}>
                                 <Button variant="contained" color="error" onClick={() => navigate(-1)}>Close</Button>
                             </Grid>
 
                         </Grid>
                         <Grid container marginTop={0} marginBottom={0} style={{ maxHeight: '510px', overflow: 'auto' }}>
                             {
-                                // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
-                                
                                 hireRequestData.length !== 0 ?
                                     hireRequestData.map((val, index) =>
-                                        displayData.map((values, index) => {
-                                            if (val.user_id === values.r_id)
-                                            {
-                                                
-                                                return <Grid marginBottom={1} item xs={12} sm={12} align="center" key={index}>
+                                        !val.status ?
 
-                                                    <HireRequestCard values={val} name={values.name} />
-                                                </Grid>
+                                            displayData.map((values, index) => {
+                                                if (val.user_id === values.r_id) {
+
+                                                    return <Grid marginBottom={1} item xs={12} sm={12} align="center" key={index}>
+
+                                                        <HireRequestCard values={val} name={values.name} />
+                                                    </Grid>
                                                 }
 
-                                            // }
-                                        })
+                                                // }
+                                            })
+                                            :
+                                            ""
                                     )
                                     :
-                                    
+
                                     <Grid marginBottom={1} item xs={12} sm={12} align="center" >
 
 

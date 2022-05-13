@@ -59,15 +59,15 @@ export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) =>
     
     return fetchRes
 })
-export const hireUserThunk = createAsyncThunk("displayAll/hireUserThunk", async (arg) => {
-    const data = {
-        user_id: arg
-    }
-    console.log(arg);
-    const fetchRes = await axios.post(`/myhelpers/hireUser/C106`, data)
-    console.log(fetchRes)
-    return fetchRes
-})
+// export const hireUserThunk = createAsyncThunk("displayAll/hireUserThunk", async (arg) => {
+//     const data = {
+//         user_id: arg
+//     }
+//     console.log(arg);
+//     const fetchRes = await axios.post(`/myhelpers/hireUser/C106`, data)
+//     console.log(fetchRes)
+//     return fetchRes
+// })
 const displaySlice = createSlice({
     name: 'displayAll',
     
@@ -141,20 +141,20 @@ const displaySlice = createSlice({
             // console.log("rejected::", error.error.message)
             state.error = error.error.message
         },
-        [hireUserThunk.pending]: (state, action) => {
-            state.loading = true
-        },
-        [hireUserThunk.fulfilled]: (state, action) => {
-            state.loading = false
-            //  state.isAuth = true
-            // state.saveUser = action.payload.data
-            // console.log(state.displayData)
-        },
-        [hireUserThunk.rejected]: (state, error) => {
-            state.loading = false
-            // console.log("rejected::", error.error.message)
-            state.error = error.error.message
-        },
+        // [hireUserThunk.pending]: (state, action) => {
+        //     state.loading = true
+        // },
+        // [hireUserThunk.fulfilled]: (state, action) => {
+        //     state.loading = false
+        //     //  state.isAuth = true
+        //     // state.saveUser = action.payload.data
+        //     // console.log(state.displayData)
+        // },
+        // [hireUserThunk.rejected]: (state, error) => {
+        //     state.loading = false
+        //     // console.log("rejected::", error.error.message)
+        //     state.error = error.error.message
+        // },
     }
 })
 

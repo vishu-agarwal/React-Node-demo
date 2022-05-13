@@ -16,7 +16,8 @@ const hireRequestSchema = new mongoose.Schema(
                 toDate: String,
                 fromTime: String,
                 toTime: String,
-                description: String
+                description: String,
+                message : String
             }
         ]
     },
