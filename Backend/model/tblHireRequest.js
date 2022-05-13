@@ -10,7 +10,7 @@ const hireRequestSchema = new mongoose.Schema(
         hireUser: [
             {
                 user_id: String,
-                status: Boolean,
+                status: String,
                 work: Array,
                 fromDate: String,
                 toDate: String,

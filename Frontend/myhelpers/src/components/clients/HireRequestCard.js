@@ -6,6 +6,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import CheckIcon from '@mui/icons-material/Check';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { Grid, IconButton } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -18,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSaveUserThunk, fetchAllThunk, saveThunk } from '../../store/slices/display-slice';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
+import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined';
 import { starThunk } from '../../store/slices/profile-slice';
 const HireRequestCard = (props) => {
     // console.log("status::",props.status)
@@ -29,12 +33,13 @@ const HireRequestCard = (props) => {
     const onViewClick = () => {
         navigate(`/viewHelperDetails/${props.values.user_id}`)
     }
-    const onEditHandler = () => {
+    const onAcceptHandler = () => {
 
     }
     const onDeleteHandler = () => {
 
     }
+
     return (
         <>
             <Card sx={{
@@ -44,12 +49,12 @@ const HireRequestCard = (props) => {
             }} elevation={8}
 
             >
-                <CardContent sx={{ padding: 1 }}>
-                    <Grid container direction={'row'} spacing={0} >
+                <CardContent >
+                    <Grid container direction={'row'} spacing={1} >
                         <Grid item xs={10} sm={10}>
 
                             <Typography color="green" variant="h5" paddingLeft={1} gutterBottom align="left">
-                                {String(props.name).toUpperCase()}
+                                {String(props.values.name).toUpperCase()}
 
                             </Typography>
 
@@ -61,14 +66,18 @@ const HireRequestCard = (props) => {
                                 <ModeEditIcon fontSize="medium" color="info" onClick={onEditHandler} />
 
                             </Tooltip> */}
+                            {props.values.status ==="pending!" && <Tooltip title="Accepted">
+                                 <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" onClick={onAcceptHandler} />
+                            </Tooltip>}
+                            {/* <CheckOutlinedIcon fontSize="large" sx={{ color:"#faaf00"}} onClick={onEditHandler} /> */}
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
 
-                            <Tooltip title="Delete">
+                            {props.values.status === "pending!" && <Tooltip title="Delete">
 
                                 <DeleteIcon fontSize="medium" color="error" onClick={onDeleteHandler} />
 
-                            </Tooltip>
+                            </Tooltip>}
                         </Grid>
                     </Grid>
                     <Grid container direction={'row'} >

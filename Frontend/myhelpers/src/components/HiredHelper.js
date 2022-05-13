@@ -24,8 +24,8 @@ import { useState, useEffect } from 'react';
 
 
 import { fetchHelperRequestsThunk } from '../store/slices/hireRequest-slice';
-import { fetchAllThunk, fetchSaveUserThunk } from '../store/slices/display-slice';
-import workProfileActions from '../store/slices/work-slice'
+
+
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './clients/HireRequestCard';
@@ -33,7 +33,7 @@ import HireRequestSlice from '../store/slices/hireRequest-slice';
 // import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 
 
-const WorkRequest = (props) => {
+const HiredHelper = (props) => {
     const rid = localStorage.getItem("r_id")
     // const classes = useStyles();
     const navigate = useNavigate()
@@ -56,19 +56,6 @@ const WorkRequest = (props) => {
         dispatch(fetchHelperRequestsThunk())
 
     }, [])
-
-    useEffect(() => {
-        // if (message.length !== 0) {
-        //     alert(message)
-
-        // }
-        if (error.length !== 0) {
-
-            alert(error)
-            dispatch(workProfileActions.errorReducer())
-        }
-
-    }, [message, error])
 
     useEffect(() => {
         if (hireRequestData.length !== 0) {
@@ -95,7 +82,7 @@ const WorkRequest = (props) => {
                         <Grid container direction={'row'} spacing={0}>
                             <Grid item xs={12} sm={8} align="left" >
                                 <Typography variant="h4" color="black" >
-                                    Hire Enquiry
+                                    Hired
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={4}>
@@ -107,7 +94,7 @@ const WorkRequest = (props) => {
                             {
                                 hireRequestData.length !== 0 ?
                                     hireRequestData.map((val, index) => {
-                                        if (val.status === "pending!") {
+                                        if (val.status === "hired!") {
 
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
 
@@ -138,4 +125,4 @@ const WorkRequest = (props) => {
     );
 }
 
-export default WorkRequest
+export default HiredHelper

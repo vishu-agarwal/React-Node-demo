@@ -92,6 +92,7 @@ const ViewProfileDetail = () => {
             toTime: '',
             description: '',
         })
+        setHireWork([])
     }, [])
 
     useEffect(() => {

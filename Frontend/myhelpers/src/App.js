@@ -17,6 +17,7 @@ import ViewClientProfile from './components/clients/ViewClientProfile';
 import ShortListed from './components/ShortListed';
 import HireUser from './components/HireUser';
 import WorkRequest from './components/WorkRequests';
+import HiredHelper from './components/HiredHelper';
 function App() {
   const isAuth = useSelector(state => state.loginStore.isAuth)
   // console.log(isAuth)
@@ -47,6 +48,7 @@ function App() {
             <Route path="/viewHelperDetails/:rid" element={<ViewProfileDetail />} />
             <Route path="/shortlist" element={<ShortListed />} />
             <Route path="/hireUsers" element={<HireUser />} />
+            <Route path="/hiredHelper" element={<HiredHelper />} />
             <Route path="/workRequest" element={<WorkRequest />} />
             <Route path="/helperProfile" element={isAuth && <HelperProfile />} />
             <Route path="*" element={"error"} />

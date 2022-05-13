@@ -19,7 +19,7 @@ export const sendHireRequestThunk = createAsyncThunk("hireRequest/workProfileThu
             [
                 {
                     user_id: arg.user_id,
-                    status: false,
+                    status: "pending!",
                     work: arg.work,
                     fromDate: arg.values.fromDate,
                     toDate: arg.values.toDate,
@@ -45,7 +45,7 @@ export const sendHireRequestThunk = createAsyncThunk("hireRequest/workProfileThu
 export const fetchHelperRequestsThunk = createAsyncThunk("hireRequest/fetchHelperRequestsThunk", async (arg) => {
     try {
         // console.log("abc")
-        const hireRequest = await axios.get(`/myhelpers/fetchHireRequest/C106`)
+        const hireRequest = await axios.get(`/myhelpers/fetchHireRequest/H110`)
 
         
         return hireRequest
@@ -78,7 +78,7 @@ export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateWorkTh
 
         {
             user_id: arg.user_id,
-            status: false,
+            status: "pending!",
             work: arg.work,
             fromDate: arg.values.fromDate,
             toDate: arg.values.toDate,
