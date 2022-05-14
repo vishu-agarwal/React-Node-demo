@@ -4,18 +4,18 @@ import axios from 'axios'
 
 const initialState = {
     userProfile: [],
-    message:'',
+    message: '',
     loading: false,
     error: ""
 }
 export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
     try {
         const data = {
-            user_id:"C106",
-            rate:arg.rate
+            user_id: "C106",
+            rate: arg.rate
         }
-        
-        const res = await axios.put(`/myhelper/updateStar/${arg.rid}`,data)
+
+        const res = await axios.put(`/myhelper/updateStar/${arg.rid}`, data)
         return res;
     }
     catch (error) {
@@ -27,7 +27,7 @@ export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (fo
     try {
         const rid = localStorage.getItem("r_id")
 
-        const res = await axios.post(`/myhelper/upldAvatar/H102`, formdata, config)
+        const res = await axios.post(`/myhelper/upldAvatar/C109`, formdata, config)
         // console.log("response :: ", res)
         return res
 
@@ -40,14 +40,14 @@ export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (fo
     try {
         const rid = localStorage.getItem("r_id")
 
-        const res = await axios.post(`/myhelper/upldAadhar/H102`, formdata, config)
+        const res = await axios.post(`/myhelper/upldAadhar/C109`, formdata, config)
         // console.log("response :: ", res)
         return res
 
     } catch (error) {
         throw new Error(error.response.data)
     }
-})    
+})
 export const createProfileThunk = createAsyncThunk("userProfile/createProfileThunk", async (arg) => {
     // console.log("profilediapatch::", arg)
     try {
@@ -74,7 +74,7 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
 
         };
         // console.log("data", data)
-        const userRes = await axios.post(`/myhelpers/crtProfile/H102`, data)
+        const userRes = await axios.post(`/myhelpers/crtProfile/C109`, data)
 
         // console.log("loginRes", loginRes)
         return userRes
@@ -85,13 +85,47 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
         throw new Error(error.response.data)
     }
 })
-export const fetchProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk",async (arg) => {
+export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk", async (arg) => {
     try {
-        console.log("arg ",arg)        
-        const fetchRes = await axios.get(`/myhelpers/userProfile/fetch/${arg}`)
+        // console.log("arg ",arg)        
+        const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`)
 
-        console.log("Fwtch Response:: ", fetchRes)
-        return fetchRes
+        console.log("Fwtch Response:: ", fetchUser)
+        return fetchUser
+
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
+//update profile of user
+export const updateProfileThunk = createAsyncThunk("userProfile/updateProfileThunk", async (arg) => {
+    try {
+        const data = {
+            name: arg.values.fname + ' ' + arg.values.lname,
+            dob: arg.values.dob,
+            email: arg.values.email,
+            gender: arg.values.gender,
+            isMarried: arg.values.married,
+            physical_disable: arg.values.physic_dis,
+            address: [
+                {
+                    state: arg.values.state,
+                    city: arg.values.city,
+                    pincode: arg.values.pincode,
+                    landmark: arg.values.street,
+                    house_name: arg.values.house_name,
+                    houseNo: arg.values.house_no,
+                }
+            ],
+            alt_mob_num: arg.values.altmbl,
+            about: arg.values.about,
+            aadhar_card: arg.aadhar
+        }
+        // console.log("data::",data)
+        const updateuser = await axios.put(`/myhelpers/client/update/C109`, data)
+
+        // console.log("Fwtch Response:: ", fetchRes)
+        return updateuser
 
     } catch (error) {
         throw new Error(error.response.data)
@@ -117,7 +151,7 @@ const profileSlice = createSlice({
         [avatarThunk.fulfilled]: (state, action) => {
             state.loading = false
             //  state.isAuth = true
-            state.message = [action.payload.data    ]
+            state.message = [action.payload.data]
         },
         [avatarThunk.rejected]: (state, error) => {
             state.loading = false
@@ -147,7 +181,7 @@ const profileSlice = createSlice({
         [createProfileThunk.fulfilled]: (state, action) => {
             state.loading = false
             //  state.isAuth = true
-            state.userProfile = [...action.payload.data]
+            // state.userProfile = [action.payload.data]
         },
         [createProfileThunk.rejected]: (state, error) => {
             state.loading = false
@@ -156,19 +190,35 @@ const profileSlice = createSlice({
             state.error = error.error.message
         },
         //fetchProfileData
-        [fetchProfileThunk.pending]: (state, action) => {
+        [fetchUserProfileThunk.pending]: (state, action) => {
             state.loading = true
         },
-        [fetchProfileThunk.fulfilled]: (state, action) => {
+        [fetchUserProfileThunk.fulfilled]: (state, action) => {
             state.loading = false
             //  state.isAuth = true
-            state.userProfile = action.payload.data
+            state.userProfile = [action.payload.data]
+            // console.log("userProfile::",state.userProfile)
         },
-        [fetchProfileThunk.rejected]: (state, error) => {
+        [fetchUserProfileThunk.rejected]: (state, error) => {
             state.loading = false
             // console.log("rejected::", error.error.message)
 
-            // state.error = error.error.message
+            state.error = error.error.message
+        },
+        //update userProfileData
+        [updateProfileThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [updateProfileThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            // state.userProfile = [action.payload.data]
+        },
+        [updateProfileThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+
+            state.error = error.error.message
         },
         //update stars
         [starThunk.pending]: (state, action) => {

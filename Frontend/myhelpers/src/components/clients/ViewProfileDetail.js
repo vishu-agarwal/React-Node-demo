@@ -29,7 +29,7 @@ import workProfileActions from '../../store/slices/work-slice'
 import { hireUserThunk, fetchSaveUserThunk, saveThunk } from '../../store/slices/display-slice';
 import { fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
 import profileActions from '../../store/slices/profile-slice'
-import { fetchProfileThunk, starThunk } from '../../store/slices/profile-slice';
+import { fetchUserProfileThunk, starThunk } from '../../store/slices/profile-slice';
 import HireForm from './HireForm';
 
 const ViewProfileDetail = () => {
@@ -80,11 +80,15 @@ const ViewProfileDetail = () => {
     const [open, setOpen] = useState(false);
 
     const [status, setStatus] = useState(false)
-    const [star, setStar] = useState(0.5)
+    const [star, setStar] = useState(2)
     useEffect(() => {
-        dispatch(fetchProfileThunk(rid))
+        dispatch(fetchUserProfileThunk(rid))
         dispatch(fetchWorkThunk(rid))
         dispatch(fetchSaveUserThunk())
+       
+    }, [])
+    useEffect(() => {
+    
         sethireValues({
             fromDate: '',
             toDate: '',
@@ -94,7 +98,6 @@ const ViewProfileDetail = () => {
         })
         setHireWork([])
     }, [])
-
     useEffect(() => {
 
         if (saveUser.length !== 0) {
@@ -136,7 +139,7 @@ const ViewProfileDetail = () => {
                         id.user_id
                     ).length
 
-                    : 0.5)
+                    : 2)
 
                 setStatus(saveUser.length !== 0 ? saveUser.map((val) => userProfile[0].r_id === val.user_id).includes(true) ? true : false : false)
 
@@ -250,7 +253,7 @@ const ViewProfileDetail = () => {
                                     <Typography variant="h3" color="primary" component="div">
                                         {values.name.toUpperCase()}
                                     </Typography>
-                                    <Rating name="half-rating" precision={0.5}
+                                    <Rating name="half-rating" 
                                         // value={parseInt(props.values.rate)}
                                         value={star}
                                         onChange={(val) =>

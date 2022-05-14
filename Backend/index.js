@@ -8,7 +8,7 @@ const app = express()
 app.use(express.json())
 
 app.use('/image',express.static('image'))
-
+app.use('/pdfFile', express.static('pdfFile'))
 const regRoute = require("./router/regRouter")
 app.use(regRoute)
 const cProfileRoute = require("./router/client/clientRouter")

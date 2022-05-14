@@ -27,7 +27,7 @@ import { fetchWorkThunk } from '../../store/slices/work-slice';
 import workProfileActions from '../../store/slices/work-slice'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import profileActions from '../../store/slices/profile-slice'
-import { fetchProfileThunk } from '../../store/slices/profile-slice';
+import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 function createData(skill, experience, price) {
     return { skill, experience, price };
 }
@@ -65,7 +65,7 @@ const ViewClientProfile = () => {
     });
     const [star, setStar] = useState(0)
     useEffect(() => {
-        dispatch(fetchProfileThunk("C101"))
+        dispatch(fetchUserProfileThunk("C101"))
     }, [])
 
     // console.log(workData[0].workDetails)

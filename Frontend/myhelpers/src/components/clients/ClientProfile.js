@@ -18,7 +18,7 @@ import PhotoCameraSharpIcon from '@mui/icons-material/PhotoCameraSharp';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import WorkProfile from '../helpers/WorkProfile';
 import { useEffect, useState, useCallback } from 'react';
 // import axios from 'axios';
@@ -26,23 +26,14 @@ import profileImg from '../profiile1.jpg';
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import profileActions from '../../store/slices/profile-slice'
-import { createProfileThunk, avatarThunk, aadharThunk, fetchProfileThunk } from '../../store/slices/profile-slice';
+import { createProfileThunk, updateProfileThunk, avatarThunk, aadharThunk, fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
-
+// import ViewAadhar from './ViewAadhar';
+// import PDFViewer from 'pdf-viewer-reactjs'
+import Rating from '@mui/material/Rating';
 const Input = styled('input')({
     display: 'none',
-});
-
-
-const theme = createTheme({
-
-    palette: {
-        primary: {
-            main: red[900],
-        },
-    },
-
 });
 
 const ClientProfile = () => {
@@ -56,24 +47,7 @@ const ClientProfile = () => {
     // console.log(xyz)
 
 
-    // // We'll update "values" as the form updates
-    // const [values, setValues] = useState(initialFormValues);
-    // // "errors" is used to check the form for errors
-    // const [errors, setErrors] = useState({});
-    // const validate = (fieldValues = values) => {
-    //     // this function will check if the form values are valid
-    // }
-    // const {
-    //     handleInputValue = (fieldValues = values) => {
-    //         // this function will be triggered by the text field's onBlur and onChange events
-    //     },
-    //     handleFormSubmit = async (e) => {
-    //         // this function will be triggered by the submit event
-    //     },
-    //     formIsValid = () => {
-    //         // this function will check if the form values and return a boolean value
-    //     }
-    // } = useFormControls();
+    const [star, setStar] = useState(2)
     const [values, setValues] = useState({
         fname: '',
         lname: '',
@@ -90,6 +64,7 @@ const ClientProfile = () => {
         state: '',
         pincode: '',
         about: '',
+
     });
     const [clicked, setClicked] = useState(false)
     const [enable, setenable] = useState(false)
@@ -107,7 +82,7 @@ const ClientProfile = () => {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchProfileThunk())
+        dispatch(fetchUserProfileThunk("C109"))
     }, [])
 
     useEffect(() => {
@@ -137,6 +112,16 @@ const ClientProfile = () => {
     // const str2blob = txt => new Blob([txt]);
     useEffect(() => {
         if (userProfile.length !== 0) {
+            setStar(userProfile.rating !== undefined ?
+                userProfile[0].rating.map((id) =>
+                    id.rate
+                ).reduce((prev, curr) => prev + curr, 0)
+                /
+                userProfile[0].rating.map((id) =>
+                    id.user_id
+                ).length
+
+                : 2)
             setValues({
                 fname: userProfile[0].name.split(" ")[0],
                 lname: userProfile[0].name.split(" ")[1],
@@ -161,7 +146,7 @@ const ClientProfile = () => {
                 dispFile: userProfile[0].avatar
 
             })
-
+            setaadhar({ ...aadhar, dispFile: userProfile[0].aadhar_card })
             setEditHide(false)
             setDisable(true)
         }
@@ -211,14 +196,13 @@ const ClientProfile = () => {
     }
     const onUpdateProfileHandler = (e) => {
         e.preventDefault()
-        // const arg = {
-        //     values,
-        //     lang,
-        //     fields
-        // }
-        // console.log(arg)
+        const arg = {
+            values,
+            aadhar: aadhar.dispFile
+        }
+        console.log(arg)
 
-        // dispatch(updateWorkThunk(arg))
+        dispatch(updateProfileThunk(arg))
         //Edit button display
         setEditHide(false)
         setDisable(TouchRipple)
@@ -311,6 +295,20 @@ const ClientProfile = () => {
             dispFile: ''
         })
     }
+
+    const onAadharView = () => {
+        window.open(`http://localhost:3001/${aadhar.dispFile}`)
+
+        // console.log("viewPdf......", `http://localhost:3001/${aadhar.dispFile}`);
+        // <PDFViewer
+        //     document={{
+        //         url: `http://localhost:3001/${aadhar.dispFile}`,
+        //     }}
+        // />
+        // <ViewAadhar url={`http://localhost:3001/${aadhar.dispFile}`} />
+    }
+
+
     const [onClick, setOnClick] = useState(false)
     const hiddenFileInput = React.useRef(null);
 
@@ -470,7 +468,7 @@ const ClientProfile = () => {
                 setErrorText("Please enter valid House No.!")
             }
         }
-        else if (event.target.id === "housername") {
+        else if (event.target.id === "housename") {
             setValues((prevState) => {
                 return {
                     ...prevState,
@@ -565,16 +563,17 @@ const ClientProfile = () => {
             setErrorText("")
         }
     };
+
     useEffect(() => {
-        console.log("error::", errorEnable)
+        // console.log("error::", errorEnable)
         const areTrue = Object.values(errorEnable).every(
             value => value !== true
 
         );
 
-        console.log("allerror::", areTrue);
+        // console.log("allerror::", areTrue);
         const isNullish = Object.values(values).every(value => value !== "");
-        console.log("null", isNullish)
+        // console.log("null", isNullish)
 
         aadhar.dispFile !== "" ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
 
@@ -596,8 +595,15 @@ const ClientProfile = () => {
                             {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
                         </Grid>
                     </Grid>
-                    <Typography variant="h4"  >Profile</Typography>
-                    <Typography variant="h5"  >Registered no</Typography>
+
+                    <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].number : ''}</Typography>
+                    {role === "Helper" && <Rating name="half-rating"
+                        // value={parseInt(props.values.rate)}
+                        value={star}
+                        readOnly={Boolean(true)}
+                        size="medium"
+                    // onClick={(val)=>onRateClick(val)}
+                    />}
                     <form onSubmit={editHide ? profileSaveHandler : onUpdateProfileHandler}>
                         <Grid container spacing={1}>
                             <Grid xs={12} item >
@@ -610,7 +616,7 @@ const ClientProfile = () => {
                                             <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} />
                                             <IconButton color="primary" aria-label="upload picture" component="span" >
                                                 {/* <ThemeProvider theme={theme}> */}
-                                                <EditRoundedIcon color="error" fontSize="large" disabled={fieldsDisable} />
+                                                <EditRoundedIcon color="error" fontSize="large" />
                                                 {/* </ThemeProvider> */}
                                             </IconButton>
                                         </label>
@@ -628,7 +634,7 @@ const ClientProfile = () => {
                                 </Badge>
                             </Grid>
                         </Grid>
-                        {enable && <Button variant="contained" sx={{ marginTop: 1 }} color="warning" disabled={fieldsDisable} onClick={avatarSubmit}>Upload Photo </Button>}
+                        {enable && <Button variant="contained" sx={{ marginTop: 1 }} color="warning" onClick={avatarSubmit}>Upload Photo </Button>}
 
                         <Typography color='green' variant='body1' component='p' marginTop={1}>Please fill up this form is necessary to move forward !</Typography>
                         <Typography variant='subtitle1' marginLeft={1.5} align='left' color='InfoText'>Personal Details : </Typography>
@@ -643,7 +649,10 @@ const ClientProfile = () => {
                                     label="First Name"
                                     fullWidth
                                     value={values.fname.toUpperCase()}
-                                    disabled={fieldsDisable}
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+
+                                    }}
                                     onChange={onChange}
                                     error={errorEnable.fname}
                                     helperText={errorEnable.fname && errorText} />
@@ -656,7 +665,10 @@ const ClientProfile = () => {
                                     label="Last Name"
                                     fullWidth
                                     value={values.lname.toUpperCase()}
-                                    disabled={fieldsDisable}
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+
+                                    }}
                                     onChange={onChange}
                                     error={errorEnable.lname}
                                     helperText={errorEnable.lname && errorText}
@@ -673,7 +685,10 @@ const ClientProfile = () => {
                                     onChange={onChange}
                                     error={errorEnable.dob}
                                     helperText={errorEnable.dob && errorText}
-                                    disabled={fieldsDisable}
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+
+                                    }}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
@@ -689,7 +704,10 @@ const ClientProfile = () => {
                                     label="Alternate Mobile Number"
                                     fullWidth
                                     value={values.altmbl}
-                                    disabled={fieldsDisable}
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+                                        // disabled: Boolean(true),
+                                    }}
                                     onChange={onChange}
                                     error={errorEnable.altmbl}
                                     helperText={errorEnable.altmbl && errorText}
@@ -706,38 +724,41 @@ const ClientProfile = () => {
                                     value={values.email}
                                     // onChange={(val) => { setValues((prevState) => { return { ...prevState, email: val.target.value } }) }}
                                     InputProps={{
+                                        readOnly: Boolean(fieldsDisable),
                                         endAdornment: (
                                             <InputAdornment position="end">
                                                 <AccountCircle />
                                             </InputAdornment>
                                         )
                                     }}
+
+
                                     onChange={onChange}
                                     error={errorEnable.email}
                                     helperText={errorEnable.email && errorText}
-                                    disabled={fieldsDisable}
+                                // disabled={fieldsDisable}     
                                 />
                             </Grid>
                             <Grid xs={12} sm={5} item >
                                 <div align="left"><InputLabel >Gender</InputLabel></div>
                                 <RadioGroup
                                     row
-                                    disabled={fieldsDisable}
+                                    // disabled={fieldsDisable}
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="gender"
                                     value={values.gender}
                                     onChange={(val) => { setValues((prevState) => { return { ...prevState, gender: val.target.value } }) }}
                                 >
-                                    <FormControlLabel disabled={fieldsDisable} value="female" control={<Radio />} label="Female" />
-                                    <FormControlLabel disabled={fieldsDisable} value="male" control={<Radio />} label="Male" />
-                                    <FormControlLabel disabled={fieldsDisable} value="other" control={<Radio />} label="Other" />
+                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                    <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                    <FormControlLabel value="other" control={<Radio />} label="Other" />
                                 </RadioGroup>
                             </Grid>
                             <Grid xs={12} sm={3} item>
                                 <div align="left"><InputLabel >Marital Status</InputLabel></div>
                                 <RadioGroup
                                     row
-                                    disabled={fieldsDisable}
+                                    // disabled={fieldsDisable}
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="married"
                                     value={values.married}
@@ -745,13 +766,13 @@ const ClientProfile = () => {
                                 >
                                     <FormControlLabel
                                         value="true"
-                                        disabled={fieldsDisable}
+                                        // disabled={fieldsDisable}
                                         control={<Radio />}
                                         label="Yes"
                                     />
                                     <FormControlLabel
                                         value="false"
-                                        disabled={fieldsDisable}
+                                        // disabled={fieldsDisable}
                                         control={<Radio />}
                                         label="No"
                                     />
@@ -761,14 +782,14 @@ const ClientProfile = () => {
                                 <div align="left"><InputLabel >Any Phiysical Disability</InputLabel></div>
                                 <RadioGroup
                                     row
-                                    disabled={fieldsDisable}
+                                    // disabled={fieldsDisable}
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="disability"
                                     value={values.physic_dis}
                                     onChange={(val) => { setValues((prevState) => { return { ...prevState, physic_dis: val.target.value } }) }}
                                 >
-                                    <FormControlLabel value="true" disabled={fieldsDisable} control={<Radio />} label="Yes" />
-                                    <FormControlLabel value="false" disabled={fieldsDisable} control={<Radio />} label="No" />
+                                    <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                    <FormControlLabel value="false" control={<Radio />} label="No" />
                                 </RadioGroup>
                             </Grid>
 
@@ -784,7 +805,11 @@ const ClientProfile = () => {
                                     placeholder='A-101'
                                     fullWidth
                                     value={values.house_no.toUpperCase()}
-                                    disabled={fieldsDisable}
+
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+                                        // disabled: Boolean(true),
+                                    }}
                                     onChange={onChange}
                                     error={errorEnable.house_no}
                                     helperText={errorEnable.house_no && errorText}
@@ -794,11 +819,15 @@ const ClientProfile = () => {
                                 <TextField
                                     required
                                     variant='outlined'
-                                    id="housername"
+                                    id="housename"
                                     label="House/Appartment Name"
                                     fullWidth
                                     value={values.house_name.toUpperCase()}
-                                    disabled={fieldsDisable}
+
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+                                        // disabled: Boolean(true),
+                                    }}
                                     onChange={onChange}
                                     error={errorEnable.house_name}
                                     helperText={errorEnable.house_name && errorText}
@@ -812,7 +841,11 @@ const ClientProfile = () => {
                                     label="Landmark/Area/Street"
                                     fullWidth
                                     value={values.street.toUpperCase()}
-                                    disabled={fieldsDisable}
+
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+                                        // disabled: Boolean(true),
+                                    }}
                                     onChange={onChange}
                                     error={errorEnable.street}
                                     helperText={errorEnable.street && errorText}
@@ -826,7 +859,11 @@ const ClientProfile = () => {
                                     label="City"
                                     fullWidth
                                     value={values.city.toUpperCase()}
-                                    disabled={fieldsDisable}
+
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+                                        // disabled: Boolean(true),
+                                    }}
                                     onChange={onChange}
                                     error={errorEnable.city}
                                     helperText={errorEnable.city && errorText}
@@ -840,7 +877,11 @@ const ClientProfile = () => {
                                     label="State"
                                     fullWidth
                                     value={values.state.toUpperCase()}
-                                    disabled={fieldsDisable}
+
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+                                        // disabled: Boolean(true),
+                                    }}
                                     onChange={onChange}
                                     error={errorEnable.state}
                                     helperText={errorEnable.state && errorText}
@@ -854,7 +895,11 @@ const ClientProfile = () => {
                                     label="Pincode"
                                     fullWidth
                                     value={values.pincode}
-                                    disabled={fieldsDisable}
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+                                        // disabled: Boolean(true),
+                                    }}
+                                    // disabled={fieldsDisable}
                                     onChange={onChange}
                                     error={errorEnable.pincode}
                                     helperText={errorEnable.pincode && errorText}
@@ -862,11 +907,11 @@ const ClientProfile = () => {
                             </Grid>
                         </Grid>
                         <Typography variant='subtitle1' marginLeft={1.5} align='left' color='InfoText'>Other Details : </Typography>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} >
                             {/* <Grid xs={2} item>
                                 <Typography>Aadhar Card* :</Typography>
                             </Grid> */}
-                            <Grid xs={6} item>
+                            <Grid xs={6} sm={6} item marginTop={1} >
                                 <label htmlFor="contained-button-file">
                                     <Input id="contained-button-file" type="file" name="aadharCard"
                                         // disabled={fieldsDisable}
@@ -874,23 +919,29 @@ const ClientProfile = () => {
                                         onChange={onAadharChange}
                                         style={{ display: 'none' }}
                                     />
-                                    <Button color="warning" fullWidth variant="contained" disabled={fieldsDisable} component="span" >
+                                    <Button color="warning" fullWidth variant="contained" component="span" >
                                         Choose Aadhar Card File (PDF 1MB Only)*
                                     </Button>
                                 </label>
-                                {/* <Input accept="image/*" id="contained-button-file" type="file" /> */}
+
 
                             </Grid>
                             <Grid xs={6} item>
 
-
-                                {aadhar.dispFile}
                                 {aadhar.dispFile &&
-                                    <IconButton onClick={onCancel} aria-label="upload picture" component="span">
-                                        {/* <ThemeProvider theme={theme}> */}
-                                        <CancelSharpIcon color="error" fontSize="medium" />
-                                        {/* </ThemeProvider> */}
-                                    </IconButton>
+                                    <>
+                                        < IconButton onClick={onAadharView} aria-label="upload picture" component="span">
+                                            <VisibilityRoundedIcon color="info" fontSize="large" />
+                                        </IconButton>
+                                        {aadhar.dispFile}
+                                    </>
+                                }
+                                {aadhar.dispFile && !fieldsDisable && <IconButton onClick={onCancel} aria-label="upload picture"  component="span">
+                                    {/* <ThemeProvider theme={theme}> */}
+                                    <CancelSharpIcon color="error" fontSize="medium" />
+                                    {/* </ThemeProvider> */}
+                                </IconButton>
+
                                 }
                             </Grid>
 
@@ -898,13 +949,14 @@ const ClientProfile = () => {
                                 <TextField
                                     required
                                     multiline
-                                    disabled={fieldsDisable}
+
                                     maxRows={3}
                                     variant='outlined'
                                     id="about"
                                     label="About you"
                                     fullWidth
                                     inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
                                         maxLength: 100
                                     }}
                                     placeholder='Please type some information about you OR what you want!'
@@ -921,10 +973,10 @@ const ClientProfile = () => {
 
                         {(saveEnable || !editHide) && !fieldsDisable &&
                             <Grid xs={12} sm={12} item>
-                            <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
-                                {editHide ? "Save" : !fieldsDisable && "Update"}
-                            </Button>
-                        </Grid>}
+                                <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
+                                    {editHide ? "Save" : !fieldsDisable && "Update"}
+                                </Button>
+                            </Grid>}
                         {/* }    */}
 
                     </form>

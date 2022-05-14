@@ -34,29 +34,7 @@ router.put("/myhelper/updateStar/:rid", profileController.updateStar)
 
 
 //update profile
-router.put("/myhelpers/client/update/:rid", async (req, res) => {
-    //which field are allowed to update
-    try {
-
-        const isunique = await profileModel.findOne({ r_id: req.params.rid })
-        if (isunique.length === 0) {
-            return res.status(201).send("this proflile not available !!!");
-        }
-        const update = Object.keys(req.body)
-        const allowed = ['name', 'address', 'about', 'alt_mob_num']
-        const isvalid = update.every((updt) => {
-            return ab = allowed.includes(updt)
-        })
-        if (!isvalid) {
-            return res.status(400).send("invalid updates!!");
-        }
-        update.forEach((updt) => isunique[updt] = req.body[updt])
-        await isunique.save()
-        return res.send(isunique)
-    } catch (error) {
-        res.status(404).send(error.message)
-    }
-})
+router.put("/myhelpers/client/update/:rid", profileController.updateProfile)
 
 //delete profile
 router.delete("/myhelpers/client/delete/:rid", async (req, res) => {

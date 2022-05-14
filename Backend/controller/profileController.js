@@ -26,12 +26,16 @@ const createProfile = async (req, res) => {
 }
 const fetchProfile = async (req, res) => {
     try {
-console.log("params id ",req.params.rid)
-        const isunique = await profileModel.find({ r_id: req.params.rid })
+        // console.log("params id ",req.params.rid)
+        let isunique = await profileModel.findOne({ r_id: req.params.rid })
+
+        const loginNo = await regModel.findOne({ r_id: isunique.r_id })
         if (isunique.length === 0) {
             throw new Error("This Profile is not available!");
         }
         else {
+            isunique = { ...isunique._doc, number: loginNo.mob_num }
+            console.log("isunique ::: ", isunique, "login::", loginNo.mob_num)
             return res.status(200).send(isunique)
         }
     } catch (error) {
@@ -51,8 +55,7 @@ const updateStar = async (req, res) => {
 
             const idIndex = found.rating.findIndex((c) => c.user_id === req.body.user_id);
             // console.log("found old user", idIndex);
-            if (idIndex < 0)
-            {
+            if (idIndex < 0) {
                 console.log("found new user");
                 const rate = found.rating.concat(req.body)
                 const updtStar = await profileModel.findOneAndUpdate(
@@ -64,58 +67,43 @@ const updateStar = async (req, res) => {
                 )
                 console.log("new Update ::", updtStar)
                 return res.status(200).send()
-                
-                }
-            
+
+            }
+
             else if (found.rating[idIndex].user_id === req.body.user_id) {
                 found.rating[idIndex].rate = req.body.rate
 
                 const update = await found.save();
-                console.log("old user :: \n",update)
+                console.log("old user :: \n", update)
                 return res.status(200).send();
-            } 
+            }
 
         }
-
-        //    const abc = found.rating.map((item) =>
-        //     item.user_id === req.body.user_id ? item.rate === req.body.rate : item.rate === item.rate
-        //     )
-        //     // const rating
-        //     console.log("rate update :: ",abc)
-
-        //     if (found) {
-
-        //         const update = {
-        //             ...found,
-        //            rating: abc
-        //         }
-        //         found.save(update)
-        //         // const isRated = await profileModel.findOneAndUpdate({ r_id: found.r_id, `rating[${abc}].user_id` : req.body.user_id }
-        //         //     // ,
-        //         //     // { "rating.rate":req.body.rate}
-        //         //     // ,
-        //         //     // { new: true }
-        //         // )
-        //         console.log("old Update ::", update)
-        //         // if (!isRated) {
-        //             // const rate = found.rating.concat(req.body)
-        //             // const updtStar = await profileModel.findOneAndUpdate(
-        //             //     { r_id: req.params.rid },
-
-        //             //     { rating: rate }
-        //             //     ,
-        //             //     { new: true }
-        //             // )
-        //             // console.log("new Update ::", updtStar)
-        //         // }
-        //     }
-        //     return res.status(200).send()
     }
     catch (error) {
-      return  res.status(400).send(error.message)
+        return res.status(400).send(error.message)
     }
 
 }
+//update user profile
+const updateProfile = async (req, res) => {
+    //which field are allowed to update
+    try {
+        const r_id = req.params.rid
+        // const found = await profileModel.findOne({ r_id })
+       
+        const update = await profileModel.findOneAndUpdate({ r_id }, { ...req.body }, { new: true })
+        if (!update) {
+            throw new Error("Some Problem while uupdating working details!")
+        }
+console.log("update data:: ", update)
+        return res.status(200).send("update WorkDetails successfully!")
+        // return res.send(isunique)
+    } catch (error) {
+        res.status(404).send(error.message)
+    }
+}
+
 
 
 
@@ -174,7 +162,7 @@ const avatarUpload = async (req, res) => {
             await newpro.save();
             console.log(newpro);
         }
-        
+
         res.status(200).send("Profile Photo sucessfully uploaded")
     }
     catch (error) {
@@ -241,4 +229,5 @@ module.exports = {
     aadharUpload,
     uploadPdf,
     updateStar,
+    updateProfile,
 }
