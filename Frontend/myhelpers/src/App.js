@@ -44,7 +44,7 @@ function App() {
             {/* <Route path="/clientProfile" element={isAuth && <ClientProfile />} /> */}
             <Route path="/clientProfile" element={<ClientProfile />} />
             <Route path="/display" element={<DisplayData />} />
-            <Route path="/viewClientDetails" element={<ViewClientProfile />} />
+            <Route path="/viewClientDetails/:rid" element={<ViewClientProfile />} />
             <Route path="/viewHelperDetails/:rid" element={<ViewProfileDetail />} />
             <Route path="/shortlist" element={<ShortListed />} />
             <Route path="/hireUsers" element={<HireUser />} />

@@ -42,7 +42,8 @@ const rows = [
 const ViewClientProfile = () => {
 
     const navigate = useNavigate()
-
+    const params = useParams()
+    const rid = params.rid;
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
@@ -65,7 +66,7 @@ const ViewClientProfile = () => {
     });
     const [star, setStar] = useState(0)
     useEffect(() => {
-        dispatch(fetchUserProfileThunk("C101"))
+        dispatch(fetchUserProfileThunk(rid))
     }, [])
 
     // console.log(workData[0].workDetails)
@@ -74,11 +75,11 @@ const ViewClientProfile = () => {
             alert(message)
 
         }
-        if (error.length !== 0) {
-            // console.log(error)
-            alert(error)
-            dispatch(workProfileActions.errorReducer())
-        }
+        // if (error.length !== 0) {
+        //     // console.log(error)
+        //     alert(error)
+        //     dispatch(workProfileActions.errorReducer())
+        // }
 
     }, [message, error])
     useEffect(() => {

@@ -10,5 +10,11 @@ router.get("/myhelpers/fetchHireRequest/:rid", HireRequestController.fetchHireRe
 //fetch single user
 router.get("/myhelpers/fetchSingleHireRequest/:rid/:hid", HireRequestController.fetchSingleHireRequest)
 //update request
-router.put("/myhelpers/updateHireRequest/:rid",HireRequestController.updateHireRequest)
+router.put("/myhelpers/updateHireRequest/:rid", HireRequestController.updateHireRequest)
+//accept request
+router.patch("/myhelpers/acceptRequest/:rid/:cid", HireRequestController.acceptClientRequest)
+//reject request
+router.patch("/myhelpers/rejectRequest/:rid/:cid", HireRequestController.rejectClientRequest)
+//delete request by client
+router.patch("/myhelpers/deleteRequest/:rid/:hid", HireRequestController.deleteHelperRequest)    
 module.exports = router

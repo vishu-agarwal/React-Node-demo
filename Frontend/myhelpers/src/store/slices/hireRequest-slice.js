@@ -45,7 +45,7 @@ export const sendHireRequestThunk = createAsyncThunk("hireRequest/workProfileThu
 export const fetchHelperRequestsThunk = createAsyncThunk("hireRequest/fetchHelperRequestsThunk", async (arg) => {
     try {
         // console.log("abc")
-        const hireRequest = await axios.get(`/myhelpers/fetchHireRequest/H110`)
+        const hireRequest = await axios.get(`/myhelpers/fetchHireRequest/${arg}`)
 
         
         return hireRequest
@@ -98,8 +98,48 @@ export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateWorkTh
         throw new Error(error.response.data)
     }
 })
+//accept request of client by helper
+export const acceptRequestThunk = createAsyncThunk("hireRequest/acceptRequestThunk", async (arg) => {
+    try {
+        // console.log("abc")
+        const response = await axios.patch(`/myhelpers/acceptRequest/H102/${arg}`)
 
 
+        return response
+
+    } catch (error) {
+        // console.log(error.response.data)
+        throw new Error(error.response.data)
+    }
+})
+//reject request of client by helper
+export const rejectRequestThunk = createAsyncThunk("hireRequest/rejectRequestThunk", async (arg) => {
+    try {
+        // console.log("abc")
+        const response = await axios.patch(`/myhelpers/rejectRequest/H103/${arg}`)
+
+
+        return response
+
+    } catch (error) {
+        // console.log(error.response.data)
+        throw new Error(error.response.data)
+    }
+})
+//accept request of client by helper
+export const deleteRequestThunk = createAsyncThunk("hireRequest/deleteRequestThunk", async (arg) => {
+    try {
+        // console.log("abc")
+        const response = await axios.patch(`/myhelpers/deleteRequest/C101/${arg}`)
+
+
+        return response
+
+    } catch (error) {
+        // console.log(error.response.data)
+        throw new Error(error.response.data)
+    }
+})
 const hireRequestSlice = createSlice({
     name: 'hireRequest',
     initialState,//: initialState
@@ -124,7 +164,7 @@ const hireRequestSlice = createSlice({
 
             state.error = error.error.message
         },
-        //fetchWorkData
+        //fetc helper request all 
         [fetchHelperRequestsThunk.pending]: (state, action) => {
             state.loading = true
             console.log("loading......")
@@ -139,7 +179,7 @@ const hireRequestSlice = createSlice({
             state.error = true
         },
 
-        //fetchWorkData
+        //fetch single helper request
         [fetchSingleHireRequestThunk.pending]: (state, action) => {
             state.loading = true
         },
@@ -156,7 +196,52 @@ const hireRequestSlice = createSlice({
 
             state.error = error.error.message
         },
-        //updateWorkData
+        //acceptRequest for work
+        [acceptRequestThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [acceptRequestThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.message = action.payload.data
+        },
+        [acceptRequestThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+
+            state.error = error.error.message
+        },
+        //reject request by helper
+        [rejectRequestThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [rejectRequestThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.message = action.payload.data
+        },
+        [rejectRequestThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+
+            state.error = error.error.message
+        },
+        //delete request by client
+        [deleteRequestThunk.pending]: (state, action) => {
+            state.loading = true
+        },
+        [deleteRequestThunk.fulfilled]: (state, action) => {
+            state.loading = false
+            //  state.isAuth = true
+            state.message = action.payload.data
+        },
+        [deleteRequestThunk.rejected]: (state, error) => {
+            state.loading = false
+            // console.log("rejected::", error.error.message)
+
+            state.error = error.error.message
+        },
+        //update hire request data of single helper by client
         [updateHireRequestThunk.pending]: (state, action) => {
             state.loading = true
         },

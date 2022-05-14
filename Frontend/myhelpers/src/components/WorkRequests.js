@@ -34,26 +34,18 @@ import HireRequestSlice from '../store/slices/hireRequest-slice';
 
 
 const WorkRequest = (props) => {
-    const rid = localStorage.getItem("r_id")
-    // const classes = useStyles();
+    // const rid = localStorage.getItem("r_id")
+    const rid="C101"
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
+
 
     let { hireRequestData, message, error } = useSelector((state) => ({ ...state.hireRequestStore }))
-    // const [values,message, setValues] = useState({
-    //     name: '',
-    //     porf_mbl: '',
-    //     age: '',
-    //     work: '',
-    //     experience: '',
-    //     time: '',
-    // });
+
     useEffect(() => {
 
-        dispatch(fetchHelperRequestsThunk())
+        dispatch(fetchHelperRequestsThunk(rid))
 
     }, [])
 
@@ -107,23 +99,24 @@ const WorkRequest = (props) => {
                             {
                                 hireRequestData.length !== 0 ?
                                     hireRequestData.map((val, index) => {
-                                        if (val.status === "pending!") {
+                                        if (val.user_id.charAt(0)==="C" && val.status === "pending!") {
 
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
 
                                                 <HireRequestCard values={val} />
                                             </Grid>
                                         }
+                                        else if (val.user_id.charAt(0) === "H" && val.status !== "hired!") {
 
+                                            return <Grid item xs={12} sm={12} align="center" key={index}>
 
+                                                <HireRequestCard values={val} />
+                                            </Grid>
+                                        }
                                     }
-
                                     )
                                     :
-
                                     <Grid marginBottom={1} item xs={12} sm={12} align="center" >
-
-
                                         <Typography variant="h4" color="red" component="div">
                                             Opps! No Single user is requested
                                         </Typography>

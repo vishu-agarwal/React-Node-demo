@@ -101,8 +101,6 @@ const HiredHelper = (props) => {
                                                 <HireRequestCard values={val} />
                                             </Grid>
                                         }
-
-
                                     }
 
                                     )

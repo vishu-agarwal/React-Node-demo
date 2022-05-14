@@ -18,26 +18,30 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSaveUserThunk, fetchAllThunk, saveThunk } from '../../store/slices/display-slice';
+import { acceptRequestThunk, rejectRequestThunk, deleteRequestThunk } from "../../store/slices/hireRequest-slice"
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
 import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined';
-import { starThunk } from '../../store/slices/profile-slice';
+
 const HireRequestCard = (props) => {
-    // console.log("status::",props.status)
+    console.log("status::",props.values.user_id)
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
     // let { status, error } = useSelector((state) => ({ ...state.displayStore }))
 
     const onViewClick = () => {
-        navigate(`/viewHelperDetails/${props.values.user_id}`)
+        props.values.user_id.charAt(0) === "H" ?
+            navigate(`/viewHelperDetails/${props.values.user_id}`)
+            :
+            navigate(`/viewClientDetails/${props.values.user_id}`)
     }
     const onAcceptHandler = () => {
-
+        console.log("acctepted..", props.values.user_id)
+        dispatch(acceptRequestThunk(props.values.user_id))
     }
     const onDeleteHandler = () => {
-
+        props.values.user_id.charAt(0) === "C" ? dispatch((rejectRequestThunk(props.values.user_id))) : dispatch((deleteRequestThunk(props.values.user_id)))
     }
 
     return (
@@ -53,7 +57,7 @@ const HireRequestCard = (props) => {
                     <Grid container direction={'row'} spacing={1} >
                         <Grid item xs={10} sm={10}>
 
-                            <Typography color="green" variant="h5" paddingLeft={1} gutterBottom align="left">
+                            <Typography color="#ff6f00" variant="h5" paddingLeft={1} gutterBottom align="left">
                                 {String(props.values.name).toUpperCase()}
 
                             </Typography>
@@ -66,16 +70,22 @@ const HireRequestCard = (props) => {
                                 <ModeEditIcon fontSize="medium" color="info" onClick={onEditHandler} />
 
                             </Tooltip> */}
-                            {props.values.status ==="pending!" && <Tooltip title="Accepted">
-                                 <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" onClick={onAcceptHandler} />
+                            {props.values.user_id.charAt(0) === "C" && props.values.status === "pending!" && <Tooltip title="Accepted">
+                                < IconButton onClick={onAcceptHandler} aria-label="upload picture" component="span">
+
+                                    <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" />
+                                </IconButton>
                             </Tooltip>}
                             {/* <CheckOutlinedIcon fontSize="large" sx={{ color:"#faaf00"}} onClick={onEditHandler} /> */}
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
 
-                            {props.values.status === "pending!" && <Tooltip title="Delete">
+                            {props.values.status !== "hired!" && <Tooltip title="Delete">
+                                < IconButton onClick={onDeleteHandler} aria-label="upload picture" component="span">
 
-                                <DeleteIcon fontSize="medium" color="error" onClick={onDeleteHandler} />
+
+                                    <DeleteIcon fontSize="medium" color="error" />
+                                </IconButton>
 
                             </Tooltip>}
                         </Grid>
@@ -83,12 +93,9 @@ const HireRequestCard = (props) => {
                     <Grid container direction={'row'} >
 
                         <Grid item xs={12} sm={12} align="left" paddingLeft={1}>
-                            <Typography gutterBottom sx={{ fontSize: 15 }} component={'div'} >
+                            <Typography gutterBottom sx={{ fontSize: 15, textTransform: "capitalize" }} component={'div'} >
                                 Status : {
-
-
-                                    <Typography gutterBottom color={props.values.status ? "#1b5e20" : "#faaf00"} sx={{ fontSize: 16 }} display="inline"> {props.values.status ? "Hired!" : "Pending!"}</Typography>
-
+                                    <Typography gutterBottom color={props.values.status === "hired!" ? "#00a152" : props.values.status === "pending!" ? "#faaf00" : "red"} sx={{ fontSize: 16 }} display="inline"> {props.values.status}</Typography>
                                 }
                             </Typography>
                             {props.values.message ?
@@ -100,7 +107,7 @@ const HireRequestCard = (props) => {
                                 ""
                             }
 
-                            <Typography gutterBottom sx={{ fontSize: 15 }} >
+                            <Typography gutterBottom sx={{ fontSize: 15, textTransform: "capitalize" }} >
                                 Work : {
                                     props.values.work.map((value, index) => {
                                         return value + ", "
@@ -117,7 +124,7 @@ const HireRequestCard = (props) => {
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
                                 Description : {props.values.description}
                             </Typography>
-                          
+
                             <Button sx={{ float: "right", padding: 0 }} size="medium" onClick={onViewClick}>View Details </Button>
                         </Grid>
 
