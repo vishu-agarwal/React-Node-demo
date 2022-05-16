@@ -14,12 +14,9 @@ import Select from '@mui/material/Select';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import workProfileActions from '../../store/slices/work-slice'
 
-import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
 
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+
 import FormHelperText from '@mui/material/FormHelperText';
 const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, setErrorEnable }) => {
 
@@ -77,7 +74,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
         list.splice(index, 1);
         setFields(list);
         setCount(count - 1)
-        console.log("delete:: ", count - 1)
+        // console.log("delete:: ", count - 1)
     };
     let [count, setCount] = useState(1)
 
@@ -92,7 +89,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
             salary: "",
         }])
         setCount(count + 1)
-        console.log("add:: ", count + 1)
+        // console.log("add:: ", count + 1)
     }
     const [disable, setDisable] = useState(false)
     return (
@@ -169,12 +166,12 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                             </Grid>
                             {!fieldsDisable &&
                                 < Grid xs={12} sm={1} item>
-                                    {/* <Button variant="contained" sx={{ marginTop: 1, marginLeft: 0.5 }} fullWidth onClick={addWorkHandler}>+</Button> */}
+                                    
                                     {fields.length !== 1 &&
                                         <IconButton color="error" onClick={() => handleRemove(i)} component="span">
-                                            {/* <ThemeProvider theme={theme}> */}
+                                            
                                             <DeleteIcon fontSize="large" />
-                                            {/* </ThemeProvider> */}
+                                            
                                         </IconButton>
 
 
@@ -182,9 +179,9 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                     {!disable &&
                                         fields.length - 1 === i &&
                                         <IconButton color="primary" onClick={handleAdd} component="span">
-                                            {/* <ThemeProvider theme={theme}> */}
+                                            
                                             <AddIcon color="info" fontSize="large" />
-                                            {/* </ThemeProvider> */}
+                                            
                                         </IconButton>
 
                                     }

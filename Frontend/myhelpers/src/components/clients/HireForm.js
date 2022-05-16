@@ -63,7 +63,7 @@ const HireForm = (props) => {
 
     const dispatch = useDispatch()
     let { message, singleUser, error } = useSelector((state) => ({ ...state.hireRequestStore }))
-    
+
 
 
     //edit button show or hide
@@ -104,8 +104,6 @@ const HireForm = (props) => {
                 fromTime: singleUser.fromTime,
                 toTime: singleUser.toTime,
                 description: singleUser.description,
-            
-
             })
 
             props.setWork(
@@ -122,7 +120,7 @@ const HireForm = (props) => {
         const arg = {
             user_id: props.user_id,
             values: props.hireValues,
-            work:props.work
+            work: props.work
         }
         console.log("abc", arg)
         //create work Profile
@@ -140,7 +138,7 @@ const HireForm = (props) => {
         const arg = {
             user_id: props.user_id,
             values: props.hireValues,
-            work:props.work
+            work: props.work
         }
 
 
@@ -448,7 +446,7 @@ const HireForm = (props) => {
 
                         <Grid container direction={'row'} spacing={0}>
                             <Grid item xs={2} justifyContent="left" >
-                                {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
+                                {!editHide && singleUser && singleUser.status === "pending!" && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
                             </Grid>
 
                             <Grid item xs={8} >

@@ -35,7 +35,7 @@ const fetchProfile = async (req, res) => {
         }
         else {
             isunique = { ...isunique._doc, number: loginNo.mob_num }
-            console.log("isunique ::: ", isunique, "login::", loginNo.mob_num)
+            // console.log("isunique ::: ", isunique, "login::", loginNo.mob_num)
             return res.status(200).send(isunique)
         }
     } catch (error) {
@@ -65,8 +65,8 @@ const updateStar = async (req, res) => {
                     ,
                     { new: true }
                 )
-                console.log("new Update ::", updtStar)
-                return res.status(200).send()
+                // console.log("new Update ::", updtStar)
+                return res.status(200).send("Thankyou for response!")
 
             }
 
@@ -74,8 +74,8 @@ const updateStar = async (req, res) => {
                 found.rating[idIndex].rate = req.body.rate
 
                 const update = await found.save();
-                console.log("old user :: \n", update)
-                return res.status(200).send();
+                // console.log("old user :: \n", update)
+                return res.status(200).send("Thankyou for response!");
             }
 
         }
@@ -96,7 +96,7 @@ const updateProfile = async (req, res) => {
         if (!update) {
             throw new Error("Some Problem while uupdating working details!")
         }
-console.log("update data:: ", update)
+// console.log("update data:: ", update)
         return res.status(200).send("update WorkDetails successfully!")
         // return res.send(isunique)
     } catch (error) {
@@ -137,9 +137,9 @@ const uploadImg = multer({
 const avatarUpload = async (req, res) => {
     try {
         // await req.user.save()
-        console.log(req.file)
+        // console.log(req.file)
         const url = req.protocol + '://' + req.get('host')
-        console.log("req.file", url + '/image/' + req.file.filename)
+        // console.log("req.file", url + '/image/' + req.file.filename)
         const r_id = req.params.rid
         const foundUser = await regModel.findOne({ r_id })
         if (!foundUser) {
@@ -160,7 +160,7 @@ const avatarUpload = async (req, res) => {
             })
 
             await newpro.save();
-            console.log(newpro);
+            // console.log(newpro);
         }
 
         res.status(200).send("Profile Photo sucessfully uploaded")

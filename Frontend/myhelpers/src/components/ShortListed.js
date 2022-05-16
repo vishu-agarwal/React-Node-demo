@@ -123,7 +123,7 @@ const ShortListed = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={2}>
-                                <Button variant="contained" color="error" onClick={() => navigate(-1)}>Close</Button>
+                                <Button variant="contained" color="error" onClick={props.click}>Close</Button>
                             </Grid>
 
                         </Grid>

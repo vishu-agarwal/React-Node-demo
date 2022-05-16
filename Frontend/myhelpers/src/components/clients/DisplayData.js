@@ -9,17 +9,25 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CardJS from "./Card"
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAllThunk, fetchSaveUserThunk, searchThunk } from '../../store/slices/display-slice';
+import { fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk } from '../../store/slices/display-slice';
 import workProfileActions from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-
-
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
+import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import Typography from "@mui/material/Typography";
 const workSearchBy = [
     // { label: 'All' },
     { label: 'Work Category' },
     { label: 'Work Timing' },
     { label: 'Location' },
     { label: 'Name' },
+    { label: 'Gender' },
 ];
 
 const filterCategory = [
@@ -46,7 +54,10 @@ const filterTime = [
     { label: 'Custom (1-4 Hrs)' },
     { label: 'Night Shift (2-12 Hrs)' },
 ];
-
+const filterGender = [
+    { label: 'Male' },
+    { label: 'Female' },
+];
 const DisplayData = () => {
     const navigate = useNavigate()
 
@@ -57,11 +68,11 @@ const DisplayData = () => {
     let rates, status, hireStatus
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
-  
+
     useEffect(() => {
         dispatch(fetchAllThunk())
         dispatch(fetchSaveUserThunk())
-    }, [workSearch])
+    }, [])
 
     // console.log(workData[0].workDetails)
     useEffect(() => {
@@ -78,9 +89,7 @@ const DisplayData = () => {
     }, [message, error])
     useEffect(() => {
         if (displayData.length !== 0) {
-            console.log("displayData :: ", displayData)
-
-
+            // console.log("displayData :: ", displayData)
         }
 
     }, [displayData])
@@ -88,8 +97,6 @@ const DisplayData = () => {
 
         if (saveUser.length !== 0) {
             console.log("saveUser ::", saveUser);
-            // saveUser.map((val)=> values.r_id === val.user_id)
-            // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
         }
     }, [saveUser])
 
@@ -101,32 +108,30 @@ const DisplayData = () => {
             workSearch, filterWork
         }
         dispatch(searchThunk(arg))
+        dispatch(fetchSaveUserThunk())
     }
-
-    // const [searchText, setSearchText] = useState('')
+    const [sortField, setSortField] = useState('')
+    const onSortChange = (sort, field) => {
+        console.log(sort, field)
+        const arg = {
+            sort, field
+        }
+        dispatch(sortThunk(arg))
+        dispatch(fetchSaveUserThunk())
+    }
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={5}>
             <Grid item xs={11} sm={11} >
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={2.5}>
+                <Grid container spacing={2} marginBottom={2}>
+                    <Grid item xs={12} sm={2}>
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
                             options={workSearchBy}
-                            // defaultValue={workSearchBy[0]}
-                            // getOptionLabel={(option) => option.label || ''}
-                            // getOptionSelected={(option, value) => option.label === value.label}
+
                             onInputChange={(e, values) => {
-
-                                // if (document.getElementById('er')) {
-                                //     document.getElementById('er').value = "";
-                                // }
                                 setWorkSearch(values)
-
-                                // console.log("set filter value :: ", filterWork)
                             }}
-                            // onChange={(val) => setWorkSearch(val)}
-
                             renderInput={(params) => <TextField
                                 {...params} label="Search By"
                                 value={workSearch}
@@ -134,20 +139,20 @@ const DisplayData = () => {
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={2.5}>
+                    <Grid item xs={11} sm={2}>
                         {
 
                             workSearch === "" ?
                                 ""
                                 :
 
-                                workSearch === "Work Category" || workSearch === "Work Timing" ?
+                                workSearch === "Work Category" || workSearch === "Work Timing" || workSearch === "Gender" ?
 
                                     <Autocomplete
                                         disablePortal
                                         id="combo-box-demo"
 
-                                        options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : ['']}
+                                        options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : workSearch === "Gender" ? filterGender : ['']}
                                         // getOptionLabel={(option) => option.label || ''}
                                         onInputChange={(e, value) => setFilterWork(value)}
                                         // filterOptions={(options, params) => {
@@ -168,7 +173,7 @@ const DisplayData = () => {
                                                 value={filterWork}
                                             />
                                         }
-                                        onChange={() => searchChange()}
+                                    // onChange={() => searchChange()}
                                     />
 
                                     :
@@ -193,23 +198,76 @@ const DisplayData = () => {
                                             value={filterWork}
                                             onChange={(val) => setFilterWork(val.target.value)}
                                         />
-                                        {/* </Grid>
-                                           
-                                            {/* </Grid>
-                                        </Grid> */}
+
                                     </>
 
                         }
                     </Grid>
-                    <Grid item xs={12} sm={0.5} marginTop={3}>
+                    <Grid item xs={1} sm={0.5} marginTop={3}>
                         {workSearch !== "" &&
+                            
                             <InputAdornment position="end">
-                                <SearchIcon onClick={(e) => searchChange(e)} />
+                                <SearchIcon cursor={"pointer"} onClick={(e) => searchChange(e)} />
                             </InputAdornment>}
                     </Grid>
+                    <Grid item xs={12} sm={2.5} display="flex" alignItems='center' >
+                        {/* <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={sortField}
+                                height={2}
+                                label="Sort By"
+                                onChange={(event)=>setSortField(event.target.value) }
+                            >
+                                <MenuItem value="" size="small" >
+                                    None
+                                </MenuItem>
+                                <MenuItem value="Age" >
+                                    Age
+                                    <IconButton aria-label="Example" size="small" sx={{ marginLeft: 7, padding: 0 }} onClick={()=>onSortChange("up","dob")} >
+                                        <ArrowUpwardRoundedIcon />
+                                    </IconButton>
+                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0 }} onClick={()=>onSortChange("down","dob")} >
+                                        <ArrowDownwardRoundedIcon />
+                                    </IconButton>
+                                </MenuItem>
+                                <MenuItem value="Experience" >Experience
+                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0, marginLeft: 1 }} onClick={()=>onSortChange("up","exp")} >
+                                        <ArrowUpwardRoundedIcon />
+                                    </IconButton>
+                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0 }} margin={0} onClick={()=>onSortChange("down","exp")} >
+                                        <ArrowDownwardRoundedIcon />
+                                    </IconButton>
+                                </MenuItem>
+                                <MenuItem value="Salary">Salary
+                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0, marginLeft: 5 }} onClick={()=>onSortChange("up","sal")} >
+                                        <ArrowUpwardRoundedIcon />
+                                    </IconButton>
+                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0 }} onClick={()=>onSortChange("down","sal")} >
+                                        <ArrowDownwardRoundedIcon />
+                                    </IconButton>
+                                </MenuItem>
+                            </Select>
+                        </FormControl> */}
+                        <Typography fontSize={18}> Sort By : Age </Typography>
+                        <IconButton aria-label="Example" size="small" onClick={() => onSortChange("up", "dob")} >
+                            <ArrowUpwardRoundedIcon />
+                        </IconButton>
+                        <IconButton aria-label="Example" size="small" onClick={() => onSortChange("down", "dob")} >
+                            <ArrowDownwardRoundedIcon />
+                        </IconButton>
+                    </Grid>
+                    {/* <Grid item xs={12} sm={5}  >
+                        <Stack spacing={2} direction="row" justifyContent="end" paddingTop={1}>
+                            <Pagination count={100} size="large" showFirstButton showLastButton />
+
+                        </Stack>
+                    </Grid> */}
                 </Grid>
             </Grid>
-            <Grid margin={0} container direction="row" >
+            <Grid container direction="row" >
 
                 {
                     // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
@@ -227,30 +285,40 @@ const DisplayData = () => {
                                 : null
 
                             status = saveUser.length !== 0 ? saveUser.map((val) => values.r_id === val.user_id).includes(true) ? true : false : false
-                            // hireStatus = hireUser.length !== 0 ? hireUser.map((val) => values.r_id === val.user_id).includes(true) ?  : false: false
+
                             hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
-                            // console.log("hireStatus::",hireStatus)
+
                         }
-                        return <Grid item xs={12} sm={4} align="center" key={index}>
-
-                            {/* 
-                        // values.rating[0] !== undefined ? console.log("rates :: ",
-                            //     values.rating[0].map((id) =>
-                            //         id.rate
-                            //     ).reduce((prev, curr) => prev + curr, 0)
-
-                            // ) : ''
-                        <Grid> {console.log(
-                            values.rating[0].map((id) =>
-                               console.log( id.user_id)
-                            ).length
-                        )
-                        }</Grid> */},
+                        return <Grid item xs={12} sm={3} align="center" key={index} >
                             <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
                         </Grid>
                     })
                 }
+                {
+                    // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
+                    displayData.map((values, index) => {
+                        {
+                            rates = values.rating[0] !== undefined ?
+                                values.rating[0].map((id) =>
+                                    id.rate
+                                ).reduce((prev, curr) => prev + curr, 0)
+                                /
+                                values.rating[0].map((id) =>
+                                    id.user_id
+                                ).length
 
+                                : null
+
+                            status = saveUser.length !== 0 ? saveUser.map((val) => values.r_id === val.user_id).includes(true) ? true : false : false
+
+                            hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
+
+                        }
+                        return <Grid item xs={12} sm={3} align="center" key={index} >
+                            <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
+                        </Grid>
+                    })
+                }
             </Grid>
         </Grid >
     )

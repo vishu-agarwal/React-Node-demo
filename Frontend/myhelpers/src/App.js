@@ -2,7 +2,7 @@
 import './App.css';
 import Header from "./components/layouts/Header"
 import Content from "./components/layouts/Content"
-import ClientProfile from './components/clients/ClientProfile';
+import ClientProfile from './components/ProfileFiles/ClientProfile';
 import HelperProfile from './components/helpers/HelperProfile';
 import Login from './components/login';
 import CardJS from './components/clients/Card';
@@ -18,6 +18,7 @@ import ShortListed from './components/ShortListed';
 import HireUser from './components/HireUser';
 import WorkRequest from './components/WorkRequests';
 import HiredHelper from './components/HiredHelper';
+import HomePage from './components/clients/HomePage';
 function App() {
   const isAuth = useSelector(state => state.loginStore.isAuth)
   // console.log(isAuth)
@@ -37,23 +38,24 @@ function App() {
       <Header />
 
       <div>
-        <BrowserRouter>
+        {/* <BrowserRouter> */}
           <Routes>
             <Route path="/" element={!isAuth && <Content />} />
             <Route path={`/login/:role`} element={!isAuth && <Login />} />
             {/* <Route path="/clientProfile" element={isAuth && <ClientProfile />} /> */}
-            <Route path="/clientProfile" element={<ClientProfile />} />
-            <Route path="/display" element={<DisplayData />} />
+            <Route path="/profile" element={<ClientProfile />} />
+            <Route path="/findHelper" element={<DisplayData />} />
             <Route path="/viewClientDetails/:rid" element={<ViewClientProfile />} />
             <Route path="/viewHelperDetails/:rid" element={<ViewProfileDetail />} />
-            <Route path="/shortlist" element={<ShortListed />} />
+            {/* <Route path="/shortlist" element={<ShortListed />} /> */}
+            <Route path="/home" element={<HomePage />} />
             <Route path="/hireUsers" element={<HireUser />} />
-            <Route path="/hiredHelper" element={<HiredHelper />} />
-            <Route path="/workRequest" element={<WorkRequest />} />
+            {/* <Route path="/hiredHelper" element={<HiredHelper />} /> */}
+            {/* <Route path="/request" element={<WorkRequest />} /> */}
             <Route path="/helperProfile" element={isAuth && <HelperProfile />} />
             <Route path="*" element={"error"} />
           </Routes>
-        </BrowserRouter>
+        {/* </BrowserRouter> */}
       </div>
     </div>
   );

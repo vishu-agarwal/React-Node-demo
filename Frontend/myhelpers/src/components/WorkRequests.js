@@ -35,7 +35,7 @@ import HireRequestSlice from '../store/slices/hireRequest-slice';
 
 const WorkRequest = (props) => {
     // const rid = localStorage.getItem("r_id")
-    const rid="C101"
+    const rid="H103"
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
@@ -91,7 +91,7 @@ const WorkRequest = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={4}>
-                                <Button variant="contained" color="error" onClick={() => navigate(-1)}>Close</Button>
+                                <Button variant="contained" color="error" onClick={props.click}>Close</Button>
                             </Grid>
 
                         </Grid>
@@ -99,14 +99,14 @@ const WorkRequest = (props) => {
                             {
                                 hireRequestData.length !== 0 ?
                                     hireRequestData.map((val, index) => {
-                                        if (val.user_id.charAt(0)==="C" && val.status === "pending!") {
+                                        if (rid.charAt(0)==="H" && val.status === "pending!") {
 
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
 
                                                 <HireRequestCard values={val} />
                                             </Grid>
                                         }
-                                        else if (val.user_id.charAt(0) === "H" && val.status !== "hired!") {
+                                        else if (rid.charAt(0) === "C" && val.status !== "hired!") {
 
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
 

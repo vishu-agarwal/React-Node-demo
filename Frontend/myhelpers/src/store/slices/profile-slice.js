@@ -90,7 +90,7 @@ export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileT
         // console.log("arg ",arg)        
         const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`)
 
-        console.log("Fwtch Response:: ", fetchUser)
+        // console.log("Fwtch Response:: ", fetchUser)
         return fetchUser
 
     } catch (error) {

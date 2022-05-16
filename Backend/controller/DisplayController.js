@@ -34,7 +34,7 @@ const fetchAllData = async (req, res) => {
                         "rating": "$abc.rating"
                     }
                 },
-                
+
 
             ])
             if (fetchHelper.length === 0) {
@@ -62,7 +62,7 @@ const saveUserData = async (req, res) => {
             // if (req.body === null) { res.status(200).send() }
 
             const userFound = await saveModel.find({ r_id: found.r_id, "saveUser.user_id": req.body.user_id })
-            console.log("user Found",userFound)
+            console.log("user Found", userFound)
             if (userFound.length !== 0) {
                 const update = await saveModel.findOneAndUpdate({ r_id: found.r_id, "saveUser.user_id": req.body.user_id }, { $pull: { saveUser: { user_id: req.body.user_id } } }, { new: true })
                 console.log("removw user :: ", update)
@@ -117,12 +117,12 @@ const fetchSaveUser = async (req, res) => {
 // }
 
 const searching = async (req, res) => {
-    
+
     let field = req.query.field
     // req.params.seachValue
     console.log(field, req.query.searchValue)
     let field2 = ""
-    field === "Location" ? field = "address.pincode" : field === "Name" ? field = "name" : field === "Work Category" ? field2 = "workDetails.category" : field === "Work Timing" ? field2 = "workTime" : ""
+    field === "Location" ? field = "address.pincode" : field === "Name" ? field = "name" : field === "Gender" ? field = "gender" : field === "Work Category" ? field2 = "workDetails.category" : field === "Work Timing" ? field2 = "workTime" : ""
     if (field2) {
         console.log("field2::", field2)
         const found = await helperModel.find({ [field2]: req.query.searchValue })
@@ -130,7 +130,7 @@ const searching = async (req, res) => {
         if (found.length === 0) {
             console.log(found)
             req.params.role = "Client"
-          return  fetchAllData(req, res)
+            return fetchAllData(req, res)
         }
         else {
             let fetch = []
@@ -139,7 +139,7 @@ const searching = async (req, res) => {
                     return profileModel.find({ r_id: val.r_id }).then((res) => {
                         fetch.push({
                             r_id: val.r_id,
-                            workDetails:[ val.workDetails.map((cat) => { return { category: cat.category } })],
+                            workDetails: [val.workDetails.map((cat) => { return { category: cat.category } })],
                             workTime: val.workTime,
                             profession_mbl: val.profession_mbl,
                             name: res.map((val) => val.name),
@@ -159,11 +159,11 @@ const searching = async (req, res) => {
     else if (field) {
         // console.log("field::", req.params.searchValue)
         const found = await profileModel.find({ [field]: req.query.searchValue })
-        console.log("found::",found)
+        console.log("found::", found)
         if (found.length === 0) {
             console.log("not found :: ", found)
             req.params.role = "Client"
-           return fetchAllData(req, res)
+            return fetchAllData(req, res)
         }
 
         else {
@@ -173,33 +173,85 @@ const searching = async (req, res) => {
                     return helperModel.find({ r_id: val.r_id })
                         .then((res) => {
                             console.log(res)
-                        fetch.push({
-                            r_id: res.map((val)=>val.r_id),
-                            workDetails: res.map((val)=>val.workDetails.map((cat) => { return { category: cat.category } })),
-                            workTime: res.map((val)=>val.workTime),
-                            profession_mbl: res.map((val)=>val.profession_mbl),
-                            name: val.name,
-                            dob: val.dob,
-                            avatar: val.avatar,
-                            rating:[val.rating]
-                        })
+                            fetch.push({
+                                r_id: res.map((val) => val.r_id),
+                                workDetails: res.map((val) => val.workDetails.map((cat) => { return { category: cat.category } })),
+                                workTime: res.map((val) => val.workTime),
+                                profession_mbl: res.map((val) => val.profession_mbl),
+                                name: val.name,
+                                dob: val.dob,
+                                avatar: val.avatar,
+                                rating: [val.rating]
+                            })
                             // console.log(fetch)
-                    }).catch((error) => {
-                        return res.status(400).send(error)
-                    })
+                        }).catch((error) => {
+                            return res.status(400).send(error)
+                        })
                 }
                 ))
             // console.log(foundHelper)
-            // console.log("fetch ::", fetch)
+            console.log("fetch ::", fetch)
             return res.status(200).send(fetch)
         }
     }
 }
 
+const sorting = async (req, res) => {
+
+    let field = req.query.field
+    // req.params.seachValue
+    const order = req.query.sortValue
+    console.log(field, order)
+    let num
+    if (order === "up") {
+        num = -1
+    }
+    else if (order === "down") {
+        num = 1
+    }
+    const sort = { [field]: num }
+    console.log(sort)
+    const found = await profileModel.find({ r_id: /^H/}).sort(sort)
+    console.log("found::", found)
+    // if (found.length === 0) {
+    //     console.log("not found :: ", found)
+    //     req.params.role = "Client"
+    //     return fetchAllData(req, res)
+    // }
+
+    // else {
+        let fetch = []
+        const foundHelper = await Promise.all(
+            found.map((val) => {
+                return helperModel.find({ r_id: val.r_id })
+                    .then((res) => {
+                        console.log(res)
+                        fetch.push({
+                            r_id: res.map((val) => val.r_id),
+                            workDetails: res.map((val) => val.workDetails.map((cat) => { return { category: cat.category } })),
+                            workTime: res.map((val) => val.workTime),
+                            profession_mbl: res.map((val) => val.profession_mbl),
+                            name: val.name,
+                            dob: val.dob,
+                            avatar: val.avatar,
+                            rating: [val.rating]
+                        })
+                        // console.log(fetch)
+                    }).catch((error) => {
+                        return res.status(400).send(error)
+                    })
+            }
+            ))
+        // console.log(foundHelper)
+        console.log("fetch ::", fetch)
+        return res.status(200).send(fetch)
+    // }
+}
 module.exports = {
 
     fetchAllData,
     saveUserData,
-    fetchSaveUser,    
-    searching
+    fetchSaveUser,
+    searching,
+    sorting
 }

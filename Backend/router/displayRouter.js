@@ -12,4 +12,6 @@ router.post("/myhelpers/saveUser/:rid",DisplayController.saveUserData)
 router.get("/myhelpers/fetchSaveUser/:rid",DisplayController.fetchSaveUser)
 //search router
 router.get("/myhelpers/search", DisplayController.searching)
+//sort
+router.get("/myhelpers/sort",DisplayController.sorting)
 module.exports = router

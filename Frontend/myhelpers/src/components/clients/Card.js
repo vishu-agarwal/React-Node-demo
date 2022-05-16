@@ -13,7 +13,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSaveUserThunk, fetchAllThunk,saveThunk } from '../../store/slices/display-slice';
+import { fetchSaveUserThunk, fetchAllThunk, saveThunk } from '../../store/slices/display-slice';
 
 import { starThunk } from '../../store/slices/profile-slice';
 const CardJS = (props) => {
@@ -28,7 +28,7 @@ const CardJS = (props) => {
 
     // props.status ? setSaveIcon(true) : setSaveIcon(false)
     //save icon click event
-    const onSaveClick = async() => {
+    const onSaveClick = async () => {
         dispatch(saveThunk(props.values.r_id))
         // dispatch(fetchSaveUserThunk())
     }
@@ -38,14 +38,14 @@ const CardJS = (props) => {
     }
 
     const onRateClick = (val) => {
-console.log("onRate")
+        console.log("onRate")
         setStar(parseFloat(val.target.value))
 
         const arg = {
             rid: props.values.r_id,
             rate: star
         }
-        console.log("argument :: ", arg);
+        // console.log("argument :: ", arg);
         // console.log("stars update..........................")
         dispatch(starThunk(arg))
         // dispatch(fetchAllThunk())
@@ -59,31 +59,34 @@ console.log("onRate")
 
     const ageDate = () => {
         var today = new Date();
-        console.log(today)
+        // console.log(today)
         var birthDate = new Date(props.values.dob);
-        console.log(birthDate)
+        // console.log(birthDate)
         var age = today.getFullYear() - birthDate.getFullYear();
-        console.log(age)
+        // console.log(age)
         var m = today.getMonth() - birthDate.getMonth();
-        console.log(m)
+        // console.log(m)
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-        console.log(age)
+        // console.log(age)
         return age;
-}
+    }
 
     return (
         <>
             <Card sx={{
-                maxWidth: "80%", maxHeight: "100%",
-                marginTop: 1,
-                borderRadius: 5
+                maxWidth: 375, maxHeight: 240,
+                marginLeft: 2,
+                marginTop: 2,
+                marginRight: 1,
+                borderRadius: 5,
+
             }} elevation={8}
 
             >
                 <CardContent sx={{ padding: 1 }}>
-                    <Grid container direction={'row'} spacing={0} >
+                    <Grid container direction={'row'} >
                         <Grid item xs={11} sm={11}>
 
                             <Typography color="green" variant="h6" paddingLeft={1} gutterBottom align="left">
@@ -104,16 +107,16 @@ console.log("onRate")
                         </Grid>
                     </Grid>
                     <Grid container direction={'row'} >
-                        <Grid item xs={4} sm={5} paddingBottom={2}>
+                        <Grid item xs={4} sm={4}>
                             <CardMedia
                                 component="img"
-                                height="100%"
-                                sx={{ width: "90%" }}
+                                height={150}
+                                sx={{ width: 110 }}
                                 image={props.values.avatar[0]}
                                 alt="Profile Image"
                             />
 
-                            <Rating name="half-rating" 
+                            {/* <Rating name="half-rating" 
                                 // value={parseInt(props.values.rate)}
                                 value={star}
                                 onChange={(val) =>
@@ -122,14 +125,10 @@ console.log("onRate")
                                 }
                                 size="medium"
                             // onClick={(val)=>onRateClick(val)}
-                            />
-                            {/* {value !== null && (
-                                    <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
-                                    )} */
-                                // console.log(star)        
-                            }
+                            /> */}
+
                         </Grid>
-                        <Grid item xs={8} sm={7} align="left" paddingLeft={1}>
+                        <Grid item xs={8} sm={8} align="left" paddingLeft={0.5}>
                             <Typography variant="h5" component="div"></Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
                                 Mobile No : {props.values.profession_mbl}
@@ -172,9 +171,24 @@ console.log("onRate")
                                     </>
                                     : ''
                             }
-                            <Button sx={{ float: "right", padding: 0, paddingTop: 3, fontSize: 15 }} onClick={onViewClick}>View Details </Button>
                         </Grid>
-
+                        <Grid container direction={'row'}>
+                            <Grid item xs={4} sm={4}>
+                                <Rating name="half-rating"
+                                    // value={parseInt(props.values.rate)}
+                                    value={star}
+                                    onChange={(val) =>
+                                        // setStar(parseFloat(val.target.value)),
+                                        onRateClick(val)
+                                    }
+                                    size="medium"
+                                // onClick={(val)=>onRateClick(val)}
+                                />
+                            </Grid>
+                            <Grid item xs={8} sm={8} align="left" paddingLeft={0.5}>
+                                <Button sx={{ float: "right", padding: 0, fontSize: 15 }} onClick={onViewClick}>View Details </Button>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </CardContent>
             </Card>

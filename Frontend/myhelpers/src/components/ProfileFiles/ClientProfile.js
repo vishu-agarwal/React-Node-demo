@@ -14,8 +14,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-import PhotoCameraSharpIcon from '@mui/icons-material/PhotoCameraSharp';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+
+import {  useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
@@ -23,15 +23,23 @@ import WorkProfile from '../helpers/WorkProfile';
 import { useEffect, useState, useCallback } from 'react';
 // import axios from 'axios';
 import profileImg from '../profiile1.jpg';
-import { red } from '@mui/material/colors';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+
 import profileActions from '../../store/slices/profile-slice'
 import { createProfileThunk, updateProfileThunk, avatarThunk, aadharThunk, fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
-// import ViewAadhar from './ViewAadhar';
-// import PDFViewer from 'pdf-viewer-reactjs'
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import Rating from '@mui/material/Rating';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Input = styled('input')({
     display: 'none',
 });
@@ -42,10 +50,22 @@ const ClientProfile = () => {
 
     const dispatch = useDispatch()
     let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    // const classes = useStyles();
+    
     let role = "Helper"
-    // console.log(xyz)
+    
+    const [state, setState] = useState({
+        open: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, open } = state;
 
+
+    const closeSnackbar = () => {
+        setState({ ...state, open: false });
+    };
+    const [snackMessage, setSnackMessage] = useState('')
+    const [snackColor, setSnackColor] = useState("info")
 
     const [star, setStar] = useState(2)
     const [values, setValues] = useState({
@@ -79,7 +99,7 @@ const ClientProfile = () => {
     })
 
     //helper profile Modal state
-    const [open, setOpen] = useState(false);
+    const [openModal, setopenModal] = useState(false);
 
     useEffect(() => {
         dispatch(fetchUserProfileThunk("C109"))
@@ -87,19 +107,24 @@ const ClientProfile = () => {
 
     useEffect(() => {
         const body = document.querySelector('body');
-        body.style.overflow = open ? 'hidden' : 'auto';
+        body.style.overflow = openModal ? 'hidden' : 'auto';
 
         if (message.length !== 0) {
-            alert(message)
+            setState({ open: true });
+            setSnackColor("info")
+            setSnackMessage(message)
             setClicked(true)
         }
         if (error.length !== 0) {
             // console.log(error)
-            alert(error)
+            // alert(error)
+            setState({ open: true });
+            setSnackColor("error")
+            setSnackMessage(error)
             dispatch(profileActions.errorReducer())
         }
 
-    }, [open, message, error])
+    }, [openModal, message, error])
 
     //edit button show or hide
     const [editHide, setEditHide] = useState(true)
@@ -155,10 +180,10 @@ const ClientProfile = () => {
 
     // console.log(values,file.dispFile)
     const addWorkHandler = () => {
-        setOpen(true);
+        setopenModal(true);
     }
     const handleClose = () => {
-        setOpen(false);
+        setopenModal(false);
     };
     const profileSaveHandler = (e) => {
         // console.log("save call")
@@ -184,18 +209,26 @@ const ClientProfile = () => {
                 setDisable(true)
             }
             else {
-                alert("please Choose Aadhar Card PDf !")
+                // alert("please Choose Aadhar Card PDf !")
+                setState({ open: true });
+                setSnackColor("error")
+                setSnackMessage("Please Choose Aadhar Card PDf !")
+
             }
             // console.log(values)
 
 
         }
         else {
-            alert("Please click on upload photo button before save!")
+            // alert("Please click on upload photo button before save!")
+            setState({ open: true });
+            setSnackColor("error")
+            setSnackMessage("Please click on upload photo button before save!")
         }
     }
     const onUpdateProfileHandler = (e) => {
         e.preventDefault()
+
         const arg = {
             values,
             aadhar: aadhar.dispFile
@@ -212,7 +245,6 @@ const ClientProfile = () => {
     }
     const onEditClick = () => {
         setDisable(!fieldsDisable)
-
     }
     const avatarFileType = ["image/png", "image/jpeg"]
     // const avatarFileSize = 
@@ -232,11 +264,17 @@ const ClientProfile = () => {
                 setenable(true)
             }
             else {
-                alert("select file with size below 500 KB!")
+                // alert("select file with size below 500 KB!")
+                setState({ open: true });
+                setSnackColor("error")
+                setSnackMessage("select file with size below 500 KB!")
             }
         }
         else {
-            alert("Please select Image file with (png|jpg|jpeg)!")
+            // alert("Please select Image file with (png|jpg|jpeg)!")
+            setState({ open: true });
+            setSnackColor("error")
+            setSnackMessage("Please select Image file with (png|jpg|jpeg)!")
         }
     }
 
@@ -262,7 +300,11 @@ const ClientProfile = () => {
             // console.log("values:: ", values)
         }
         else {
-            alert("please upload profile picture !")
+            // alert("please upload profile picture !")
+            setState({ open: true });
+            setSnackColor("error")
+            setSnackMessage("Please upload profile picture!")
+            
         }
     }
     const aadharFileType = ['application/pdf']
@@ -280,11 +322,17 @@ const ClientProfile = () => {
                 })
             }
             else {
-                alert("select file with size below 1 MB!")
+                // alert("select file with size below 1 MB!")
+                setState({ open: true });
+                setSnackColor("error")
+                setSnackMessage("select file with size below 1 MB!")
             }
         }
         else {
-            alert("Please select only  PDF file! ")
+            // alert("Please select only  PDF file! ")
+            setState({ open: true });
+            setSnackColor("error")
+            setSnackMessage("Please select only  PDF file! ")
         }
     }
     const onCancel = () => {
@@ -312,10 +360,6 @@ const ClientProfile = () => {
     const [onClick, setOnClick] = useState(false)
     const hiddenFileInput = React.useRef(null);
 
-    // const handleClick = event => {
-    //     hiddenFileInput.current.click();
-    // };
-
     const [saveEnable, setSaveEnable] = useState(false)
     const [errorEnable, setErrorEnable] = useState({
         fname: false,
@@ -331,7 +375,7 @@ const ClientProfile = () => {
         pincode: false,
     })
 
-    // const emailValid = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+
     const [errorText, setErrorText] = useState("");
 
     const onChange = (event) => {
@@ -422,12 +466,12 @@ const ClientProfile = () => {
                 }
             })
             if (/^[6-9][0-9]{9}$/.test(event.target.value)) {
-                console.log("correct!")
+                // console.log("correct!")
                 setErrorEnable({ ...errorEnable, altmbl: false })
 
             }
             else {
-                console.log("wrong!")
+                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, altmbl: true })
                 setErrorText("Please enter valid Mobile No.!")
             }
@@ -594,15 +638,26 @@ const ClientProfile = () => {
                         <Grid item xs={2} sm={2} justifyContent="left" >
                             {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
                         </Grid>
+                        <Snackbar
+                            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                            open={open}
+                            autoHideDuration={1000}
+                            onClose={closeSnackbar} 
+                            // key={vertical + horizontal}
+                        >
+                            <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                {snackMessage}
+                            </Alert>
+                        </Snackbar>
                     </Grid>
 
                     <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].number : ''}</Typography>
                     {role === "Helper" && <Rating name="half-rating"
-                        // value={parseInt(props.values.rate)}
+                    
                         value={star}
                         readOnly={Boolean(true)}
                         size="medium"
-                    // onClick={(val)=>onRateClick(val)}
+                    
                     />}
                     <form onSubmit={editHide ? profileSaveHandler : onUpdateProfileHandler}>
                         <Grid container spacing={1}>
@@ -615,17 +670,17 @@ const ClientProfile = () => {
                                         <label htmlFor="icon-button-file">
                                             <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} />
                                             <IconButton color="primary" aria-label="upload picture" component="span" >
-                                                {/* <ThemeProvider theme={theme}> */}
+                                                
                                                 <EditRoundedIcon color="error" fontSize="large" />
-                                                {/* </ThemeProvider> */}
+                                                
                                             </IconButton>
                                         </label>
                                     }
                                 >
-                                    {/* /static/images/avatar/2.jpg */}
+                                    
                                     <Avatar alt="Profile*" style={{
 
-                                        // border: '2.0px solid blue',
+                                        
                                         backgroundImage: `url(${profileImg})`,
                                         backgroundRepeat: "no-repeat",
                                         backgroundSize: "100%"
@@ -706,7 +761,7 @@ const ClientProfile = () => {
                                     value={values.altmbl}
                                     inputProps={{
                                         readOnly: Boolean(fieldsDisable),
-                                        // disabled: Boolean(true),
+                                        
                                     }}
                                     onChange={onChange}
                                     error={errorEnable.altmbl}
@@ -722,7 +777,7 @@ const ClientProfile = () => {
                                     label="Email Address"
                                     fullWidth
                                     value={values.email}
-                                    // onChange={(val) => { setValues((prevState) => { return { ...prevState, email: val.target.value } }) }}
+                                    
                                     InputProps={{
                                         readOnly: Boolean(fieldsDisable),
                                         endAdornment: (
@@ -736,43 +791,43 @@ const ClientProfile = () => {
                                     onChange={onChange}
                                     error={errorEnable.email}
                                     helperText={errorEnable.email && errorText}
-                                // disabled={fieldsDisable}     
+                                    
                                 />
                             </Grid>
                             <Grid xs={12} sm={5} item >
                                 <div align="left"><InputLabel >Gender</InputLabel></div>
                                 <RadioGroup
                                     row
-                                    // disabled={fieldsDisable}
+                                    
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="gender"
                                     value={values.gender}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, gender: val.target.value } }) }}
+                                    onChange={(val) => { !fieldsDisable && setValues((prevState) => { return { ...prevState, gender: val.target.value } }) }}
                                 >
-                                    <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                    <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                    <FormControlLabel value="other" control={<Radio />} label="Other" />
+                                    <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                                    <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                                    <FormControlLabel value="Other" control={<Radio />} label="Other" />
                                 </RadioGroup>
                             </Grid>
                             <Grid xs={12} sm={3} item>
                                 <div align="left"><InputLabel >Marital Status</InputLabel></div>
                                 <RadioGroup
                                     row
-                                    // disabled={fieldsDisable}
+                                    
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="married"
                                     value={values.married}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, married: val.target.value } }) }}
+                                    onChange={(val) => { !fieldsDisable && setValues((prevState) => { return { ...prevState, married: val.target.value } }) }}
                                 >
                                     <FormControlLabel
                                         value="true"
-                                        // disabled={fieldsDisable}
+
                                         control={<Radio />}
                                         label="Yes"
                                     />
                                     <FormControlLabel
                                         value="false"
-                                        // disabled={fieldsDisable}
+
                                         control={<Radio />}
                                         label="No"
                                     />
@@ -782,11 +837,11 @@ const ClientProfile = () => {
                                 <div align="left"><InputLabel >Any Phiysical Disability</InputLabel></div>
                                 <RadioGroup
                                     row
-                                    // disabled={fieldsDisable}
+
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="disability"
                                     value={values.physic_dis}
-                                    onChange={(val) => { setValues((prevState) => { return { ...prevState, physic_dis: val.target.value } }) }}
+                                    onChange={(val) => {!fieldsDisable && setValues((prevState) => { return { ...prevState, physic_dis: val.target.value } }) }}
                                 >
                                     <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                     <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -808,7 +863,7 @@ const ClientProfile = () => {
 
                                     inputProps={{
                                         readOnly: Boolean(fieldsDisable),
-                                        // disabled: Boolean(true),
+
                                     }}
                                     onChange={onChange}
                                     error={errorEnable.house_no}
@@ -826,7 +881,7 @@ const ClientProfile = () => {
 
                                     inputProps={{
                                         readOnly: Boolean(fieldsDisable),
-                                        // disabled: Boolean(true),
+
                                     }}
                                     onChange={onChange}
                                     error={errorEnable.house_name}
@@ -844,7 +899,7 @@ const ClientProfile = () => {
 
                                     inputProps={{
                                         readOnly: Boolean(fieldsDisable),
-                                        // disabled: Boolean(true),
+
                                     }}
                                     onChange={onChange}
                                     error={errorEnable.street}
@@ -862,7 +917,7 @@ const ClientProfile = () => {
 
                                     inputProps={{
                                         readOnly: Boolean(fieldsDisable),
-                                        // disabled: Boolean(true),
+
                                     }}
                                     onChange={onChange}
                                     error={errorEnable.city}
@@ -880,7 +935,7 @@ const ClientProfile = () => {
 
                                     inputProps={{
                                         readOnly: Boolean(fieldsDisable),
-                                        // disabled: Boolean(true),
+
                                     }}
                                     onChange={onChange}
                                     error={errorEnable.state}
@@ -897,9 +952,9 @@ const ClientProfile = () => {
                                     value={values.pincode}
                                     inputProps={{
                                         readOnly: Boolean(fieldsDisable),
-                                        // disabled: Boolean(true),
+
                                     }}
-                                    // disabled={fieldsDisable}
+
                                     onChange={onChange}
                                     error={errorEnable.pincode}
                                     helperText={errorEnable.pincode && errorText}
@@ -908,13 +963,11 @@ const ClientProfile = () => {
                         </Grid>
                         <Typography variant='subtitle1' marginLeft={1.5} align='left' color='InfoText'>Other Details : </Typography>
                         <Grid container spacing={2} >
-                            {/* <Grid xs={2} item>
-                                <Typography>Aadhar Card* :</Typography>
-                            </Grid> */}
+
                             <Grid xs={6} sm={6} item marginTop={1} >
                                 <label htmlFor="contained-button-file">
                                     <Input id="contained-button-file" type="file" name="aadharCard"
-                                        // disabled={fieldsDisable}
+                                        required
                                         ref={hiddenFileInput}
                                         onChange={onAadharChange}
                                         style={{ display: 'none' }}
@@ -936,10 +989,10 @@ const ClientProfile = () => {
                                         {aadhar.dispFile}
                                     </>
                                 }
-                                {aadhar.dispFile && !fieldsDisable && <IconButton onClick={onCancel} aria-label="upload picture"  component="span">
-                                    {/* <ThemeProvider theme={theme}> */}
+                                {aadhar.dispFile && !fieldsDisable && <IconButton onClick={onCancel} aria-label="upload picture" component="span">
+                                    
                                     <CancelSharpIcon color="error" fontSize="medium" />
-                                    {/* </ThemeProvider> */}
+                                    
                                 </IconButton>
 
                                 }
@@ -966,31 +1019,26 @@ const ClientProfile = () => {
                             </Grid>
                         </Grid>
 
-                        {/* {xyz === "Client" ? */}
-
-                        {/* : */}
-
-
-                        {(saveEnable || !editHide) && !fieldsDisable &&
+                        {(saveEnable && !editHide) && !fieldsDisable &&
                             <Grid xs={12} sm={12} item>
                                 <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
                                     {editHide ? "Save" : !fieldsDisable && "Update"}
                                 </Button>
                             </Grid>}
-                        {/* }    */}
+                        
 
                     </form>
-                    {role === "Helper" && !fieldsDisable &&
+                    {role === "Helper" && !fieldsDisable  &&
                         <Grid xs={12} sm={6} item>
                             <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth sx={{ marginTop: 2 }}>
                                 {editHide ? "Add Work Details" : !fieldsDisable && "Update Work Details"}
                             </Button>
                             <Backdrop
                                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                                open={open}
+                                open={openModal}
 
                             >
-                                {/* <HelperProfile click={handleClose} /> */}
+                                
                                 <WorkProfile click={handleClose} />
 
                             </Backdrop>
