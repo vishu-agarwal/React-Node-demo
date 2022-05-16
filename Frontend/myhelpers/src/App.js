@@ -19,19 +19,16 @@ import HireUser from './components/HireUser';
 import WorkRequest from './components/WorkRequests';
 import HiredHelper from './components/HiredHelper';
 import HomePage from './components/clients/HomePage';
+import Profile from './components/ProfileFiles/ClientProfile';
+
 function App() {
   const isAuth = useSelector(state => state.loginStore.isAuth)
   // console.log(isAuth)
 
-  const CheckRoute = (props) => {
-    // console.log(props)
-  }
 
   return (
     <div className="App"
-    // backgroundImage= {`url(${bgimg})`}
-    // backgroundRepeat= "no-repeat"
-    // backgroundSize = "100%" 
+
 
     >
 
@@ -39,22 +36,23 @@ function App() {
 
       <div>
         {/* <BrowserRouter> */}
-          <Routes>
-            <Route path="/" element={!isAuth && <Content />} />
-            <Route path={`/login/:role`} element={!isAuth && <Login />} />
-            {/* <Route path="/clientProfile" element={isAuth && <ClientProfile />} /> */}
-            <Route path="/profile" element={<ClientProfile />} />
-            <Route path="/findHelper" element={<DisplayData />} />
-            <Route path="/viewClientDetails/:rid" element={<ViewClientProfile />} />
-            <Route path="/viewHelperDetails/:rid" element={<ViewProfileDetail />} />
-            {/* <Route path="/shortlist" element={<ShortListed />} /> */}
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/hireUsers" element={<HireUser />} />
-            {/* <Route path="/hiredHelper" element={<HiredHelper />} /> */}
-            {/* <Route path="/request" element={<WorkRequest />} /> */}
-            <Route path="/helperProfile" element={isAuth && <HelperProfile />} />
-            <Route path="*" element={"error"} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={!isAuth && <Content />} />
+          <Route path={`/login/:role`} element={!isAuth && <Login />} />
+          {/* <Route path="/clientProfile" element={isAuth && <ClientProfile />} /> */}
+          <Route path="/profile" element={<ClientProfile />} />
+          <Route path="/findHelper" element={<DisplayData />} />
+          <Route path="/viewClientDetails/:rid" element={<ViewClientProfile />} />
+          <Route path="/viewHelperDetails/:rid" element={<ViewProfileDetail />} />
+          <Route path="/profileTemp" elemenmts={<Profile />} />
+          {/* <Route path="/shortlist" element={<ShortListed />} /> */}
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/hireUsers" element={<HireUser />} />
+          {/* <Route path="/hiredHelper" element={<HiredHelper />} /> */}
+          {/* <Route path="/request" element={<WorkRequest />} /> */}
+          <Route path="/helperProfile" element={isAuth && <HelperProfile />} />
+          <Route path="*" element={"error"} />
+        </Routes>
         {/* </BrowserRouter> */}
       </div>
     </div>

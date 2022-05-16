@@ -119,7 +119,7 @@ const Header = (props) => {
     // const navigate = useNavigate()
     return (
         <>
-            <AppBar position="fixed" sx={{ marginTop: 0, background: 'black' }} >
+            <AppBar position="fixed" sx={{ marginTop: 0, background: '#2196f3' }} >
                 <Container maxWidth="xl">
 
                     <Toolbar disableGutters>
