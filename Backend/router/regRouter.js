@@ -7,32 +7,31 @@ const regModel = require("../model/tblReg")
 const otpController = require("../controller/otpController")
 const regController = require("../controller/regController")
 
-//home
-router.get("/myhelpers", async (req, res) => {
-    console.log("home");
-    return res.json({ data: "Welcome user at my helpers" })
-})
+// //home
+// router.get("/myhelpers", async (req, res) => {
+//     // console.log("home");
+//     return res.json({ data: "Welcome user at my helpers" })
+// })
 
 //generate otp
-
 router.post("/myhelpers/otp/:role", otpController.otpLoginController)
 
 //register user
 router.post("/myhelpers/register/:role", regController.loginController)
-//fetch users
-router.get("/myhelpers/fetchuser", async (req, res) => {
-    const list = await regModel.find()
-    console.log(list);
-    res.send(list)
-})
+// //fetch users
+// router.get("/myhelpers/fetchuser", async (req, res) => {
+//     const list = await regModel.find()
+//     console.log(list);
+//     res.send(list)
+// })
 
-// login user information
-router.get("/myhelpers/profile", async (req, res) => {
+// // login user information
+// router.get("/myhelpers/profile", async (req, res) => {
 
-    const list = await req.user
-    //console.log(list);
-    res.send(list)
-})
+//     const list = await req.user
+//     //console.log(list);
+//     res.send(list)
+// })
 
 //Login user
 // router.post("/myhelpers/login", async (req, res) => {

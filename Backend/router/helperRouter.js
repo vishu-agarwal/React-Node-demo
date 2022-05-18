@@ -2,9 +2,9 @@ const express = require("express")
 const router = new express.Router()
 
 //model File
-const profileModel = require("../../model/client/clientProfile")
+const profileModel = require("../model/clientProfile")
 //controllers
-const workProfileController = require("../../controller/workProfileController")
+const workProfileController = require("../controller/workProfileController")
 
 //create profile 
 router.post("/myhelpers/createWorkProfile/:rid", workProfileController.createWorkProfile)

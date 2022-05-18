@@ -1,6 +1,6 @@
-const profileModel = require("../model/client/clientProfile")
+const profileModel = require("../model/clientProfile")
 
-const helperModel = require("../model/helpers/helperProfile")
+const helperModel = require("../model/helperProfile")
 const saveModel = require("../model/tblSaveUser")
 //fetch all user data
 const fetchAllData = async (req, res) => {

@@ -7,19 +7,19 @@ const loginController = async (req, res) => {
     let newUser 
     // console.log(role)
     try {
-        const found = await regModel.find({ mob_num: req.body.mob_num });
-         console.log(found)
+        const found = await regModel.find({ email: req.body.email });
+        //  console.log(found)
         if (found.length !== 0) {
             const fnd_role = found[0].r_id.charAt(0)
             if (role === fnd_role) {
                 newUser = new regModel(...found)
-                console.log(newUser)
+                // console.log(newUser)
                 // const token = await found.generateAuthToken()
                 // return res.status(200).send({ found, token })
             }
             else {
                 //return res.status(400).send()
-                throw new Error("you are unauthorized for this role")
+                throw new Error("You are unauthorized for this role")
             }
         }
         else {
@@ -29,7 +29,7 @@ const loginController = async (req, res) => {
             let rid
             if (id) {
                 rid = id.r_id.slice(1)
-                console.log("rid from id", rid);
+                // console.log("rid from id", rid);
             }
             else {
                 rid = 100

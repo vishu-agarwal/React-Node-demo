@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Backdrop from '@mui/material/Backdrop';
-
+import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -38,7 +38,7 @@ const ViewProfileDetail = () => {
     const dispatch = useDispatch()
     const params = useParams()
     const rid = params.rid;
-
+    
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     let { saveUser } = useSelector((state) => ({ ...state.displayStore }))
     let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
@@ -73,7 +73,7 @@ const ViewProfileDetail = () => {
         fromTime: '',
         toTime: '',
         description: '',
-        
+
     });
     const [hireWork, setHireWork] = useState([]);
     //for open module
@@ -85,10 +85,10 @@ const ViewProfileDetail = () => {
         dispatch(fetchUserProfileThunk(rid))
         dispatch(fetchWorkThunk(rid))
         dispatch(fetchSaveUserThunk(rid))
-       
+
     }, [])
     useEffect(() => {
-    
+
         sethireValues({
             fromDate: '',
             toDate: '',
@@ -97,7 +97,7 @@ const ViewProfileDetail = () => {
             description: '',
         })
         setHireWork([])
-        
+
     }, [])
     useEffect(() => {
 
@@ -213,19 +213,41 @@ const ViewProfileDetail = () => {
     const handleClose = () => {
         setOpen(false);
     };
+    const ageDate = () => {
+        var today = new Date();
+        // console.log(today)
+        var birthDate = new Date(values.dob);
+        // console.log(birthDate)
+        var age = today.getFullYear() - birthDate.getFullYear();
+        // console.log(age)
+        var m = today.getMonth() - birthDate.getMonth();
+        // console.log(m)
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        // console.log(age)
+        return age;
+    }
     return (
-        <>
-            <Card sx={{
-                paddingLeft: "10%",
-                paddingRight: "10%",
-                height: "100%"
-            }} elevation={0}>
+        <Container align="center">
+            <Card variant="outlined"
+                
+                sx={{
+                // paddingLeft: "10%",
+                // paddingRight: "10%",
+                    marginTop: 2,
+                    borderWidth: 2,
+                    borderColor:"#163758",
+                height: "100%",
+                width: "100%",
+                // backgroundColor: "#007bf717"
+            }} >
                 <CardContent >
-                    <Grid container direction={'row'} justifyContent="center">
+                    <Grid container direction="row" justifyContent="center">
 
-                        <Grid container >
-                            <Button variant="contained" color="error" onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
-                            
+                        {/* <Grid container > */}
+                        <Grid item sm={12} xs={12} align="left" >
+                            <Button variant="contained" color="error" size="large" onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
                         </Grid>
                         <Grid item xs={12} sm={4} paddingRight={"5%"} paddingLeft={"3%"} >
                             <CardMedia
@@ -235,7 +257,7 @@ const ViewProfileDetail = () => {
                                 image={`http://localhost:3001/${values.avatar}`}
                                 alt="Profile Image"
                             />
-                            <Button sx={{ marginTop: "4%" }} color="warning" size="small" variant="contained" onClick={onHireUser}>Hire</Button>
+                            <Button sx={{ marginTop: "4%", backgroundColor:"#163758" }}  size="small" variant="contained" onClick={onHireUser}>Hire</Button>
                             <Backdrop
                                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                                 open={open}
@@ -254,7 +276,7 @@ const ViewProfileDetail = () => {
                                     <Typography variant="h3" color="primary" component="div">
                                         {values.name.toUpperCase()}
                                     </Typography>
-                                    <Rating name="half-rating" 
+                                    <Rating name="half-rating"
                                         // value={parseInt(props.values.rate)}
                                         value={star}
                                         onChange={(val) =>
@@ -281,28 +303,28 @@ const ViewProfileDetail = () => {
                                 <Grid item xs={12} sm={6} align="left" >
 
                                     <Grid container direction={'row'} >
-                                        <Grid item xs={6} sm={6} align="left" >
-                                            <Typography color="green" gutterBottom variant="button"  >
+                                        <Grid item xs={6} sm={6} align="left" color="#163758">
+                                            <Typography  gutterBottom variant="button"  >
                                                 Gender
                                             </Typography>
                                             <br />
                                             <br />
-                                            <Typography gutterBottom color="green" variant="button"  >
+                                            <Typography gutterBottom  variant="button"  >
                                                 Age
                                             </Typography>
                                             <br />
                                             <br />
-                                            <Typography gutterBottom color="green" variant="button"  >
+                                            <Typography gutterBottom  variant="button"  >
                                                 Married
                                             </Typography>
                                             <br />
                                             <br />
-                                            <Typography gutterBottom color="green" variant="button"  >
+                                            <Typography gutterBottom  variant="button"  >
                                                 Physical Disability
                                             </Typography>
                                             <br />
                                             <br />
-                                            <Typography gutterBottom color="green" variant="button"  >
+                                            <Typography gutterBottom  variant="button"  >
                                                 About
                                             </Typography>
                                         </Grid>
@@ -314,7 +336,7 @@ const ViewProfileDetail = () => {
                                             <br />
                                             <br />
                                             <Typography gutterBottom variant="button"  >
-                                                25 Years
+                                                {ageDate() } Years
                                             </Typography>
                                             <br />
                                             <br />
@@ -338,18 +360,18 @@ const ViewProfileDetail = () => {
 
                                 <Grid item xs={12} sm={6} align="left" >
                                     <Grid container direction={'row'} spacing={2}>
-                                        <Grid item xs={4} sm={4} align="left" >
-                                            <Typography color="green" gutterBottom variant="button"  >
+                                        <Grid item xs={4} sm={4} align="left" color="#163758">
+                                            <Typography  gutterBottom variant="button"  >
                                                 Email
                                             </Typography>
                                             <br />
                                             <br />
-                                            <Typography gutterBottom color="green" variant="button"  >
+                                            <Typography gutterBottom  variant="button"  >
                                                 Alternate No
                                             </Typography>
                                             <br />
                                             <br />
-                                            <Typography gutterBottom color="green" variant="button"  >
+                                            <Typography gutterBottom  variant="button"  >
                                                 Address
                                             </Typography>
                                             <br />
@@ -384,28 +406,28 @@ const ViewProfileDetail = () => {
                             <Grid item xs={12} sm={12} align="left" >
 
                                 <Grid container direction={'row'} >
-                                    <Grid item xs={6} sm={6} align="left" >
-                                        <Typography color="green" gutterBottom variant="button"  >
+                                    <Grid item xs={6} sm={6} align="left" color="#163758" >
+                                        <Typography  gutterBottom variant="button"  >
                                             Mobile No
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             Preffered Time
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             Languages
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             Education
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             Other Education
                                         </Typography>
                                     </Grid>
@@ -443,7 +465,7 @@ const ViewProfileDetail = () => {
                             <TableContainer >
                                 <Table sx={{ maxWidth: "100%", maxHeight: "100%" }} size="small" aria-label="caption table">
                                     <TableHead >
-                                        <TableRow sx={{ backgroundColor: "blue" }} >
+                                        <TableRow sx={{ backgroundColor: "#163758" }} >
                                             <TableCell sx={{ color: "white" }} >Skills</TableCell>
                                             <TableCell sx={{ color: "white" }}>Experience</TableCell>
                                             <TableCell sx={{ color: "white" }}>Price</TableCell>
@@ -467,7 +489,7 @@ const ViewProfileDetail = () => {
 
                 </CardContent >
             </Card >
-        </>
+        </Container>
     )
 }
 

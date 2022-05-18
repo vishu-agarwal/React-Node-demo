@@ -14,7 +14,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSaveUserThunk, fetchAllThunk, saveThunk } from '../../store/slices/display-slice';
-
+import profileimg from "../../profileimg.gif"
 import { starThunk } from '../../store/slices/profile-slice';
 const CardJS = (props) => {
     // console.log("status::",props.status)
@@ -28,6 +28,8 @@ const CardJS = (props) => {
 
     // props.status ? setSaveIcon(true) : setSaveIcon(false)
     //save icon click event
+
+
     const onSaveClick = async () => {
         dispatch(saveThunk(props.values.r_id))
         // dispatch(fetchSaveUserThunk())
@@ -75,21 +77,26 @@ const CardJS = (props) => {
 
     return (
         <>
-            <Card sx={{
-                maxWidth: 375, maxHeight: 240,
-                marginLeft: 2,
-                marginTop: 2,
-                marginRight: 1,
-                borderRadius: 5,
+            <Card
 
-            }} elevation={8}
+                variant="outlined"
+
+                sx={{
+                    maxWidth: 375, height: 240,
+                    marginLeft: 2,
+                    marginTop: 2,
+                    marginRight: 1,
+                    borderRadius: 5,
+                    borderColor: "#163758",
+                    borderWidth: 2
+                }} elevation={8}
 
             >
                 <CardContent sx={{ padding: 1 }}>
                     <Grid container direction={'row'} >
                         <Grid item xs={11} sm={11}>
 
-                            <Typography color="green" variant="h6" paddingLeft={1} gutterBottom align="left">
+                            <Typography color="#163758" variant="h6" paddingLeft={1} gutterBottom align="left">
                                 {String(props.values.name).toUpperCase()}
 
                             </Typography>
@@ -99,20 +106,21 @@ const CardJS = (props) => {
 
                             <Tooltip title="Save">
                                 {props.saveStatus ?
-                                    <BookmarkIcon fontSize="medium" onClick={onSaveClick} />
+                                    <BookmarkIcon fontSize="medium" cursor="pointer" onClick={onSaveClick} />
                                     :
-                                    <BookmarkBorderIcon fontSize="medium" onClick={onSaveClick} />
+                                    <BookmarkBorderIcon fontSize="medium" cursor="pointer" onClick={onSaveClick} />
                                 }
                             </Tooltip>
                         </Grid>
                     </Grid>
                     <Grid container direction={'row'} >
-                        <Grid item xs={4} sm={4}>
+                        <Grid item xs={4} sm={4} >
                             <CardMedia
                                 component="img"
                                 height={150}
                                 sx={{ width: 110 }}
-                                image={props.values.avatar[0]}
+                                // image={props.values.avatar[0]}
+                                image={profileimg}
                                 alt="Profile Image"
                             />
 
@@ -128,15 +136,14 @@ const CardJS = (props) => {
                             /> */}
 
                         </Grid>
-                        <Grid item xs={8} sm={8} align="left" paddingLeft={0.5}>
+                        <Grid item xs={8} sm={8} align="left" paddingLeft={0.5} >
                             <Typography variant="h5" component="div"></Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
                                 Mobile No : {props.values.profession_mbl}
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
                                 {/* //yyyy-mm-dd */}
-                                Age :
-                                {
+                                Age : {
                                     ageDate()
                                 }
                             </Typography>
@@ -172,22 +179,22 @@ const CardJS = (props) => {
                                     : ''
                             }
                         </Grid>
-                        <Grid container direction={'row'}>
-                            <Grid item xs={4} sm={4}>
-                                <Rating name="half-rating"
-                                    // value={parseInt(props.values.rate)}
-                                    value={star}
-                                    onChange={(val) =>
-                                        // setStar(parseFloat(val.target.value)),
-                                        onRateClick(val)
-                                    }
-                                    size="medium"
-                                // onClick={(val)=>onRateClick(val)}
-                                />
-                            </Grid>
-                            <Grid item xs={8} sm={8} align="left" paddingLeft={0.5}>
-                                <Button sx={{ float: "right", padding: 0, fontSize: 15 }} onClick={onViewClick}>View Details </Button>
-                            </Grid>
+                    </Grid>
+                    <Grid container direction={'row'}>
+                        <Grid item xs={4} sm={4}>
+                            <Rating name="half-rating"
+                                // value={parseInt(props.values.rate)}
+                                value={star}
+                                onChange={(val) =>
+                                    // setStar(parseFloat(val.target.value)),
+                                    onRateClick(val)
+                                }
+                                size="medium"
+                            // onClick={(val)=>onRateClick(val)}
+                            />
+                        </Grid>
+                        <Grid item xs={8} sm={8} align="left" paddingLeft={0.5}>
+                            <Button sx={{ float: "right", padding: 0, fontSize: 15 }} onClick={onViewClick}>View Details </Button>
                         </Grid>
                     </Grid>
                 </CardContent>

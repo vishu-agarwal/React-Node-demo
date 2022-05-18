@@ -1105,7 +1105,7 @@ const Input = styled('input')({
 });
 
 const ClientProfile = () => {
-
+    const rid = localStorage.getItem("r_id")
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
@@ -1119,8 +1119,6 @@ const ClientProfile = () => {
         horizontal: 'center',
     });
     const { vertical, horizontal, open } = state;
-
-
     const closeSnackbar = () => {
         setState({ ...state, open: false });
     };
@@ -1162,7 +1160,7 @@ const ClientProfile = () => {
     const [openModal, setopenModal] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchUserProfileThunk("C155"))
+        dispatch(fetchUserProfileThunk(rid))
     }, [])
 
     useEffect(() => {
@@ -1684,26 +1682,48 @@ const ClientProfile = () => {
     }, [errorEnable, values, aadhar.dispFile])
     return (
         <Grid >
-            <Card
-                elevation={8}
+            <Card variant="outlined"
+                // elevation={8}
                 sx={{
-                    maxWidth: 1400, maxHeight: 800,
+                    maxWidth: 1400, maxHeight: 5000,
                     margin: '0 auto',
-                    marginTop: 5,
-                    marginBottom: 1,
+                    marginTop: 9,
+                    borderWidth: 2,
+                    borderColor:"#163758"
                 }}>
                 <CardContent>
+                    <Grid container justifyContent={"right"}>
+                        <Grid item xs={12} sm={6} align="left" >
+                            {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
+                        </Grid>
+                        <Grid item xs={12} sm={6} align="right">
+                            {role === "Helper" && fieldsDisable && <>
+
+                                < Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth size="large" >
+                                    {editHide ? "Add Work Details" : !fieldsDisable && "Update Work Details"}
+                                </Button>
+                                <Backdrop
+                                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                    open={openModal}
+                                >
+                                    <WorkProfile click={handleClose} />
+                                </Backdrop>
+
+                            </>
+                            }
+                        </Grid>
+                    </Grid>
                     <form onSubmit={editHide ? profileSaveHandler : onUpdateProfileHandler}>
                         <Grid container direction={'row'}>
-                            <Grid item xs={4} sm={3} justifyContent="center" >
+                            <Grid item xs={12} sm={3} justifyContent="center" >
                                 <Grid container>
-                                    <Grid item xs={12} sm={3} justifyContent="left" >
+                                    {/* <Grid item xs={12} sm={3} justifyContent="left" >
                                         {editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
-                                    </Grid>
+                                    </Grid> */}
                                     <Snackbar
                                         anchorOrigin={{ vertical: "top", horizontal: "center" }}
                                         open={open}
-                                        autoHideDuration={1000}
+                                        autoHideDuration={2000}
                                         onClose={closeSnackbar}
                                     // key={vertical + horizontal}
                                     >
@@ -1712,7 +1732,7 @@ const ClientProfile = () => {
                                         </Alert>
                                     </Snackbar>
 
-                                    <Grid item sm={12} xs={12}>
+                                    <Grid item sm={12} xs={12} marginTop={12}>
                                         <Badge
 
                                             overlap="circular"
@@ -1720,26 +1740,32 @@ const ClientProfile = () => {
                                             badgeContent={
                                                 <label htmlFor="icon-button-file">
                                                     <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} />
-                                                    <IconButton color="primary" aria-label="upload picture" component="span" >
+                                                    <IconButton aria-label="upload picture" component="span" >
 
-                                                        <EditRoundedIcon color="error" fontSize="large" />
+                                                        <EditRoundedIcon sx={{ color: "#163758" }} fontSize="large" />
 
                                                     </IconButton>
                                                 </label>
                                             }
                                         >
 
-                                            <Avatar alt="Profile*" style={{
-                                                // backgroundImage: `url(${profileImg})`,
-                                                // backgroundRepeat: "no-repeat",
-                                                // backgroundSize: "100%"
-                                            }}
-                                                // src={file.dispFile} 
-                                                sx={{ marginTop: 8, width: 250, height: 350 }} />
+                                            <Avatar alt="Profile*"
+                                                style={{
+                                                    // backgroundImage: `url(${profileImg})`,
+                                                    // backgroundRepeat: "no-repeat",
+                                                    // backgroundSize: "100%"
+
+                                                    backgroundColor: ""
+                                                }}
+
+                                                src={file.dispFile}
+                                                sx={{
+                                                    marginTop: 0, width: 150, height: 250
+                                                }} />
                                         </Badge>
                                     </Grid>
                                     <Grid item sm={12} xs={12}>
-                                        {enable && <Button variant="contained" sx={{ marginTop: 1 }} color="warning" onClick={avatarSubmit}>Upload Photo </Button>}
+                                        {enable && <Button variant="contained" sx={{ marginTop: 2 }} color="#03a9f4" onClick={avatarSubmit}>Upload Photo </Button>}
                                     </Grid>
                                     <Grid item xs={12} sm={12}>
                                         <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].number : ''}</Typography>
@@ -1753,9 +1779,9 @@ const ClientProfile = () => {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            <Divider orientation="vertical" color="gray" flexItem />
-                            <Grid item xs={4} sm={4.5} justifyContent="center"  >
-                                <Grid container spacing={2} marginLeft={1} marginRight={1} >
+                            <Divider orientation="vertical" flexItem />
+                            <Grid item xs={12} sm={4.5} justifyContent="center"  >
+                                <Grid container spacing={2} justifyContent="center" >
                                     <Grid xs={12} sm={12} margin={2} marginLeft={5} item align="left">
                                         <Typography variant='h4'>
                                             Profile Settings
@@ -1823,7 +1849,7 @@ const ClientProfile = () => {
                                             required
                                             variant='outlined'
                                             id="alt-mob"
-                                            label="Alternate Mobile Number"
+                                            label="Mobile Number"
                                             fullWidth
                                             value={values.altmbl}
                                             inputProps={{
@@ -1861,7 +1887,7 @@ const ClientProfile = () => {
 
                                         />
                                     </Grid>
-                                    <Grid xs={12} sm={3} item >
+                                    <Grid xs={12} sm={3.5} item >
                                         <div align="left"><InputLabel >Gender</InputLabel></div>
                                         <RadioGroup
                                             row
@@ -1876,7 +1902,7 @@ const ClientProfile = () => {
                                             <FormControlLabel value="Other" control={<Radio />} label="Other" />
                                         </RadioGroup>
                                     </Grid>
-                                    <Grid xs={12} sm={3} item>
+                                    <Grid xs={12} sm={3.5} item>
                                         <div align="left"><InputLabel >Marital Status</InputLabel></div>
                                         <RadioGroup
                                             row
@@ -1900,7 +1926,7 @@ const ClientProfile = () => {
                                             />
                                         </RadioGroup>
                                     </Grid>
-                                    <Grid xs={12} sm={3} item>
+                                    <Grid xs={12} sm={3.5} item>
                                         <div align="left"><InputLabel >Any Phiysical Disability</InputLabel></div>
                                         <RadioGroup
                                             row
@@ -1914,7 +1940,18 @@ const ClientProfile = () => {
                                             <FormControlLabel value="false" control={<Radio />} label="No" />
                                         </RadioGroup>
                                     </Grid>
-                                    <Grid xs={12} sm={4} item marginTop={1} >
+                                    <Grid xs={12} sm={4} item >
+                                        {/* <label htmlFor="contained-button-file">
+                                            <Input id="contained-button-file" type="file" name="aadharCard"
+                                                required
+                                                ref={hiddenFileInput}
+                                                onChange={onAadharChange}
+                                                style={{ display: 'none' }}
+                                            />
+                                            <Button color="primary" variant="contained" >
+                                                Upload Aadhar (1 MB PDF)*
+                                            </Button>
+                                        </label> */}
                                         <label htmlFor="contained-button-file">
                                             <Input id="contained-button-file" type="file" name="aadharCard"
                                                 required
@@ -1922,12 +1959,12 @@ const ClientProfile = () => {
                                                 onChange={onAadharChange}
                                                 style={{ display: 'none' }}
                                             />
-                                            <Button color="info" fullWidth variant="contained" component="span" >
-                                                Upload Aadhar (1 MB PDF)*
+                                            <Button color="info" variant="contained" fullWidth component="span" >
+                                                Upload Aadhar *
                                             </Button>
                                         </label>
                                     </Grid>
-                                    <Grid xs={12} sm={8} item>
+                                    <Grid xs={12} sm={7} item>
                                         {aadhar.dispFile &&
                                             <>
                                                 < IconButton onClick={onAadharView} aria-label="upload picture" component="span">
@@ -1942,17 +1979,20 @@ const ClientProfile = () => {
                                             </IconButton>
                                         }
                                     </Grid>
+                                    <Grid xs={11} sm={11} item align="left" color="#b71c1c">
+                                        <Typography variant="body2"  display="block">1 MB size PDF file only!</Typography>
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                            <Divider orientation="vertical" color="gray" flexItem />
-                            <Grid item xs={4} sm={4} justifyContent="center" >
-                                <Grid container spacing={2} marginLeft={1} justifyContent="center">
+                            <Divider orientation="vertical" flexItem />
+                            <Grid item xs={12} sm={4} justifyContent="center"  >
+                                <Grid container spacing={2} justifyContent="center" >
                                     <Grid xs={12} sm={12} margin={1} marginLeft={5} item align="left">
                                         <Typography variant='h6'>
                                             Address Details
                                         </Typography>
                                     </Grid>
-                                    <Grid xs={12} sm={6} item>
+                                    <Grid xs={12} sm={5.5} item>
                                         <TextField
                                             required
                                             variant='outlined'
@@ -1971,7 +2011,7 @@ const ClientProfile = () => {
                                             helperText={errorEnable.house_no && errorText}
                                         />
                                     </Grid>
-                                    <Grid xs={12} sm={6} item>
+                                    <Grid xs={12} sm={5.5} item>
                                         <TextField
                                             required
                                             variant='outlined'
@@ -1989,7 +2029,7 @@ const ClientProfile = () => {
                                             helperText={errorEnable.house_name && errorText}
                                         />
                                     </Grid>
-                                    <Grid xs={12} sm={6} item>
+                                    <Grid xs={12} sm={5.5} item>
                                         <TextField
                                             required
                                             variant='outlined'
@@ -2007,7 +2047,7 @@ const ClientProfile = () => {
                                             helperText={errorEnable.street && errorText}
                                         />
                                     </Grid>
-                                    <Grid xs={12} sm={6} item>
+                                    <Grid xs={12} sm={5.5} item>
                                         <TextField
                                             required
                                             variant='outlined'
@@ -2025,7 +2065,7 @@ const ClientProfile = () => {
                                             helperText={errorEnable.city && errorText}
                                         />
                                     </Grid>
-                                    <Grid xs={12} sm={6} item>
+                                    <Grid xs={12} sm={5.5} item>
                                         <TextField
                                             required
                                             variant='outlined'
@@ -2041,7 +2081,7 @@ const ClientProfile = () => {
                                             helperText={errorEnable.state && errorText}
                                         />
                                     </Grid>
-                                    <Grid xs={12} sm={6} item>
+                                    <Grid xs={12} sm={5.5} item>
                                         <TextField
                                             required
                                             variant='outlined'
@@ -2061,7 +2101,7 @@ const ClientProfile = () => {
                                     </Grid>
 
 
-                                    <Grid xs={12} sm={12} item>
+                                    <Grid xs={12} sm={11} item>
                                         <TextField
                                             required
                                             multiline
@@ -2080,32 +2120,21 @@ const ClientProfile = () => {
                                             onChange={(event) => setValues((prevState) => { return { ...prevState, about: event.target.value } })}
                                         />
                                     </Grid>
-
-                                    {role === "Helper" && !fieldsDisable &&
-                                        <Grid xs={12} sm={6} item >
-                                            <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth size="large" >
-                                                {editHide ? "Add Work Details" : !fieldsDisable && "Update Work Details"}
-                                            </Button>
-                                            <Backdrop
-                                                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                                                open={openModal}
-                                            >
-                                                <WorkProfile click={handleClose} />
-                                            </Backdrop>
-                                        </Grid>
-                                    }
                                     {(saveEnable && !editHide) && !fieldsDisable &&
-                                        <Grid xs={12} sm={6} item align="center">
+                                        <Grid xs={12} sm={5.5} item align="center">
                                             <Button type='submit' variant="contained" color='primary' size="large" fullWidth sx={{ marginTop: 2 }}>
                                                 {editHide ? "Save" : !fieldsDisable && "Update"}
                                             </Button>
                                         </Grid>
                                     }
+
+
                                 </Grid>
                             </Grid>
                         </Grid>
                     </form>
-                    {/* <Grid container direction={'row'} spacing={0}>
+                    <>
+                        {/* <Grid container direction={'row'} spacing={0}>
                         <Grid item xs={2} sm={2} justifyContent="left" >
                             {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
                         </Grid>
@@ -2514,9 +2543,10 @@ const ClientProfile = () => {
 
                             </Backdrop>
                         </Grid>} */}
+                    </>
                 </CardContent>
             </Card>
-        </Grid>
+        </Grid >
     );
 }
 

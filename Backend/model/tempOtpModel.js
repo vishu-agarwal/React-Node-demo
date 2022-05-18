@@ -7,17 +7,23 @@ console.log("opt model file ...............")
 
 const otpSchema = new mongoose.Schema({
 
-    mob_num: {
-        type: Number,
-        required: true,
-        trim: true,
-        validate: {
-            validator: function (val) {
-                return val.toString().length === 10
-            },
-            message: val => `${val.value} has to be 10 digits`
-        }
+    // mob_num: {
+    //     type: Number,
+    //     required: true,
+    //     trim: true,
+    //     validate: {
+    //         validator: function (val) {
+    //             return val.toString().length === 10
+    //         },
+    //         message: val => `${val.value} has to be 10 digits`
+    //     }
 
+    // },
+
+    email: {
+        type: String,
+       
+        lowercase: true,
     },
     otp: {
         type: String,

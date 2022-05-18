@@ -16,12 +16,16 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Zoom from '@mui/material/Zoom';
 import PropTypes from 'prop-types';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-import { useSelector } from 'react-redux'
+
 import { NavLink, useNavigate, useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import WorkRequest from '../WorkRequests'
 import ShortListed from '../ShortListed';
 import HiredHelper from '../HiredHelper';
+import { loginActions } from '../../store/slices/login-slice'
+
+import { useSelector, useDispatch } from 'react-redux';
+
 function ScrollTop(props) {
     const { children, window } = props;
 
@@ -52,7 +56,7 @@ function ScrollTop(props) {
             <Box
                 onClick={handleClick}
                 role="presentation"
-                sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                sx={{ position: 'fixed', backgroundColor:"#163758", bottom: 16, right: 16 }}
             >
                 {children}
             </Box>
@@ -74,10 +78,13 @@ ScrollTop.propTypes = {
 const pages = ['Home', 'Find Helpers', 'About Us', 'Profile'];
 
 const Header = (props) => {
-
+    const dispatch = useDispatch()
     let navigate = useNavigate()
-    const isAuth = true//useSelector(state => state.loginStore.isAuth)
 
+    // let { token } = useSelector((state) => ({ ...state.loginStore }))
+    const role = "Client"//localStorage.getItem("role")
+    // const {isAuth} = useSelector(state => ({ ...state.loginStore }))
+const isAuth = true
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [openRequest, setOpenRequest] = useState(false)
@@ -115,11 +122,17 @@ const Header = (props) => {
         setOpenHired(false);
         setOpenShortlist(false);
     };
-    console.log("request open :: ",openRequest)
+    console.log("request open :: ", openRequest)
+    const onLogoutClick = () => {
+        localStorage.removeItem("r_id")
+        localStorage.removeItem("logToken")
+        localStorage.removeItem("role")
+        dispatch(loginActions.logoutReducer())
+    }
     // const navigate = useNavigate()
     return (
         <>
-            <AppBar position="fixed" sx={{ marginTop: 0, background: '#2196f3' }} >
+            <AppBar position="fixed" sx={{ marginTop: 0, background: '#163758',color:"" }} >
                 <Container maxWidth="xl">
 
                     <Toolbar disableGutters>
@@ -167,10 +180,11 @@ const Header = (props) => {
                                             <Typography textAlign="center">{page}</Typography>
                                         </MenuItem>
                                     ))} */}
-                                    <MenuItem onClick={onRequestClick}>Requests</MenuItem>
-                                    <MenuItem onClick={() => navigate("/findHelper")} >Shortlisted</MenuItem>
-                                    <MenuItem onClick={onHireClick}>Hired</MenuItem>
-                                    <MenuItem onClick={() => {return(navigate("/profile"), handleCloseNavMenu)}}>Profile</MenuItem>
+                                    <MenuItem onClick={onRequestClick}>Home</MenuItem>
+                                    {/* <MenuItem onClick={() => navigate("/findHelper")} >Hiring Process</MenuItem> */}
+                                    {role==="Client"&&<MenuItem onClick = {() => navigate("/findHelper")}>Find Helpers</MenuItem>}
+                                    <MenuItem onClick={() => { return (navigate("/profile"), handleCloseNavMenu) }}>Profile</MenuItem>
+                                    
                                 </Menu>
                             </Box>
                         }
@@ -197,20 +211,21 @@ const Header = (props) => {
                                 >
                                     Home
                                 </Button>
-                                <Button
+                                {role === "Client" &&
+                                    <Button
 
                                     onClick={() => navigate("/findHelper")}
                                     sx={{ my: 2, color: 'white', display: 'block' }}
                                 >
                                     Find Helpers
-                                </Button>
-                                <Button
+                                </Button>}
+                                {/* <Button
 
                                     onClick={handleCloseNavMenu}
                                     sx={{ my: 2, color: 'white', display: 'block' }}
                                 >
                                     Hiring Process
-                                </Button>
+                                </Button> */}
                                 <Button
 
                                     onClick={() => navigate("/profile")}
@@ -246,9 +261,9 @@ const Header = (props) => {
                                 >
 
                                     <MenuItem onClick={onRequestClick}>Requests</MenuItem>
-                                    <MenuItem onClick={onShortlistClick} >Shortlisted</MenuItem>
+                                    {role==="Client" && <MenuItem onClick={onShortlistClick} >Shortlisted</MenuItem>}
                                     <MenuItem onClick={onHireClick}>Hired</MenuItem>
-                                    <MenuItem onClick={onRequestClick}>Logout</MenuItem>
+                                    <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
 
 
                                 </Menu>

@@ -112,15 +112,34 @@ const ViewClientProfile = () => {
     const onSaveClick = () => {
         setSaveIcon(!saveIcon)
     }
-
+    const ageDate = () => {
+        var today = new Date();
+        // console.log(today)
+        var birthDate = new Date(values.dob);
+        // console.log(birthDate)
+        var age = today.getFullYear() - birthDate.getFullYear();
+        // console.log(age)
+        var m = today.getMonth() - birthDate.getMonth();
+        // console.log(m)
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        // console.log(age)
+        return age;
+    }
     return (
-        <Card sx={{
+        <Card variant="outlined"
 
-            marginTop: "2%",
-            paddingLeft: "10%",
-            paddingRight: "10%",
-            height: "100%"
-        }} elevation={0}>
+            sx={{
+                // paddingLeft: "10%",
+                // paddingRight: "10%",
+                marginTop: 2,
+                borderWidth: 2,
+                borderColor: "#163758",
+                height: "100%",
+                width: "100%",
+                // backgroundColor: "#007bf717"
+            }} >
             <CardContent >
                 <Grid container direction={'row'} justifyContent="center">
                     <Grid container >
@@ -162,28 +181,28 @@ const ViewClientProfile = () => {
                             <Grid item xs={12} sm={6} align="left" >
 
                                 <Grid container direction={'row'} >
-                                    <Grid item xs={6} sm={6} align="left" >
-                                        <Typography color="green" gutterBottom variant="button"  >
+                                    <Grid item xs={6} sm={6} align="left" colo="#163758">
+                                        <Typography  gutterBottom variant="button"  >
                                             Gender
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             Age
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             Married
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             Physical Disability
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             About
                                         </Typography>
                                     </Grid>
@@ -195,7 +214,7 @@ const ViewClientProfile = () => {
                                         <br />
                                         <br />
                                         <Typography gutterBottom variant="button"  >
-                                            25 Years
+                                            {ageDate()} Years
                                         </Typography>
                                         <br />
                                         <br />
@@ -219,18 +238,18 @@ const ViewClientProfile = () => {
 
                             <Grid item xs={12} sm={6} align="left" >
                                 <Grid container direction={'row'} >
-                                    <Grid item xs={4} sm={4} align="left" >
-                                        <Typography color="green" gutterBottom variant="button"  >
+                                    <Grid item xs={4} sm={4} align="left" color="#163758">
+                                        <Typography  gutterBottom variant="button"  >
                                             Email
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             Alternate No
                                         </Typography>
                                         <br />
                                         <br />
-                                        <Typography gutterBottom color="green" variant="button"  >
+                                        <Typography gutterBottom  variant="button"  >
                                             Address
                                         </Typography>
                                         <br />

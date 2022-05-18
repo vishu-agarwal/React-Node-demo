@@ -1,11 +1,13 @@
 const express = require("express")
 const router = new express.Router()
+const auth = require("../middleware/authMidleware")
+
 
 //controller
-const profileController = require("../../controller/profileController")
+const profileController = require("../controller/profileController")
 
 //createProfile
-router.post("/myhelpers/crtProfile/:rid", profileController.createProfile)
+router.post("/myhelpers/crtProfile/:rid",auth, profileController.createProfile)
 //upload avatar 
 
 router.post("/myhelper/upldAvatar/:rid",
@@ -27,7 +29,7 @@ router.post("/myhelper/upldAadhar/:rid",
 
 
 //fecth profile
-router.get("/myhelpers/userProfile/fetch/:rid", profileController.fetchProfile)
+router.get("/myhelpers/userProfile/fetch/:rid",auth, profileController.fetchProfile)
 
 //update star
 router.put("/myhelper/updateStar/:rid", profileController.updateStar)

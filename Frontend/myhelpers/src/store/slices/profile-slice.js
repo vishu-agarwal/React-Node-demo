@@ -51,7 +51,8 @@ export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (fo
 export const createProfileThunk = createAsyncThunk("userProfile/createProfileThunk", async (arg) => {
     // console.log("profilediapatch::", arg)
     try {
-        const rid = localStorage.getItem("r_id")
+        
+        const varToken = localStorage.getItem("token");
         const data = {
             name: arg.values.fname + ' ' + arg.values.lname,
             dob: arg.values.dob,
@@ -74,21 +75,33 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
 
         };
         // console.log("data", data)
-        const userRes = await axios.post(`/myhelpers/crtProfile/C109`, data)
+        const userRes = await axios.post(`/myhelpers/crtProfile/C109`, 
+            {
+                headers: {
+                    Authorization: "Bearer " + varToken,
+                },
+            }
+        , data)
 
         // console.log("loginRes", loginRes)
         return userRes
 
     }
     catch (error) {
-        // console.log(error.response.data)
+        console.log(error.response)
         throw new Error(error.response.data)
     }
 })
 export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk", async (arg) => {
     try {
-        // console.log("arg ",arg)        
-        const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`)
+        // console.log("arg ",arg)    
+        const varToken = localStorage.getItem("token");
+        const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
+            {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         // console.log("Fwtch Response:: ", fetchUser)
         return fetchUser

@@ -1,10 +1,10 @@
 //main file
 import './App.css';
 import Header from "./components/layouts/Header"
-import Content from "./components/layouts/Content"
+import Content from "./components/LoginFiles/Content"
 import ClientProfile from './components/ProfileFiles/ClientProfile';
 import HelperProfile from './components/helpers/HelperProfile';
-import Login from './components/login';
+import Login from './components/LoginFiles/login';
 import CardJS from './components/clients/Card';
 import Dashboard from './components/Dashboard';
 import { useSelector } from 'react-redux'
@@ -20,41 +20,41 @@ import WorkRequest from './components/WorkRequests';
 import HiredHelper from './components/HiredHelper';
 import HomePage from './components/clients/HomePage';
 import Profile from './components/ProfileFiles/ClientProfile';
+import Footer from './components/layouts/Footer';
+import PageNotFound from './components/layouts/PageNotFound';
 
 function App() {
-  const isAuth = useSelector(state => state.loginStore.isAuth)
+  const isAuth = true//useSelector(state => state.loginStore.isAuth)
   // console.log(isAuth)
-
+  const role = localStorage.getItem("role")
 
   return (
-    <div className="App"
-
-
-    >
-
+    <div className="App">
       <Header />
 
       <div>
-        {/* <BrowserRouter> */}
+
         <Routes>
           <Route path="/" element={!isAuth && <Content />} />
+
           <Route path={`/login/:role`} element={!isAuth && <Login />} />
-          {/* <Route path="/clientProfile" element={isAuth && <ClientProfile />} /> */}
-          <Route path="/profile" element={<ClientProfile />} />
-          <Route path="/findHelper" element={<DisplayData />} />
-          <Route path="/viewClientDetails/:rid" element={<ViewClientProfile />} />
-          <Route path="/viewHelperDetails/:rid" element={<ViewProfileDetail />} />
-          <Route path="/profileTemp" elemenmts={<Profile />} />
-          {/* <Route path="/shortlist" element={<ShortListed />} /> */}
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/hireUsers" element={<HireUser />} />
-          {/* <Route path="/hiredHelper" element={<HiredHelper />} /> */}
-          {/* <Route path="/request" element={<WorkRequest />} /> */}
-          <Route path="/helperProfile" element={isAuth && <HelperProfile />} />
-          <Route path="*" element={"error"} />
+          {/* {isAuth && <> */}
+            
+            <Route path="/profile" element={isAuth ? <ClientProfile /> : "you are unauthorised"} />
+          <Route path="/findHelper" element={isAuth || role==="Client" ?<DisplayData />: "you are unauthorised"} />
+          <Route path="/viewClientDetails/:rid" element={isAuth ?<ViewClientProfile />: "you are unauthorised"} />
+          <Route path="/viewHelperDetails/:rid" element={isAuth ?<ViewProfileDetail />: "you are unauthorised"} />
+            {/* <Route path="/profileTemp" elemenmts={<Profile />} /> */}
+            
+            <Route path="/home" element={<HomePage />} />
+
+          {/* <Route path="/helperProfile" element={isAuth && <HelperProfile />} /> */}
+        {/* </>} */}
+          <Route path="*" element={"page not fount"} />
         </Routes>
-        {/* </BrowserRouter> */}
+
       </div>
+      {/* <Footer /> */}
     </div>
   );
 }

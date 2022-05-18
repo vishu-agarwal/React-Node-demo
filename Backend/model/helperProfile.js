@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const validator = require("validator")
 
 console.log("helper profile model file ...............")
-const regModel = require("../../model/tblReg")
+const regModel = require("./tblReg")
 const helperSchema = new mongoose.Schema({
 
     r_id: {

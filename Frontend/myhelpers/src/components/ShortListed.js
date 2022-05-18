@@ -116,7 +116,7 @@ const ShortListed = (props) => {
                     }}>
                     <CardContent >
 
-                        <Grid container direction={'row'} spacing={0}>
+                        <Grid container direction={'row'} >
                             <Grid item xs={12} sm={10} align="left" >
                                 <Typography variant="h3" color="black" component="div">
                                     SORTLIST

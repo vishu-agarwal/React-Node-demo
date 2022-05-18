@@ -87,6 +87,7 @@ const DisplayData = () => {
         }
 
     }, [message, error])
+    
     useEffect(() => {
         if (displayData.length !== 0) {
             // console.log("displayData :: ", displayData)
@@ -128,7 +129,14 @@ const DisplayData = () => {
                             disablePortal
                             id="combo-box-demo"
                             options={workSearchBy}
-
+                            sx={{
+                                "& .MuiInputLabel-root": { color: '#163758' },//styles the label
+                                "& .MuiOutlinedInput-root": {
+                                    "& > fieldset": { borderColor: "#163758" },
+                                },
+                                
+                                color: "#163758"
+                            }}
                             onInputChange={(e, values) => {
                                 setWorkSearch(values)
                             }}
@@ -136,22 +144,26 @@ const DisplayData = () => {
                                 {...params} label="Search By"
                                 value={workSearch}
                             />}
+
                         />
                     </Grid>
-
                     <Grid item xs={11} sm={2}>
                         {
-
                             workSearch === "" ?
                                 ""
                                 :
-
                                 workSearch === "Work Category" || workSearch === "Work Timing" || workSearch === "Gender" ?
-
                                     <Autocomplete
                                         disablePortal
                                         id="combo-box-demo"
-
+                                        sx={{
+                                            "& .MuiInputLabel-root": { color: '#163758' },//styles the label
+                                            "& .MuiOutlinedInput-root": {
+                                                "& > fieldset": { borderColor: "#163758" },
+                                            },
+                                            
+                                            color: "#163758"
+                                        }}
                                         options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : workSearch === "Gender" ? filterGender : ['']}
                                         // getOptionLabel={(option) => option.label || ''}
                                         onInputChange={(e, value) => setFilterWork(value)}
@@ -195,6 +207,14 @@ const DisplayData = () => {
                                             //         </InputAdornment>
                                             //     )
                                             // }}
+                                            sx={{
+                                                "& .MuiInputLabel-root": { color: '#163758' },//styles the label
+                                                "& .MuiOutlinedInput-root": {
+                                                    "& > fieldset": { borderColor: "#163758" },
+                                                },
+                                                marginTop: 2,
+                                                color: "#163758"
+                                            }}
                                             value={filterWork}
                                             onChange={(val) => setFilterWork(val.target.value)}
                                         />
@@ -205,11 +225,14 @@ const DisplayData = () => {
                     </Grid>
                     <Grid item xs={1} sm={0.5} marginTop={3}>
                         {workSearch !== "" &&
-                            
+                        
                             <InputAdornment position="end">
-                                <SearchIcon cursor={"pointer"} onClick={(e) => searchChange(e)} />
+                                <SearchIcon cursor={"pointer"} sx={{colo:"#163758"}} onClick={(e) => searchChange(e)} />
                             </InputAdornment>}
                     </Grid>
+                    <Grid item xs={0} sm={5}>
+                    </Grid>
+
                     <Grid item xs={12} sm={2.5} display="flex" alignItems='center' >
                         {/* <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
@@ -251,11 +274,11 @@ const DisplayData = () => {
                                 </MenuItem>
                             </Select>
                         </FormControl> */}
-                        <Typography fontSize={18}> Sort By : Age </Typography>
-                        <IconButton aria-label="Example" size="small" onClick={() => onSortChange("up", "dob")} >
+                        <Typography variant="h6"> Sort By : Age </Typography>
+                        <IconButton aria-label="Example" size="medium" sx={{ color:"#163758"}} onClick={() => onSortChange("up", "dob")} >
                             <ArrowUpwardRoundedIcon />
                         </IconButton>
-                        <IconButton aria-label="Example" size="small" onClick={() => onSortChange("down", "dob")} >
+                        <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("down", "dob")} >
                             <ArrowDownwardRoundedIcon />
                         </IconButton>
                     </Grid>

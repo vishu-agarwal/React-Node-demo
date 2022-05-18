@@ -1,5 +1,5 @@
 const hireRequestModel = require("../model/tblHireRequest")
-const profileModel = require("../model/client/clientProfile")
+const profileModel = require("../model/clientProfile")
 
 const createHireRequest = async (req, res) => {
     console.log("profile::");

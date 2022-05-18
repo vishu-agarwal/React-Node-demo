@@ -1,6 +1,6 @@
-const profileModel = require("../model/client/clientProfile")
+const profileModel = require("../model/clientProfile")
 const regModel = require("../model/tblReg")
-const workProfileModel = require("../model/helpers/helperProfile")
+const workProfileModel = require("../model/helperProfile")
 
 const createWorkProfile = async (req, res) => {
     console.log("profile::");

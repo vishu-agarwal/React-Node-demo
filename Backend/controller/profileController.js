@@ -1,4 +1,4 @@
-const profileModel = require("../model/client/clientProfile")
+const profileModel = require("../model/clientProfile")
 const regModel = require("../model/tblReg")
 
 const multer = require("multer")

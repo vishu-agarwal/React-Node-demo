@@ -6,21 +6,20 @@ const initialState = {
     user: [],
     token: "",
     isAuth: false,
-    loading: false,
+    loadingLogin: false,
     error: ""
 }
 
 export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) => {
-    // console.log("diapatch::", arg)
     try {
+        console.log("diapatch::", arg)
         const data = {
-            mob_num: arg.values.mobile_no,
-            password: arg.values.password,
+            email: arg.email
         };
-        //console.log(data)
-        const loginRes = await axios.post(`/myhelpers/register/${arg.values.role}`, data)
+        console.log(data)
+        const loginRes = await axios.post(`/myhelpers/register/${arg.role}`, data)
 
-        console.log("loginRes", loginRes)
+        // console.log("loginRes", loginRes)
         return loginRes
 
     }
@@ -40,20 +39,26 @@ const loginSlice = createSlice({
         isAuthReducer(state) {
             state.isAuth = true
         },
+        logoutReducer(state)
+        {
+            state.isAuth = false
+            state.user = []
+            state.token=""
+        }
     },
     extraReducers: {
         [loginThunk.pending]: (state, action) => {
-            state.loading = true
+            state.loadingLogin = true
         },
         [loginThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.loadingLogin = false
             //  state.isAuth = true
             state.token = action.payload.data.token
             // console.log(state.token)
             state.user = [action.payload.data.newUser]
         },
         [loginThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.loadingLogin = false
             // console.log("rejected::", error.error.message)
             state.error = error.error.message
         },
