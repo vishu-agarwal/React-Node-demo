@@ -1131,7 +1131,7 @@ const ClientProfile = () => {
         lname: '',
         dob: '',
         altmbl: '',
-        email: '',
+        mbl: '',
         gender: '',
         married: '',
         physic_dis: '',
@@ -1210,7 +1210,7 @@ const ClientProfile = () => {
                 lname: userProfile[0].name.split(" ")[1],
                 dob: userProfile[0].dob,
                 altmbl: userProfile[0].alt_mob_num,
-                email: userProfile[0].email,
+                mbl: userProfile[0].mbl,
                 gender: userProfile[0].gender,
                 married: userProfile[0].isMarried,
                 physic_dis: userProfile[0].physical_disable,
@@ -1424,7 +1424,7 @@ const ClientProfile = () => {
         lname: false,
         dob: false,
         altmbl: false,
-        email: false,
+        mbl: false,
         house_no: false,
         house_name: false,
         street: false,
@@ -1534,22 +1534,22 @@ const ClientProfile = () => {
                 setErrorText("Please enter valid Mobile No.!")
             }
         }
-        else if (event.target.id === "email") {
+        else if (event.target.id === "mob") {
             setValues((prevState) => {
                 return {
                     ...prevState,
-                    email: event.target.value
+                    mbl: event.target.value
                 }
             })
-            if (/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/.test(event.target.value)) {
+            if (/^[6-9][0-9]{9}$/.test(event.target.value)) {
                 // console.log("correct!")
-                setErrorEnable({ ...errorEnable, email: false })
+                setErrorEnable({ ...errorEnable, mbl: false })
 
             }
             else {
                 // console.log("wrong!")
-                setErrorEnable({ ...errorEnable, email: true })
-                setErrorText("Please enter valid Email address!")
+                setErrorEnable({ ...errorEnable, mbl: true })
+                setErrorText("Please enter valid Mobile No.!")
             }
         }
         else if (event.target.id === "house-No") {
@@ -1682,14 +1682,14 @@ const ClientProfile = () => {
     }, [errorEnable, values, aadhar.dispFile])
     return (
         <Grid >
-            <Card variant="outlined"
-                // elevation={8}
+            <Card 
+                elevation={16}
                 sx={{
-                    maxWidth: 1400, maxHeight: 5000,
+                    maxWidth: 1200, maxHeight: 5000,
                     margin: '0 auto',
                     marginTop: 9,
                     borderWidth: 2,
-                    borderColor:"#163758"
+                    // borderColor:"#163758"
                 }}>
                 <CardContent>
                     <Grid container justifyContent={"right"}>
@@ -1754,13 +1754,13 @@ const ClientProfile = () => {
                                                     // backgroundImage: `url(${profileImg})`,
                                                     // backgroundRepeat: "no-repeat",
                                                     // backgroundSize: "100%"
-
+                                                    border: '3px solid #163758',
                                                     backgroundColor: ""
                                                 }}
 
                                                 src={file.dispFile}
                                                 sx={{
-                                                    marginTop: 0, width: 150, height: 250
+                                                    marginTop: 0, width: 200, height: 250
                                                 }} />
                                         </Badge>
                                     </Grid>
@@ -1822,6 +1822,42 @@ const ClientProfile = () => {
                                     </Grid>
                                     <Grid xs={12} sm={5.5} item>
                                         <TextField
+                                            required
+                                            variant='outlined'
+                                            id="mob"
+                                            label="Mobile Number"
+                                            fullWidth
+                                            value={values.mbl}
+                                            inputProps={{
+                                                readOnly: Boolean(fieldsDisable),
+
+                                            }}
+                                            onChange={onChange}
+                                            error={errorEnable.mbl}
+                                            helperText={errorEnable.mbl && errorText}
+                                        />
+
+                                    </Grid>
+
+                                    <Grid xs={12} sm={5.5} item>
+                                        <TextField
+                                            required
+                                            variant='outlined'
+                                            id="alt-mob"
+                                            label="Alternate Number"
+                                            fullWidth
+                                            value={values.altmbl}
+                                            inputProps={{
+                                                readOnly: Boolean(fieldsDisable),
+
+                                            }}
+                                            onChange={onChange}
+                                            error={errorEnable.altmbl}
+                                            helperText={errorEnable.altmbl && errorText}
+                                        />
+                                    </Grid>
+                                    <Grid xs={12} sm={11} item>
+                                        <TextField
                                             id="dob"
                                             size="medium"
                                             label="Date Of Birthday"
@@ -1841,52 +1877,7 @@ const ClientProfile = () => {
                                                 shrink: true,
                                             }}
                                         />
-
-                                    </Grid>
-
-                                    <Grid xs={12} sm={5.5} item>
-                                        <TextField
-                                            required
-                                            variant='outlined'
-                                            id="alt-mob"
-                                            label="Mobile Number"
-                                            fullWidth
-                                            value={values.altmbl}
-                                            inputProps={{
-                                                readOnly: Boolean(fieldsDisable),
-
-                                            }}
-                                            onChange={onChange}
-                                            error={errorEnable.altmbl}
-                                            helperText={errorEnable.altmbl && errorText}
-                                        />
-                                    </Grid>
-                                    <Grid xs={12} sm={11} item>
-                                        <TextField
-                                            type='email'
-                                            required
-                                            variant='outlined'
-                                            id="email"
-                                            label="Email Address"
-                                            fullWidth
-                                            value={values.email}
-
-                                            InputProps={{
-                                                readOnly: Boolean(fieldsDisable),
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <AccountCircle />
-                                                    </InputAdornment>
-                                                )
-                                            }}
-
-
-                                            onChange={onChange}
-                                            error={errorEnable.email}
-                                            helperText={errorEnable.email && errorText}
-
-                                        />
-                                    </Grid>
+                                                                            </Grid>
                                     <Grid xs={12} sm={3.5} item >
                                         <div align="left"><InputLabel >Gender</InputLabel></div>
                                         <RadioGroup

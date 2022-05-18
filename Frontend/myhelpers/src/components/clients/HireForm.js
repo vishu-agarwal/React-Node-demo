@@ -192,6 +192,12 @@ const HireForm = (props) => {
         if (event.target.name === "fromDate") {
             // console.log(event.target.value)
             // console.log(new Date(event.target.value) < new Date())
+            if (props.hireValues.toDate.length !== 0) {
+                // if (new Date(event.target.value) <= new Date(props.hireValues.toDate)) {
+                    setErrorEnable({ ...errorEnable, toDate: true })
+                    setErrorText("Again select date!")
+                // }
+            }
             props.sethireValues((prevState) => { return { ...prevState, fromDate: event.target.value } })
             if (isTrue) {
                 const prevDay = new Date(today.setDate(today.getDate() - 1))
@@ -200,11 +206,14 @@ const HireForm = (props) => {
                     setErrorText("Should be today or future date!")
                 }
                 else {
+
                     setErrorEnable({ ...errorEnable, fromDate: false })
                 }
             }
+
             else {
                 if (new Date(event.target.value) < today) {
+
                     setErrorEnable({ ...errorEnable, fromDate: true })
                     setErrorText("Date should be future date!")
                 }
@@ -225,7 +234,12 @@ const HireForm = (props) => {
         }
         else if (event.target.name === "fromTime") {
             // var nowTime = nowDateTime.split('T')[1].split('.')[0];
-
+            if (props.hireValues.toTime.length !== 0) {
+                // if (event.target.value <= new Date(props.hireValues.fromDate)) {
+                    setErrorEnable({ ...errorEnable, toTime: true })
+                    setErrorText("Again select time!")
+                // }
+            }
             props.sethireValues((prevState) => { return { ...prevState, fromTime: event.target.value } })
             // if (isTrue) {
             if (new Date(props.hireValues.fromDate).getDate() === today.getDate() && props.hireValues.toDate.length !== 0) {
@@ -243,8 +257,8 @@ const HireForm = (props) => {
             }
             else if (props.hireValues.fromDate !== "" && props.hireValues.toDate !== "") {// for future dates
                 if (props.workTime === "Custom (1-4 Hrs)") {
-                    console.log(event.target.value)
-                    console.log(event.target.value < "06:00" && event.target.value > "20:00")
+                    // console.log(event.target.value)
+                    // console.log(event.target.value < "06:00" && event.target.value > "20:00")
                     if (event.target.value < "06:00" || event.target.value > "20:00") {
                         setErrorEnable({ ...errorEnable, fromTime: true })
                         setErrorText("Between 6 AM to 8 PM!")

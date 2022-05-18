@@ -9,59 +9,20 @@ import IconButton from '@mui/material/IconButton';
 import { useState, useEffect } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import Fab from '@mui/material/Fab';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Zoom from '@mui/material/Zoom';
 import PropTypes from 'prop-types';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 // import { Button } from "../../App.css"
-function ScrollTop(props) {
-    const { children, window } = props;
+import { useTheme } from '@mui/material/styles';
 
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
-    const trigger = useScrollTrigger({
-        target: window ? window() : undefined,
-        disableHysteresis: true,
-        threshold: 100,
+import CardMedia from '@mui/material/CardMedia';
 
-    });
-
-    const handleClick = (event) => {
-        const anchor = (event.target.ownerDocument || document).querySelector(
-            '#back-to-sown-anchor',
-        );
-
-        if (anchor) {
-            anchor.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-            });
-        }
-    };
-
-    return (
-        <Zoom in={trigger}>
-            <Box
-                onClick={handleClick}
-                role="presentation"
-                sx={{ position: 'fixed', top: 50, left: 16 }}
-            >
-                {children}
-            </Box>
-        </Zoom>
-    );
-}
-
-ScrollTop.propTypes = {
-    children: PropTypes.element.isRequired,
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window: PropTypes.func,
-};
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const ScrollButton = () => {
 
@@ -78,29 +39,37 @@ const ScrollButton = () => {
     };
 
     const scrollToBottom = () => {
-        window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: 'auto'
-            /* you can also use 'auto' behaviour 
-               in place of 'smooth' */
+        // window.scrollTo({
+        //     top: document.documentElement.scrollHeight,
+        //     behavior: 'auto'
+        //     /* you can also use 'auto' behaviour 
+        //        in place of 'smooth' */
+        // });
+        window.scroll({
+            top: document.documentElement.offsetHeight,
+            left: 0,
+            behavior: 'smooth',
         });
     };
 
     window.addEventListener('scroll', toggleVisible);
 
     return (
-        <Button
+        <ExpandCircleDownIcon
             onClick={scrollToBottom}
-            color='warning'
+
+            size="large"
+
             variant="contained"
-            sx={{ my: 2, backgroundColor: '#e91e1e', display: 'block', marginLeft: "25%", marginRight: "20%", marginTop: "4%" }}
-            style={{ display: visible ? 'inline' : 'none' }} >Down
-        </Button>
+            sx={{ display: 'block', color: "white", height: "80%", width: "5%", marginTop: "5%" }}
+            style={{ display: visible ? 'inline' : 'none', cursor: "pointer" }} />
+
     );
 }
 
 const HiringProcess = (props) => {
     let navigate = useNavigate()
+    const theme = useTheme();
     return (
         <div>
             <Grid container justifyContent="center">
@@ -108,38 +77,118 @@ const HiringProcess = (props) => {
                     <div>
                         <img src={require("../helperHome.jpg")} height={"100%"} width={"100%"} />
                     </div>
-                    <div marginTop={5} style={{ height: "99.5%", width: "50%", background: "#000000", opacity: 0.6, position: "absolute", top: 0, right: "75%", transform: "translateX(-18%)", }}>
+                    <div style={{ height: "99.5%", width: "100%", background: "#000000", opacity: 0.5, position: "absolute", top: 0 }}>
 
-                        <ScrollTop {...props}>
-                            <Fab sx={{ backgroundColor: "", color: "white" }} size="large" aria-label="scroll back to top">
-                                <KeyboardArrowUpIcon />
-                            </Fab>
-                        </ScrollTop>
-                        <ScrollButton />
-                    </div>
-                    <div style={{ height: "99.5%", width: "50%", background: "#000000", opacity: 0.5, position: "absolute", top: 0, left: "75%", transform: "translateX(-18%)", }}>
-                        <Typography sx={{ typography: { sm: 'h4', xs: 'body1', md: 'h2' } }} style={{ fontWeight: 900, color: "white" }} marginLeft={"5%"} marginRight={"40%"} marginTop={"10%"} >
+
+                        <Typography sx={{ typography: { sm: 'h4', xs: 'body1', md: 'h2' } }} style={{ fontWeight: 900, color: "white" }} marginLeft={"5%"} marginRight={"5%"} marginTop={"5%"} >
                             FIND YOUR SUITABLE WORK EASILY
                         </Typography>
 
-                        <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} style={{ fontWeight: 900, color: "white" }} marginLeft={"5%"} marginRight={"40%"} marginTop={"1%"} >
-                            Need skilled help service? Book with us and we will ensure you have safe, secure and responsible manpower.
+                        <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} style={{ fontWeight: 900, color: "white" }} marginLeft={"30%"} marginRight={"30%"} marginTop={"1%"} >
+                            Are you find work ? Now you don't have to roam around for work. You get calls and requests for work directly on your mobile.
                         </Typography>
-                        <ScrollButton />
-                        <Button
+                        <Grid container justifyContent="center">
+                            <Button
 
-
-                            // color="#163758"
-                            variant="contained"
-                            onClick={() => navigate("/findHelper")}
-
-                            sx={{ my: 2, backgroundColor: '#e91e1e', display: 'block', marginLeft: "25%", marginRight: "20%", marginTop: "4%" }}
-                        >
-                            ENQUIRY
-                        </Button>
+                                size="large"
+                                // color="#163758"
+                                variant="contained"
+                                // onClick={ }
+                                sx={{ backgroundColor: '#00a7ff', color: "white", display: 'block', marginTop: "2%", width: "20%", height: 50 }}
+                            >
+                                SEE ENQUIRY
+                            </Button>
+                        </Grid>
+                        <Grid container justifyContent="center" >
+                            <ScrollButton />
+                        </Grid>
                     </div>
                 </Grid>
+                <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} backgroundColor="white">
+                    <Grid container justifyContent="center" >
+                        <Grid item sm={11} xs={11} md={11}  >
+                            <Card sx={{ display: 'flex' }}>
+                                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                    <CardContent sx={{ flex: '1 0 auto' }}>
+                                        <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
+
+                                            Why should you find & hire Workers from My Helpers ?
+                                        </Typography>
+                                        {/* <Typography variant="subtitle1" color="text.secondary" component="div">
+                                            Mac Miller
+                                        </Typography> */}
+                                    </CardContent>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
+                                        <Typography style={{ fontWeight: 600, color: "#163758" }} marginTop={1} variant="h5">
+                                        Simple choices affect the world we live in.
+
+                                        We are flooded with multiple choices for things we consume every day - Which Tea/Coffee? Which Cereal? Which Car? What kind of Fruits & Vegetables? Etc.
+
+                                        At times, these simple choices we make every moment affect our environment, planet or a group of individuals or community, directly or indirectly. Or else, they are just simple means of earning financial gains.
+
+                                        It is okay if an enterprise earns revenues for itself. However, we believe it would be great if financial gains could also impact the world we live in. And therefore, make the world better than what it is.
+
+                                        At  My Helpers, we believe, with the help of technology, it is possible to make an ecosystem, which can help millions of blue-collar workforce find local employment opportunities. We believe, with a nominal fee, the ecosystem can also sustain itself in the process. We firmly believe that technology today can impact the lives of millions in multiple ways.
+
+                                        With your help, at My Helpers , we have the capabilities to make this happen.
+
+                                        So, go ahead. Connect with your nearby workers directly, without the middlemen in between. And impact the life of one, or a few, of whom you can.
+                                    </Typography>
+                                    </Box>
+                                </Box>
+                                <CardMedia
+                                    component="img"
+                                    sx={{ width: "100%" }}
+                                    image={require("../meet4.jpg")}
+                                    alt="Image"
+                                />
+                            </Card>
+                            <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                                <CardContent sx={{ padding: 0 }}>
+                                    <Grid container >
+                                        <Grid item xs={12} sm={12} md={12} >
+                                            <Typography style={{ fontWeight: 600, color: "#163758" }} marginTop={1} variant="h5">
+                                                Are you less educated? Or are you not educated? It is always difficult for you to find work. My Helpers helps you find work as per your choice. This service is absolutely free for you.
+
+                                                Now you don't have to roam around for work. For work, you will get a requests from clients on My Helpers site.
+
+                                                You can see client profile. If work is suitable, you can accept it else you can reject.
+
+                                                My Helpers helps you.  For work join My Helpers today. Absolutely free of cost.
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={12} sm={12} md={12} >
+                                            <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Cook/Chef</Typography>
+                                        </Grid>
+                                    </Grid>
+                                </CardContent>
+                            </Card>
+                          
+                        </Grid>
+                        <Grid item sm={11} xs={11} md={11}  >
+                            <Typography style={{ fontWeight: 600, color: "#163758" }} marginTop={1} variant="h5">
+                                <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
+                                   
+                                Why should you find & hire Workers from My Helpers ?
+                                </Typography>
+                                Simple choices affect the world we live in.
+
+                                We are flooded with multiple choices for things we consume every day - Which Tea/Coffee? Which Cereal? Which Car? What kind of Fruits & Vegetables? Etc.
+
+                                At times, these simple choices we make every moment affect our environment, planet or a group of individuals or community, directly or indirectly. Or else, they are just simple means of earning financial gains.
+
+                                It is okay if an enterprise earns revenues for itself. However, we believe it would be great if financial gains could also impact the world we live in. And therefore, make the world better than what it is.
+
+                                At  My Helpers, we believe, with the help of technology, it is possible to make an ecosystem, which can help millions of blue-collar workforce find local employment opportunities. We believe, with a nominal fee, the ecosystem can also sustain itself in the process. We firmly believe that technology today can impact the lives of millions in multiple ways.
+
+                                With your help, at My Helpers , we have the capabilities to make this happen.
+
+                                So, go ahead. Connect with your nearby workers directly, without the middlemen in between. And impact the life of one, or a few, of whom you can.
+                    </Typography>
+                        </Grid>
+                </Grid>
             </Grid>
+
             <Grid item xs={12} sm={12} md={12} margin={2} >
                 <Grid container justifyContent="center" >
                     <Grid item sm={12} xs={12} md={12}>
@@ -164,7 +213,7 @@ const HiringProcess = (props) => {
                                 <Grid container>
 
                                     <Grid item xs={12} sm={12} md={12} >
-                                        <img src={require("../accept.png")} style={{ borderRadius: "50%", cursor: "pointer"}} height={"100%"} width={"100%"} />
+                                        <img src={require("../accept.png")} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={12}>
                                         <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Accept</Typography>
@@ -175,7 +224,7 @@ const HiringProcess = (props) => {
                                 <Grid container>
 
                                     <Grid item xs={12} sm={12} md={12} >
-                                        <img src={require("../relax1.png")} style={{ borderRadius: "50%",cursor:"pointer" }} height={"100%"} width={"100%"} />
+                                        <img src={require("../relax1.png")} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
                                     </Grid>
                                     <Grid item xs={12} sm={12} md={12}>
                                         <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Hire</Typography>
@@ -186,9 +235,9 @@ const HiringProcess = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-
             </Grid>
-        </div>
+        </Grid >
+        </div >
     )
 }
 

@@ -280,7 +280,7 @@ const Header = (props) => {
             {
                 isAuth &&
                 <ScrollTop {...props}>
-                    <Fab sx={{ backgroundColor: "#163758", color: "white" }} size="small" aria-label="scroll back to top">
+                    <Fab sx={{ backgroundColor: "#163758", color: "white" }} size="medium" aria-label="scroll back to top">
                         <KeyboardArrowUpIcon />
                     </Fab>
                 </ScrollTop>
