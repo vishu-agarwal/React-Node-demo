@@ -1768,7 +1768,7 @@ const ClientProfile = () => {
                                         {enable && <Button variant="contained" sx={{ marginTop: 2 }} color="#03a9f4" onClick={avatarSubmit}>Upload Photo </Button>}
                                     </Grid>
                                     <Grid item xs={12} sm={12}>
-                                        <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].number : ''}</Typography>
+                                        <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].email : ''}</Typography>
                                         {role === "Helper" && <Rating name="half-rating"
 
                                             value={star}

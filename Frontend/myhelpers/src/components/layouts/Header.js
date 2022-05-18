@@ -36,6 +36,7 @@ function ScrollTop(props) {
         target: window ? window() : undefined,
         disableHysteresis: true,
         threshold: 100,
+
     });
 
     const handleClick = (event) => {
@@ -56,7 +57,7 @@ function ScrollTop(props) {
             <Box
                 onClick={handleClick}
                 role="presentation"
-                sx={{ position: 'fixed', backgroundColor:"#163758", bottom: 16, right: 16 }}
+                sx={{ position: 'fixed', bottom: 16, right: 16 }}
             >
                 {children}
             </Box>
@@ -84,13 +85,13 @@ const Header = (props) => {
     // let { token } = useSelector((state) => ({ ...state.loginStore }))
     const role = "Client"//localStorage.getItem("role")
     // const {isAuth} = useSelector(state => ({ ...state.loginStore }))
-const isAuth = true
+    const isAuth = true
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [openRequest, setOpenRequest] = useState(false)
     const [openShortlist, setOpenShortlist] = useState(false)
     const [openHired, setOpenHired] = useState(false)
-    
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -107,7 +108,7 @@ const isAuth = true
     };
     const onRequestClick = () => {
         handleCloseUserMenu()
-        setOpenRequest(true)   
+        setOpenRequest(true)
     }
     const onShortlistClick = () => {
         handleCloseUserMenu()
@@ -132,7 +133,7 @@ const isAuth = true
     // const navigate = useNavigate()
     return (
         <>
-            <AppBar position="fixed" sx={{ marginTop: 0, background: '#163758',color:"" }} >
+            <AppBar position="fixed" sx={{ marginTop: 0, background: '#163758', color: "" }} >
                 <Container maxWidth="xl">
 
                     <Toolbar disableGutters>
@@ -182,9 +183,9 @@ const isAuth = true
                                     ))} */}
                                     <MenuItem onClick={onRequestClick}>Home</MenuItem>
                                     {/* <MenuItem onClick={() => navigate("/findHelper")} >Hiring Process</MenuItem> */}
-                                    {role==="Client"&&<MenuItem onClick = {() => navigate("/findHelper")}>Find Helpers</MenuItem>}
+                                    {role === "Client" && <MenuItem onClick={() => navigate("/findHelper")}>Find Helpers</MenuItem>}
                                     <MenuItem onClick={() => { return (navigate("/profile"), handleCloseNavMenu) }}>Profile</MenuItem>
-                                    
+
                                 </Menu>
                             </Box>
                         }
@@ -214,11 +215,11 @@ const isAuth = true
                                 {role === "Client" &&
                                     <Button
 
-                                    onClick={() => navigate("/findHelper")}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
-                                >
-                                    Find Helpers
-                                </Button>}
+                                        onClick={() => navigate("/findHelper")}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        Find Helpers
+                                    </Button>}
                                 {/* <Button
 
                                     onClick={handleCloseNavMenu}
@@ -261,7 +262,7 @@ const isAuth = true
                                 >
 
                                     <MenuItem onClick={onRequestClick}>Requests</MenuItem>
-                                    {role==="Client" && <MenuItem onClick={onShortlistClick} >Shortlisted</MenuItem>}
+                                    {role === "Client" && <MenuItem onClick={onShortlistClick} >Shortlisted</MenuItem>}
                                     <MenuItem onClick={onHireClick}>Hired</MenuItem>
                                     <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
 
@@ -278,7 +279,7 @@ const isAuth = true
             <Toolbar id="back-to-top-anchor" />
             {isAuth &&
                 <ScrollTop {...props}>
-                    <Fab color="secondary" size="small" aria-label="scroll back to top">
+                    <Fab sx={{ backgroundColor: "#163758",color:"white"}}  size="small" aria-label="scroll back to top">
                         <KeyboardArrowUpIcon />
                     </Fab>
                 </ScrollTop>}
