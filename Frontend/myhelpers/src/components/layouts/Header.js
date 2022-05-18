@@ -181,8 +181,8 @@ const Header = (props) => {
                                             <Typography textAlign="center">{page}</Typography>
                                         </MenuItem>
                                     ))} */}
-                                    <MenuItem onClick={onRequestClick}>Home</MenuItem>
-                                    {/* <MenuItem onClick={() => navigate("/findHelper")} >Hiring Process</MenuItem> */}
+                                    <MenuItem onClick={() => navigate("/home")}>Home</MenuItem>
+                                    <MenuItem onClick={() => navigate("/findHelper")} >Hiring Process</MenuItem>
                                     {role === "Client" && <MenuItem onClick={() => navigate("/findHelper")}>Find Helpers</MenuItem>}
                                     <MenuItem onClick={() => { return (navigate("/profile"), handleCloseNavMenu) }}>Profile</MenuItem>
 
@@ -194,9 +194,9 @@ const Header = (props) => {
                             noWrap
                             component="div"
                             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-                            fontFamily="fantasy"
+                            fontFamily="cursive"
                         >
-                            My Helper
+                            My Helpers
                         </Typography>
 
                         <Box sx={{
@@ -207,7 +207,7 @@ const Header = (props) => {
                                 {/* {pages.map((page) => ( */}
                                 <Button
 
-                                    onClick={handleCloseNavMenu}
+                                    onClick={() => navigate("/home")}
                                     sx={{ my: 2, color: 'white', display: 'block' }}
                                 >
                                     Home
@@ -220,13 +220,13 @@ const Header = (props) => {
                                     >
                                         Find Helpers
                                     </Button>}
-                                {/* <Button
+                                {role === "Helper" && <Button
 
-                                    onClick={handleCloseNavMenu}
+                                    onClick={() => navigate("/hiringProcess")}
                                     sx={{ my: 2, color: 'white', display: 'block' }}
                                 >
                                     Hiring Process
-                                </Button> */}
+                                </Button>}
                                 <Button
 
                                     onClick={() => navigate("/profile")}
@@ -277,12 +277,14 @@ const Header = (props) => {
             {openShortlist && <ShortListed click={handleModelClose} />}
             {openHired && <HiredHelper click={handleModelClose} />}
             <Toolbar id="back-to-top-anchor" />
-            {isAuth &&
+            {
+                isAuth &&
                 <ScrollTop {...props}>
-                    <Fab sx={{ backgroundColor: "#163758",color:"white"}}  size="small" aria-label="scroll back to top">
+                    <Fab sx={{ backgroundColor: "#163758", color: "white" }} size="small" aria-label="scroll back to top">
                         <KeyboardArrowUpIcon />
                     </Fab>
-                </ScrollTop>}
+                </ScrollTop>
+            }
         </>
     );
 };

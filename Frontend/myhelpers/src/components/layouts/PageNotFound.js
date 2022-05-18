@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 
 export default function PageNotFound() {
   return (
-    <ThemeProvider >
+    <ThemeProvider  >
       {/* theme={theme}> */}
       <Box
         spacing={0}

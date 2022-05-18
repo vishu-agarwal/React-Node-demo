@@ -22,6 +22,7 @@ import HomePage from './components/clients/HomePage';
 import Profile from './components/ProfileFiles/ClientProfile';
 import Footer from './components/layouts/Footer';
 import PageNotFound from './components/layouts/PageNotFound';
+import HiringProcess from './components/clients/HiringProcess';
 
 function App() {
   const isAuth = true//useSelector(state => state.loginStore.isAuth)
@@ -39,7 +40,8 @@ function App() {
 
           <Route path={`/login/:role`} element={!isAuth && <Login />} />
           {/* {isAuth && <> */}
-          <Route path="/home" element={<HomePage /> } />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/hiringProcess" element={<HiringProcess />} />
             <Route path="/profile" element={isAuth ? <ClientProfile /> : "you are unauthorised"} />
           <Route path="/findHelper" element={isAuth || role==="Client" ?<DisplayData />: "you are unauthorised"} />
           <Route path="/viewClientDetails/:rid" element={isAuth ?<ViewClientProfile />: "you are unauthorised"} />
@@ -50,7 +52,7 @@ function App() {
 
           {/* <Route path="/helperProfile" element={isAuth && <HelperProfile />} /> */}
         {/* </>} */}
-          <Route path="*" element={"page not fount"} />
+          <Route path="*" element={"page not found"} />
         </Routes>
 
       </div>
@@ -60,3 +62,4 @@ function App() {
 }
 
 export default App;
+
