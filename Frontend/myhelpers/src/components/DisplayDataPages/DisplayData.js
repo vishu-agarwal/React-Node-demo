@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import CardJS from "./Card"
+import CardJS from "../Card"
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk } from '../../store/slices/display-slice';
 import workProfileActions from '../../store/slices/work-slice'

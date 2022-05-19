@@ -103,7 +103,10 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                 <FormControl fullWidth error={errorEnable.category}>
                                     <InputLabel htmlFor="grouped-native-select">Working Category</InputLabel>
                                     <Select native
-                                        disabled={fieldsDisable}
+                                        // disabled={fieldsDisable}
+                                        inputProps={{
+                                            readOnly: Boolean(fieldsDisable),
+                                        }}
                                         name="category"
                                         value={x.category}
                                         onChange={e => handleChange(e, i)}
@@ -131,7 +134,10 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                 <FormControl fullWidth error={errorEnable.experience}>
                                     <InputLabel htmlFor="grouped-native-select">Experience</InputLabel>
                                     <Select native label="Experience"
-                                        disabled={fieldsDisable}
+                                        // disabled={fieldsDisable}
+                                        inputProps={{
+                                            readOnly: Boolean(fieldsDisable),
+                                        }}
                                         name="experience"
                                         value={x.experience}
                                         onChange={e => handleChange(e, i)}
@@ -149,7 +155,10 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                             </Grid>
                             <Grid xs={12} sm={3.5} item>
                                 <TextField
-                                    disabled={fieldsDisable}
+                                    // disabled={fieldsDisable}
+                                    inputProps={{
+                                        readOnly: Boolean(fieldsDisable),
+                                    }}
                                     required
                                     variant='outlined'
                                     placeholder='Rs.'
@@ -170,7 +179,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                     {fields.length !== 1 &&
                                         <IconButton color="error" onClick={() => handleRemove(i)} component="span">
                                             
-                                            <DeleteIcon fontSize="large" />
+                                            <DeleteIcon fontSize="medium" />
                                             
                                         </IconButton>
 
@@ -178,7 +187,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                     }
                                     {!disable &&
                                         fields.length - 1 === i &&
-                                        <IconButton color="primary" onClick={handleAdd} component="span">
+                                        <IconButton  color="primary" onClick={handleAdd} component="span">
                                             
                                             <AddIcon color="info" fontSize="large" />
                                             

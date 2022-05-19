@@ -19,9 +19,9 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 
 import { NavLink, useNavigate, useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import WorkRequest from '../WorkRequests'
-import ShortListed from '../ShortListed';
-import HiredHelper from '../HiredHelper';
+import WorkRequest from '../Modals/WorkRequests'
+import ShortListed from '../Modals/ShortListed';
+import HiredHelper from '../Modals/HiredHelper';
 import { loginActions } from '../../store/slices/login-slice'
 
 import { useSelector, useDispatch } from 'react-redux';

@@ -23,14 +23,14 @@ import { useState, useEffect } from 'react';
 // import workProfileActions from '../../store/slices/work-slice'
 
 // import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
-import { fetchAllThunk, fetchSaveUserThunk } from '../store/slices/display-slice';
-import workProfileActions from '../store/slices/work-slice'
+import { fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
+import workProfileActions from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import CardJS from './clients/Card';
+import CardJS from '../Card';
 // import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
-
-
+import CloseIcon from '@mui/icons-material/Close';
+import Modal from '@mui/material/Modal';
 const ShortListed = (props) => {
     const rid = localStorage.getItem("r_id")
     // const classes = useStyles();
@@ -39,7 +39,7 @@ const ShortListed = (props) => {
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
-    let { displayData, saveUser,hireUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser, hireUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
 
     // const [values,message, setValues] = useState({
     //     name: '',
@@ -99,33 +99,39 @@ const ShortListed = (props) => {
 
     // }, [message, error])
 
-    let rates ,hireStatus
+    let rates, hireStatus
     return (
-        <Backdrop
-            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        <Modal
             open={true}
+            onClose={props.click}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-            <Grid >
+            <Grid padding={0} margin={0} >
                 <Card
                     sx={{
+                        minWidth: 500, minHeight: 450,
+                        padding: 0,
 
-                        maxWidth: 500, maxHeight: 1000,
-                        margin: '0 auto',
-                        paddingTop: 0,
-                        borderRadius: 5,
+                        borderRadius: 3,
                     }}>
-                    <CardContent >
-
+                    <CardContent justifyContent="center" style={{ padding: 0 }}>
                         <Grid container direction={'row'} >
-                            <Grid item xs={12} sm={10} align="left" >
-                                <Typography variant="h3" color="black" component="div">
-                                    SORTLIST
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={12} sm={2}>
-                                <Button variant="contained" color="error" onClick={props.click}>Close</Button>
-                            </Grid>
+                            <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
+                                <Grid container direction={'row'} padding={2} >
+                                    <Grid item xs={12} sm={10} align="left" >
+                                        <Typography variant="h4" color="white" >
+                                            Sortlist
+                                        </Typography>
+                                    </Grid>
 
+                                    <Grid item xs={12} sm={2} align="right">
+                                        {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
+                                        <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid container marginTop={0} marginBottom={0} style={{ maxHeight: '510px', overflow: 'auto' }}>
                             {
@@ -156,20 +162,24 @@ const ShortListed = (props) => {
 
                                     )
                                     :
-                                    <Grid marginBottom={1} item xs={12} sm={12} align="center" >
 
 
-                                        <Typography variant="h4" color="red" component="div">
-                                            Opps! No Single user is sortlisted
-                                        </Typography>
+                                    <Grid  item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                                        <img
+                                            src={require("./notfound.gif")}
+                                            alt="Page No Found..."
+
+                                            align="center"
+                                        />
                                     </Grid>
+
                             }
                         </Grid>
                     </CardContent>
                 </Card>
             </Grid>
 
-        </Backdrop >
+        </Modal >
     );
 }
 

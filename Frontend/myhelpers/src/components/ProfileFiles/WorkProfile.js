@@ -17,8 +17,11 @@ import Checkbox from '@mui/material/Checkbox';
 
 import ListItemText from '@mui/material/ListItemText';
 import FormHelperText from '@mui/material/FormHelperText';
-
-
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Modal from '@mui/material/Modal';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import CheckIcon from '@mui/icons-material/Check';
 import DisplayWorkingFields from './DisplayWorkingFields';
 import { useState, useEffect } from 'react';
 import workProfileActions from '../../store/slices/work-slice'
@@ -285,17 +288,23 @@ const WorkProfile = (props) => {
 
     }, [errorEnable, values])
     return (
-        <React.Fragment>
+        <Modal
+            open={props.open}
+            onClose={props.click}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
 
             <Grid >
                 <Card
                     sx={{
-                        maxWidth: 750, maxHeight: 8000,
+                        maxWidth: 750, maxHeight:8000,
                         margin: '0 auto',
                         paddingTop: 0,
                         borderRadius: 5,
                     }}>
-                    <CardContent >
+                    {/* <CardContent >
 
                         <Grid container direction={'row'} spacing={0}>
                             <Grid item xs={2} justifyContent="left" >
@@ -309,11 +318,40 @@ const WorkProfile = (props) => {
                                 <Button variant="contained" color="error" onClick={props.click}>Close</Button>
                             </Grid>
 
+                        </Grid> */}
+
+                        {/* <Typography variant="h4" component='div' fontSize='30px'>Professional Profile</Typography>
+                        <Typography color='orange' variant='body1' component='p'>Please fill up this form is necessary to move forward !</Typography> */}
+
+                    <CardContent  style={{ padding: 0 }}>
+                        <Grid container direction={'row'} >
+                            <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
+                                <Grid container direction={'row'} padding={2} >
+                                    <Grid item xs={12} sm={10} align="left" >
+                                        <Typography variant="h4" color="white" >
+                                            Work Profile
+                                        </Typography>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={1} justifyContent="left" >
+                                        {!editHide && 
+                                            <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
+                                                {fieldsDisable ?
+                                                    <ModeEditIcon sx={{ color: "white", fontSize: 35 }} cursor="pointer" />
+                                                    :
+                                                    < CheckIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" />}
+                                            </IconButton>
+                                        }
+                                    </Grid>
+                                    <Grid item xs={12} sm={1} align="right">
+                                        {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
+                                        <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                         </Grid>
-
-                        <Typography variant="h4" component='div' fontSize='30px'>Professional Profile</Typography>
-                        <Typography color='orange' variant='body1' component='p'>Please fill up this form is necessary to move forward !</Typography>
-
+                        <Grid container justifyContent="center">
+                            <Grid item xs={12} sm={12} md={12} margin={2} align="center">
                         <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>
                             {/* <Typography variant='subtitle1' marginLeft={1.5}  align='left' color='InfoText'>Personal Details : </Typography> */}
                             <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Working Details : </Typography>
@@ -322,7 +360,10 @@ const WorkProfile = (props) => {
 
                                 <Grid xs={12} sm={6} item>
                                     <TextField
-                                        disabled={fieldsDisable}
+                                        // disabled={fieldsDisable}
+                                                inputProps={{
+                                                    readOnly: Boolean(fieldsDisable),
+                                                }}
                                         required
                                         variant='outlined'
                                         id="mobileno"
@@ -341,7 +382,10 @@ const WorkProfile = (props) => {
                                     <FormControl fullWidth error={errorEnable.workTime} >
                                         <InputLabel htmlFor="grouped-native-select">Working Time</InputLabel>
                                         <Select native id="time" label="Working Time"
-                                            disabled={fieldsDisable}
+                                            // disabled={fieldsDisable}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
                                             value={values.workTime}
                                             // onChange={(val) => { setValues((prevState) => { return { ...prevState, workTime: val.target.value } }) }}
                                             onChange={onChange}
@@ -376,7 +420,10 @@ const WorkProfile = (props) => {
                                     <FormControl fullWidth error={errorEnable.language}>
                                         <InputLabel id="demo-multiple-checkbox-label">Language Known</InputLabel>
                                         <Select
-                                            disabled={fieldsDisable}
+                                            // disabled={fieldsDisable}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
                                             labelId="demo-multiple-checkbox-label"
                                             id="langselect"
                                             multiple
@@ -424,7 +471,10 @@ const WorkProfile = (props) => {
                                 </Grid>
                                 <Grid xs={12} sm={6} item>
                                     <TextField
-                                        disabled={fieldsDisable}
+                                        // disabled={fieldsDisable}
+                                                inputProps={{
+                                                    readOnly: Boolean(fieldsDisable),
+                                                }}
                                         required
                                         variant='outlined'
                                         id="otherStudy"
@@ -446,11 +496,12 @@ const WorkProfile = (props) => {
                                 </Button>
                             </Grid>
                             }
-                        </form>
+                                </form>
+                            </Grid></Grid>
                     </CardContent>
                 </Card>
             </Grid>
-        </React.Fragment>
+        </Modal>
     );
 }
 

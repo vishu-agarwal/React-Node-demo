@@ -1682,7 +1682,7 @@ const ClientProfile = () => {
     }, [errorEnable, values, aadhar.dispFile])
     return (
         <Grid >
-            <Card 
+            <Card
                 elevation={16}
                 sx={{
                     maxWidth: 1200, maxHeight: 5000,
@@ -1692,27 +1692,15 @@ const ClientProfile = () => {
                     // borderColor:"#163758"
                 }}>
                 <CardContent>
-                    <Grid container justifyContent={"right"}>
-                        <Grid item xs={12} sm={6} align="left" >
-                            {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
-                        </Grid>
-                        <Grid item xs={12} sm={6} align="right">
-                            {role === "Helper" && fieldsDisable && <>
-
-                                < Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth size="large" >
-                                    {editHide ? "Add Work Details" : !fieldsDisable && "Update Work Details"}
-                                </Button>
-                                <Backdrop
-                                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                                    open={openModal}
-                                >
-                                    <WorkProfile click={handleClose} />
-                                </Backdrop>
-
-                            </>
+                    <Grid container justifyContent="left">
+                        <Grid item xs={12} sm={4} align="left" >
+                            {!editHide &&
+                                <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>
                             }
                         </Grid>
+
                     </Grid>
+                    {openModal && <WorkProfile click={handleClose} open={openModal} />}
                     <form onSubmit={editHide ? profileSaveHandler : onUpdateProfileHandler}>
                         <Grid container direction={'row'}>
                             <Grid item xs={12} sm={3} justifyContent="center" >
@@ -1765,7 +1753,8 @@ const ClientProfile = () => {
                                         </Badge>
                                     </Grid>
                                     <Grid item sm={12} xs={12}>
-                                        {enable && <Button variant="contained" sx={{ marginTop: 2 }} color="#03a9f4" onClick={avatarSubmit}>Upload Photo </Button>}
+                                        
+                                        {enable && <Button variant="contained" sx={{ marginTop: 2, backgroundColor: "#03a9f4" }} onClick={avatarSubmit}>Upload Photo </Button>}
                                     </Grid>
                                     <Grid item xs={12} sm={12}>
                                         <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].email : ''}</Typography>
@@ -1877,7 +1866,7 @@ const ClientProfile = () => {
                                                 shrink: true,
                                             }}
                                         />
-                                                                            </Grid>
+                                    </Grid>
                                     <Grid xs={12} sm={3.5} item >
                                         <div align="left"><InputLabel >Gender</InputLabel></div>
                                         <RadioGroup
@@ -1951,7 +1940,7 @@ const ClientProfile = () => {
                                                 style={{ display: 'none' }}
                                             />
                                             <Button color="info" variant="contained" fullWidth component="span" >
-                                                Upload Aadhar *
+                                                Upload Aadhar
                                             </Button>
                                         </label>
                                     </Grid>
@@ -1971,12 +1960,12 @@ const ClientProfile = () => {
                                         }
                                     </Grid>
                                     <Grid xs={11} sm={11} item align="left" color="#b71c1c">
-                                        <Typography variant="body2"  display="block">1 MB size PDF file only!</Typography>
+                                        <Typography variant="body2" display="block">1 MB size PDF file only!</Typography>
                                     </Grid>
                                 </Grid>
                             </Grid>
                             <Divider orientation="vertical" flexItem />
-                            <Grid item xs={12} sm={4} justifyContent="center"  >
+                            <Grid item xs={12} sm={4} justifyContent="center"   >
                                 <Grid container spacing={2} justifyContent="center" >
                                     <Grid xs={12} sm={12} margin={1} marginLeft={5} item align="left">
                                         <Typography variant='h6'>
@@ -2111,15 +2100,26 @@ const ClientProfile = () => {
                                             onChange={(event) => setValues((prevState) => { return { ...prevState, about: event.target.value } })}
                                         />
                                     </Grid>
+
+                                </Grid>
+                                <Grid container spacing={2} justifyContent="center" marginTop={17} marginLeft={1} >
+                                    <Grid item xs={12} sm={6} align="left">
+                                        {role === "Helper" && fieldsDisable &&
+
+                                            < Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth size="large" >
+                                                {editHide ? "Add Work" : !fieldsDisable && "Update Work "}
+                                            </Button>
+
+                                        }
+                                    </Grid>
                                     {(saveEnable && !editHide) && !fieldsDisable &&
-                                        <Grid xs={12} sm={5.5} item align="center">
-                                            <Button type='submit' variant="contained" color='primary' size="large" fullWidth sx={{ marginTop: 2 }}>
+                                        <Grid xs={12} sm={6} item align="right">
+                                            <Button type='submit' variant="contained" color='primary' size="large" fullWidth >
                                                 {editHide ? "Save" : !fieldsDisable && "Update"}
                                             </Button>
                                         </Grid>
+
                                     }
-
-
                                 </Grid>
                             </Grid>
                         </Grid>

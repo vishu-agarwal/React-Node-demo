@@ -13,9 +13,9 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSaveUserThunk, fetchAllThunk, saveThunk } from '../../store/slices/display-slice';
-import profileimg from "../../profileimg.gif"
-import { starThunk } from '../../store/slices/profile-slice';
+import { fetchSaveUserThunk, fetchAllThunk, saveThunk } from '../store/slices/display-slice';
+// import profileimg from "../../profileimg.gif"
+import { starThunk } from '../store/slices/profile-slice';
 const CardJS = (props) => {
     // console.log("status::",props.status)
     const navigate = useNavigate()
@@ -120,7 +120,7 @@ const CardJS = (props) => {
                                 height={150}
                                 sx={{ width: 110 }}
                                 // image={props.values.avatar[0]}
-                                image={profileimg}
+                                // image={profileimg}
                                 alt="Profile Image"
                             />
 

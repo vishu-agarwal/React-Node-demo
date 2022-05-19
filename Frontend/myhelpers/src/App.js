@@ -3,26 +3,22 @@ import './App.css';
 import Header from "./components/layouts/Header"
 import Content from "./components/LoginFiles/Content"
 import ClientProfile from './components/ProfileFiles/ClientProfile';
-import HelperProfile from './components/helpers/HelperProfile';
+
 import Login from './components/LoginFiles/login';
-import CardJS from './components/clients/Card';
-import Dashboard from './components/Dashboard';
+
+
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
-import { Component } from 'react';
+
 import bgimg from "./background1.jpg";
-import DisplayData from './components/clients/DisplayData';
-import ViewProfileDetail from './components/clients/ViewProfileDetail';
-import ViewClientProfile from './components/clients/ViewClientProfile';
-import ShortListed from './components/ShortListed';
-import HireUser from './components/HireUser';
-import WorkRequest from './components/WorkRequests';
-import HiredHelper from './components/HiredHelper';
-import HomePage from './components/clients/HomePage';
+import DisplayData from './components/DisplayDataPages/DisplayData';
+import ViewProfileDetail from './components/DisplayDataPages/ViewProfileDetail';
+import ViewClientProfile from './components/DisplayDataPages/ViewClientProfile';
+import HomePage from './components/Homepage/HomePage';
 import Profile from './components/ProfileFiles/ClientProfile';
 import Footer from './components/layouts/Footer';
 import PageNotFound from './components/layouts/PageNotFound';
-import HiringProcess from './components/clients/HiringProcess';
+import HiringProcess from './components/Homepage/HiringProcess';
 
 function App() {
   const isAuth = true//useSelector(state => state.loginStore.isAuth)

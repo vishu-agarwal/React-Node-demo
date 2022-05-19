@@ -7,9 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import { useState, useEffect } from 'react';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import "../../App.css"
-import ShortListed from '../ShortListed';
-import HiredHelper from '../HiredHelper';
-import WorkRequest from '../WorkRequests';
+import Box from '@mui/material/Box';
+import ShortListed from '../Modals/ShortListed';
+import HiredHelper from '../Modals/HiredHelper';
+import WorkRequest from '../Modals/WorkRequests';
 const helperImages = [
   { image: require("../cook.jpg") },
   { image: require("../parent.png") },
@@ -106,26 +107,34 @@ const HomePage = () => {
           <Grid container style={{ opacity: 0.5, position: "absolute", top: "70%" }} justifyContent="center">
             <ScrollButton />
           </Grid>
-          <div style={{ height: "99.5%", width: "35%", background: "#000000", opacity: 0.5, position: "absolute", top: 0, left: "70%", transform: "translateX(-15%)", }}>
-            <Typography sx={{ typography: { sm: 'h4', xs: 'body1', md: 'h2' } }} style={{ fontWeight: 900, color: "white" }} marginLeft={"10%"} marginRight={"10%"} marginTop={"10%"} >
-              FIND YOUR RIGHT HELPER EASILY
-            </Typography>
+          <div style={{ height: "99.5%", width: "35%", background: "#000000", opacity: 0.5, position: "absolute", top: 0, left: "70%", transform: "translateX(-15%)" }} align="center">
+            <Box mt={"15%"} >
+              <Grid container item xs={12} sm={6} md={10} justifyContent="center">
+                <Typography sx={{ typography: { sm: 'h4', xs: 'body1', md: 'h2' } }} style={{ fontWeight: 900, color: "white" }} >
+                  FIND YOUR RIGHT HELPER EASILY
+                </Typography>
+              </Grid>
+              <Grid container item xs={12} sm={6} md={8} justifyContent="center">
+                <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} style={{ fontWeight: 900, color: "white", top: "%" }}  >
+                  Need skilled help service? Book with us and we will ensure you have safe, secure and responsible manpower.
+                </Typography>
+              </Grid>
+            </Box>
+            <Box mt={"5%"} >
+              <Button
 
-            <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} style={{ fontWeight: 900, color: "white" }} marginLeft={"10%"} marginRight={"10%"} marginTop={"1%"} >
-              Need skilled help service? Book with us and we will ensure you have safe, secure and responsible manpower.
-            </Typography>
-            <Button
 
+                // color="#163758"
+                variant="contained"
+                onClick={() => navigate("/findHelper")}
+                // size="large"
 
-              // color="#163758"
-              variant="contained"
-              onClick={() => navigate("/findHelper")}
-              size="large"
+                sx={{ button: 'sm: "medium" xs:"small" md: "large" ', width: "50%", height: "50%", backgroundColor: '#e91e1e', display: 'block' }}
+              >
+                Find Helpers
+              </Button>
 
-              sx={{ width: "50%", height: "7%", backgroundColor: '#e91e1e', display: 'block', marginLeft: "25%", marginTop: "4%" }}
-            >
-              Find Helpers
-            </Button>
+            </Box>
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} backgroundColor="white">
