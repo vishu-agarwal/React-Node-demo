@@ -12,7 +12,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
-import abc from '../client4img.jpg';
+import abc from '../allImages/client4img.jpg';
 import { Grid } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginThunk } from '../../store/slices/login-slice'

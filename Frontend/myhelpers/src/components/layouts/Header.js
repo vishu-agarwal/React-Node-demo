@@ -83,9 +83,9 @@ const Header = (props) => {
     let navigate = useNavigate()
 
     // let { token } = useSelector((state) => ({ ...state.loginStore }))
-    const role = "Client"//localStorage.getItem("role")
-    // const {isAuth} = useSelector(state => ({ ...state.loginStore }))
-    const isAuth = true
+    const role = localStorage.getItem("role")
+    const {isAuth} = useSelector(state => ({ ...state.loginStore }))
+    // const isAuth = true
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [openRequest, setOpenRequest] = useState(false)
@@ -129,6 +129,7 @@ const Header = (props) => {
         localStorage.removeItem("logToken")
         localStorage.removeItem("role")
         dispatch(loginActions.logoutReducer())
+        navigate("/")
     }
     // const navigate = useNavigate()
     return (

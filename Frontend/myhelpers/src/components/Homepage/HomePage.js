@@ -11,20 +11,20 @@ import Box from '@mui/material/Box';
 import ShortListed from '../Modals/ShortListed';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
-const helperImages = [
-  { image: require("../cook.jpg") },
-  { image: require("../parent.png") },
-  { image: require("../watchman.jpg") },
-  { image: require("../laundary.jpg") },
-  { image: require("../wash.jpg") },
-  { image: require("../driver.jpg") },
-  { image: require("../japa1.jpg") },
-  { image: require("../elevator.jpg") },
-  { label: require("../store.jpg") },
-  { label: require("../peon.jpg") },
-  { label: require("../cleaning.jpg") },
-  { label: require("../gardner.jpg") },
-];
+// const helperImages = [
+//   { image: require("../cook.jpg") },
+//   { image: require("../parent.png") },
+//   { image: require("../watchman.jpg") },
+//   { image: require("../laundary.jpg") },
+//   { image: require("../wash.jpg") },
+//   { image: require("../driver.jpg") },
+//   { image: require("../japa1.jpg") },
+//   { image: require("../elevator.jpg") },
+//   { label: require("../store.jpg") },
+//   { label: require("../peon.jpg") },
+//   { label: require("../cleaning.jpg") },
+//   { label: require("../gardner.jpg") },
+// ];
 
 
 const ScrollButton = () => {
@@ -102,7 +102,7 @@ const HomePage = () => {
       <Grid container justifyContent="center">
         <Grid item xs={12} md={12} sm={12} style={{ position: "relative" }}>
           <div>
-            <img src={require("../homeImg.png")} height={"100%"} width={"100%"} />
+            <img src={require("../allImages/homeImg.png")} height={"100%"} width={"100%"} />
           </div>
           <Grid container style={{ opacity: 0.5, position: "absolute", top: "70%" }} justifyContent="center">
             <ScrollButton />
@@ -170,7 +170,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../cook.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/cook.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Cook/Chef</Typography>
@@ -185,7 +185,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }} cursor="pointer">
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../parent.png")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/parent.png")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Parent Care Taker</Typography>
@@ -199,7 +199,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../wash.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/wash.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Vessels Cleaning</Typography>
@@ -213,7 +213,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../watchman.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/watchman.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Watchman</Typography>
@@ -227,7 +227,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../laundary.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/laundary.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Laundary</Typography>
@@ -241,7 +241,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../driver.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/driver.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Driver</Typography>
@@ -255,7 +255,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../cleaning.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/cleaning.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >House Cleaning</Typography>
@@ -269,7 +269,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../japa1.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/japa1.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Japa Maid</Typography>
@@ -283,7 +283,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../elevator.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/elevator.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Lift Operator</Typography>
@@ -297,7 +297,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../store.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/store.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Store Helper</Typography>
@@ -311,7 +311,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../peon.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/peon.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Peon</Typography>
@@ -325,7 +325,7 @@ const HomePage = () => {
                     <CardContent sx={{ padding: 0 }}>
                       <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={require("../gardner.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={require("../allImages/gardner.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                           <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Gardner</Typography>
@@ -351,7 +351,7 @@ const HomePage = () => {
                   <Grid container>
 
                     <Grid item xs={12} sm={12} md={12} >
-                      <img src={require("../search.png")} onClick={() => navigate("/findHelper")} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                      <img src={require("../allImages/search.png")} onClick={() => navigate("/findHelper")} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={12}>
                       <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Search</Typography>
@@ -362,7 +362,7 @@ const HomePage = () => {
                   <Grid container>
 
                     <Grid item xs={12} sm={12} md={12} >
-                      <img src={require("../sortlist.png")} onClick={onShortlistClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                      <img src={require("../allImages/sortlist.png")} onClick={onShortlistClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
                       {openShortlist && <ShortListed click={handleModelClose} />}
                     </Grid>
                     <Grid item xs={12} sm={12} md={12}>
@@ -374,7 +374,7 @@ const HomePage = () => {
                   <Grid container>
 
                     <Grid item xs={12} sm={12} md={12} >
-                      <img src={require("../request.png")} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                      <img src={require("../allImages/request.png")} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
                       {openRequest && <WorkRequest click={handleModelClose} />}
                     </Grid>
                     <Grid item xs={12} sm={12} md={12}>
@@ -386,7 +386,7 @@ const HomePage = () => {
                   <Grid container>
 
                     <Grid item xs={12} sm={12} md={12} >
-                      <img src={require("../relax1.png")} onClick={onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                      <img src={require("../allImages/relax1.png")} onClick={onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
                       {openHired && <HiredHelper click={handleModelClose} />}
                     </Grid>
                     <Grid item xs={12} sm={12} md={12}>

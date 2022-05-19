@@ -10,7 +10,7 @@ import Login from './components/LoginFiles/login';
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 
-import bgimg from "./background1.jpg";
+
 import DisplayData from './components/DisplayDataPages/DisplayData';
 import ViewProfileDetail from './components/DisplayDataPages/ViewProfileDetail';
 import ViewClientProfile from './components/DisplayDataPages/ViewClientProfile';
@@ -30,7 +30,7 @@ function App() {
     <div className="App">
       <Header />
 
-      <div class="xyz">
+      <div class="xyz" aligm="center">
 
         <Routes>
           <Route path="/" element={!isAuth ? <Content /> : role === "Client" ? <HomePage /> : <HiringProcess /> } />

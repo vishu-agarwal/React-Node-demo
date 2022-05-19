@@ -117,7 +117,7 @@ const HiredHelper = (props) => {
 
                                     <Grid  item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
                                         <img
-                                            src={require("./notfound.gif")}
+                                            src={require("../allImages/notfound.gif")}
                                             alt="Page No Found..."
 
                                             align="center"

@@ -6,7 +6,7 @@ import React from 'react'
 import CardContent from '@mui/material/CardContent';
 import { Card, Container, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import abc from '../../components/client4img.jpg';
+import abc from '../allImages//client4img.jpg';
 import { NavLink } from 'react-router-dom';
 
 const Content = () => {
