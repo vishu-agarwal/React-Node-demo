@@ -20,7 +20,7 @@ const Content = () => {
 
           borderWidth: 3,
           borderRadius: 6,
-          marginTop: 20,
+          
           backgroundImage: `url(${abc})`,
           backgroundRepeat: "no-repeat",
           borderColor: "#163758",

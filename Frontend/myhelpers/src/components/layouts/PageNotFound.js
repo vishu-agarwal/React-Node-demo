@@ -4,30 +4,18 @@ import { Box } from "@mui/system";
 
 export default function PageNotFound() {
   return (
-    <ThemeProvider  >
-      {/* theme={theme}> */}
       <Box
         spacing={0}
         direction="row"
         alignItems="center"
         justifyContent="center"
         sx={{
-          backgroundColor: "#f3dfab",
+          backgroundColor: "#b2ebf3",
           width: "100%",
           height: "100%",
         }}
       >
-        <Typography
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          fontSize="50px"
-          fontWeight="600"
-          color="primary.dark"
-          align="center"
-        >
-          Page Not Found
-        </Typography>
+        
         <Box
           spacing={0}
           direction="row"
@@ -41,12 +29,12 @@ export default function PageNotFound() {
           <img
             src={require("./pagenotfound4.gif")}
             alt="Page No Found..."
-            height={500}
+            height={"100%"}
             width={700}
             align="center"
           />
         </Box>
       </Box>
-    </ThemeProvider>
+    
   );
 }
