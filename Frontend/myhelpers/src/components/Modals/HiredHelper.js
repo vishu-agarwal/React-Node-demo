@@ -24,14 +24,23 @@ import { useState, useEffect } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 import { fetchHelperRequestsThunk } from '../../store/slices/hireRequest-slice';
-
+import Loading from '../layouts/LoadingFile'
 
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './HireRequestCard';
 import HireRequestSlice from '../../store/slices/hireRequest-slice';
 // import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
+import hireRequestActions from '../../store/slices/hireRequest-slice'
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
+const Alert = React.forwardRef(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const HiredHelper = (props) => {
     const rid = localStorage.getItem("r_id")
@@ -42,7 +51,42 @@ const HiredHelper = (props) => {
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
 
-    let { hireRequestData, message, error } = useSelector((state) => ({ ...state.hireRequestStore }))
+    let { hireRequestData, requestMessage, requestError, requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
+
+
+    const [state, setState] = useState({
+        snackOpen: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, snackOpen } = state;
+    const closeSnackbar = () => {
+        setState({ ...state, snackOpen: false });
+    };
+    const [snackMessage, setSnackMessage] = useState('')
+    const [snackColor, setSnackColor] = useState("info")
+
+    useEffect(() => {
+
+
+        if (requestMessage.length !== 0) {
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(requestMessage)
+
+            dispatch(hireRequestActions.messageReducer())
+
+        }
+        if (requestError.length !== 0) {
+            // console.log(error)
+            setState({ snackOpen: true });
+            setSnackColor("error")
+            setSnackMessage(requestError)
+
+            dispatch(hireRequestActions.errorReducer())
+        }
+
+    }, [requestMessage, requestError])
     // const [values,message, setValues] = useState({
     //     name: '',
     //     porf_mbl: '',
@@ -74,6 +118,7 @@ const HiredHelper = (props) => {
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
             <Grid padding={0} margin={0} >
+                {requestLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
                         minWidth: 500, minHeight: 450,

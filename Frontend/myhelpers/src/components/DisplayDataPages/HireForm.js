@@ -20,7 +20,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { useState, useEffect } from 'react';
-import hireRequestActions from '../../store/slices/hireRequest-slice'
+import {hireRequestActions} from '../../store/slices/hireRequest-slice'
 
 import { sendHireRequestThunk, updateHireRequestThunk, fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
 
@@ -34,6 +34,16 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import FormHelperText from '@mui/material/FormHelperText';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Loading from '../layouts/LoadingFile'
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Input = styled('input')({
     display: 'none',
@@ -56,9 +66,20 @@ const HireForm = (props) => {
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    let { message, singleUser, error } = useSelector((state) => ({ ...state.hireRequestStore }))
+    let { requestMessage, singleUser, requestError,requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
 
 
+    const [state, setState] = useState({
+        snackOpen: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, snackOpen } = state;
+    const closeSnackbar = () => {
+        setState({ ...state, snackOpen: false });
+    };
+    const [snackMessage, setSnackMessage] = useState('')
+    const [snackColor, setSnackColor] = useState("info")
 
     //edit button show or hide
     const [editHide, setEditHide] = useState(true)
@@ -75,17 +96,24 @@ const HireForm = (props) => {
     useEffect(() => {
 
 
-        if (message.length !== 0) {
-            alert(message)
+        if (requestMessage.length !== 0) {
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(requestMessage)
+
+            dispatch(hireRequestActions.messageReducer())
 
         }
-        if (error.length !== 0) {
+        if (requestError.length !== 0) {
             // console.log(error)
-            // alert(error)
-            // dispatch(hireRequestActions.errorReducer())
+            setState({ snackOpen: true });
+            setSnackColor("error")
+            setSnackMessage(requestError)
+
+            dispatch(hireRequestActions.errorReducer())
         }
 
-    }, [message, error])
+    }, [requestMessage, requestError])
 
 
     useEffect(() => {
@@ -449,6 +477,7 @@ const HireForm = (props) => {
         >
 
             <Grid >
+                {requestLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
                         minWidth: 500, minHeight: 600,

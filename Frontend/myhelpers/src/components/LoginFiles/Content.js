@@ -14,7 +14,7 @@ const Content = () => {
   return (
     <Container align="center" >
       <Card variant="outlined"
-        elevation={24}
+        // elevation={24}
         sx={{
           maxWidth: 600, minHeight: 350,
 

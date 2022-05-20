@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const initialState = {
     otpUser: '',
-    message: "",
+    otpMessage: "",
     isOtp: false,
     loadingOtp: false,
     otpError: ""
@@ -39,6 +39,9 @@ const otpSlice = createSlice({
         isOtpReducer(state) {
             state.isOtp = true
         },
+        messageReducer(state) {
+            state.otpMessage = ""
+        },
     },
     extraReducers: {
         [otpThunk.pending]: (state, action) => {
@@ -47,7 +50,7 @@ const otpSlice = createSlice({
         [otpThunk.fulfilled]: (state, action) => {
             state.loadingOtp = false
             // console.log(action.payload.data.message)
-            state.message = action.payload.data.message
+            state.otpMessage = action.payload.data.message
             state.otpUser = action.payload.data.otp
         },
         [otpThunk.rejected]: (state, error) => {

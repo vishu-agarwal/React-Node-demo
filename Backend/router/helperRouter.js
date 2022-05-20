@@ -1,16 +1,16 @@
 const express = require("express")
 const router = new express.Router()
-
+const auth = require("../middleware/authMidleware")
 //model File
 const profileModel = require("../model/clientProfile")
 //controllers
 const workProfileController = require("../controller/workProfileController")
 
 //create profile 
-router.post("/myhelpers/createWorkProfile/:rid", workProfileController.createWorkProfile)
+router.post("/myhelpers/createWorkProfile/:rid",auth, workProfileController.createWorkProfile)
 
 //fecth profile
-router.get("/myhelpers/fetchWorkDetail/:rid", workProfileController.fetchWorkDetails)
+router.get("/myhelpers/fetchWorkDetail/:rid",auth, workProfileController.fetchWorkDetails)
 
 
 // router.get('/', async(req, res) => {
@@ -20,10 +20,10 @@ router.get("/myhelpers/fetchWorkDetail/:rid", workProfileController.fetchWorkDet
 // });
 
 //update profile
-router.put("/myhelpers/updateWorkDetail/:rid", workProfileController.updateWorkDetails)
+router.put("/myhelpers/updateWorkDetail/:rid",auth, workProfileController.updateWorkDetails)
 
 //delete profile
-router.delete("/myhelpers/helper/delete/:rid", async (req, res) => {
+router.delete("/myhelpers/helper/delete/:rid",auth, async (req, res) => {
 
     try {
         const isavail = await profileModel.findOne({ r_id: req.params.rid })

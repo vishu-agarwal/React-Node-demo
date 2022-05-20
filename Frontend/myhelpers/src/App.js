@@ -19,10 +19,10 @@ import Profile from './components/ProfileFiles/ClientProfile';
 import Footer from './components/layouts/Footer';
 import PageNotFound from './components/layouts/PageNotFound';
 import HiringProcess from './components/Homepage/HiringProcess';
-import UnauthorisedPage from './components/layouts/UnauthorizedPage';
+
 
 function App() {
-  const isAuth = useSelector(state => state.loginStore.isAuth)
+  const {isAuth} = useSelector(state => state.loginStore)
   // console.log(isAuth)
   const role = localStorage.getItem("role")
 
@@ -30,25 +30,25 @@ function App() {
     <div className="App">
       <Header />
 
-      <div class="xyz" aligm="center">
+      <div className="xyz" aligm="center">
 
         <Routes>
-          <Route path="/" element={!isAuth ? <Content /> : role === "Client" ? <HomePage /> : <HiringProcess /> } />
+          <Route path="/" element={!isAuth && <Content />  } />
 
-          <Route path={`/login/:role`} element={!isAuth ? <Login /> : role === "Client" ? <HomePage/> : <HiringProcess />} />
+          <Route path={`/login/:role`} element={!isAuth && <Login /> } />
           {/* {isAuth && <> */}
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/hiringProcess" element={<HiringProcess />} />
-          <Route path="/profile" element={isAuth ? <ClientProfile /> : <Content/>} />
-          <Route path="/findHelper" element={isAuth || role === "Client" ? <DisplayData /> : <Content />} />
-          <Route path="/viewClientDetails/:rid" element={isAuth ? <ViewClientProfile /> : <Content />} />
-          <Route path="/viewHelperDetails/:rid" element={isAuth ? <ViewProfileDetail /> : <Content />} />
-            {/* <Route path="/profileTemp" elemenmts={<Profile />} /> */}
-            
-            <Route path="/home" element={<HomePage />} />
+          <Route path="/home" element={isAuth && <HomePage /> } />
+          <Route path="/hiringProcess" element={isAuth && <HiringProcess />}/>
+          <Route path="/profile" element={isAuth && <ClientProfile /> } />
+          <Route path="/findHelper" element={isAuth && <DisplayData /> } />
+          <Route path="/viewClientDetails/:rid" element={isAuth && <ViewClientProfile /> } />
+          <Route path="/viewHelperDetails/:rid" element={isAuth && <ViewProfileDetail /> } />
+          {/* <Route path="/profileTemp" elemenmts={<Profile />} /> */}
+
+          {/* <Route path="/home" element={<HomePage />} /> */}
 
           {/* <Route path="/helperProfile" element={isAuth && <HelperProfile />} /> */}
-        {/* </>} */}
+          {/* </>} */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
 

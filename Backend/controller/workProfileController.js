@@ -16,7 +16,7 @@ const createWorkProfile = async (req, res) => {
             const workProfile = new workProfileModel(workDetail)
             console.log(workProfile);
             await workProfile.save()
-            res.status(200).send("Successfully WorkDetails saved!")
+            res.status(200).send("Successfully workDetails saved!")
       
     } catch (error) {
         res.status(400).send(error.message)
@@ -27,7 +27,7 @@ const fetchWorkDetails = async (req, res) => {
 console.log("work params id :: ",req.params.rid)
         const isunique = await workProfileModel.find({ r_id: req.params.rid })
         if (isunique.length === 0) {
-            throw new Error("No Work Details available!");
+            throw new Error("Please add work details available!");
         }
         else {
             return res.status(200).send(isunique)

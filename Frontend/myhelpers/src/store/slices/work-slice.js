@@ -4,9 +4,9 @@ import axios from 'axios'
 
 const initialState = {
     workData: [],
-    message: '',
-    loading: false,
-    error: ""
+    workMessage: '',
+    workLoading: false,
+    workError: ""
 }
 //create work Details thunk
 export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk", async (arg) => {
@@ -86,53 +86,56 @@ const workSlice = createSlice({
         errorReducer(state) {
             state.error = ""
         },
+        messageReducer(state) {
+            state.workMessage = ""
+        },
     },
     extraReducers: {
 
         //workProfileData
         [workProfileThunk.pending]: (state, action) => {
-            state.loading = true
+            state.workLoading = true
         },
         [workProfileThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.workLoading = false
             //  state.isAuth = true
-            state.message = action.payload.data
+            state.workMessage = action.payload.data
         },
         [workProfileThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.workLoading = false
             // console.log("rejected::", error.error.message)
 
-            state.error = error.error.message
+            state.workError = error.error.message
         },
         //fetchWorkData
         [fetchWorkThunk.pending]: (state, action) => {
-            state.loading = true
+            state.workLoading = true
         },
         [fetchWorkThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.workLoading = false
             //  state.isAuth = true
             state.workData = action.payload.data
         },
         [fetchWorkThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.workLoading = false
             // console.log("rejected::", error.error.message)
 
-            state.error = error.error.message
+            state.workError = error.error.message
         },
         //updateWorkData
         [updateWorkThunk.pending]: (state, action) => {
-            state.loading = true
+            state.workLoading = true
         },
         [updateWorkThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.workLoading = false
             //  state.isAuth = true
-            state.message = action.payload.data
+            state.workMessage = action.payload.data
         },
         [updateWorkThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.workLoading = false
             // console.log("rejected::", error.error.message)
 
-            state.error = error.error.message
+            state.workError = error.error.message
         },
     }
 })

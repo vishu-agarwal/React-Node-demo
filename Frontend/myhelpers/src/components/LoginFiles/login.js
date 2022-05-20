@@ -46,13 +46,13 @@ const Login = () => {
     });
 
     const [state, setState] = useState({
-        open: false,
+        snackOpen: false,
         vertical: 'top',
         horizontal: 'center',
     });
-    const { vertical, horizontal, open } = state;
+    const { vertical, horizontal, snackOpen } = state;
     const closeSnackbar = () => {
-        setState({ ...state, open: false });
+        setState({ ...state, snackOpen: false });
     };
     const [snackMessage, setSnackMessage] = useState('')
     const [snackColor, setSnackColor] = useState("info")
@@ -61,7 +61,7 @@ const Login = () => {
 
     let { user, error, token, loadingLogin } = useSelector((state) => ({ ...state.loginStore }))
 
-    let { otpUser, otpError, isOtp,message,loadingOtp } = useSelector((state) => ({ ...state.otpStore }))
+    let { otpUser, otpError, isOtp,otpMessage,loadingOtp } = useSelector((state) => ({ ...state.otpStore }))
     useEffect(() => {
         if (values.role !== 'Client' && values.role !== 'Helper') {
             navigate("/")
@@ -76,42 +76,45 @@ const Login = () => {
 
         if (error.length !== 0) {
             // console.log(error)
-            setState({ open: true });
+            setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(error)
             dispatch(loginActions.errorReducer())
         }
-        if (message.length !== 0) {
-            // console.log(error)
-            setState({ open: true });
-            setSnackColor("success")
-            setSnackMessage(message)
-            
-        }
+     
         if (otpError.length !== 0) {
             // console.log(error)
-            setState({ open: true });
+            setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(otpError)
             dispatch(otpActions.errorReducer())
         }
+        if (otpMessage.length !== 0) {
+            // console.log(error)
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(otpMessage)
+            dispatch(otpActions.messageReducer())
+        }
 
-    }, [error, otpError,message])
+    }, [error, otpError,otpMessage])
     useEffect(() => {
+        console.log("set login user ")
         if (user.length !== 0) {
             console.log(user)
             if (user[0].r_id.charAt(0) === "C") {
                 localStorage.setItem("role", "Client")
-                // console.log("client")
+                console.log("client")
             }
             else {
-                // console.log("Helper")
+                console.log("Helper")
                 localStorage.setItem("role", "Helper")
             }
-            // console.log("navigate")
-            dispatch(loginActions.isAuthReducer())
+            console.log("navigate")
+            // dispatch(loginActions.isAuthReducer())
             localStorage.setItem("logToken", token)
             localStorage.setItem("r_id", user[0].r_id)
+            
             navigate("/profile")
         }
     }, [user])
@@ -122,7 +125,7 @@ const Login = () => {
         }
         else
         {
-            setState({ open: true });
+            setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage("Please write valid email")
             }
@@ -139,14 +142,14 @@ const Login = () => {
                 setotp("")
             }
             else {
-                setState({ open: true });
+                setState({ snackOpen: true });
                 setSnackColor("error")
                 return setSnackMessage("Opps! \n OTP did not match.")
                 // return alert("Opps! \n OTP did not match.")
             }
         }
         else {
-            setState({ open: true });
+            setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage("Please write valid email")
         }
@@ -176,7 +179,7 @@ const Login = () => {
         <Grid align="center">
             {(loadingOtp || loadingLogin) && <Loading isLoad={true} />}
             <Card variant="outlined"
-                elevation={4}
+                // elevation={4}
                 sx={{
                     maxWidth: 600, minHeight: 350,
 
@@ -193,8 +196,8 @@ const Login = () => {
                     <Grid container direction={'row'} spacing={0}>
                         <Snackbar
                             anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                            open={open}
-                            autoHideDuration={6000}
+                            open={snackOpen}
+                            autoHideDuration={2000}
                             onClose={closeSnackbar}
                         // key={vertical + horizontal}
                         >
@@ -205,7 +208,7 @@ const Login = () => {
                         <Grid item xs={6} sm={12} align="left" >
                             <NavLink to="/" style={{ textDecoration: 'none' }}>
                                 {/* <Button variant="contained" color="error">Back</Button> */}
-                                <ArrowBackIcon cusror="pointer" color="error" fontSize="large" />
+                                <ArrowBackIcon cusror="pointer" sx={{ color:"#163758"}} fontSize="large" />
 
                             </NavLink>
                         </Grid>

@@ -10,6 +10,13 @@ const initialState = {
     error: ""
 }
 
+const isToken = localStorage.getItem("logToken")
+// console.log(isToken)
+if (isToken) {
+    initialState.isAuth = true
+}
+
+
 export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) => {
     try {
         console.log("diapatch::", arg)
@@ -36,15 +43,13 @@ const loginSlice = createSlice({
         errorReducer(state) {
             state.error = ""
         },
-        isAuthReducer(state) {
-            state.isAuth = true
-        },
-        logoutReducer(state)
-        {
+
+        logoutReducer(state) {
             state.isAuth = false
             state.user = []
-            state.token=""
-        }
+            state.token = ""
+        },
+
     },
     extraReducers: {
         [loginThunk.pending]: (state, action) => {
@@ -52,7 +57,7 @@ const loginSlice = createSlice({
         },
         [loginThunk.fulfilled]: (state, action) => {
             state.loadingLogin = false
-            //  state.isAuth = true
+            state.isAuth = true
             state.token = action.payload.data.token
             // console.log(state.token)
             state.user = [action.payload.data.newUser]

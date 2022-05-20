@@ -10,7 +10,7 @@ const createProfile = async (req, res) => {
         const r_id = req.params.rid
         const isunique = await profileModel.find({ r_id })
         if (isunique.length === 0) {
-            throw new Error("Please first upload profile photo !!!")
+            throw new Error("Please first upload profile photo !")
         }
         const findMbl = await profileModel.findByCredentials(req.body.alt_mob_num, r_id)
         // console.log(findMbl)
@@ -31,10 +31,10 @@ const fetchProfile = async (req, res) => {
 
         const loginNo = await regModel.findOne({ r_id: isunique.r_id })
         if (isunique.length === 0) {
-            throw new Error("This Profile is not available!");
+            return res.status(200).send()
         }
         else {
-            isunique = { ...isunique._doc, number: loginNo.mob_num }
+            isunique = { ...isunique._doc, email: loginNo.email }
             // console.log("isunique ::: ", isunique, "login::", loginNo.mob_num)
             return res.status(200).send(isunique)
         }
@@ -79,6 +79,10 @@ const updateStar = async (req, res) => {
             }
 
         }
+        else {
+            throw new Error("Please first create your profile!")
+        }
+
     }
     catch (error) {
         return res.status(400).send(error.message)
@@ -163,7 +167,7 @@ const avatarUpload = async (req, res) => {
             // console.log(newpro);
         }
 
-        res.status(200).send("Profile Photo sucessfully uploaded")
+        res.status(200).send("Profile pic sucessfully uploaded")
     }
     catch (error) {
         res.status(400).send(error.message)
@@ -205,7 +209,7 @@ const aadharUpload = async (req, res) => {
         const r_id = req.params.rid
         const found = await profileModel.findOne({ r_id })
         if (!found) {
-            throw new Error("Please first upload profile photo !!!")
+            throw new Error("Please first upload profile photo !")
         }
 
         const updt = await profileModel.findOneAndUpdate({ r_id }, {

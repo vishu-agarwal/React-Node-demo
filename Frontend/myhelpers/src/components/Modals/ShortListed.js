@@ -17,13 +17,13 @@ import Checkbox from '@mui/material/Checkbox';
 
 import ListItemText from '@mui/material/ListItemText';
 
-
+import Loading from '../layouts/LoadingFile'
 // import DisplayWorkingFields from './DisplayWorkingFields';
 import { useState, useEffect } from 'react';
 // import workProfileActions from '../../store/slices/work-slice'
 
 // import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
-import { fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
+import { displayActions, fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
 import workProfileActions from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -31,6 +31,18 @@ import CardJS from '../Card';
 // import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
+
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
 const ShortListed = (props) => {
     const rid = localStorage.getItem("r_id")
     // const classes = useStyles();
@@ -39,7 +51,20 @@ const ShortListed = (props) => {
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
-    let { displayData, saveUser, hireUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser, hireUser, displayMessage,displayError,displayLoading } = useSelector((state) => ({ ...state.displayStore }))
+
+
+    const [state, setState] = useState({
+        snackOpen: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, snackOpen } = state;
+    const closeSnackbar = () => {
+        setState({ ...state, snackOpen: false });
+    };
+    const [snackMessage, setSnackMessage] = useState('')
+    const [snackColor, setSnackColor] = useState("info")
 
     // const [values,message, setValues] = useState({
     //     name: '',
@@ -56,17 +81,24 @@ const ShortListed = (props) => {
 
     // console.log(workData[0].workDetails)
     useEffect(() => {
-        // if (message.length !== 0) {
-        //     alert(message)
+        if (displayMessage.length !== 0) {
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(displayMessage)
 
-        // }
-        if (error.length !== 0) {
+            dispatch(displayActions.messageReducer())
+
+        }
+        if (displayError.length !== 0) {
             // console.log(error)
-            alert(error)
-            dispatch(workProfileActions.errorReducer())
+            setState({ snackOpen: true });
+            setSnackColor("error")
+            setSnackMessage(displayError)
+
+            dispatch(displayActions.errorReducer())
         }
 
-    }, [message, error])
+    }, [displayMessage, displayError])
     useEffect(() => {
         if (displayData.length !== 0) {
             console.log("displayData :: ", displayData)
@@ -109,6 +141,7 @@ const ShortListed = (props) => {
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
             <Grid padding={0} margin={0} >
+                {displayLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
                         minWidth: 500, minHeight: 450,

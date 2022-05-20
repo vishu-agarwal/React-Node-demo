@@ -37,9 +37,9 @@ const fetchAllData = async (req, res) => {
 
 
             ])
-            if (fetchHelper.length === 0) {
-                throw new Error("Data not found !")
-            }
+            // if (fetchHelper.length === 0) {
+            //     res.status(200).send({"message": ""})
+            // }
             console.log(fetchHelper)
             return res.status(200).send(fetchHelper)
         }
@@ -55,7 +55,10 @@ const fetchAllData = async (req, res) => {
 const saveUserData = async (req, res) => {
     try {
         // console.log("save user")
-
+        const isProfile = await profileModel.findOne({ r_id: req.params.rid })
+        if (!isProfile) {
+            throw new Error("Please first create your profile!")
+        }
         const found = await saveModel.findOne({ r_id: req.params.rid })
         console.log(req.body.length !== 0)
         if (found) {
@@ -102,7 +105,23 @@ const fetchSaveUser = async (req, res) => {
     }
 }
 
+const profileAvailable = async (req, res) => {
+    try {
+        const found = await profileModel.findOne({ r_id: req.params.rid })
+        // console.log(found)
+        if (found) {
+            return res.status(200).send(true)
+        }
+        else
+        {
+            throw new Error("Please first create your profile!")
+            }
 
+    }
+    catch (error) {
+        return res.status(400).send(error.message)
+    }
+}
 
 
 // const foundHelperFunc = (val) => {
@@ -211,7 +230,7 @@ const sorting = async (req, res) => {
     }
     const sort = { [field]: num }
     console.log(sort)
-    const found = await profileModel.find({ r_id: /^H/}).sort(sort)
+    const found = await profileModel.find({ r_id: /^H/ }).sort(sort)
     console.log("found::", found)
     // if (found.length === 0) {
     //     console.log("not found :: ", found)
@@ -220,31 +239,31 @@ const sorting = async (req, res) => {
     // }
 
     // else {
-        let fetch = []
-        const foundHelper = await Promise.all(
-            found.map((val) => {
-                return helperModel.find({ r_id: val.r_id })
-                    .then((res) => {
-                        console.log(res)
-                        fetch.push({
-                            r_id: res.map((val) => val.r_id),
-                            workDetails: res.map((val) => val.workDetails.map((cat) => { return { category: cat.category } })),
-                            workTime: res.map((val) => val.workTime),
-                            profession_mbl: res.map((val) => val.profession_mbl),
-                            name: val.name,
-                            dob: val.dob,
-                            avatar: val.avatar,
-                            rating: [val.rating]
-                        })
-                        // console.log(fetch)
-                    }).catch((error) => {
-                        return res.status(400).send(error)
+    let fetch = []
+    const foundHelper = await Promise.all(
+        found.map((val) => {
+            return helperModel.find({ r_id: val.r_id })
+                .then((res) => {
+                    console.log(res)
+                    fetch.push({
+                        r_id: res.map((val) => val.r_id),
+                        workDetails: res.map((val) => val.workDetails.map((cat) => { return { category: cat.category } })),
+                        workTime: res.map((val) => val.workTime),
+                        profession_mbl: res.map((val) => val.profession_mbl),
+                        name: val.name,
+                        dob: val.dob,
+                        avatar: val.avatar,
+                        rating: [val.rating]
                     })
-            }
-            ))
-        // console.log(foundHelper)
-        console.log("fetch ::", fetch)
-        return res.status(200).send(fetch)
+                    // console.log(fetch)
+                }).catch((error) => {
+                    return res.status(400).send(error)
+                })
+        }
+        ))
+    // console.log(foundHelper)
+    console.log("fetch ::", fetch)
+    return res.status(200).send(fetch)
     // }
 }
 module.exports = {
@@ -253,5 +272,6 @@ module.exports = {
     saveUserData,
     fetchSaveUser,
     searching,
-    sorting
+    sorting,
+    profileAvailable
 }

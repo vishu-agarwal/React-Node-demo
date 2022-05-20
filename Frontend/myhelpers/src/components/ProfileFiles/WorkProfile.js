@@ -27,14 +27,21 @@ import { useState, useEffect } from 'react';
 import workProfileActions from '../../store/slices/work-slice'
 
 import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
-
+import Loading from '../layouts/LoadingFile'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 
-const Input = styled('input')({
-    display: 'none',
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -65,7 +72,22 @@ const WorkProfile = (props) => {
 
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
+    // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
+    let { workMessage, workData, workError, workLoading } = useSelector((state) => ({ ...state.workProfileStore }))
+
+
+    const [state, setState] = useState({
+        snackOpen: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, snackOpen } = state;
+    const closeSnackbar = () => {
+        setState({ ...state, snackOpen: false });
+    };
+    const [snackMessage, setSnackMessage] = useState('')
+    const [snackColor, setSnackColor] = useState("info")
+
     const [lang, setlang] = useState([]);
     const [values, setValues] = useState({
 
@@ -96,17 +118,24 @@ const WorkProfile = (props) => {
     useEffect(() => {
 
 
-        if (message.length !== 0) {
-            alert(message)
+        if (workMessage.length !== 0) {
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(workMessage)
+
+            dispatch(workProfileActions.messageReducer())
 
         }
-        // if (error.length !== 0) {
-        //     // console.log(error)
-        //     alert(error)
-        //     dispatch(workProfileActions.errorReducer())
-        // }
+        if (workError.length !== 0) {
+            // console.log(error)
+            setState({ snackOpen: true });
+            setSnackColor("error")
+            setSnackMessage(workError)
 
-    }, [message, error])
+            dispatch(workProfileActions.errorReducer())
+        }
+
+    }, [workMessage, workError])
 
 
     useEffect(() => {
@@ -297,6 +326,7 @@ const WorkProfile = (props) => {
         >
 
             <Grid >
+                {workLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
                         maxWidth: 750, maxHeight:8000,

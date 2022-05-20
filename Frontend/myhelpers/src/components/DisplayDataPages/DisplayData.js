@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CardJS from "../Card"
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk } from '../../store/slices/display-slice';
+import { displayActions, fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk } from '../../store/slices/display-slice';
 import workProfileActions from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
@@ -21,6 +21,19 @@ import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Typography from "@mui/material/Typography";
+import Loading from '../layouts/LoadingFile'
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
+
 const workSearchBy = [
     // { label: 'All' },
     { label: 'Work Category' },
@@ -63,11 +76,24 @@ const DisplayData = () => {
 
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    let { displayData, saveUser, hireUser, message, error } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser, hireUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
 
     let rates, status, hireStatus
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
+
+
+    const [state, setState] = useState({
+        snackOpen: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, snackOpen } = state;
+    const closeSnackbar = () => {
+        setState({ ...state, snackOpen: false });
+    };
+    const [snackMessage, setSnackMessage] = useState('')
+    const [snackColor, setSnackColor] = useState("info")
 
     useEffect(() => {
         dispatch(fetchAllThunk())
@@ -76,18 +102,26 @@ const DisplayData = () => {
 
     // console.log(workData[0].workDetails)
     useEffect(() => {
-        // if (message.length !== 0) {
-        //     alert(message)
+        if (displayMessage.length !== 0) {
+            // alert(displayMessage)
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(displayMessage)
+            dispatch(displayActions.messageReducer())
 
-        // }
-        if (error.length !== 0) {
-            // console.log(error)
-            alert(error)
-            dispatch(workProfileActions.errorReducer())
         }
+        if (displayError.length !== 0) {
+            // console.log(error)
+            setState({ snackOpen: true });
+            setSnackColor("error")
+            setSnackMessage(displayError)
 
-    }, [message, error])
-    
+            dispatch(displayActions.errorReducer())
+        }
+     
+
+    }, [displayMessage, displayError])
+
     useEffect(() => {
         if (displayData.length !== 0) {
             // console.log("displayData :: ", displayData)
@@ -122,6 +156,7 @@ const DisplayData = () => {
     }
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={5}>
+            {displayLoading && <Loading isLoad={true} />}
             <Grid item xs={11} sm={11} >
                 <Grid container spacing={2} marginBottom={2}>
                     <Grid item xs={12} sm={2}>
@@ -134,7 +169,7 @@ const DisplayData = () => {
                                 "& .MuiOutlinedInput-root": {
                                     "& > fieldset": { borderColor: "#163758" },
                                 },
-                                
+
                                 color: "#163758"
                             }}
                             onInputChange={(e, values) => {
@@ -161,22 +196,13 @@ const DisplayData = () => {
                                             "& .MuiOutlinedInput-root": {
                                                 "& > fieldset": { borderColor: "#163758" },
                                             },
-                                            
+
                                             color: "#163758"
                                         }}
                                         options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : workSearch === "Gender" ? filterGender : ['']}
-                                        // getOptionLabel={(option) => option.label || ''}
-                                        onInputChange={(e, value) => setFilterWork(value)}
-                                        // filterOptions={(options, params) => {
 
-                                        // const opt = options.filter(r => tags.filter(x => x === r).length === 0)
-                                        // const filtered = filter(opt, params);
-                                        // // Suggest the creation of a new value
-                                        // if (params.inputValue !== '' && tags.filter(x => x === params.inputValue).length === 0) {
-                                        //     filtered.push(params.inputValue)
-                                        // }
-                                        // return filtered
-                                        // }}
+                                        onInputChange={(e, value) => setFilterWork(value)}
+
                                         renderInput={(params) =>
 
                                             <TextField {...params}
@@ -185,13 +211,12 @@ const DisplayData = () => {
                                                 value={filterWork}
                                             />
                                         }
-                                    // onChange={() => searchChange()}
+
                                     />
 
                                     :
                                     <>
-                                        {/* <Grid container>
-                                            <Grid item xs={11} sm={11}> */}
+
                                         <TextField
                                             id="search-bar"
                                             className="text"
@@ -200,13 +225,7 @@ const DisplayData = () => {
                                             variant="outlined"
                                             placeholder="Search..."
                                             fullWidth
-                                            // InputProps={{
-                                            //     endAdornment: (
-                                            //         <InputAdornment position="end">
-                                            //             <SearchIcon onClick={(e) => searchChange(e)} />
-                                            //         </InputAdornment>
-                                            //     )
-                                            // }}
+
                                             sx={{
                                                 "& .MuiInputLabel-root": { color: '#163758' },//styles the label
                                                 "& .MuiOutlinedInput-root": {
@@ -225,69 +244,25 @@ const DisplayData = () => {
                     </Grid>
                     <Grid item xs={1} sm={0.5} marginTop={3}>
                         {workSearch !== "" &&
-                        
+
                             <InputAdornment position="end">
-                                <SearchIcon cursor={"pointer"} sx={{colo:"#163758"}} onClick={(e) => searchChange(e)} />
+                                <SearchIcon cursor={"pointer"} sx={{ colo: "#163758" }} onClick={(e) => searchChange(e)} />
                             </InputAdornment>}
                     </Grid>
                     <Grid item xs={0} sm={5}>
                     </Grid>
 
                     <Grid item xs={12} sm={2.5} display="flex" alignItems='center' >
-                        {/* <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={sortField}
-                                height={2}
-                                label="Sort By"
-                                onChange={(event)=>setSortField(event.target.value) }
-                            >
-                                <MenuItem value="" size="small" >
-                                    None
-                                </MenuItem>
-                                <MenuItem value="Age" >
-                                    Age
-                                    <IconButton aria-label="Example" size="small" sx={{ marginLeft: 7, padding: 0 }} onClick={()=>onSortChange("up","dob")} >
-                                        <ArrowUpwardRoundedIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0 }} onClick={()=>onSortChange("down","dob")} >
-                                        <ArrowDownwardRoundedIcon />
-                                    </IconButton>
-                                </MenuItem>
-                                <MenuItem value="Experience" >Experience
-                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0, marginLeft: 1 }} onClick={()=>onSortChange("up","exp")} >
-                                        <ArrowUpwardRoundedIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0 }} margin={0} onClick={()=>onSortChange("down","exp")} >
-                                        <ArrowDownwardRoundedIcon />
-                                    </IconButton>
-                                </MenuItem>
-                                <MenuItem value="Salary">Salary
-                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0, marginLeft: 5 }} onClick={()=>onSortChange("up","sal")} >
-                                        <ArrowUpwardRoundedIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="Example" size="small" sx={{ padding: 0 }} onClick={()=>onSortChange("down","sal")} >
-                                        <ArrowDownwardRoundedIcon />
-                                    </IconButton>
-                                </MenuItem>
-                            </Select>
-                        </FormControl> */}
+
                         <Typography variant="h6"> Sort By : Age </Typography>
-                        <IconButton aria-label="Example" size="medium" sx={{ color:"#163758"}} onClick={() => onSortChange("up", "dob")} >
+                        <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("up", "dob")} >
                             <ArrowUpwardRoundedIcon />
                         </IconButton>
                         <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("down", "dob")} >
                             <ArrowDownwardRoundedIcon />
                         </IconButton>
                     </Grid>
-                    {/* <Grid item xs={12} sm={5}  >
-                        <Stack spacing={2} direction="row" justifyContent="end" paddingTop={1}>
-                            <Pagination count={100} size="large" showFirstButton showLastButton />
 
-                        </Stack>
-                    </Grid> */}
                 </Grid>
             </Grid>
             <Grid container direction="row" >
@@ -319,7 +294,7 @@ const DisplayData = () => {
                 }
                 {
                     // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
-                    displayData.map((values, index) => {
+                    displayData.length !== 0 ? displayData.map((values, index) => {
                         {
                             rates = values.rating[0] !== undefined ?
                                 values.rating[0].map((id) =>
@@ -341,6 +316,15 @@ const DisplayData = () => {
                             <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
                         </Grid>
                     })
+                        :
+                        <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                            <img
+                                src={require("../allImages/notfound.gif")}
+                                alt="Page No Found..."
+
+                                align="center"
+                            />
+                        </Grid>
                 }
             </Grid>
         </Grid >

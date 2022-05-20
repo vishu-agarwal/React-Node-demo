@@ -6,17 +6,20 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { Grid } from "@mui/material";
+import { getListItemSecondaryActionClassesUtilityClass, Grid } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import Rating from '@mui/material/Rating';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSaveUserThunk, fetchAllThunk, saveThunk } from '../store/slices/display-slice';
+import { displayActions, fetchSaveUserThunk, isProfileThunk, saveThunk } from '../store/slices/display-slice';
+
+
 // import profileimg from "../../profileimg.gif"
 import { starThunk } from '../store/slices/profile-slice';
 const CardJS = (props) => {
+    const rid = localStorage.getItem("r_id")
     // console.log("status::",props.status)
     const navigate = useNavigate()
 
@@ -28,15 +31,23 @@ const CardJS = (props) => {
 
     // props.status ? setSaveIcon(true) : setSaveIcon(false)
     //save icon click event
-
-
+    let { isProfile } = useSelector((state) => ({ ...state.displayStore }))
+    useEffect(() => {
+        if (isProfile)
+        {
+            navigate(`/viewHelperDetails/${props.values.r_id}`)
+            dispatch(displayActions.profileReducer())
+        }
+        
+    },[isProfile])
     const onSaveClick = async () => {
         dispatch(saveThunk(props.values.r_id))
         // dispatch(fetchSaveUserThunk())
     }
 
     const onViewClick = () => {
-        navigate(`/viewHelperDetails/${props.values.r_id}`)
+        dispatch(isProfileThunk(rid))
+        // navigate(`/viewHelperDetails/${props.values.r_id}`)
     }
 
     const onRateClick = (val) => {

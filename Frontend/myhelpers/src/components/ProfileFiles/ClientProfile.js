@@ -23,15 +23,15 @@ import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import WorkProfile from './WorkProfile';
 import { useEffect, useState, useCallback } from 'react';
 // import axios from 'axios';
-
+import Loading from '../layouts/LoadingFile'
 import Divider from '@mui/material/Divider';
 
-import profileActions from '../../store/slices/profile-slice'
+import { profileActions } from '../../store/slices/profile-slice'
 import { createProfileThunk, updateProfileThunk, avatarThunk, aadharThunk, fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import Rating from '@mui/material/Rating';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(
@@ -50,7 +50,7 @@ const ClientProfile = () => {
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
+    let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
 
     let role = "Helper"
 
@@ -108,22 +108,23 @@ const ClientProfile = () => {
         const body = document.querySelector('body');
         body.style.overflow = openModal ? 'hidden' : 'auto';
 
-        if (message.length !== 0) {
+        if (profileMessage.length !== 0) {
             setState({ open: true });
             setSnackColor("info")
-            setSnackMessage(message)
+            setSnackMessage(profileMessage)
             setClicked(true)
+            dispatch(profileActions.messageReducer())
         }
-        if (error.length !== 0) {
+        if (profileError.length !== 0) {
             // console.log(error)
             // alert(error)
             setState({ open: true });
             setSnackColor("error")
-            setSnackMessage(error)
-            // dispatch(profileActions.errorReducer())
+            setSnackMessage(profileError)
+            dispatch(profileActions.errorReducer())
         }
 
-    }, [openModal, message, error])
+    }, [openModal, profileError, profileMessage])
 
     //edit button show or hide
     const [editHide, setEditHide] = useState(true)
@@ -617,6 +618,7 @@ const ClientProfile = () => {
     }, [errorEnable, values, aadhar.dispFile])
     return (
         <Grid >
+            {profileLoading && <Loading isLoad={true} />}
             <Card
                 elevation={16}
                 sx={{

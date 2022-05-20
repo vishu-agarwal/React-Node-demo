@@ -22,6 +22,8 @@ import { acceptRequestThunk, rejectRequestThunk, deleteRequestThunk } from "../.
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
 import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined';
+import hireRequestActions from '../../store/slices/hireRequest-slice'
+import Loading from '../layouts/LoadingFile'
 
 const HireRequestCard = (props) => {
     console.log("status::",props.values.user_id)

@@ -26,12 +26,24 @@ import CallIcon from '@mui/icons-material/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
 import workProfileActions from '../../store/slices/work-slice'
-import { hireUserThunk, fetchSaveUserThunk, saveThunk } from '../../store/slices/display-slice';
+import { hireUserThunk, fetchSaveUserThunk, saveThunk, displayActions } from '../../store/slices/display-slice';
 import { fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
 import profileActions from '../../store/slices/profile-slice'
 import { fetchUserProfileThunk, starThunk } from '../../store/slices/profile-slice';
 import HireForm from './HireForm';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import Loading from '../layouts/LoadingFile'
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
 const ViewProfileDetail = () => {
     const navigate = useNavigate()
 
@@ -40,9 +52,24 @@ const ViewProfileDetail = () => {
     const rid = params.rid;
     
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    let { saveUser } = useSelector((state) => ({ ...state.displayStore }))
-    let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
-    let { userProfile } = useSelector((state) => ({ ...state.profileStore }))
+    // let { saveUser } = useSelector((state) => ({ ...state.displayStore }))
+    let { saveUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
+    let { workMessage, workData, workError, workLoading } = useSelector((state) => ({ ...state.workProfileStore }))
+    let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
+
+
+    const [state, setState] = useState({
+        snackOpen: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, snackOpen } = state;
+    const closeSnackbar = () => {
+        setState({ ...state, snackOpen: false });
+    };
+    const [snackMessage, setSnackMessage] = useState('')
+    const [snackColor, setSnackColor] = useState("info")
+
     const [values, setValues] = useState({
         name: '',
         dob: '',
@@ -111,17 +138,52 @@ const ViewProfileDetail = () => {
     useEffect(() => {
         const body = document.querySelector('body');
         body.style.overflow = open ? 'hidden' : 'auto';
-        // if (message.length !== 0) {
-        //     alert(message)
+        if (profileMessage.length !== 0) {
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(profileMessage)
 
-        // }
-        // if (error.length !== 0) {
-        //     // console.log(error)
-        //     alert(error)
-        //     dispatch(workProfileActions.errorReducer())
-        // }
+            dispatch(profileActions.messageReducer())
 
-    }, [message, error, open])
+        }
+        if (profileError.length !== 0) {
+            // console.log(error)
+            setState({ snackOpen: true });
+            setSnackColor("error")
+            setSnackMessage(profileError)
+            dispatch(profileActions.errorReducer())
+        }
+        if (workMessage.length !== 0) {
+            
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(workMessage)
+            dispatch(workProfileActions.messageReducer())
+        }
+        if (workError.length !== 0) {
+            setState({ snackOpen: true });
+            setSnackColor("error")
+            setSnackMessage(workError)
+
+            dispatch(workProfileActions.errorReducer())
+        }
+        if (displayMessage.length !== 0) {
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(displayMessage)
+
+            dispatch(displayActions.messageReducer())
+
+        }
+        if (displayError.length !== 0) {
+            setState({ snackOpen: true });
+            setSnackColor("error")
+            setSnackMessage(displayError)
+
+            dispatch(displayActions.errorReducer())
+        }
+
+    }, [profileMessage, profileError, displayError, displayMessage,workError, workMessage, open])
 
     useEffect(() => {
         if (userProfile.length !== 0) {
@@ -230,6 +292,7 @@ const ViewProfileDetail = () => {
     }
     return (
         <Container align="center">
+            {displayLoading||workLoading||profileLoading && <Loading isLoad={true} />}
             <Card elevation={16}
                 sx={{
                 // paddingLeft: "10%",

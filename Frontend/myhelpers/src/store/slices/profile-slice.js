@@ -4,9 +4,9 @@ import axios from 'axios'
 
 const initialState = {
     userProfile: [],
-    message: '',
-    loading: false,
-    error: ""
+    profileMessage: '',
+    profileLoading: false,
+    profileError: ""
 }
 export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
     try {
@@ -51,7 +51,7 @@ export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (fo
 export const createProfileThunk = createAsyncThunk("userProfile/createProfileThunk", async (arg) => {
     // console.log("profilediapatch::", arg)
     try {
-        
+
         const varToken = localStorage.getItem("token");
         const data = {
             name: arg.values.fname + ' ' + arg.values.lname,
@@ -75,13 +75,13 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
 
         };
         // console.log("data", data)
-        const userRes = await axios.post(`/myhelpers/crtProfile/C109`, 
+        const userRes = await axios.post(`/myhelpers/crtProfile/C109`,
             {
                 headers: {
                     Authorization: "Bearer " + varToken,
                 },
             }
-        , data)
+            , data)
 
         // console.log("loginRes", loginRes)
         return userRes
@@ -98,10 +98,10 @@ export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileT
         const varToken = localStorage.getItem("token");
         const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
             {
-            headers: {
-                Authorization: "Bearer " + varToken,
-            },
-        })
+                headers: {
+                    Authorization: "Bearer " + varToken,
+                },
+            })
 
         // console.log("Fwtch Response:: ", fetchUser)
         return fetchUser
@@ -150,103 +150,104 @@ const profileSlice = createSlice({
     initialState,//: initialState
     reducers: {
         errorReducer(state) {
-            state.error = ""
+            state.profileError = ""
         },
-        isAuthReducer(state) {
-            state.isAuth = true
+      
+        messageReducer(state) {
+            state.profileMessage = ""
         },
     },
     extraReducers: {
         //avatar
         [avatarThunk.pending]: (state, action) => {
-            state.loading = true
+            state.profileLoading = true
         },
         [avatarThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.profileLoading = false
             //  state.isAuth = true
-            state.message = [action.payload.data]
+            state.profileMessage = [action.payload.data]
         },
         [avatarThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.profileLoading = false
             // console.log("rejected::", error.error.message)
 
-            state.error = error.error.message
+            state.profileError = error.error.message
         },
         //aadhar
         [aadharThunk.pending]: (state, action) => {
-            state.loading = true
+            state.profileLoading = true
         },
         [aadharThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.profileLoading = false
             //  state.isAuth = true
-            state.message = [action.payload.data]
+            state.profileMessage = [action.payload.data]
         },
         [aadharThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.profileLoading = false
             // console.log("rejected::", error.error.message)
 
-            state.error = error.error.message
+            state.profileError = error.error.message
         },
         //userProfileData
         [createProfileThunk.pending]: (state, action) => {
-            state.loading = true
+            state.profileLoading = true
         },
         [createProfileThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.profileLoading = false
             //  state.isAuth = true
             // state.userProfile = [action.payload.data]
         },
         [createProfileThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.profileLoading = false
             // console.log("rejected::", error.error.message)
 
-            state.error = error.error.message
+            state.profileError = error.error.message
         },
         //fetchProfileData
         [fetchUserProfileThunk.pending]: (state, action) => {
-            state.loading = true
+            state.profileLoading = true
         },
         [fetchUserProfileThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.profileLoading = false
             //  state.isAuth = true
             state.userProfile = [action.payload.data]
             // console.log("userProfile::",state.userProfile)
         },
         [fetchUserProfileThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.profileLoading = false
             // console.log("rejected::", error.error.message)
 
-            state.error = error.error.message
+            state.profileError = error.error.message
         },
         //update userProfileData
         [updateProfileThunk.pending]: (state, action) => {
-            state.loading = true
+            state.profileLoading = true
         },
         [updateProfileThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.profileLoading = false
             //  state.isAuth = true
             // state.userProfile = [action.payload.data]
         },
         [updateProfileThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.profileLoading = false
             // console.log("rejected::", error.error.message)
 
-            state.error = error.error.message
+            state.profileError = error.error.message
         },
         //update stars
         [starThunk.pending]: (state, action) => {
-            state.loading = true
+            state.profileLoading = true
         },
         [starThunk.fulfilled]: (state, action) => {
-            state.loading = false
+            state.profileLoading = false
             //  state.isAuth = true
             // state.message = action.payload.data
         },
         [starThunk.rejected]: (state, error) => {
-            state.loading = false
+            state.profileLoading = false
             // console.log("rejected::", error.error.message)
 
-            // state.error = error.error.message
+            state.profileError = error.error.message
         },
     }
 })

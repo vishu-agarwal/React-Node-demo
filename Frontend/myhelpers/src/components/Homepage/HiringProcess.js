@@ -168,28 +168,8 @@ const HiringProcess = (props) => {
                                 </CardContent>
                             </Card>
 
-                        </Grid> {/*
-                        <Grid item sm={11} xs={11} md={11}  >
-                            <Typography style={{ fontWeight: 600, color: "#163758" }} marginTop={1} variant="h5">
-                               <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
-
-                                Why should you find & hire Workers from My Helpers ?
-                                {/* </Typography>
-                                Simple choices affect the world we live in.
-
-                                We are flooded with multiple choices for things we consume every day - Which Tea/Coffee? Which Cereal? Which Car? What kind of Fruits & Vegetables? Etc.
-
-                                At times, these simple choices we make every moment affect our environment, planet or a group of individuals or community, directly or indirectly. Or else, they are just simple means of earning financial gains.
-
-                                It is okay if an enterprise earns revenues for itself. However, we believe it would be great if financial gains could also impact the world we live in. And therefore, make the world better than what it is.
-
-                                At  My Helpers, we believe, with the help of technology, it is possible to make an ecosystem, which can help millions of blue-collar workforce find local employment opportunities. We believe, with a nominal fee, the ecosystem can also sustain itself in the process. We firmly believe that technology today can impact the lives of millions in multiple ways.
-
-                                With your help, at My Helpers , we have the capabilities to make this happen.
-
-                                So, go ahead. Connect with your nearby workers directly, without the middlemen in between. And impact the life of one, or a few, of whom you can.
-                            </Typography>
-                        </Grid> */}
+                        </Grid> 
+                  
                     </Grid>
                 </Grid>
 
@@ -252,8 +232,8 @@ const HiringProcess = (props) => {
                         <Grid item sm={11} xs={11} md={11}  >
 
 
-                            <Card elevation={0} backgroundColor="white">
-                                <CardContent sx={{ padding: 0 }}>
+                            <Card elevation={4} >
+                                <CardContent sx={{ padding: 0, backgroundColor:"white" }}>
                                     <Grid container direction="row">
                                         <Grid item xs={12} sm={12} md={6} >
                                             <CardMedia

@@ -114,7 +114,7 @@ const otpLoginController = async (req, res) => {
             const fnd_role = found[0].r_id.charAt(0)
             if (rid !== fnd_role) {
 
-                throw new Error("you are unauthorized for this role")
+                throw new Error("You are unauthorized for this role!")
             }
         }
         const otp = await otpFunction(email)
