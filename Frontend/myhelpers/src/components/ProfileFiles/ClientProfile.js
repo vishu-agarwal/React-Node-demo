@@ -136,6 +136,7 @@ const ClientProfile = () => {
 
     // const str2blob = txt => new Blob([txt]);
     useEffect(() => {
+        console.log("userProfile::",userProfile)
         if (userProfile.length !== 0) {
             setStar(userProfile.rating !== undefined ?
                 userProfile[0].rating.map((id) =>

@@ -8,6 +8,8 @@ const initialState = {
     profileLoading: false,
     profileError: ""
 }
+const varToken = localStorage.getItem("logToken");
+console.log("varToken", varToken)
 export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
     try {
         const data = {
@@ -15,7 +17,11 @@ export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) =
             rate: arg.rate
         }
 
-        const res = await axios.put(`/myhelper/updateStar/${arg.rid}`, data)
+        const res = await axios.put(`/myhelper/updateStar/${arg.rid}`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
         return res;
     }
     catch (error) {
@@ -27,7 +33,11 @@ export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (fo
     try {
         const rid = localStorage.getItem("r_id")
 
-        const res = await axios.post(`/myhelper/upldAvatar/C109`, formdata, config)
+        const res = await axios.post(`/myhelper/upldAvatar/C109`, formdata, config, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
         // console.log("response :: ", res)
         return res
 
@@ -40,7 +50,11 @@ export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (fo
     try {
         const rid = localStorage.getItem("r_id")
 
-        const res = await axios.post(`/myhelper/upldAadhar/C109`, formdata, config)
+        const res = await axios.post(`/myhelper/upldAadhar/C109`, formdata, config, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
         // console.log("response :: ", res)
         return res
 
@@ -52,7 +66,7 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
     // console.log("profilediapatch::", arg)
     try {
 
-        const varToken = localStorage.getItem("token");
+        // const varToken = localStorage.getItem("token");
         const data = {
             name: arg.values.fname + ' ' + arg.values.lname,
             dob: arg.values.dob,
@@ -75,13 +89,11 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
 
         };
         // console.log("data", data)
-        const userRes = await axios.post(`/myhelpers/crtProfile/C109`,
-            {
-                headers: {
-                    Authorization: "Bearer " + varToken,
-                },
-            }
-            , data)
+        const userRes = await axios.post(`/myhelpers/crtProfile/C109`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         // console.log("loginRes", loginRes)
         return userRes
@@ -95,7 +107,7 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
 export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk", async (arg) => {
     try {
         // console.log("arg ",arg)    
-        const varToken = localStorage.getItem("token");
+
         const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
             {
                 headers: {
@@ -135,7 +147,11 @@ export const updateProfileThunk = createAsyncThunk("userProfile/updateProfileThu
             aadhar_card: arg.aadhar
         }
         // console.log("data::",data)
-        const updateuser = await axios.put(`/myhelpers/client/update/C109`, data)
+        const updateuser = await axios.put(`/myhelpers/client/update/C109`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         // console.log("Fwtch Response:: ", fetchRes)
         return updateuser
@@ -152,7 +168,7 @@ const profileSlice = createSlice({
         errorReducer(state) {
             state.profileError = ""
         },
-      
+
         messageReducer(state) {
             state.profileMessage = ""
         },
@@ -210,7 +226,12 @@ const profileSlice = createSlice({
         [fetchUserProfileThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
             //  state.isAuth = true
-            state.userProfile = [action.payload.data]
+            if (action.payload.data === "Please create profile for move further!") {
+                state.profileMessage = action.payload.data
+            }
+            else {
+                state.userProfile = [action.payload.data]
+            }
             // console.log("userProfile::",state.userProfile)
         },
         [fetchUserProfileThunk.rejected]: (state, error) => {

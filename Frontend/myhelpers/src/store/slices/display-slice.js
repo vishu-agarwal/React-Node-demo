@@ -11,11 +11,15 @@ const initialState = {
     displayError: "",
     isProfile: false
 }
-
+const varToken = localStorage.getItem("token");
 export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async (arg) => {
     try {
 
-        const fetchRes = await axios.get(`/myhelpers/fetchAllData/Client`)
+        const fetchRes = await axios.get(`/myhelpers/fetchAllData/Client`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         // console.log("Fwtch Response:: ", fetchRes)
         
@@ -28,7 +32,11 @@ export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async 
 export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThunk", async (arg) => {
     try {
 
-        const fetchRes = await axios.get(`/myhelpers/fetchSaveUser/C106`)
+        const fetchRes = await axios.get(`/myhelpers/fetchSaveUser/C106`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         console.log("save Response:: ", fetchRes)
 
@@ -41,7 +49,11 @@ export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThun
 export const searchThunk = createAsyncThunk("displayAll/searchThunk", async (arg) => {
     try {
         // console.log(searchText)
-        const fetchRes = await axios.get(`/myhelpers/search?field=${arg.workSearch}&searchValue=${arg.filterWork}`)
+        const fetchRes = await axios.get(`/myhelpers/search?field=${arg.workSearch}&searchValue=${arg.filterWork}`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         console.log("Fwtch Response:: ", fetchRes)
 
@@ -54,7 +66,11 @@ export const searchThunk = createAsyncThunk("displayAll/searchThunk", async (arg
 export const sortThunk = createAsyncThunk("displayAll/sortThunk", async (arg) => {
     try {
         // console.log(searchText)
-        const fetchRes = await axios.get(`/myhelpers/sort?field=${arg.field}&sortValue=${arg.sort}`)
+        const fetchRes = await axios.get(`/myhelpers/sort?field=${arg.field}&sortValue=${arg.sort}`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         console.log("Fwtch Response:: ", fetchRes)
 
@@ -76,7 +92,11 @@ export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) =>
 export const isProfileThunk = createAsyncThunk("displayAll/isProfileThunk", async (arg) => {
     
 
-    const fetchRes = await axios.get(`/myhelpers/isProfile/${arg}`)
+    const fetchRes = await axios.get(`/myhelpers/isProfile/${arg}`, {
+        headers: {
+            Authorization: "Bearer " + varToken,
+        },
+    })
 
     return fetchRes
 })

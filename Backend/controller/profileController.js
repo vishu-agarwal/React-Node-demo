@@ -27,17 +27,21 @@ const createProfile = async (req, res) => {
 const fetchProfile = async (req, res) => {
     try {
         // console.log("params id ",req.params.rid)
-        let isunique = await profileModel.findOne({ r_id: req.params.rid })
+        if (profileModel) {
+            let isunique = await profileModel.find({ r_id: req.params.rid })
+            console.log(isunique, "dsjjhsdjfb")
+            if (isunique.length === 0) {
+                return res.status(200).send("Please create profile for move further!")
+            }
+            else {
+                const loginNo = await regModel.findOne({ r_id: isunique.r_id })
+                console.log(loginNo, "dsjjhsdjfb")
+                isunique = { ...isunique._doc, email: loginNo.email }
+                // console.log("isunique ::: ", isunique, "login::", loginNo.mob_num)
+                return res.status(200).send(isunique)
+            }
+        }
 
-        const loginNo = await regModel.findOne({ r_id: isunique.r_id })
-        if (isunique.length === 0) {
-            return res.status(200).send()
-        }
-        else {
-            isunique = { ...isunique._doc, email: loginNo.email }
-            // console.log("isunique ::: ", isunique, "login::", loginNo.mob_num)
-            return res.status(200).send(isunique)
-        }
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -95,12 +99,12 @@ const updateProfile = async (req, res) => {
     try {
         const r_id = req.params.rid
         // const found = await profileModel.findOne({ r_id })
-       
+
         const update = await profileModel.findOneAndUpdate({ r_id }, { ...req.body }, { new: true })
         if (!update) {
             throw new Error("Some Problem while uupdating working details!")
         }
-// console.log("update data:: ", update)
+        // console.log("update data:: ", update)
         return res.status(200).send("update WorkDetails successfully!")
         // return res.send(isunique)
     } catch (error) {

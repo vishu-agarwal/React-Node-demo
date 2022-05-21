@@ -8,6 +8,7 @@ const initialState = {
     workLoading: false,
     workError: ""
 }
+const varToken = localStorage.getItem("token");
 //create work Details thunk
 export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk", async (arg) => {
     // // console.log("values::", values)
@@ -15,7 +16,7 @@ export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk",
     // const obj = { ...arg.lang };
     console.log("workFields::", arg)
     try {
-        const rid = localStorage.getItem("r_id")
+        
         const lang = arg.lang.map(l => ({ language: l }));
         // console.log("lang->>", lang)
         const data = {
@@ -27,7 +28,11 @@ export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk",
             languages: lang
         };
         // console.log("data", data)
-        const workDataRes = await axios.post(`/myhelpers/createWorkProfile/H102`, data)
+        const workDataRes = await axios.post(`/myhelpers/createWorkProfile/H102`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         // console.log("Response::", workDataRes)
         return workDataRes
@@ -42,7 +47,11 @@ export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk",
 export const fetchWorkThunk = createAsyncThunk("workProfile/fetchWorkThunk", async (arg) => {
     try {
 // console.log("abc")
-        const fetchRes = await axios.get(`/myhelpers/fetchWorkDetail/${arg}`)
+        const fetchRes = await axios.get(`/myhelpers/fetchWorkDetail/${arg}`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         // console.log("Fetch work Response:: ", fetchRes)
         return fetchRes
@@ -67,7 +76,11 @@ export const updateWorkThunk = createAsyncThunk("workProfile/updateWorkThunk", a
                 workDetails: arg.fields,
                 languages: lang
             };
-        const updateRes = await axios.put(`/myhelpers/updateWorkDetail/H102`,data)
+        const updateRes = await axios.put(`/myhelpers/updateWorkDetail/H102`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         console.log("update work Response:: ", updateRes)
         return updateRes

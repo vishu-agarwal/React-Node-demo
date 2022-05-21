@@ -9,6 +9,9 @@ const initialState = {
     requestLoading: false,
    requestError: ""
 }
+
+const varToken = localStorage.getItem("token");
+
 //create work Details thunk
 export const sendHireRequestThunk = createAsyncThunk("hireRequest/workProfileThunk", async (arg) => {
     
@@ -30,7 +33,11 @@ export const sendHireRequestThunk = createAsyncThunk("hireRequest/workProfileThu
             ]
 
         // console.log("data", data)
-        const workDataRes = await axios.post(`/myhelpers/sendHelperRequest/C101`, data)
+        const workDataRes = await axios.post(`/myhelpers/sendHelperRequest/C101`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         
         return workDataRes
@@ -45,7 +52,11 @@ export const sendHireRequestThunk = createAsyncThunk("hireRequest/workProfileThu
 export const fetchHelperRequestsThunk = createAsyncThunk("hireRequest/fetchHelperRequestsThunk", async (arg) => {
     try {
         // console.log("abc")
-        const hireRequest = await axios.get(`/myhelpers/fetchHireRequest/${arg}`)
+        const hireRequest = await axios.get(`/myhelpers/fetchHireRequest/${arg}`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         
         return hireRequest
@@ -58,7 +69,11 @@ export const fetchHelperRequestsThunk = createAsyncThunk("hireRequest/fetchHelpe
 export const fetchSingleHireRequestThunk = createAsyncThunk("hireRequest/fetchHireRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const fetchHelperRes = await axios.get(`/myhelpers/fetchSingleHireRequest/C101/${arg}`)
+        const fetchHelperRes = await axios.get(`/myhelpers/fetchSingleHireRequest/C101/${arg}`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         
         return fetchHelperRes
@@ -88,7 +103,11 @@ export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateWorkTh
         }
 
 
-        const updateRes = await axios.put(`/myhelpers/updateHireRequest/C106`, data)
+        const updateRes = await axios.put(`/myhelpers/updateHireRequest/C106`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
         
         return updateRes
@@ -102,7 +121,11 @@ export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateWorkTh
 export const acceptRequestThunk = createAsyncThunk("hireRequest/acceptRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const response = await axios.patch(`/myhelpers/acceptRequest/H102/${arg}`)
+        const response = await axios.patch(`/myhelpers/acceptRequest/H102/${arg}`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
 
         return response
@@ -116,7 +139,11 @@ export const acceptRequestThunk = createAsyncThunk("hireRequest/acceptRequestThu
 export const rejectRequestThunk = createAsyncThunk("hireRequest/rejectRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const response = await axios.patch(`/myhelpers/rejectRequest/H103/${arg}`)
+        const response = await axios.patch(`/myhelpers/rejectRequest/H103/${arg}`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
 
         return response
@@ -130,7 +157,11 @@ export const rejectRequestThunk = createAsyncThunk("hireRequest/rejectRequestThu
 export const deleteRequestThunk = createAsyncThunk("hireRequest/deleteRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const response = await axios.patch(`/myhelpers/deleteRequest/C101/${arg}`)
+        const response = await axios.patch(`/myhelpers/deleteRequest/C101/${arg}`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
 
 
         return response

@@ -5,10 +5,10 @@ const loginController = async (req, res) => {
     // console.log(req.params.role)
     const role = req.params.role.charAt(0)
     let newUser 
-    // console.log(role)
+    console.log(req.body.email)
     try {
         const found = await regModel.find({ email: req.body.email });
-        //  console.log(found)
+         console.log("loginfound::",found)
         if (found.length !== 0) {
             const fnd_role = found[0].r_id.charAt(0)
             if (role === fnd_role) {
