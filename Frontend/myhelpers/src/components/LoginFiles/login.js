@@ -122,8 +122,8 @@ const Login = () => {
             }
             console.log('navigate');
             // dispatch(loginActions.isAuthReducer())
-            localStorage.setItem("logToken", token)
-            localStorage.setItem("r_id", a1.r_id)
+            // localStorage.setItem("logToken", token)
+            // localStorage.setItem("r_id", a1.r_id)
             navigate('/profile');
             // window.location.reload()
         }

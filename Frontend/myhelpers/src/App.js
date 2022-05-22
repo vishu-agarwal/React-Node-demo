@@ -66,7 +66,7 @@ function App() {
         <Suspense fallback={<Loader />}>
           <Routes>
             {/* private route for both client and helper */}
-
+<Route path="/find" element={<DisplayData />}/>
             <Route path='/profile'
               element={
                 <PrivateRoute

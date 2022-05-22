@@ -27,7 +27,10 @@ import Loading from '../layouts/LoadingFile'
 import Divider from '@mui/material/Divider';
 
 import { profileActions } from '../../store/slices/profile-slice'
-import { createProfileThunk, updateProfileThunk, avatarThunk, aadharThunk, fetchUserProfileThunk } from '../../store/slices/profile-slice';
+import {
+    createProfileThunk, updateProfileThunk, avatarThunk,
+    aadharThunk, fetchUserProfileThunk, fetchEmailThunk, fetchAvatarThunk
+} from '../../store/slices/profile-slice';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import Rating from '@mui/material/Rating';
@@ -50,7 +53,7 @@ const ClientProfile = () => {
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
+    let { userProfile, profileError, profileMessage, profileLoading, email, avatar } = useSelector((state) => ({ ...state.profileStore }))
 
     let role = "Helper"
 
@@ -101,7 +104,9 @@ const ClientProfile = () => {
     const [openModal, setopenModal] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchUserProfileThunk(rid))
+        dispatch(fetchAvatarThunk(rid))
+        dispatch(fetchEmailThunk(rid))
+        // dispatch(fetchUserProfileThunk(rid))
     }, [])
 
     useEffect(() => {
@@ -132,11 +137,24 @@ const ClientProfile = () => {
     const [fieldsDisable, setDisable] = useState(false)
     // console.log(fields)
 
+    useEffect(() => {
+        console.log("avatar::", avatar)
+        if (avatar.length !== 0) {
+            dispatch(fetchUserProfileThunk(rid))
 
+            setfile({
+                ...file,
+                // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+                dispFile: avatar[0].avatar
+
+            })
+
+        }
+    }, [avatar])
 
     // const str2blob = txt => new Blob([txt]);
     useEffect(() => {
-        console.log("userProfile::",userProfile)
+        console.log("userProfile::", userProfile)
         if (userProfile.length !== 0) {
             setStar(userProfile.rating !== undefined ?
                 userProfile[0].rating.map((id) =>
@@ -153,7 +171,7 @@ const ClientProfile = () => {
                 lname: userProfile[0].name.split(" ")[1],
                 dob: userProfile[0].dob,
                 altmbl: userProfile[0].alt_mob_num,
-                mbl: userProfile[0].mbl,
+                mbl: userProfile[0].mob_num,
                 gender: userProfile[0].gender,
                 married: userProfile[0].isMarried,
                 physic_dis: userProfile[0].physical_disable,
@@ -166,12 +184,12 @@ const ClientProfile = () => {
                 about: userProfile[0].about,
 
             })
-            setfile({
-                ...file,
-                // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
-                dispFile: userProfile[0].avatar
+            // setfile({
+            //     ...file,
+            //     // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+            //     dispFile: userProfile[0].avatar
 
-            })
+            // })
             setaadhar({ ...aadhar, dispFile: userProfile[0].aadhar_card })
             setEditHide(false)
             setDisable(true)
@@ -202,8 +220,17 @@ const ClientProfile = () => {
                 }
                 // console.log("config :: ", config)
                 setOnClick(true)
-                dispatch(aadharThunk(formdata, config))
-                dispatch(createProfileThunk({ values }))
+                const argAadhar = {
+                    config,
+                    formdata,
+                    rid
+                }
+                const argCreateProfile = {
+                    values,
+                    rid
+                }
+                dispatch(aadharThunk(argAadhar))
+                dispatch(createProfileThunk(argCreateProfile))
                 // setClicked(true)
                 // console.log("values:: ", values)
                 setEditHide(false)
@@ -232,7 +259,9 @@ const ClientProfile = () => {
 
         const arg = {
             values,
-            aadhar: aadhar.dispFile
+            aadhar: aadhar.dispFile,
+            rid
+
         }
         console.log(arg)
 
@@ -294,8 +323,12 @@ const ClientProfile = () => {
                 }
             }
             // console.log("config :: ", config)
-
-            dispatch(avatarThunk(formdata, config, file.upldfile))
+            const argAvatar = {
+                config,
+                formdata,
+                rid
+            }
+            dispatch(avatarThunk(argAvatar))
             setenable(false)
             // setClicked(true)
             // console.log("values:: ", values)
@@ -461,12 +494,19 @@ const ClientProfile = () => {
                 }
             })
             if (/^[6-9][0-9]{9}$/.test(event.target.value)) {
-                // console.log("correct!")
-                setErrorEnable({ ...errorEnable, altmbl: false })
-
+                // console.log("correct!", values.mbl)
+                if (event.target.value !== values.mbl) {
+                    // console.log("alternate no valid",event.target.value)
+                    setErrorEnable({ ...errorEnable, altmbl: false })
+                } else {
+                    // console.log("alternate no invalid")
+                    setErrorEnable({ ...errorEnable, altmbl: true })
+                    setErrorText("Different from mobile no.!")
+                }
             }
             else {
                 // console.log("wrong!")
+
                 setErrorEnable({ ...errorEnable, altmbl: true })
                 setErrorText("Please enter valid Mobile No.!")
             }
@@ -479,9 +519,15 @@ const ClientProfile = () => {
                 }
             })
             if (/^[6-9][0-9]{9}$/.test(event.target.value)) {
-                // console.log("correct!")
-                setErrorEnable({ ...errorEnable, mbl: false })
-
+                // console.log("correct!", values.altmbl)
+                if (event.target.value !== values.altmbl) {
+                    // console.log("mob no valid")
+                    setErrorEnable({ ...errorEnable, mbl: false })
+                } else {
+                    // console.log("mob no invalid")
+                    setErrorEnable({ ...errorEnable, mbl: true })
+                    setErrorText("Different from alaternate no.!")
+                }
             }
             else {
                 // console.log("wrong!")
@@ -604,15 +650,15 @@ const ClientProfile = () => {
     };
 
     useEffect(() => {
-        // console.log("error::", errorEnable)
+        console.log("error::", aadhar.dispFile)
         const areTrue = Object.values(errorEnable).every(
             value => value !== true
 
         );
 
-        // console.log("allerror::", areTrue);
+        console.log("allerror::", areTrue);
         const isNullish = Object.values(values).every(value => value !== "");
-        // console.log("null", isNullish)
+        console.log("null", isNullish)
 
         aadhar.dispFile !== "" ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
 
@@ -623,7 +669,7 @@ const ClientProfile = () => {
             <Card
                 elevation={16}
                 sx={{
-                    maxWidth: 1200, maxHeight: 5000,
+                    maxWidth: 1400, maxHeight: 5000,
                     margin: '0 auto',
                     marginTop: 9,
                     borderWidth: 2,
@@ -641,7 +687,7 @@ const ClientProfile = () => {
                     {openModal && <WorkProfile click={handleClose} open={openModal} />}
                     <form onSubmit={editHide ? profileSaveHandler : onUpdateProfileHandler}>
                         <Grid container direction={'row'}>
-                            <Grid item xs={12} sm={3} justifyContent="center" >
+                            <Grid item xs={12} sm={12} md={3} justifyContent="center" >
                                 <Grid container>
                                     {/* <Grid item xs={12} sm={3} justifyContent="left" >
                                         {editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
@@ -649,7 +695,7 @@ const ClientProfile = () => {
                                     <Snackbar
                                         anchorOrigin={{ vertical: "top", horizontal: "center" }}
                                         open={open}
-                                        autoHideDuration={2000}
+                                        autoHideDuration={6000}
                                         onClose={closeSnackbar}
                                     // key={vertical + horizontal}
                                     >
@@ -658,7 +704,8 @@ const ClientProfile = () => {
                                         </Alert>
                                     </Snackbar>
 
-                                    <Grid item sm={12} xs={12} marginTop={12}>
+                                    <Grid item sm={12} xs={12} marginTop={10}>
+                                        <Typography gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'body1' } }}>{email}</Typography>
                                         <Badge
 
                                             overlap="circular"
@@ -695,7 +742,7 @@ const ClientProfile = () => {
                                         {enable && <Button variant="contained" sx={{ marginTop: 2, backgroundColor: "#03a9f4" }} onClick={avatarSubmit}>Upload Photo </Button>}
                                     </Grid>
                                     <Grid item xs={12} sm={12}>
-                                        <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].email : ''}</Typography>
+                                        {/* <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].email : ''}</Typography> */}
                                         {role === "Helper" && <Rating name="half-rating"
 
                                             value={star}
@@ -707,7 +754,7 @@ const ClientProfile = () => {
                                 </Grid>
                             </Grid>
                             <Divider orientation="vertical" flexItem />
-                            <Grid item xs={12} sm={4.5} justifyContent="center"  >
+                            <Grid item xs={12} sm={6} md={4.5} justifyContent="center"  >
                                 <Grid container spacing={2} justifyContent="center" >
                                     <Grid xs={12} sm={12} margin={2} marginLeft={5} item align="left">
                                         <Typography variant='h4'>
@@ -875,9 +922,11 @@ const ClientProfile = () => {
                                     <Grid xs={12} sm={7} item>
                                         {aadhar.dispFile &&
                                             <>
-                                                < IconButton onClick={onAadharView} aria-label="upload picture" component="span">
-                                                    <VisibilityRoundedIcon color="info" fontSize="large" />
-                                                </IconButton>
+                                                {!editHide &&
+                                                    < IconButton onClick={onAadharView} aria-label="upload picture" component="span">
+                                                        <VisibilityRoundedIcon color="info" fontSize="large" />
+                                                    </IconButton>
+                                                }
                                                 {aadhar.dispFile}
                                             </>
                                         }
@@ -893,7 +942,7 @@ const ClientProfile = () => {
                                 </Grid>
                             </Grid>
                             <Divider orientation="vertical" flexItem />
-                            <Grid item xs={12} sm={4} justifyContent="center"   >
+                            <Grid item xs={12} sm={6} md={4} justifyContent="center"   >
                                 <Grid container spacing={2} justifyContent="center" >
                                     <Grid xs={12} sm={12} margin={1} marginLeft={5} item align="left">
                                         <Typography variant='h6'>

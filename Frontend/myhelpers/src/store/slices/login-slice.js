@@ -14,6 +14,7 @@ const isToken = localStorage.getItem("logToken")
 console.log(isToken)
 if (isToken) {
     initialState.isAuth = true
+    initialState.token=isToken
 }
 
 
@@ -25,9 +26,9 @@ export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) =
         };
         // console.log(data)
         const loginRes = await axios.post(`/myhelpers/register/${arg.role}`, data)
-        // localStorage.setItem("logToken", loginRes.data.token)
-        // localStorage.setItem("r_id", loginRes.data.newUser.r_id)
-        // console.log("loginRes", loginRes)
+        localStorage.setItem("logToken", loginRes.data.token)
+        localStorage.setItem("r_id", loginRes.data.newUser.r_id)
+        console.log("loginRes", loginRes)
         return loginRes
 
     }

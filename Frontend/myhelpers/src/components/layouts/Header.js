@@ -83,7 +83,8 @@ const Header = (props) => {
     let navigate = useNavigate()
 
     // let { token } = useSelector((state) => ({ ...state.loginStore }))
-    const role = localStorage.getItem("role")
+    // const role = localStorage.getItem("role")
+    const role="Client"
     const {isAuth} = useSelector(state => ({ ...state.loginStore }))
     // const isAuth = true
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -281,7 +282,7 @@ const Header = (props) => {
             {
                 isAuth &&
                 <ScrollTop {...props}>
-                    <Fab sx={{ backgroundColor: "#163758", color: "white" }} size="medium" aria-label="scroll back to top">
+                    <Fab sx={{ backgroundColor: "#163758", color: "white",borderColor:"red" }} size="medium" aria-label="scroll back to top">
                         <KeyboardArrowUpIcon />
                     </Fab>
                 </ScrollTop>

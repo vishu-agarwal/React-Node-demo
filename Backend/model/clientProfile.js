@@ -3,7 +3,7 @@ const validator = require('validator');
 
 console.log('Client Profile model file ...............');
 const regModel = require('./tblReg');
-
+const avatarModel = require('./tblProfileAvatar')
 const clientSchema = new mongoose.Schema(
   {
     r_id: {
@@ -16,10 +16,7 @@ const clientSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-    avatar: {
-      type: Object,
-      // required: true,
-    },
+   
     aadhar_card: {
       type: String,
       // required: true,
@@ -35,22 +32,22 @@ const clientSchema = new mongoose.Schema(
       // },
     },
 
-    email: {
-      type: String,
-      // unique: true,
-      // required: true,
-      // validate(value) {
-      //   if (!validator.isEmail(value)) {
-      //     throw new Error('UserName is Invalid');
-      //   }
-      // },
-      lowercase: true,
+    mob_num: {
+      type: Number,
+      // required: false,
+      trim: true,
+      validate: {
+        validator: function (val) {
+          return val.toString().length === 10 || val == 0;
+        },
+        message: (val) => `${val.value} has to be 10 digits`,
+      },
     },
     gender: {
       type: String,
       // required: true,
       trim: true,
-      
+
     },
     isMarried: {
       type: Boolean,
@@ -125,10 +122,9 @@ const clientSchema = new mongoose.Schema(
         },
         rate: {
           type: Number,
-        
         }
-   }
-    ],    
+      }
+    ],
   },
   {
     timestamps: true,
@@ -152,6 +148,7 @@ clientSchema.pre('remove', async function (next) {
   const user = this;
   console.log('delete user with profile model file');
   await regModel.deleteMany({ r_id: user.r_id });
+  await avatarModel.deleteMany({ r_id: user.r_id });
   next();
 });
 

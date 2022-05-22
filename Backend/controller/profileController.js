@@ -1,49 +1,87 @@
 const profileModel = require("../model/clientProfile")
 const regModel = require("../model/tblReg")
-
+const avatarModel = require("../model/tblProfileAvatar")
 const multer = require("multer")
+
+const fetchEmail = async (req, res) => {
+    try {
+        const fetchUser = await regModel.findOne({ r_id: req.params.rid })
+        return res.status(200).send(fetchUser.email)
+    }
+    catch (error) {
+        console.log("email::", error.message)
+        return res.status(400).send(error.message)
+    }
+}
+
 
 const createProfile = async (req, res) => {
     console.log("profile::");
     try {
 
         const r_id = req.params.rid
-        const isunique = await profileModel.find({ r_id })
+        const isunique = await avatarModel.find({ r_id })
         if (isunique.length === 0) {
             throw new Error("Please first upload profile photo !")
         }
-        const findMbl = await profileModel.findByCredentials(req.body.alt_mob_num, r_id)
+        // const findMbl = await profileModel.findByCredentials(req.body.alt_mob_num, r_id)
         // console.log(findMbl)
-        const saveProfile = await profileModel.findOneAndUpdate({ r_id }, { ...req.body }, { new: true })
+        const profileDetail = { r_id, ...req.body }
+        // console.log("final user :: ",user);
+        const saveProfile = new profileModel(profileDetail)
+        console.log(saveProfile);
         if (!saveProfile) {
-            throw new Error("Some Problem while saving profile data!")
+            throw new Error("Some problem while saving profile data!")
         }
-        console.log(saveProfile)
-        res.status(200).send(saveProfile)
+        await saveProfile.save()
+        return res.status(200).send("Profile successfully  saved!")
+        // const saveProfile = await profileModel.findOneAndUpdate({ r_id }, { ...req.body }, { new: true })
+
+        // console.log(saveProfile)
+        // res.status(200).send(saveProfile)
     } catch (error) {
-        res.status(400).send(error.message)
+        return res.status(400).send(error.message)
     }
 }
+
+const fetchAvatar = async (req, res) => {
+    try {
+        // console.log("params id ", req.params.rid)
+        // if (avatarModel) {
+            let found = await avatarModel.find({ r_id: req.params.rid })
+            console.log(found.r_id, "find")
+            if (found.length === 0) {
+                return res.status(200).send("First upload photo for create profile!")
+            }
+            return res.status(200).send(found)
+        // }
+    } catch (error) {
+        console.log("avatar::",error.message)
+        return res.status(400).send(error.message)
+    }
+}
+
 const fetchProfile = async (req, res) => {
     try {
-        // console.log("params id ",req.params.rid)
-        if (profileModel) {
+        console.log("params id ",req.params.rid)
+        // if (profileModel) {
             let isunique = await profileModel.find({ r_id: req.params.rid })
-            console.log(isunique, "dsjjhsdjfb")
+            console.log(isunique.r_id, "find")
             if (isunique.length === 0) {
-                return res.status(200).send("Please create profile for move further!")
+                return res.status(200).send("Please create profile for move forward!")
             }
             else {
-                const loginNo = await regModel.findOne({ r_id: isunique.r_id })
-                console.log(loginNo, "dsjjhsdjfb")
-                isunique = { ...isunique._doc, email: loginNo.email }
+                // const loginNo = await regModel.findOne({ r_id: isunique.r_id })
+                // console.log(loginNo, "login")
+                // isunique = { ...isunique._doc, email: loginNo.email }
                 // console.log("isunique ::: ", isunique, "login::", loginNo.mob_num)
                 return res.status(200).send(isunique)
             }
-        }
-
+        // }
+        // 
     } catch (error) {
-        res.status(400).send(error.message)
+        console.log("profile::", error.message)
+       return res.status(400).send(error.message)
     }
 
 
@@ -105,14 +143,12 @@ const updateProfile = async (req, res) => {
             throw new Error("Some Problem while uupdating working details!")
         }
         // console.log("update data:: ", update)
-        return res.status(200).send("update WorkDetails successfully!")
+        return res.status(200).send("Update profilesuccessfully!")
         // return res.send(isunique)
     } catch (error) {
         res.status(404).send(error.message)
     }
 }
-
-
 
 
 //set destination and fie name
@@ -145,9 +181,9 @@ const uploadImg = multer({
 const avatarUpload = async (req, res) => {
     try {
         // await req.user.save()
-        // console.log(req.file)
+        console.log(req)
         const url = req.protocol + '://' + req.get('host')
-        // console.log("req.file", url + '/image/' + req.file.filename)
+        console.log("req.file", url + '/image/' + req.file.filename)
         const r_id = req.params.rid
         const foundUser = await regModel.findOne({ r_id })
         if (!foundUser) {
@@ -155,14 +191,14 @@ const avatarUpload = async (req, res) => {
         }
 
         // console.log("found :: ", foundUser)
-        const found = await profileModel.findOne({ r_id })
+        const found = await avatarModel.findOne({ r_id })
         if (found) {
-            const updt = await profileModel.findOneAndUpdate({ r_id }, {
+            const updt = await avatarModel.findOneAndUpdate({ r_id }, {
                 avatar: req.file.path
             }, { new: true })
         }
         else {
-            const newpro = new profileModel({
+            const newpro = new avatarModel({
                 r_id,
                 avatar: req.file.path,
             })
@@ -171,10 +207,10 @@ const avatarUpload = async (req, res) => {
             // console.log(newpro);
         }
 
-        res.status(200).send("Profile pic sucessfully uploaded")
+        return res.status(200).send("Profile pic sucessfully uploaded ! ")
     }
     catch (error) {
-        res.status(400).send(error.message)
+        return res.status(400).send(error.message)
     }
 }
 
@@ -238,4 +274,6 @@ module.exports = {
     uploadPdf,
     updateStar,
     updateProfile,
+    fetchEmail,
+    fetchAvatar
 }

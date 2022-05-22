@@ -16,10 +16,10 @@ const createWorkProfile = async (req, res) => {
             const workProfile = new workProfileModel(workDetail)
             console.log(workProfile);
             await workProfile.save()
-            res.status(200).send("Successfully workDetails saved!")
+           return res.status(200).send("Successfully workDetails saved!")
       
     } catch (error) {
-        res.status(400).send(error.message)
+       return res.status(400).send(error.message)
     }
 }
 const fetchWorkDetails = async (req, res) => {

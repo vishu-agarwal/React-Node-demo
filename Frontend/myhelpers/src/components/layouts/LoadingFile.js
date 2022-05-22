@@ -4,7 +4,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 
 export default function Loading(props) {
-    // const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    React.useEffect(() => {
+        setOpen(props.isLoad)
+    },[props.isLoad])
     // const handleClose = () => {
     //     setOpen(false);
     // };
@@ -17,7 +20,7 @@ export default function Loading(props) {
             {/* <Button onClick={handleToggle}>Show backdrop</Button> */}
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={props.isLoad}
+                open={open}
                 // onClick={handleClose}
             >
                 <CircularProgress color="inherit" />
