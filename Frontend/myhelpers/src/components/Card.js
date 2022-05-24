@@ -94,57 +94,57 @@ const CardJS = (props) => {
     console.log("save........", props.saveStatus)
     return (
         <Container >
-        <Card
-            // variant="outlined"
-            sx={{
-                minWidth: {
-                    xs: 1.0, // 100%
-                    sm: 350,
-                    md: 400
-                },
-                // maxWidth: 375,
-                height: {
-                    xs: 1.0, // 100%
-                    sm: 520,
-                    md: 250,
-                },
-                marginLeft: 2,
-                marginTop: 2,
-                marginRight: 1,
-                borderRadius: 3,
-                // borderColor: "#163758",
-                borderWidth: 2
-            }} elevation={16}
-        >
-            <CardContent sx={{ padding: 1 }}>
-                <Grid container direction={'row'} >
-                    <Grid item xs={11} sm={11} md={11}>
-                        <Typography color="#163758" variant="h6" paddingLeft={1} gutterBottom align="left">
-                            {String(props.values.name).toUpperCase()}
-                        </Typography>
+            <Card
+                // variant="outlined"
+                sx={{
+                    minWidth: {
+                        xs: 1.0, // 100%
+                        sm: 350,
+                        md: 400
+                    },
+                    // maxWidth: 375,
+                    height: {
+                        xs: 1.0, // 100%
+                        sm: 520,
+                        md: 250,
+                    },
+                    marginLeft: 2,
+                    marginTop: 2,
+                    marginRight: 1,
+                    borderRadius: 3,
+                    // borderColor: "#163758",
+                    borderWidth: 2
+                }} elevation={16}
+            >
+                <CardContent sx={{ padding: 1 }}>
+                    <Grid container direction={'row'} >
+                        <Grid item xs={11} sm={11} md={11}>
+                            <Typography color="#163758" variant="h6" paddingLeft={1} gutterBottom align="left">
+                                {String(props.values.name).toUpperCase()}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={1} sm={1} justifyContent="right" >
+                            <Tooltip title="Save">
+                                {props.saveStatus ?
+                                    <BookmarkIcon fontSize="medium" cursor="pointer" onClick={onSaveClick} />
+                                    :
+                                    <BookmarkBorderIcon fontSize="medium" cursor="pointer" onClick={onSaveClick} />
+                                }
+                            </Tooltip>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={1} sm={1} justifyContent="right" >
-                        <Tooltip title="Save">
-                            {props.saveStatus ?
-                                <BookmarkIcon fontSize="medium" cursor="pointer" onClick={onSaveClick} />
-                                :
-                                <BookmarkBorderIcon fontSize="medium" cursor="pointer" onClick={onSaveClick} />
-                            }
-                        </Tooltip>
-                    </Grid>
-                </Grid>
-                <Grid container direction={'row'} justifyContent="center" >
-                    <Grid item xs={11} sm={6} md={4} alignItems="left">
-                        <CardMedia
-                            component="img"
-                            height={150}
-                            sx={{ width: 110 }}
-                            // image={props.values.avatar[0]}
-                            image={`http://localhost:3001/${props.avatar}`}
-                            alt="Profile Image"
-                        />
+                    <Grid container direction={'row'} justifyContent="center" >
+                        <Grid item xs={11} sm={6} md={4} alignItems="left">
+                            <CardMedia
+                                component="img"
+                                height={150}
+                                sx={{ width: 110 }}
+                                // image={props.values.avatar[0]}
+                                image={`http://localhost:3001/${props.values.avatar}`}
+                                alt="Profile Image"
+                            />
 
-                        {/* <Rating name="half-rating" 
+                            {/* <Rating name="half-rating" 
                                 // value={parseInt(props.values.rate)}
                                 value={star}
                                 onChange={(val) =>
@@ -155,41 +155,41 @@ const CardJS = (props) => {
                             // onClick={(val)=>onRateClick(val)}
                             /> */}
 
-                    </Grid>
-                    <Grid item xs={11} sm={8} md={7} marginLeft={2} align="left" >
-                        <Typography variant="h5" component="div"></Typography>
-                        <Typography gutterBottom sx={{ fontSize: 15 }} >
-                            Mobile No : {props.values.profession_mbl}
-                        </Typography>
-                        <Typography gutterBottom sx={{ fontSize: 15 }}  >
-                            {/* //yyyy-mm-dd */}
-                            Age : {
-                                ageDate()
-                            }
-                        </Typography>
-                        <Typography gutterBottom sx={{ fontSize: 15 }} >
-                            Work : {
-                                Array.isArray(props.values.workDetails[0]) ?
-                                    props.values.workDetails[0].map((value, index) =>
-                                        // console.log(value)
+                        </Grid>
+                        <Grid item xs={11} sm={8} md={7} marginLeft={2} align="left" >
+                            <Typography variant="h5" component="div"></Typography>
+                            <Typography gutterBottom sx={{ fontSize: 15 }} >
+                                Mobile No : {props.values.profession_mbl}
+                            </Typography>
+                            <Typography gutterBottom sx={{ fontSize: 15 }}  >
+                                {/* //yyyy-mm-dd */}
+                                Age : {
+                                    ageDate()
+                                }
+                            </Typography>
+                            <Typography gutterBottom sx={{ fontSize: 15 }} >
+                                Work : {
+                                    Array.isArray(props.values.workDetails[0]) ?
+                                        props.values.workDetails[0].map((value, index) =>
+                                            // console.log(value)
 
-                                        value.category.split("(")[0] + ", "
-                                    )
+                                            value.category.split("(")[0] + ", "
+                                        )
 
-                                    :
-                                    props.values.workDetails.map((value, index) =>
+                                        :
+                                        props.values.workDetails.map((value, index) =>
 
-                                        // console.log(value)
-                                        value.category.split("(")[0] + ", "
-                                    )
-                                // console.log(props.values)
-                            }
-                        </Typography>
+                                            // console.log(value)
+                                            value.category.split("(")[0] + ", "
+                                        )
+                                    // console.log(props.values)
+                                }
+                            </Typography>
 
-                        <Typography gutterBottom sx={{ fontSize: 15 }}  >
-                            Prefer Time : {props.values.workTime}
-                        </Typography>
-                        {/* {
+                            <Typography gutterBottom sx={{ fontSize: 15 }}  >
+                                Prefer Time : {props.values.workTime}
+                            </Typography>
+                            {/* {
                                 props.hireStatus.length !== 0 ?
                                     // console.log("status::",)
                                     <>
@@ -198,25 +198,25 @@ const CardJS = (props) => {
                                     </>
                                     : ''
                             } */}
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Grid container direction={'row'} justifyContent="center" >
-                    <Grid item xs={6} sm={12} md={4} >
-                        <Rating name="half-rating"
-                            sx={{ float: "left" }}
-                            // value={parseInt(props.values.rate)}
-                            value={star}
-                            onChange={onRateClick}
-                            size="medium"
-                        // onClick={(val)=>onRateClick(val)}
-                        />
+                    <Grid container direction={'row'} justifyContent="center" >
+                        <Grid item xs={6} sm={12} md={4} >
+                            <Rating name="half-rating"
+                                sx={{ float: "left" }}
+                                // value={parseInt(props.values.rate)}
+                                value={star}
+                                onChange={onRateClick}
+                                size="medium"
+                            // onClick={(val)=>onRateClick(val)}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={12} md={8} align="" paddingLeft={0.5}>
+                            <Button sx={{ float: "right", padding: 0, fontSize: 15 }} onClick={onViewClick}>View Details </Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6} sm={12} md={8} align="" paddingLeft={0.5}>
-                        <Button sx={{ float: "right", padding: 0, fontSize: 15 }} onClick={onViewClick}>View Details </Button>
-                    </Grid>
-                </Grid>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
         </Container>
     );
 }

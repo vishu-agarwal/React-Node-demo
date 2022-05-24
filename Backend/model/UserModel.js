@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-
+// const validator = require('validator');
+const jwt = require("jsonwebtoken")
 console.log(' Profile model file ...............');
 // const regModel = require('./tblReg');
 // const avatarModel = require('./tblProfileAvatar')
@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
         },
         otp: {
             type: String,
-            
+
             trim: true,
         },
         name: {
@@ -45,7 +45,10 @@ const userSchema = new mongoose.Schema(
             //   message: 'An age must be at least 1 year from now .',
             // },
         },
-
+        isProfile: {
+            type: Boolean,
+            default: false
+        },
         mob_num: {
             type: Number,
             // required: false,
@@ -73,7 +76,7 @@ const userSchema = new mongoose.Schema(
             // required: true,
             default: false,
         },
-        address: [
+        address: 
             {
                 state: {
                     type: String,
@@ -112,7 +115,6 @@ const userSchema = new mongoose.Schema(
                     trim: true,
                 },
             },
-        ],
         alt_mob_num: {
             type: Number,
             // required: false,
@@ -149,6 +151,23 @@ const userSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
+
+
+userSchema.methods.generateAuthToken = async function () {
+    const user = this
+    //console.log(user)
+    // toString becouse sign method wants string
+    console.log("tokenMethod");
+    // console.log(user._id.toString());
+    const token = jwt.sign({ id: user._id.toString() }, process.env.JSON_TOKEN)
+    console.log(token);
+    //save token to db
+    // user.tokens = user.tokens.concat({ token })//token:token
+    // await user.save()
+
+    return token
+}
+
 
 // check alternate password and registered no is not same
 userSchema.statics.findByCredentials = async (mob_num, r_id) => {

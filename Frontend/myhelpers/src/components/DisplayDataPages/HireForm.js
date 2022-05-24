@@ -543,7 +543,6 @@ const HireForm = (props) => {
                                                     multiple
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
-
                                                     }}
                                                     value={props.work}
                                                     onChange={workChange}

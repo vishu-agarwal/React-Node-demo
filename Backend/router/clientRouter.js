@@ -24,10 +24,10 @@ router.post("/myhelper/upldAadhar/:rid", auth,
 )
 
 //fecth email
-router.get("/myhelpers/userProfile/fetchEmail/:rid", auth, profileController.fetchEmail)
+// router.get("/myhelpers/userProfile/fetchEmail/:rid", auth, profileController.fetchEmail)
 
-//fetch avatar
-router.get("/myhelpers/userProfile/fetchAvatar/:rid", auth, profileController.fetchAvatar)
+// //fetch avatar
+// router.get("/myhelpers/userProfile/fetchAvatar/:rid", auth, profileController.fetchAvatar)
 
 //fecth profile
 router.get("/myhelpers/userProfile/fetch/:rid",auth, profileController.fetchProfile)

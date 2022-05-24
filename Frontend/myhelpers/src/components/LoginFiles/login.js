@@ -75,16 +75,12 @@ const Login = () => {
         (state) => ({ ...state.otpStore })
     );
 
-    // useEffect(() => {
-    //     if (values.role !== 'Client' && values.role !== 'Helper') {
-    //         navigate("/")
-    //     }
-    // }, [values])
     useEffect(() => {
         if (otpUser.length !== 0) {
             dispatch(otpActions.isOtpReducer());
         }
     }, [otpUser]);
+
     useEffect(() => {
         if (error.length !== 0) {
             // console.log(error)
@@ -109,6 +105,7 @@ const Login = () => {
             dispatch(otpActions.messageReducer());
         }
     }, [error, otpError, otpMessage]);
+
     useEffect(() => {
         console.log('set login user ');
         console.log(a1);
@@ -170,7 +167,7 @@ const Login = () => {
 
     const onChangeEmail = (event) => {
         setValues((prevState) => {
-            return { ...prevState, email: event.target.value };
+            return { ...prevState, email: event.target.value.toLowerCase() };
         });
         if (
             /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/.test(
@@ -189,8 +186,8 @@ const Login = () => {
         <Grid align="center">
             {(loadingOtp || loadingLogin) && <Loading isLoad={true} />}
             <Card
-                variant="outlined"
-                // elevation={4}
+                // variant="outlined"
+                elevation={16}
                 sx={{
                     maxWidth: 600,
                     minHeight: 350,
@@ -200,7 +197,7 @@ const Login = () => {
 
                     backgroundImage: `url(${abc})`,
                     backgroundRepeat: 'no-repeat',
-                    borderColor: '#163758',
+                    // borderColor: '#163758',
                     backgroundSize: '100%',
                     // marginTop: 15
                 }}
@@ -249,7 +246,7 @@ const Login = () => {
                                         fullWidth
                                         id="email"
                                         label="Email Address"
-                                        value={values.email}
+                                        value={values.email.toLowerCase()}
                                         onChange={onChangeEmail}
                                         InputProps={{
                                             endAdornment: (

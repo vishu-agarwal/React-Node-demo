@@ -42,7 +42,7 @@ const helperSchema = new mongoose.Schema({
                 trim: true,
                 // lowercase: true,
             },
-            exprience: {
+            experience: {
                 type: String,
                 // required: true,
                 trim: true,

@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-
 const initialState = {
     workData: [],
     workMessage: '',
@@ -34,7 +33,7 @@ export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk",
             },
         })
 
-        // console.log("Response::", workDataRes)
+        console.log("Response::", workDataRes)
         return workDataRes
 
     }
@@ -53,7 +52,7 @@ export const fetchWorkThunk = createAsyncThunk("workProfile/fetchWorkThunk", asy
             },
         })
 
-        // console.log("Fetch work Response:: ", fetchRes)
+        console.log("Fetch work Response:: ", fetchRes)
         return fetchRes
 
     } catch (error) {
@@ -111,13 +110,12 @@ const workSlice = createSlice({
         },
         [workProfileThunk.fulfilled]: (state, action) => {
             state.workLoading = false
-            //  state.isAuth = true
-            state.workMessage = action.payload.data
+
+            state.workData = action.payload.data
+            state.workMessage = "Work details saved successfully!"
         },
         [workProfileThunk.rejected]: (state, error) => {
             state.workLoading = false
-            // console.log("rejected::", error.error.message)
-
             state.workError = error.error.message
         },
         //fetchWorkData
@@ -126,13 +124,11 @@ const workSlice = createSlice({
         },
         [fetchWorkThunk.fulfilled]: (state, action) => {
             state.workLoading = false
-            //  state.isAuth = true
+            console.log("workdata ...",action.payload.data)
             state.workData = action.payload.data
         },
         [fetchWorkThunk.rejected]: (state, error) => {
             state.workLoading = false
-            // console.log("rejected::", error.error.message)
-
             state.workError = error.error.message
         },
         //updateWorkData
@@ -141,13 +137,12 @@ const workSlice = createSlice({
         },
         [updateWorkThunk.fulfilled]: (state, action) => {
             state.workLoading = false
-            //  state.isAuth = true
-            state.workMessage = action.payload.data
+            console.log("workdata ...", action.payload.data)
+            state.workData = action.payload.data
+            state.workMessage = "Work details update successfully!"
         },
         [updateWorkThunk.rejected]: (state, error) => {
             state.workLoading = false
-            // console.log("rejected::", error.error.message)
-
             state.workError = error.error.message
         },
     }

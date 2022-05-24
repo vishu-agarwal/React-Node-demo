@@ -25,6 +25,8 @@ import HiredHelper from '../Modals/HiredHelper';
 import { loginActions } from '../../store/slices/login-slice'
 
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
+import { profileActions } from '../../store/slices/profile-slice'
 
 function ScrollTop(props) {
     const { children, window } = props;
@@ -81,19 +83,22 @@ const pages = ['Home', 'Find Helpers', 'About Us', 'Profile'];
 const Header = (props) => {
     const dispatch = useDispatch()
     let navigate = useNavigate()
-
+    let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     // let { token } = useSelector((state) => ({ ...state.loginStore }))
     const role = localStorage.getItem("role")
 
     // const role="Client"
     const { isAuth } = useSelector(state => ({ ...state.loginStore }))
     // const isAuth = true
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] = React.useState(false);
+    const [anchorElUser, setAnchorElUser] = React.useState(false);
     const [openRequest, setOpenRequest] = useState(false)
     const [openShortlist, setOpenShortlist] = useState(false)
     const [openHired, setOpenHired] = useState(false)
-
+    const [avatar, setAvatar] = useState("")
+    useEffect(() => {
+        userProfile[0]?.avatar && setAvatar(userProfile[0].avatar)
+    }, [userProfile])
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -248,7 +253,7 @@ const Header = (props) => {
                             <Box sx={{ flexGrow: 0 }}>
                                 {/* <Tooltip title="My Profile"> */}
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="" />
+                                    <Avatar alt="Remy Sharp" src={`${avatar}`} />
                                 </IconButton>
                                 {/* </Tooltip> */}
                                 <Menu
@@ -267,13 +272,10 @@ const Header = (props) => {
                                     open={Boolean(anchorElUser)}
                                     onClose={handleCloseUserMenu}
                                 >
-
                                     <MenuItem onClick={onRequestClick}>Requests</MenuItem>
                                     {role === "Client" && <MenuItem onClick={onShortlistClick} >Shortlisted</MenuItem>}
                                     <MenuItem onClick={onHireClick}>Hired</MenuItem>
                                     <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
-
-
                                 </Menu>
                             </Box>
                         }

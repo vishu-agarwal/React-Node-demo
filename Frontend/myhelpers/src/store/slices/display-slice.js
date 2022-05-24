@@ -15,51 +15,39 @@ const initialState = {
 const varToken = localStorage.getItem("logToken");
 export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarThunk", async (arg) => {
     try {
-
         const fetchavatar = await axios.get(`/myhelpers/fetchAllAvatar`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
         // console.log("Fwtch Response:: ", fetchavatar)
-
         return fetchavatar
-
     } catch (error) {
         throw new Error(error.response.data)
     }
 })
 export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async (arg) => {
     try {
-
         const fetchRes = await axios.get(`/myhelpers/fetchAllData/Client`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
         // console.log("Fwtch Response:: ", fetchRes)
-
         return fetchRes
-
     } catch (error) {
         throw new Error(error.response.data)
     }
 })
 export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThunk", async (arg) => {
     try {
-
         const fetchRes = await axios.get(`/myhelpers/fetchSaveUser/${arg}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
         console.log("save Response:: ", fetchRes)
-
         return fetchRes
-
     } catch (error) {
         throw new Error(error.response.data)
     }
@@ -83,33 +71,34 @@ export const searchThunk = createAsyncThunk("displayAll/searchThunk", async (arg
 })
 export const sortThunk = createAsyncThunk("displayAll/sortThunk", async (arg) => {
     try {
-        // console.log(searchText)
         const fetchRes = await axios.get(`/myhelpers/sort?field=${arg.field}&sortValue=${arg.sort}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
         console.log("Fwtch Response:: ", fetchRes)
-
         return fetchRes
-
     } catch (error) {
         throw new Error(error.response.data)
     }
 })
 export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) => {
-    const data = {
-        user_id: arg.user_id
+    try {
+        const data = {
+            user_id: arg.user_id
+        }
+        const fetchRes = await axios.post(`/myhelpers/saveUser/${arg.rid}`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            }
+        }
+        )
+        console.log("response---", fetchRes)
+        return fetchRes
     }
-
-    const fetchRes = await axios.post(`/myhelpers/saveUser/${arg.rid}`, data,{
-        headers: {
-        Authorization: "Bearer " + varToken,
-    }}
-    )
-
-    return fetchRes
+    catch (error) {
+        throw new Error(error.response.data)
+    }
 })
 export const isProfileThunk = createAsyncThunk("displayAll/isProfileThunk", async (arg) => {
 
@@ -147,7 +136,6 @@ const displaySlice = createSlice({
         },
     },
     extraReducers: {
-
         //fetchProfileData
         [fetchAllThunk.pending]: (state, action) => {
             state.displayLoading = true
@@ -160,7 +148,6 @@ const displaySlice = createSlice({
         },
         [fetchAllThunk.rejected]: (state, error) => {
             state.displayLoading = false
-
             state.displayError = error.error.message
         },
         //fetch avatar of all helpers

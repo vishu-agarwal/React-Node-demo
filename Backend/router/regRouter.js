@@ -14,7 +14,7 @@ const regController = require("../controller/regController")
 // })
 
 //generate otp
-router.post("/myhelpers/otp/:role", otpController.otpLoginController)
+router.post("/myhelpers/otp/:role", regController.otpLoginController)
 
 //register user
 router.post("/myhelpers/register/:role", regController.loginController)

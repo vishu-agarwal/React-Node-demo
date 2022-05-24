@@ -1,5 +1,6 @@
 const hireRequestModel = require("../model/HireRequestModel")
-const profileModel = require("../model/clientProfile")
+const profileModel = require("../model/clientProfile");
+const userModel = require("../model/UserModel");
 
 const createHireRequest = async (req, res) => {
     console.log("profile::");
@@ -10,18 +11,14 @@ const createHireRequest = async (req, res) => {
         console.log(req.body)
         const found = await hireRequestModel.findOne({ r_id: r_id })
         if (found) {
-
             const update = await hireRequestModel.findOneAndUpdate({ r_id: req.params.rid }, { hireUser: found.hireUser.concat(...req.body) }, { new: true })
-
             console.log("update newUser :: ", update);
             return res.status(200).send("hire user added")
         }
         else {
-
             if (!r_id.charAt(0) === "H") {
                 throw new Error("You are not authorized to add work details!")
             }
-
             const hireDetail = { r_id, hireUser }
             console.log("final user :: ", hireDetail);
             const hireRequest = new hireRequestModel(hireDetail)
@@ -29,7 +26,6 @@ const createHireRequest = async (req, res) => {
             await hireRequest.save()
             return res.status(200).send("Successfully hireRequest saved!")
         }
-
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -44,7 +40,7 @@ const fetchHireRequest = async (req, res) => {
             if (found) {
                 const helper = await Promise.all(
                     found.hireUser.map((val) => {
-                        return profileModel.find({ r_id: val.user_id }).then((res) => {
+                        return userModel.find({ r_id: val.user_id }).then((res) => {
                             console.log("values:: ", val)
                             hireRequest.push({
                                 name: res.map(val => val.name),
@@ -56,7 +52,6 @@ const fetchHireRequest = async (req, res) => {
                                 fromTime: val.fromTime,
                                 toTime: val.toTime,
                                 description: val.description,
-
                             })
                         }).catch((error) => {
                             return res.status(400).send(error.massage)
@@ -70,10 +65,8 @@ const fetchHireRequest = async (req, res) => {
             if (found) {
                 const helper = await Promise.all(
                     found.map((val) => {
-                        return profileModel.find({ r_id: val.r_id }).then((res) => {
-
+                        return userModel.find({ r_id: val.r_id }).then((res) => {
                             const data = val.hireUser.find((value) => value.user_id === req.params.rid)
-
                             hireRequest.push({
                                 name: res.map(val => val.name),
                                 user_id: val.r_id,

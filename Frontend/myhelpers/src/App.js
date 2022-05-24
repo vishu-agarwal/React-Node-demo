@@ -91,13 +91,13 @@ function App() {
 
   const isToken = localStorage.getItem("logToken")
 
-  console.log("is authhhhhhh", isAuth, isToken)
+  // console.log("is authhhhhhh", isAuth, isToken)
   return (
     <BrowserRouter>
       <div className="App">
         <Header />
         <div className="xyz" aligm="center">
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<Loader isLoad={true} />}>
             <Routes>
               {/* private route for both client and helper */}
 

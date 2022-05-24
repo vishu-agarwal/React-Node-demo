@@ -11,7 +11,7 @@ const initialState = {
 }
 
 const isToken = localStorage.getItem("logToken")
-console.log(isToken)
+// console.log(isToken)
 if (isToken) {
     initialState.isAuth = true
     initialState.token=isToken
@@ -62,7 +62,7 @@ const loginSlice = createSlice({
             state.isAuth = true
             state.token = action.payload.data.token
             // console.log(state.token)
-            state.logUser = action.payload.data.newUser
+            state.logUser = action.payload.data.removeOtp
         },
         [loginThunk.rejected]: (state, error) => {
             state.loadingLogin = false

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 
 export default function Loading(props) {
     const [open, setOpen] = React.useState(false);
+
     React.useEffect(() => {
         setOpen(props.isLoad)
     },[props.isLoad])

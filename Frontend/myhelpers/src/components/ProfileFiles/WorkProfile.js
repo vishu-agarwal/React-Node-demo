@@ -90,7 +90,6 @@ const WorkProfile = (props) => {
 
     const [lang, setlang] = useState([]);
     const [values, setValues] = useState({
-
         porf_mbl: '',
         workTime: '',
         study: '',
@@ -122,40 +121,37 @@ const WorkProfile = (props) => {
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(workMessage)
-
             dispatch(workProfileActions.messageReducer())
-
         }
         if (workError.length !== 0) {
             // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(workError)
-
             dispatch(workProfileActions.errorReducer())
         }
 
     }, [workMessage, workError])
 
-
     useEffect(() => {
-        if (workData.length !== 0) {
+        // console.log("workdata ;;;", workData, typeof workData.languages)
+        if (workData.length !==0) {
+            // console.log(workData,"...workData file")
             setValues({
-                porf_mbl: workData[0].profession_mbl,
-                workTime: workData[0].workTime,
-                study: workData[0].education,
-                otherStudy: workData[0].other_education
-
+                porf_mbl: workData?.profession_mbl,
+                workTime: workData?.workTime,
+                study: workData?.education,
+                otherStudy: workData?.other_education
             })
-            let list =
-                workData[0].languages.map((value, index) => {
-                    return value.language
-                })
+            let list = workData?.languages?.map((value, index) => {
+                // console.log(value.language, "list value----")
+                return value.language
+            }).flat()
+            // console.log(list, "language list")
             setlang(
                 list
             );
-
-            let workDetails = workData[0]?.workDetails?.filter((data) => data)
+            let workDetails = workData?.workDetails?.filter((data) => data)
             setFields(workDetails)
             setEditHide(false)
             setDisable(true)
@@ -163,7 +159,7 @@ const WorkProfile = (props) => {
     }, [workData])
 
     const onSaveWorkSubmit = (e) => {
-        console.log("save works")
+        // console.log("save works")
         e.preventDefault()
         const arg = {
             values,
@@ -171,7 +167,7 @@ const WorkProfile = (props) => {
             fields,
             rid
         }
-        console.log("abc", arg)
+        // console.log("abc", arg)
         //create work Profile
         dispatch(workProfileThunk(arg))
         //Edit button display
@@ -190,7 +186,7 @@ const WorkProfile = (props) => {
             fields,
             rid
         }
-        console.log(arg)
+        // console.log("argument...", arg)
 
         dispatch(updateWorkThunk(arg))
         //Edit button display
@@ -221,6 +217,7 @@ const WorkProfile = (props) => {
 
     const [errorText, setErrorText] = useState("");
     const langHandleChange = (event) => {
+        // console.log("event", event.target)
         const {
             target: { value },
         } = event;
@@ -228,49 +225,43 @@ const WorkProfile = (props) => {
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
-        console.log("language::", event.target.value)
+        // console.log("language::", event.target.value)
         if (event.target.value.length === 0) {
-            console.log("wrong::", event.target.value)
+            // console.log("wrong::", event.target.value)
             setErrorEnable({ ...errorEnable, language: true })
             setErrorText("Please choose it!")
         }
         else {
-            console.log("correct::", event.target.value)
+            // console.log("correct::", event.target.value)
             setErrorEnable({ ...errorEnable, language: false })
 
         }
     };
     const onChange = (event) => {
-
-
-        if (event.target.id === "otherStudy") {
+        // console.log("event....", event.target)
+        if (event.target.name === "otherStudy") {
             setValues((prevState) => { return { ...prevState, otherStudy: event.target.value } })
 
             if (/^[A-Za-z/*]+$/.test(event.target.value)) {
-
                 setErrorEnable({ ...errorEnable, otherStudy: false })
-
             }
             else {
-
                 setErrorEnable({ ...errorEnable, otherStudy: true })
                 setErrorText("Please fill it!")
             }
         }
-        else if (event.target.id === "studyselect") {
+        else if (event.target.name === "studyselect") {
+            // console.log(event.target.value, "study")
             setValues((prevState) => { return { ...prevState, study: event.target.value } })
             if (event.target.value !== "") {
-
                 setErrorEnable({ ...errorEnable, study: false })
-
             }
             else {
-
                 setErrorEnable({ ...errorEnable, study: true })
                 setErrorText("Please choose it!")
             }
         }
-        else if (event.target.id === "time") {
+        else if (event.target.name === "time") {
             setValues((prevState) => { return { ...prevState, workTime: event.target.value } })
             if (event.target.value !== "") {
 
@@ -283,7 +274,7 @@ const WorkProfile = (props) => {
                 setErrorText("Please choose it!")
             }
         }
-        else if (event.target.id === "mobileno") {
+        else if (event.target.name === "mobileno") {
             setValues((prevState) => {
                 return {
                     ...prevState,
@@ -306,15 +297,13 @@ const WorkProfile = (props) => {
         }
     };
     useEffect(() => {
-        console.log("error::", errorEnable)
+        // console.log("error::", errorEnable)
         const areTrue = Object.values(errorEnable).every(
             value => value !== true
-
         );
-
-        console.log("allerror::", areTrue);
+        // console.log("allerror::", areTrue);
         const isNullish = Object.values(values).every(value => value !== "");
-        console.log("null", isNullish)
+        // console.log("null", isNullish)
         isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false)
 
     }, [errorEnable, values])
@@ -326,35 +315,15 @@ const WorkProfile = (props) => {
             aria-describedby="modal-modal-description"
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-
             <Grid >
                 {workLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
-                        maxWidth: 750, maxHeight: 8000,
+                        maxWidth: 760, maxHeight: 8000,
                         margin: '0 auto',
                         paddingTop: 0,
                         borderRadius: 5,
                     }}>
-                    {/* <CardContent >
-
-                        <Grid container direction={'row'} spacing={0}>
-                            <Grid item xs={2} justifyContent="left" >
-                                {!editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
-                            </Grid>
-
-                            <Grid item xs={8} >
-
-                            </Grid>
-                            <Grid item xs={2} justifyContent="right" >
-                                <Button variant="contained" color="error" onClick={props.click}>Close</Button>
-                            </Grid>
-
-                        </Grid> */}
-
-                    {/* <Typography variant="h4" component='div' fontSize='30px'>Professional Profile</Typography>
-                        <Typography color='orange' variant='body1' component='p'>Please fill up this form is necessary to move forward !</Typography> */}
-
                     <CardContent style={{ padding: 0 }}>
                         <Grid container direction={'row'} >
                             <Snackbar
@@ -394,7 +363,7 @@ const WorkProfile = (props) => {
                             </Grid>
                         </Grid>
                         <Grid container justifyContent="center">
-                            <Grid item xs={12} sm={12} md={12} margin={2} align="center">
+                            <Grid item xs={12} sm={12} md={12} margin={1} marginLeft={3} marginRight={3} align="center">
                                 <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>
                                     {/* <Typography variant='subtitle1' marginLeft={1.5}  align='left' color='InfoText'>Personal Details : </Typography> */}
                                     <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Working Details : </Typography>
@@ -409,7 +378,7 @@ const WorkProfile = (props) => {
                                                 }}
                                                 required
                                                 variant='outlined'
-                                                id="mobileno"
+                                                name="mobileno"
                                                 label="Profession Monile No."
                                                 placeholder=''
                                                 fullWidth
@@ -424,7 +393,7 @@ const WorkProfile = (props) => {
 
                                             <FormControl fullWidth error={errorEnable.workTime} >
                                                 <InputLabel htmlFor="grouped-native-select">Working Time</InputLabel>
-                                                <Select native id="time" label="Working Time"
+                                                <Select name="time" label="Working Time"
                                                     // disabled={fieldsDisable}
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
@@ -434,21 +403,20 @@ const WorkProfile = (props) => {
                                                     onChange={onChange}
 
                                                 >
-                                                    <option value=""> </option>
-
-                                                    <option value="Live In (24 Hrs)">Live In (24 Hrs)</option>
-                                                    <option value="Full Day (12 Hrs)">Full Day (12 Hrs)</option>
-                                                    <option value="Half Day (6 Hrs)">Half Day (6 Hrs)</option>
-                                                    <option value="Custom (1-4 Hrs)">Custom (1-4 Hrs)</option>
-                                                    <option value="Custom Night Shift (After 8 PM)">Custom Night Shift (After 8 PM)</option>
-                                                    <option value="Night Shift (12 Hrs)">Night Shift (12 Hrs)</option>
+                                                    <MenuItem value="">---select---</MenuItem>
+                                                    <MenuItem value="Live In (24 Hrs)">Live In (24 Hrs)</MenuItem>
+                                                    <MenuItem value="Full Day (12 Hrs)">Full Day (12 Hrs)</MenuItem>
+                                                    <MenuItem value="Half Day (6 Hrs)">Half Day (6 Hrs)</MenuItem>
+                                                    <MenuItem value="Custom (1-4 Hrs)">Custom (1-4 Hrs)</MenuItem>
+                                                    <MenuItem value="Custom Night Shift (After 8 PM)">Custom Night Shift (After 8 PM)</MenuItem>
+                                                    <MenuItem value="Night Shift (12 Hrs)">Night Shift (12 Hrs)</MenuItem>
                                                 </Select>
                                                 <FormHelperText>{errorEnable.workTime && errorText}</FormHelperText>
                                             </FormControl>
                                         </Grid>
                                     </Grid>
                                     <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 2 }} align='left' color='InfoText'>Maximum 5 skills you can add : </Typography>
-                                    <Grid container spacing={1} style={{ maxHeight: '155px', overflow: 'auto' }}>
+                                    <Grid container spacing={1} style={{ maxHeight: '155px', overflowY: 'auto', minWidth: '750px' }}>
                                         <DisplayWorkingFields
                                             fields={fields}
                                             setFields={setFields}
@@ -463,7 +431,6 @@ const WorkProfile = (props) => {
                                             <FormControl fullWidth error={errorEnable.language}>
                                                 <InputLabel id="demo-multiple-checkbox-label">Language Known</InputLabel>
                                                 <Select
-                                                    // disabled={fieldsDisable}
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
                                                     }}
@@ -472,16 +439,13 @@ const WorkProfile = (props) => {
                                                     multiple
                                                     value={lang}
                                                     onChange={langHandleChange}
-                                                    // onChange={onChange}
-
-
                                                     input={<OutlinedInput label="TaLanguage Knowng" />}
                                                     renderValue={(selected) => selected.join(', ')}
                                                     MenuProps={MenuProps}
                                                 >
                                                     {languageName.map((name) => (
                                                         <MenuItem key={name} value={name}>
-                                                            <Checkbox checked={lang.indexOf(name) > -1} />
+                                                            <Checkbox checked={lang?.indexOf(name) > -1} />
                                                             {/* {console.log(lang.indexOf(name) )} */}
                                                             <ListItemText primary={name} />
                                                         </MenuItem>
@@ -493,20 +457,20 @@ const WorkProfile = (props) => {
                                         <Grid xs={12} sm={6} item>
                                             <FormControl fullWidth error={errorEnable.study}>
                                                 <InputLabel htmlFor="grouped-native-select">Studied Upto</InputLabel>
-                                                <Select native id="studyselect" label="Studied Upto"
-                                                    disabled={fieldsDisable}
+                                                <Select
+                                                    name="studyselect" label="Studied Upto"
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
                                                     value={values.study}
-
                                                     onChange={onChange}
-
-
                                                 >
-                                                    <option value=""> </option>
-                                                    <option value="Not Done">Not Done</option>
-                                                    <option value="1st - 5th Class">1st - 5th Class </option>
-                                                    <option value="6th - 9th Class">6th - 9th Class</option>
-                                                    <option value="10th Class">10th Class</option>
-                                                    <option value="12th Class">12th Class</option>
+                                                    <MenuItem value="">---select---</MenuItem>
+                                                    <MenuItem value="Not Done">Not Done</MenuItem>
+                                                    <MenuItem value="1st - 5th Class">1st - 5th Class </MenuItem>
+                                                    <MenuItem value="6th - 9th Class">6th - 9th Class</MenuItem>
+                                                    <MenuItem value="10th Class">10th Class</MenuItem>
+                                                    <MenuItem value="12th Class">12th Class</MenuItem>
 
                                                 </Select>
                                                 <FormHelperText>{errorEnable.study && errorText}</FormHelperText>
@@ -520,7 +484,7 @@ const WorkProfile = (props) => {
                                                 }}
                                                 required
                                                 variant='outlined'
-                                                id="otherStudy"
+                                                name="otherStudy"
                                                 label="Other Education"
                                                 placeholder='N/A or Other Education Name'
                                                 fullWidth
@@ -533,7 +497,7 @@ const WorkProfile = (props) => {
                                         </Grid>
                                     </Grid>
                                     {(saveEnable || !editHide) && !fieldsDisable &&
-                                        <Grid xs={12} item>
+                                        <Grid xs={12} sm={12} item>
                                             <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
                                                 {editHide ? "Save" : !fieldsDisable && "Update"}
                                             </Button>

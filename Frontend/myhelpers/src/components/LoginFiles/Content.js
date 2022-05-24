@@ -13,8 +13,9 @@ const Content = () => {
   
   return (
     <Container align="center" >
-      <Card variant="outlined"
-        // elevation={24}
+      <Card
+        // variant="outlined"
+        elevation={24}
         sx={{
           maxWidth: 600, minHeight: 350,
 
@@ -23,7 +24,7 @@ const Content = () => {
           
           backgroundImage: `url(${abc})`,
           backgroundRepeat: "no-repeat",
-          borderColor: "#163758",
+          // borderColor: "#163758",
           backgroundSize: "100%",
           // marginTop: 15
         }}>

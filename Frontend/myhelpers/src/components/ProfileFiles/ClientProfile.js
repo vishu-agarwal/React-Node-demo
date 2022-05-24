@@ -53,7 +53,7 @@ const ClientProfile = () => {
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    let { userProfile, profileError, profileMessage, profileLoading, email, avatar } = useSelector((state) => ({ ...state.profileStore }))
+    let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     const role = localStorage.getItem("role")
     // let role = "Client"
 
@@ -73,6 +73,7 @@ const ClientProfile = () => {
     const [values, setValues] = useState({
         fname: '',
         lname: '',
+        email: '',
         dob: '',
         altmbl: '',
         mbl: '',
@@ -86,7 +87,6 @@ const ClientProfile = () => {
         state: '',
         pincode: '',
         about: '',
-
     });
     const [clicked, setClicked] = useState(false)
     const [enable, setenable] = useState(false)
@@ -104,15 +104,14 @@ const ClientProfile = () => {
     const [openModal, setopenModal] = useState(false);
 
     useEffect(() => {
-        dispatch(fetchAvatarThunk(rid))
-        dispatch(fetchEmailThunk(rid))
-        // dispatch(fetchUserProfileThunk(rid))
+        // dispatch(fetchAvatarThunk(rid))
+        // dispatch(fetchEmailThunk(rid))
+        dispatch(fetchUserProfileThunk(rid))
     }, [])
 
     useEffect(() => {
         const body = document.querySelector('body');
         body.style.overflow = openModal ? 'hidden' : 'auto';
-
         if (profileMessage.length !== 0) {
             setState({ open: true });
             setSnackColor("info")
@@ -136,27 +135,25 @@ const ClientProfile = () => {
     //fields enable or diable on hide button
     const [fieldsDisable, setDisable] = useState(false)
     // console.log(fields)
+    // useEffect(() => {
+    //     console.log("avatar::", avatar)
+    //     if (avatar.length !== 0) {
+    //         dispatch(fetchUserProfileThunk(rid))
 
-    useEffect(() => {
-        console.log("avatar::", avatar)
-        if (avatar.length !== 0) {
-            dispatch(fetchUserProfileThunk(rid))
+    //         setfile({
+    //             ...file,
+    //             // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+    //             dispFile: avatar[0].avatar
 
-            setfile({
-                ...file,
-                // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
-                dispFile: avatar[0].avatar
+    //         })
 
-            })
-
-        }
-    }, [avatar])
-
+    //     }
+    // }, [avatar])
     // const str2blob = txt => new Blob([txt]);
     useEffect(() => {
         console.log("userProfile::", userProfile)
         if (userProfile.length !== 0) {
-            setStar(userProfile.rating !== undefined ?
+            setStar(userProfile[0]?.rating ?
                 userProfile[0].rating.map((id) =>
                     id.rate
                 ).reduce((prev, curr) => prev + curr, 0)
@@ -166,35 +163,41 @@ const ClientProfile = () => {
                 ).length
 
                 : 2)
-            setValues({
-                fname: userProfile[0].name.split(" ")[0],
-                lname: userProfile[0].name.split(" ")[1],
-                dob: userProfile[0].dob,
-                altmbl: userProfile[0].alt_mob_num,
-                mbl: userProfile[0].mob_num,
-                gender: userProfile[0].gender,
-                married: userProfile[0].isMarried,
-                physic_dis: userProfile[0].physical_disable,
-                house_no: userProfile[0].address[0].houseNo,
-                house_name: userProfile[0].address[0].house_name,
-                street: userProfile[0].address[0].landmark,
-                city: userProfile[0].address[0].city,
-                state: userProfile[0].address[0].state,
-                pincode: userProfile[0].address[0].pincode,
-                about: userProfile[0].about,
+            userProfile[0]?.email &&
+                setValues((prevState) => { return { ...prevState, email: userProfile[0].email } })
+
+            userProfile[0]?.name && setValues((prevState) => {
+                return {
+                    ...prevState,
+                    fname: userProfile[0].name.split(" ")[0],
+                    lname: userProfile[0].name.split(" ")[1],
+
+                    dob: userProfile[0].dob,
+                    altmbl: userProfile[0].alt_mob_num,
+                    mbl: userProfile[0].mob_num,
+                    gender: userProfile[0].gender,
+                    married: userProfile[0].isMarried,
+                    physic_dis: userProfile[0].physical_disable,
+                    house_no: userProfile[0].address[0].houseNo,
+                    house_name: userProfile[0].address[0].house_name,
+                    street: userProfile[0].address[0].landmark,
+                    city: userProfile[0].address[0].city,
+                    state: userProfile[0].address[0].state,
+                    pincode: userProfile[0].address[0].pincode,
+                    about: userProfile[0].about,
+                }
+            })
+            userProfile[0]?.avatar && setfile({
+                ...file,
+                // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+                dispFile: userProfile[0].avatar
 
             })
-            // setfile({
-            //     ...file,
-            //     // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
-            //     dispFile: userProfile[0].avatar
-
-            // })
-            setaadhar({ ...aadhar, dispFile: userProfile[0].aadhar_card })
-            setEditHide(false)
-            setDisable(true)
+            userProfile[0]?.aadhar_card && setaadhar({ ...aadhar, dispFile: userProfile[0].aadhar_card })
+            userProfile[0]?.name && setEditHide(false)
+            userProfile[0]?.name && setDisable(true)
         }
-    }, [userProfile])
+    }, [userProfile[0]])
 
 
     // console.log(values,file.dispFile)
@@ -241,11 +244,8 @@ const ClientProfile = () => {
                 setState({ open: true });
                 setSnackColor("error")
                 setSnackMessage("Please Choose Aadhar Card PDf !")
-
             }
             // console.log(values)
-
-
         }
         else {
             // alert("Please click on upload photo button before save!")
@@ -256,22 +256,18 @@ const ClientProfile = () => {
     }
     const onUpdateProfileHandler = (e) => {
         e.preventDefault()
-
         const arg = {
             values,
             aadhar: aadhar.dispFile,
             rid
-
         }
         console.log(arg)
-
-        dispatch(updateProfileThunk(arg))
+        dispatch(createProfileThunk(arg))
         //Edit button display
         setEditHide(false)
         setDisable(TouchRipple)
         //close this form model
         // props.click()
-
     }
     const onEditClick = () => {
         setDisable(!fieldsDisable)
@@ -279,7 +275,6 @@ const ClientProfile = () => {
     const avatarFileType = ["image/png", "image/jpeg"]
     // const avatarFileSize = 
     const onAvatarChang = (e) => {
-
         // console.log("onchange")
         let avatarFile = e.target.files[0]
         // console.log(avatarFile)
@@ -708,7 +703,7 @@ const ClientProfile = () => {
                                             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                             badgeContent={
                                                 <label htmlFor="icon-button-file">
-                                                    <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} />
+                                                    <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} disabled={fieldsDisable} />
                                                     <IconButton aria-label="upload picture" component="span" >
 
                                                         <EditRoundedIcon sx={{ color: "#163758" }} fontSize="large" />
@@ -735,7 +730,7 @@ const ClientProfile = () => {
                                         {enable && <Button variant="contained" sx={{ marginTop: 2, backgroundColor: "#03a9f4" }} onClick={avatarSubmit}>Upload Photo </Button>}
                                     </Grid>
                                     <Grid item xs={12} sm={12}>
-                                        <Typography marginTop={1} gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'subtitle2' } }}>{email}</Typography>
+                                        <Typography marginTop={1} gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'subtitle2' } }}>{values.email.toLowerCase()}</Typography>
                                         {/* <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].email : ''}</Typography> */}
                                         {role === "Helper" && <Rating name="half-rating"
                                             value={star}
@@ -764,7 +759,6 @@ const ClientProfile = () => {
                                             inputProps={{
                                                 readOnly: Boolean(fieldsDisable),
                                             }}
-
                                             onChange={onChange}
                                             error={errorEnable.fname}
                                             helperText={errorEnable.fname && errorText} />
@@ -899,10 +893,10 @@ const ClientProfile = () => {
                                     </Grid>
                                     <Grid xs={12} sm={11} item >
                                         <Grid container justifyContent="center">
-                                            <Grid xs={12} sm={5} item >
+                                            <Grid xs={12} sm={4} item align="left">
                                                 <label htmlFor="contained-button-file">
                                                     <Input id="contained-button-file" type="file" name="aadharCard"
-
+                                                        disabled={fieldsDisable}
                                                         ref={hiddenFileInput}
                                                         onChange={onAadharChange}
                                                         // disabled={fieldsDisable}
@@ -913,15 +907,15 @@ const ClientProfile = () => {
                                                     </Typography>
                                                 </label>
                                             </Grid>
-                                            <Grid xs={12} sm={7} item align="left" >
+                                            <Grid xs={12} sm={8} item align="left" >
                                                 {aadhar.dispFile ?
                                                     <>
                                                         {!editHide &&
-                                                            < IconButton sx={{padding:0}} onClick={onAadharView} aria-label="upload picture" component="div">
+                                                            < IconButton sx={{ padding: 0 }} onClick={onAadharView} aria-label="upload picture" component="div">
                                                                 <VisibilityRoundedIcon color="info" size="large" />
                                                             </IconButton>
                                                         }
-                                                        <Typography marginLeft={1} marginRight={1} variant="caption">{aadhar.dispFile}</Typography>
+                                                        <Typography marginLeft={1} variant="caption">{aadhar.dispFile}</Typography>
                                                     </>
                                                     :
                                                     <Typography variant="body2" align="right" marginTop={0.5} color="secondary" >1 MB size PDF file only!</Typography>

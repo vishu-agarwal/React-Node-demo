@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-
 const initialState = {
     userProfile: [],
     profileMessage: '',
@@ -11,7 +10,7 @@ const initialState = {
     avatar:[]
 }
 const varToken = localStorage.getItem("logToken");
-console.log("varToken", varToken)
+// console.log("varToken", varToken)
 export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
     try {
         const data = {
@@ -74,6 +73,7 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
         const data = {
             name: arg.values.fname + ' ' + arg.values.lname,
             dob: arg.values.dob,
+            isProfile:true,
             mob_num: arg.values.mbl,
             gender: arg.values.gender,
             isMarried: arg.values.married,
@@ -90,7 +90,6 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
             ],
             alt_mob_num: arg.values.altmbl,
             about: arg.values.about
-
         };
         // console.log("data", data)
         const userRes = await axios.post(`/myhelpers/crtProfile/${arg.rid}`, data, {
@@ -150,7 +149,6 @@ export const fetchAvatarThunk = createAsyncThunk("userProfile/fetchAvatarThunk",
 export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk", async (arg) => {
     try {
         // console.log("arg ",arg)    
-
         const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
             {
                 headers: {
@@ -223,13 +221,12 @@ const profileSlice = createSlice({
         },
         [avatarThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
-            //  state.isAuth = true
-            state.profileMessage = [action.payload.data]
+      
+            state.userProfile = action.payload.data
+            state.profileMessage = "Photo uploaded successfully!"
         },
         [avatarThunk.rejected]: (state, error) => {
             state.profileLoading = false
-            // console.log("rejected::", error.error.message)
-
             state.profileError = error.error.message
         },
         //aadhar
@@ -237,14 +234,12 @@ const profileSlice = createSlice({
             state.profileLoading = true
         },
         [aadharThunk.fulfilled]: (state, action) => {
-            state.profileLoading = false
-            //  state.isAuth = true
-            state.profileMessage = action.payload.data
+            state.profileLoading = false          
+            state.userProfile = action.payload.data
+            state.profileMessage = "Addhar card uploaded successfully!"
         },
         [aadharThunk.rejected]: (state, error) => {
             state.profileLoading = false
-            // console.log("rejected::", error.error.message)
-
             state.profileError = error.error.message
         },
         //userProfileData
@@ -253,13 +248,11 @@ const profileSlice = createSlice({
         },
         [createProfileThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
-            //  state.isAuth = true
-            // state.userProfile = [action.payload.data]
+            state.userProfile = action.payload.data
+            state.profileMessage = "Profile details uploaded successfully!"
         },
         [createProfileThunk.rejected]: (state, error) => {
             state.profileLoading = false
-            // console.log("rejected::", error.error.message)
-
             state.profileError = error.error.message
         },
         //fetchEmail
@@ -268,7 +261,6 @@ const profileSlice = createSlice({
         },
         [fetchEmailThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
-            //  state.isAuth = true
             state.email = action.payload.data
         },
         [fetchEmailThunk.rejected]: (state, error) => {
@@ -313,9 +305,7 @@ const profileSlice = createSlice({
             // console.log("userProfile::",state.userProfile)
         },
         [fetchUserProfileThunk.rejected]: (state, error) => {
-            state.profileLoading = false
-            // console.log("rejected::", error.error.message)
-
+            state.profileLoading = false        
             state.profileError = error.error.message
         },
         //update userProfileData
@@ -324,9 +314,7 @@ const profileSlice = createSlice({
         },
         [updateProfileThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
-            //  state.isAuth = true
             state.profileMessage = action.payload.data
-            // state.userProfile = [action.payload.data]
         },
         [updateProfileThunk.rejected]: (state, error) => {
             state.profileLoading = false
@@ -339,14 +327,11 @@ const profileSlice = createSlice({
             state.profileLoading = true
         },
         [starThunk.fulfilled]: (state, action) => {
-            state.profileLoading = false
-            //  state.isAuth = true
-            // state.message = action.payload.data
+            state.profileLoading = false           
+            state.userProfile = action.payload.data
         },
         [starThunk.rejected]: (state, error) => {
             state.profileLoading = false
-            // console.log("rejected::", error.error.message)
-
             state.profileError = error.error.message
         },
     }

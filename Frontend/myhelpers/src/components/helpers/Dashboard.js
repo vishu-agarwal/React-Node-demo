@@ -200,7 +200,7 @@ const Dashboard = () => {
                   <Typography variant='subtitle1' align='left'>Rs. </Typography>
                 </Grid>
                 <Grid xs={4} item>
-                  <Typography variant='subtitle1' align='left'>Exprience </Typography>
+                  <Typography variant='subtitle1' align='left'>Experience </Typography>
                 </Grid>
                 <Grid xs={4} item>
                   <Typography variant='subtitle1' align='left'>Role </Typography>
@@ -209,7 +209,7 @@ const Dashboard = () => {
                   <Typography variant='subtitle1' align='left'>Rs. </Typography>
                 </Grid>
                 <Grid xs={4} item>
-                  <Typography variant='subtitle1' align='left'>Exprience</Typography>
+                  <Typography variant='subtitle1' align='left'>Experience</Typography>
                 </Grid>
               </Grid>
               <Divider><Typography variant='h6' sx={{ textDecoration: "underline", fontFamily: 'cursive', color: 'gray' }} align='center'>Other Details  </Typography></Divider>

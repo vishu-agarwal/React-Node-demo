@@ -98,7 +98,7 @@ const DisplayData = () => {
 
     useEffect(() => {
         dispatch(fetchAllThunk())
-        dispatch(fetchAllAvatarThunk())
+        // dispatch(fetchAllAvatarThunk())
         dispatch(fetchSaveUserThunk(rid))
     }, [])
 
@@ -136,13 +136,13 @@ const DisplayData = () => {
             console.log("saveUser ::", saveUser);
         }
     }, [saveUser])
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (userAvatar.length !== 0) {
-            console.log("avatar ::", userAvatar);
+    //     if (userAvatar.length !== 0) {
+    //         console.log("avatar ::", userAvatar);
             
-        }
-    }, [userAvatar])
+    //     }
+    // }, [userAvatar])
     const searchChange = (e) => {
 
         // e.preventDefault();
@@ -302,15 +302,14 @@ const DisplayData = () => {
                             : null;
 
                         status = saveUser.length
-                            && !!saveUser.find((val) => values.r_id === val.user_id)
-                            
-                        helperAvatar = userAvatar.length && userAvatar.find((val) => values.r_id === val.r_id) 
+                            && !!saveUser.find((val) => values.r_id === val.user_id) 
+                        // helperAvatar = userAvatar.length && userAvatar.find((val) => values.r_id === val.r_id) 
                         // console.log(helperAvatar)
                             // hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : '';
 
                         
                         return <Grid item xs={12} sm={4} md={3} key={index} >
-                            <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} avatar={helperAvatar.avatar} />
+                            <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
                         </Grid>
                     })
                 }

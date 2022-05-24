@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import React from 'react';
 function PrivateRoutes({ children, isAuthenticated, ...rest }) {
-    console.log(children)
+    // console.log(children)
     if (isAuthenticated) {
     
         return (
