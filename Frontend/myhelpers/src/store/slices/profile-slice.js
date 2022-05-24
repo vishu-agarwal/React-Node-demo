@@ -15,10 +15,10 @@ console.log("varToken", varToken)
 export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
     try {
         const data = {
-            user_id: "C106",
+            user_id: arg.user_id,
             rate: arg.rate
         }
-
+        console.log(data,"-=-===========")
         const res = await axios.put(`/myhelper/updateStar/${arg.rid}`, data, {
             headers: {
                 Authorization: "Bearer " + varToken,
@@ -52,11 +52,13 @@ export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (ar
     try {
         // const rid = localStorage.getItem("r_id")
 
-        const res = await axios.post(`/myhelper/upldAadhar/${arg.rid}`, arg.formdata, arg.config, {
-            headers: {
-                Authorization: "Bearer " + varToken,
-            },
-        })
+        const res = await axios.post(`/myhelper/upldAadhar/${arg.rid}`, arg.formdata
+            , {
+                headers: {
+                    Authorization: "Bearer " + varToken,
+                },
+            }
+            , arg.config)
         // console.log("response :: ", res)
         return res
 
@@ -237,7 +239,7 @@ const profileSlice = createSlice({
         [aadharThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
             //  state.isAuth = true
-            state.profileMessage = [action.payload.data]
+            state.profileMessage = action.payload.data
         },
         [aadharThunk.rejected]: (state, error) => {
             state.profileLoading = false
@@ -306,7 +308,7 @@ const profileSlice = createSlice({
                 state.profileMessage = action.payload.data
             }
             else {
-                state.userProfile = [action.payload.data]
+                state.userProfile = action.payload.data
             }
             // console.log("userProfile::",state.userProfile)
         },
@@ -323,6 +325,7 @@ const profileSlice = createSlice({
         [updateProfileThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
             //  state.isAuth = true
+            state.profileMessage = action.payload.data
             // state.userProfile = [action.payload.data]
         },
         [updateProfileThunk.rejected]: (state, error) => {

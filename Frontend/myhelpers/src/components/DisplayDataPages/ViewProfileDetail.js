@@ -25,7 +25,7 @@ import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import CallIcon from '@mui/icons-material/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
-import workProfileActions from '../../store/slices/work-slice'
+import { workProfileActions } from '../../store/slices/work-slice'
 import { hireUserThunk, fetchSaveUserThunk, saveThunk, displayActions } from '../../store/slices/display-slice';
 import { fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
 import profileActions from '../../store/slices/profile-slice'
@@ -49,14 +49,16 @@ const ViewProfileDetail = () => {
 
     const dispatch = useDispatch()
     const params = useParams()
-    const rid = params.rid;
-    
+    const user_id = params.rid;
+
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { saveUser } = useSelector((state) => ({ ...state.displayStore }))
     let { saveUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
     let { workMessage, workData, workError, workLoading } = useSelector((state) => ({ ...state.workProfileStore }))
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
 
+    const rid = localStorage.getItem("r_id")
+    const role = localStorage.getItem("role")
 
     const [state, setState] = useState({
         snackOpen: false,
@@ -73,6 +75,7 @@ const ViewProfileDetail = () => {
     const [values, setValues] = useState({
         name: '',
         dob: '',
+        mbl: '',
         altmbl: '',
         email: '',
         gender: '',
@@ -109,9 +112,9 @@ const ViewProfileDetail = () => {
     const [status, setStatus] = useState(false)
     const [star, setStar] = useState(2)
     useEffect(() => {
-        // dispatch(fetchUserProfileThunk(rid))
-        // dispatch(fetchWorkThunk(rid))
-        // dispatch(fetchSaveUserThunk(rid))
+        dispatch(fetchUserProfileThunk(user_id))
+        dispatch(fetchWorkThunk(user_id))
+        dispatch(fetchSaveUserThunk(rid))
 
     }, [])
     useEffect(() => {
@@ -142,7 +145,6 @@ const ViewProfileDetail = () => {
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(profileMessage)
-
             dispatch(profileActions.messageReducer())
 
         }
@@ -154,7 +156,7 @@ const ViewProfileDetail = () => {
             dispatch(profileActions.errorReducer())
         }
         if (workMessage.length !== 0) {
-            
+
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(workMessage)
@@ -183,7 +185,7 @@ const ViewProfileDetail = () => {
             dispatch(displayActions.errorReducer())
         }
 
-    }, [profileMessage, profileError, displayError, displayMessage,workError, workMessage, open])
+    }, [profileMessage, profileError, displayError, displayMessage, workError, workMessage, open])
 
     useEffect(() => {
         if (userProfile.length !== 0) {
@@ -210,6 +212,7 @@ const ViewProfileDetail = () => {
                 setValues({
                     name: userProfile[0].name,
                     dob: userProfile[0].dob,
+                    mbl: userProfile[0].mob_num,
                     altmbl: userProfile[0].alt_mob_num,
                     email: userProfile[0].email,
                     gender: userProfile[0].gender,
@@ -240,21 +243,27 @@ const ViewProfileDetail = () => {
         [
             {
                 category: "",
-                exprience: "",
+                experience: "",
                 salary: "",
             }
         ]
     );
     //save icon click event
     const onSaveClick = () => {
-        dispatch(saveThunk(rid))
+        const arg = {
+            user_id,
+            rid,
+
+        }
+        dispatch(saveThunk(arg))
     }
     const onRateClick = (val) => {
 
         setStar(parseFloat(val.target.value))
 
         const arg = {
-            rid: rid,
+            rid,
+            user_id,
             rate: star
         }
         console.log("argument :: ", arg);
@@ -270,7 +279,11 @@ const ViewProfileDetail = () => {
     // }
     const onHireUser = () => {
         setOpen(true);
-        dispatch(fetchSingleHireRequestThunk(workData[0].r_id))
+        const arg = {
+            user_id: workData[0].r_id,
+            rid
+        }
+        dispatch(fetchSingleHireRequestThunk(arg))
     }
     const handleClose = () => {
         setOpen(false);
@@ -291,26 +304,39 @@ const ViewProfileDetail = () => {
         return age;
     }
     return (
-        <Container align="center">
-            {displayLoading||workLoading||profileLoading && <Loading isLoad={true} />}
+        <Grid>
+            {(displayLoading || workLoading || profileLoading) && <Loading isLoad={true} />}
             <Card elevation={16}
-                sx={{
-                // paddingLeft: "10%",
-                // paddingRight: "10%",
-                    maxWidth: 1200, minHeight: 600,
 
-                    borderWidth: 3,
-                    borderRadius: 6,
-                    marginTop: 4,
-                // backgroundColor: "#007bf717"
-            }} >
+                sx={{
+
+                    // paddingLeft: "10%",
+                    // paddingRight: "10%",
+                    maxWidth: 1300, minHeight: 660,
+                    borderRadius: 0,
+                    
+                    marginTop: 3,
+                    // backgroundColor: "#007bf717"
+                }}
+            >
                 <CardContent >
                     <Grid container direction={'row'} justifyContent="center">
+                        <Snackbar
+                            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                            open={snackOpen}
+                            autoHideDuration={6000}
+                            onClose={closeSnackbar}
+                        // key={vertical + horizontal}
+                        >
+                            <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                {snackMessage}
+                            </Alert>
+                        </Snackbar>
                         <Grid item xs={12} sm={12} md={12} align="left" >
                             <Button variant="contained" sx={{ backgroundColor: "#163758" }} onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
-                            <Typography variant="h3" sx={{ fontWeight: 500, color: "#163758" }}> PROFILE</Typography>
+                            <Typography variant="h4" sx={{ fontWeight: 500, color: "#163758" }}> PROFILE</Typography>
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                             <Typography variant="h5" sx={{ fontWeight: 500, color: "#163758" }}> {values.email} </Typography>
@@ -320,71 +346,71 @@ const ViewProfileDetail = () => {
                         </Grid>
                         <Grid item xs={12} sm={12} md={12}>
                             <Grid container justifyContent="center"  >
-                                <Grid item xs={12} sm={4} md={4} sx={{ marginTop: "2%" }}>
-                                    <Grid container direction={'row'} >
-                                        <Grid item xs={12} sm={6} md={6} marginLeft={"0%"} align="left" colo="#163758">
+                                <Grid item xs={12} sm={11} md={4} sx={{ marginTop: "2%" }}>
+                                    <Grid container direction={'row'} justifyContent="left" >
+                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
                                             <Typography gutterBottom variant="h6"  >
                                                 Name
                                             </Typography>
-                                            
-                                            <Typography gutterBottom variant="h6"  >
-                                                Mobile No.
-                                            </Typography>
-                                            
-
-                                            <Typography gutterBottom variant="h6"  >
-                                                Alternate No.
-                                            </Typography>
-                                            
-                                         
-                                            
-
-                                            <Typography gutterBottom variant="h6"  >
-                                                Married
-                                            </Typography>
-                                            
-
-                                            <Typography gutterBottom variant="h6"  >
-                                                Physical Disability
-                                            </Typography>
-                                            
-                                            <Typography gutterBottom variant="h6"  >
-                                                Address
-                                            </Typography>
                                         </Grid>
-
                                         <Grid item xs={5} sm={6} md={6} align="left" >
                                             <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
                                                 : {values.name}
                                             </Typography>
-                                            
-
+                                        </Grid>
+                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
+                                            <Typography gutterBottom variant="h6"  >
+                                                Mobile No.
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={5} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.mbl}
                                             </Typography>
-                                            
-
+                                        </Grid>
+                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
                                             <Typography gutterBottom variant="h6"  >
-                                                : {values.altml}
+                                                Alternate No.
                                             </Typography>
-                                            
-                                       
+                                        </Grid>
+                                        <Grid item xs={5} sm={6} md={6} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                : {values.altmbl}
+                                            </Typography>
 
-                                            
+                                        </Grid>
+                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
+                                            <Typography gutterBottom variant="h6"  >
+                                                Married
+                                            </Typography>
+
+                                        </Grid>
+                                        <Grid item xs={5} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.married === false ? "No" : "Yes"}
                                             </Typography>
-                                            
-
+                                        </Grid>
+                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
+                                            <Typography gutterBottom variant="h6"  >
+                                                Physical Disability
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={5} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.physic_dis === false ? "No" : "Yes"}
                                             </Typography>
-
-                                            
+                                        </Grid>
+                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
+                                            <Typography gutterBottom variant="h6"  >
+                                                Address
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={5} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="body1"  >
                                                 : {values.address}
                                             </Typography>
                                         </Grid>
+
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={3} >
@@ -400,90 +426,96 @@ const ViewProfileDetail = () => {
                                         />
                                         <Grid container item xs={12} sm={12} md={12} justifyContent="center">
                                             <Button sx={{ marginTop: "4%", backgroundColor: "#163758" }} size="medium" variant="contained" onClick={onHireUser}>Hire</Button>
-                                           
-                                                {/* <HelperProfile click={handleClose} /> */}
-                                                <HireForm open={open} hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData.length !== 0 ? workData[0].r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
+
+                                            {/* <HelperProfile click={handleClose} /> */}
+                                            <HireForm open={open} hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData.length !== 0 ? workData[0].r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
 
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={12} sm={4} md={5} sx={{ marginTop: "2%" }}>
+                                <Grid item xs={12} sm={11} md={5} sx={{ marginTop: "2%" }}>
                                     <Grid container direction={'row'} >
                                         <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
                                             <Typography gutterBottom variant="h6"  >
                                                 Gender
                                             </Typography>
-
-
-                                            <Typography gutterBottom variant="h6"  >
-                                                Age
-                                            </Typography>
-                                            <Typography gutterBottom variant="h6"  >
-                                                Preffered Time
-                                            </Typography>
-
-                                            <Typography gutterBottom variant="h6"  >
-                                               Languages
-                                            </Typography>
-
-
-                                            <Typography gutterBottom variant="h6"  >
-                                                Education
-                                            </Typography>
-
-                                            <Typography gutterBottom variant="h6"  >
-                                                Other Education
-                                            </Typography>
-
-
-                                            
-
-
                                         </Grid>
-
                                         <Grid item xs={4} sm={4} md={4} align="left" >
                                             <Typography color="" gutterBottom variant="h6"  >
                                                 : {values.gender.charAt(0).toUpperCase() + values.gender.slice(1)}
                                             </Typography>
-
-
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                            <Typography gutterBottom variant="h6"  >
+                                                Age
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 : {ageDate()} Years
                                             </Typography>
-                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                            <Typography gutterBottom variant="h6"  >
+                                                Profession No.
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
                                                 : {values.porf_mbl}
                                             </Typography>
-
-
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
                                             <Typography gutterBottom variant="h6"  >
+                                                Preffered Time
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} align="left" >
+                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
                                                 :  {values.workTime}
                                             </Typography>
-
-
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
                                             <Typography gutterBottom variant="h6"  >
-                                                : {values.study}
+                                                Languages
                                             </Typography>
-
-                                            <Typography color="" gutterBottom variant="h6"  >
-                                                : {values.otherStudy}
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} align="left" >
+                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                :  {values.language}
                                             </Typography>
-
-
-                                          
-
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                            <Typography gutterBottom variant="h6"  >
+                                                Education
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} align="left" >
+                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                :  {values.study}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                            <Typography gutterBottom variant="h6"  >
+                                                Other Education
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                :  {values.otherStudy}
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
-
                             </Grid>
                         </Grid>
                     </Grid>
                     <Divider textAlign="left" sx={{ marginTop: 2, marginBottom: 1 }}> </Divider>
                     <Grid container direction={'row'} justifyContent="center">
-                    
+
                         <Grid item xs={12} sm={12} md={10} align="center" >
                             <TableContainer >
-                                <Table sx={{ maxWidth: "100%", maxHeight: "100%" }}  size="small" aria-label="caption table">
+                                <Table sx={{ maxWidth: "100%", maxHeight: "100%" }} size="small" aria-label="caption table">
                                     <TableHead >
                                         <TableRow sx={{ backgroundColor: "#163758" }} >
                                             <TableCell sx={{ color: "white" }} >Skills</TableCell>
@@ -494,9 +526,9 @@ const ViewProfileDetail = () => {
                                     <TableBody>
                                         {fields.map((row, index) => (
                                             <TableRow key={index}>
-                                                <TableCell sx={{ fontSize: "100%", color: "green" }}>{row.category}</TableCell>
-                                                <TableCell sx={{ fontSize: "100%", color: "green" }}>{row.exprience}</TableCell>
-                                                <TableCell sx={{ fontSize: "100%", color: "green" }}>{row.salary}</TableCell>
+                                                <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.category}</TableCell>
+                                                <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.exeprience}</TableCell>
+                                                <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.salary}</TableCell>
                                             </TableRow>
                                         ))}
 
@@ -509,7 +541,7 @@ const ViewProfileDetail = () => {
 
                 </CardContent >
             </Card >
-        </Container>
+        </Grid>
     )
 }
 

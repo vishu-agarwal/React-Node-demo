@@ -1,24 +1,26 @@
 //main file
 import './App.css';
 import Header from "./components/layouts/Header"
-import Content from "./components/LoginFiles/Content"
-import ClientProfile from './components/ProfileFiles/ClientProfile';
+// import Content from "./components/LoginFiles/Content"
+// import ClientProfile from './components/ProfileFiles/ClientProfile';
 
-import Login from './components/LoginFiles/login';
+// import Login from './components/LoginFiles/login';
 
 
 import { useSelector } from 'react-redux'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import {
+  BrowserRouter, Routes, Route
+} from 'react-router-dom'
 
 
-import DisplayData from './components/DisplayDataPages/DisplayData';
-import ViewProfileDetail from './components/DisplayDataPages/ViewProfileDetail';
-import ViewClientProfile from './components/DisplayDataPages/ViewClientProfile';
-import HomePage from './components/Homepage/HomePage';
+// import DisplayData from './components/DisplayDataPages/DisplayData';
+// import ViewProfileDetail from './components/DisplayDataPages/ViewProfileDetail';
+// import ViewClientProfile from './components/DisplayDataPages/ViewClientProfile';
+// import HomePage from './components/Homepage/HomePage';
 import Profile from './components/ProfileFiles/ClientProfile';
 import Footer from './components/layouts/Footer';
-import PageNotFound from './components/layouts/PageNotFound';
-import HiringProcess from './components/Homepage/HiringProcess';
+// import PageNotFound from './components/layouts/PageNotFound';
+// import HiringProcess from './components/Homepage/HiringProcess';
 
 import { lazy, Suspense } from 'react';
 import Loader from './components/layouts/LoadingFile';
@@ -28,9 +30,10 @@ import PrivateRoute from './RouteComponents/PrivateRoutes';
 
 const RolePage = lazy(() => import('./components/LoginFiles/Content'));
 const LoginPage = lazy(() => import('./components/LoginFiles/login'));
-// const ForgotPassword = lazy(() => import('components/ForgotPassword'));
-const NoFoundComponent = lazy(() => import('./components/layouts/PageNotFound'));
+const HomePage = lazy(() => import('./components/Homepage/HomePage'));
 
+// const ForgotPassword = lazy(() => import('components/ForgotPassword'));
+// const NoFoundComponent = lazy(() => import('./components/layouts/PageNotFound'));
 
 const publicRoutes = [
   {
@@ -41,13 +44,43 @@ const publicRoutes = [
     path: '/login/:role',
     Component: LoginPage
   },
+  // {
+  //   path: '/home/client',
+  //   element: HomePage,
+  // }
 ]
 
-const privateRoutes = [
+// element: lazy(() => import('./components/Homepage/HomePage')),
+const protectedRoutes = [
   {
-    path: '/login/:role',
-    Component: LoginPage,
+    path: '/Client/home',
+    element: HomePage,
+    exact: true,
     role: 'C'
+  },
+  {
+    path: '/findHelper',
+    element: lazy(() => import('./components/DisplayDataPages/DisplayData')),
+    exact: true,
+    role: 'C'
+  },
+  {
+    path: '/viewHelperDetails/:rid',
+    element: lazy(() => import('./components/DisplayDataPages/ViewProfileDetail')),
+    exact: true,
+    role: 'C'
+  },
+  {
+    path: '/Helper/home',
+    element: lazy(() => import('./components/Homepage/HiringProcess')),
+    exact: true,
+    role: 'H'
+  },
+  {
+    path: 'viewClientDetails/:rid',
+    element: lazy(() => import('./components/DisplayDataPages/ViewClientProfile')),
+    exact: true,
+    role: 'H'
   },
 ]
 
@@ -60,48 +93,52 @@ function App() {
 
   console.log("is authhhhhhh", isAuth, isToken)
   return (
-    <div className="App">
-      <Header />
-      <div className="xyz" aligm="center">
-        <Suspense fallback={<Loader />}>
-          <Routes>
-            {/* private route for both client and helper */}
-<Route path="/find" element={<DisplayData />}/>
-            <Route path='/profile'
-              element={
-                <PrivateRoute
-                  isAuthenticated={isToken}
-                >
-                  <Profile />
-                </PrivateRoute>
-              }
-            >
-            </Route>
-            {publicRoutes.map(({ path, Component }) => (
-              <Route path={path}
-                element={
-                  <PublicRoute
-                    isAuthenticated={isToken}
-                  >
-                    <Component />
-                  </PublicRoute>
-                }
-              />
-            ))}
-            {privateRoutes.map(({ path, Component, role }) => (
-              <Route path={path}
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <div className="xyz" aligm="center">
+          <Suspense fallback={<Loader />}>
+            <Routes>
+              {/* private route for both client and helper */}
+
+              <Route path='/profile'
                 element={
                   <PrivateRoute
                     isAuthenticated={isToken}
                   >
-                    <Component />
-                    <ProtectedRoutes role={role} >
-                    </ProtectedRoutes>
+                    <Profile />
                   </PrivateRoute>
                 }
-              />
-            ))}
-            {/* <Route path='/'
+              >
+              </Route>
+              {publicRoutes.map(({ path, Component }) => (
+                <Route path={path}
+                  key={`public-${path}`}
+                  element={
+                    <PublicRoute
+                      isAuthenticated={isToken}
+                    >
+                      <Component />
+                    </PublicRoute>
+                  }
+                />
+              ))}
+              {protectedRoutes.map(({ path, element:Component, role }) => (
+                <Route
+                  key={`private-${path}`}
+                  path={path}
+                  element={
+                    <PrivateRoute
+                      isAuthenticated={isToken}
+                    >
+                      <ProtectedRoutes role={role}>
+                        <Component />
+                      </ProtectedRoutes>
+                    </PrivateRoute>
+                  }
+                />
+              ))}
+              {/* <Route path='/'
               element={
                 <PublicRoute
 
@@ -128,7 +165,7 @@ function App() {
             </Route> */}
 
 
-            {/* <Route path='/'
+              {/* <Route path='/'
               element={
                 <PrivateRoute
 
@@ -139,7 +176,7 @@ function App() {
               } >
 
             </Route> */}
-            {/* <PublicRoute
+              {/* <PublicRoute
             path="/"
             isAuthenticated={isToken}
           >
@@ -147,14 +184,14 @@ function App() {
               <RolePage />
             </Suspense>
           </PublicRoute> */}
-            {/* <PublicRoute
+              {/* <PublicRoute
                 path="/login/:role"
               isAuthenticated={isToken}
               >
                 <LoginPage />
               </PublicRoute> */}
 
-            {/* <PrivateRoute
+              {/* <PrivateRoute
                 path="/profile"
               isAuthenticated={isToken}
               >
@@ -166,7 +203,7 @@ function App() {
             >
               <ProtectedRoutes role={role} />
              </PrivateRoute> */}
-            {/* <PrivateRoute
+              {/* <PrivateRoute
               path="/viewHelperDetails/:rid"
               isAuthenticated={isToken}
             >
@@ -185,16 +222,15 @@ function App() {
               <ProtectedRoutes />
             </PrivateRoute>
            */}
-            {/* <Route path="*">
+              {/* <Route path="*">
                 <NoFoundComponent />
               </Route> */}
-          </Routes>
-        </Suspense>
-
-
+            </Routes>
+          </Suspense>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </BrowserRouter>
   );
 }
 

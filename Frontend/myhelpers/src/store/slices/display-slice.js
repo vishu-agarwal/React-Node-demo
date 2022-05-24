@@ -4,14 +4,32 @@ import axios from 'axios'
 
 const initialState = {
     displayData: [],
+    userAvatar: [],
     saveUser: [],
-    hireUser:[],
+    hireUser: [],
     displayMessage: '',
     displayLoading: false,
     displayError: "",
     isProfile: false
 }
-const varToken = localStorage.getItem("token");
+const varToken = localStorage.getItem("logToken");
+export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarThunk", async (arg) => {
+    try {
+
+        const fetchavatar = await axios.get(`/myhelpers/fetchAllAvatar`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
+
+        // console.log("Fwtch Response:: ", fetchavatar)
+
+        return fetchavatar
+
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
 export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async (arg) => {
     try {
 
@@ -22,7 +40,7 @@ export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async 
         })
 
         // console.log("Fwtch Response:: ", fetchRes)
-        
+
         return fetchRes
 
     } catch (error) {
@@ -32,7 +50,7 @@ export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async 
 export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThunk", async (arg) => {
     try {
 
-        const fetchRes = await axios.get(`/myhelpers/fetchSaveUser/C106`, {
+        const fetchRes = await axios.get(`/myhelpers/fetchSaveUser/${arg}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
@@ -82,15 +100,19 @@ export const sortThunk = createAsyncThunk("displayAll/sortThunk", async (arg) =>
 })
 export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) => {
     const data = {
-        user_id : arg
+        user_id: arg.user_id
     }
-    
-    const fetchRes = await axios.post(`/myhelpers/saveUser/C106`, data)
-    
+
+    const fetchRes = await axios.post(`/myhelpers/saveUser/${arg.rid}`, data,{
+        headers: {
+        Authorization: "Bearer " + varToken,
+    }}
+    )
+
     return fetchRes
 })
 export const isProfileThunk = createAsyncThunk("displayAll/isProfileThunk", async (arg) => {
-    
+
 
     const fetchRes = await axios.get(`/myhelpers/isProfile/${arg}`, {
         headers: {
@@ -111,7 +133,7 @@ export const isProfileThunk = createAsyncThunk("displayAll/isProfileThunk", asyn
 // })
 const displaySlice = createSlice({
     name: 'displayAll',
-    
+
     initialState,//: initialState
     reducers: {
         errorReducer(state) {
@@ -125,7 +147,7 @@ const displaySlice = createSlice({
         },
     },
     extraReducers: {
-        
+
         //fetchProfileData
         [fetchAllThunk.pending]: (state, action) => {
             state.displayLoading = true
@@ -138,7 +160,22 @@ const displaySlice = createSlice({
         },
         [fetchAllThunk.rejected]: (state, error) => {
             state.displayLoading = false
-            
+
+            state.displayError = error.error.message
+        },
+        //fetch avatar of all helpers
+        [fetchAllAvatarThunk.pending]: (state, action) => {
+            state.displayLoading = true
+        },
+        [fetchAllAvatarThunk.fulfilled]: (state, action) => {
+            state.displayLoading = false
+            //  state.isAuth = true
+            state.userAvatar = action.payload.data
+            // console.log(state.userAvatar)
+        },
+        [fetchAllAvatarThunk.rejected]: (state, error) => {
+            state.displayLoading = false
+
             state.displayError = error.error.message
         },
         [isProfileThunk.pending]: (state, action) => {
@@ -146,7 +183,7 @@ const displaySlice = createSlice({
         },
         [isProfileThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            
+
             state.isProfile = action.payload.data
             // console.log(state.displayData)
         },
@@ -192,8 +229,8 @@ const displaySlice = createSlice({
         [saveThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
             //  state.isAuth = true
-            // state.saveUser = action.payload.data
-            // console.log(state.displayData)
+            state.saveUser = action.payload.data
+            console.log(state.saveUser)
         },
         [saveThunk.rejected]: (state, error) => {
             state.displayLoading = false
@@ -207,9 +244,7 @@ const displaySlice = createSlice({
         [fetchSaveUserThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
             //  state.isAuth = true
-            state.saveUser = action.payload.data.saveUser
-            
-            // console.log(state.saveUser)
+            state.saveUser = action.payload.data
         },
         [fetchSaveUserThunk.rejected]: (state, error) => {
             state.displayLoading = false

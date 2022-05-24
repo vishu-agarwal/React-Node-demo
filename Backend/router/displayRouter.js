@@ -3,7 +3,8 @@ const router = new express.Router()
 const auth = require("../middleware/authMidleware")
 //controller
 const DisplayController = require("../controller/DisplayController")
-
+//fecth all avatar
+router.get("/myhelpers/fetchAllAvatar", auth, DisplayController.fetchAllAvatar)
 //fecth Details
 router.get("/myhelpers/fetchAllData/:role",auth, DisplayController.fetchAllData)
 //save Route

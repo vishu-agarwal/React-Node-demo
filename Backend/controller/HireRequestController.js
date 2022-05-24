@@ -1,4 +1,4 @@
-const hireRequestModel = require("../model/tblHireRequest")
+const hireRequestModel = require("../model/HireRequestModel")
 const profileModel = require("../model/clientProfile")
 
 const createHireRequest = async (req, res) => {
@@ -40,55 +40,60 @@ const fetchHireRequest = async (req, res) => {
         let hireRequest = []
         if (req.params.rid.charAt(0) === "C") {
             const found = await hireRequestModel.findOne({ r_id: req.params.rid })
-            const helper = await Promise.all(
-                found.hireUser.map((val) => {
-                    return profileModel.find({ r_id: val.user_id }).then((res) => {
-                        console.log("values:: ", val)
-                        hireRequest.push({
-                            name: res.map(val => val.name),
-                            user_id: val.user_id,
-                            status: val.status,
-                            work: val.work,
-                            fromDate: val.fromDate,
-                            toDate: val.toDate,
-                            fromTime: val.fromTime,
-                            toTime: val.toTime,
-                            description: val.description,
+            // console.log(found,"....found")
+            if (found) {
+                const helper = await Promise.all(
+                    found.hireUser.map((val) => {
+                        return profileModel.find({ r_id: val.user_id }).then((res) => {
+                            console.log("values:: ", val)
+                            hireRequest.push({
+                                name: res.map(val => val.name),
+                                user_id: val.user_id,
+                                status: val.status,
+                                work: val.work,
+                                fromDate: val.fromDate,
+                                toDate: val.toDate,
+                                fromTime: val.fromTime,
+                                toTime: val.toTime,
+                                description: val.description,
 
+                            })
+                        }).catch((error) => {
+                            return res.status(400).send(error.massage)
                         })
-                    }).catch((error) => {
-                        return res.status(400).send(error.massage)
-                    })
-                }
-                ))
+                    }
+                    ))
+            }
         }
         else if (req.params.rid.charAt(0) === "H") {
             const found = await hireRequestModel.find({ "hireUser.user_id": req.params.rid })
+            if (found) {
+                const helper = await Promise.all(
+                    found.map((val) => {
+                        return profileModel.find({ r_id: val.r_id }).then((res) => {
 
-            const helper = await Promise.all(
-                found.map((val) => {
-                    return profileModel.find({ r_id: val.r_id }).then((res) => {
+                            const data = val.hireUser.find((value) => value.user_id === req.params.rid)
 
-                        const data = val.hireUser.find((value) => value.user_id === req.params.rid)
+                            hireRequest.push({
+                                name: res.map(val => val.name),
+                                user_id: val.r_id,
+                                status: data.status,
+                                work: data.work,
+                                fromDate: data.fromDate,
+                                toDate: data.toDate,
+                                fromTime: data.fromTime,
+                                toTime: data.toTime,
+                                description: data.description
+                            })
 
-                        hireRequest.push({
-                            name: res.map(val => val.name),
-                            user_id: val.r_id,
-                            status: data.status,
-                            work: data.work,
-                            fromDate: data.fromDate,
-                            toDate: data.toDate,
-                            fromTime: data.fromTime,
-                            toTime: data.toTime,
-                            description: data.description
+                        }).catch((error) => {
+                            return res.status(400).send(error.massage)
                         })
-
-                    }).catch((error) => {
-                        return res.status(400).send(error.massage)
-                    })
-                }
-                ))
+                    }
+                    ))
+            }
         }
+        console.log(hireRequest, typeof hireRequest)
         return res.status(200).send(hireRequest)
 
     } catch (error) {
@@ -97,10 +102,9 @@ const fetchHireRequest = async (req, res) => {
 }
 const fetchSingleHireRequest = async (req, res) => {
     try {
-        // console.log("work params id :: ", req.params.hid)
+        console.log("work params id :: ", req.params.hid)
         const found = await hireRequestModel.findOne({ r_id: req.params.rid })
         if (found) {
-
             const foundHelper = found.hireUser.filter((val) => {
                 if (val.user_id === req.params.hid) {
                     return val
@@ -111,8 +115,7 @@ const fetchSingleHireRequest = async (req, res) => {
                 return res.status(200).send({ ...foundHelper })
             }
         }
-
-
+        return res.status(200).send("Please fill deatils for enquiry!")
     } catch (error) {
         res.status(400).send(error.message)
     }

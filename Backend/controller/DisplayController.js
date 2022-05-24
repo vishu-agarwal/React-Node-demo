@@ -1,6 +1,7 @@
 const profileModel = require("../model/clientProfile")
 
 const helperModel = require("../model/helperProfile")
+const avatarModel = require("../model/tblProfileAvatar")
 const saveModel = require("../model/tblSaveUser")
 //fetch all user data
 const fetchAllData = async (req, res) => {
@@ -30,7 +31,7 @@ const fetchAllData = async (req, res) => {
                         "workDetails.category": 1,
                         "name": "$abc.name",
                         "dob": "$abc.dob",
-                        "avatar": "$abc.avatar",
+                        
                         "rating": "$abc.rating"
                     }
                 },
@@ -43,14 +44,10 @@ const fetchAllData = async (req, res) => {
             console.log(fetchHelper)
             return res.status(200).send(fetchHelper)
         }
-
-
     } catch (error) {
         return res.status(400).send(error.message)
     }
-
 }
-
 //save user data 
 const saveUserData = async (req, res) => {
     try {
@@ -69,14 +66,14 @@ const saveUserData = async (req, res) => {
             if (userFound.length !== 0) {
                 const update = await saveModel.findOneAndUpdate({ r_id: found.r_id, "saveUser.user_id": req.body.user_id }, { $pull: { saveUser: { user_id: req.body.user_id } } }, { new: true })
                 console.log("removw user :: ", update)
-                return res.status(200).send()
+                return res.status(200).sendsend(update.map((val) => val.saveUser).flat())
             }
             //   console.log(req.body)
             const user = found.saveUser.concat(req.body)
 
             const update = await saveModel.findOneAndUpdate({ r_id: req.params.rid }, { saveUser: user }, { new: true })
             console.log("update newUser :: ", update);
-            return res.status(200).send()
+            return res.status(200).send(update.map((val) => val.saveUser).flat())
 
         }
         const newUser = new saveModel({
@@ -86,7 +83,7 @@ const saveUserData = async (req, res) => {
 
         await newUser.save();
         console.log("newUser :: ", newUser);
-        return res.status(200).send()
+        return res.status(200).send(newUser.map((val) => val.saveUser).flat())
     }
     catch (error) {
         return res.status(400).send(error.message)
@@ -94,11 +91,9 @@ const saveUserData = async (req, res) => {
 }
 const fetchSaveUser = async (req, res) => {
     try {
-        const found = await saveModel.findOne({ r_id: req.params.rid })
-        // console.log(found)
-
-        return res.status(200).send(found)
-
+        const found = await saveModel.find({ r_id: req.params.rid })
+        console.log("save Users ::::::: ", found.map((val) => val.saveUser).flat())
+        return res.status(200).send(found.map((val) => val.saveUser).flat())
     }
     catch (error) {
         return res.status(400).send(error.message)
@@ -123,6 +118,16 @@ const profileAvailable = async (req, res) => {
     }
 }
 
+const fetchAllAvatar = async (req, res) => {
+    try {
+        const found = await avatarModel.find()
+        console.log(found)
+        return res.status(200).send(found)
+    }
+    catch (error) {
+        return res.status(400).send(error.message)
+    }
+}
 
 // const foundHelperFunc = (val) => {
 //     return new Promise((resolve, reject) => {
@@ -273,5 +278,6 @@ module.exports = {
     fetchSaveUser,
     searching,
     sorting,
+    fetchAllAvatar,
     profileAvailable
 }

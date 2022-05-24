@@ -54,8 +54,8 @@ const ClientProfile = () => {
 
     const dispatch = useDispatch()
     let { userProfile, profileError, profileMessage, profileLoading, email, avatar } = useSelector((state) => ({ ...state.profileStore }))
-
-    let role = "Helper"
+    const role = localStorage.getItem("role")
+    // let role = "Client"
 
     const [state, setState] = useState({
         open: false,
@@ -229,8 +229,8 @@ const ClientProfile = () => {
                     values,
                     rid
                 }
-                dispatch(aadharThunk(argAadhar))
                 dispatch(createProfileThunk(argCreateProfile))
+                dispatch(aadharThunk(argAadhar))
                 // setClicked(true)
                 // console.log("values:: ", values)
                 setEditHide(false)
@@ -648,20 +648,17 @@ const ClientProfile = () => {
             setErrorText("")
         }
     };
-
     useEffect(() => {
         console.log("error::", aadhar.dispFile)
         const areTrue = Object.values(errorEnable).every(
             value => value !== true
-
         );
-
         console.log("allerror::", areTrue);
         const isNullish = Object.values(values).every(value => value !== "");
         console.log("null", isNullish)
 
+        // console.log("dhjsddsgf", aadhar.dispFile !== "" ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false))
         aadhar.dispFile !== "" ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
-
     }, [errorEnable, values, aadhar.dispFile])
     return (
         <Grid >
@@ -682,7 +679,6 @@ const ClientProfile = () => {
                                 <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>
                             }
                         </Grid>
-
                     </Grid>
                     {openModal && <WorkProfile click={handleClose} open={openModal} />}
                     <form onSubmit={editHide ? profileSaveHandler : onUpdateProfileHandler}>
@@ -705,7 +701,7 @@ const ClientProfile = () => {
                                     </Snackbar>
 
                                     <Grid item sm={12} xs={12} marginTop={10}>
-                                        <Typography gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'body1' } }}>{email}</Typography>
+
                                         <Badge
 
                                             overlap="circular"
@@ -721,7 +717,6 @@ const ClientProfile = () => {
                                                 </label>
                                             }
                                         >
-
                                             <Avatar alt="Profile*"
                                                 style={{
                                                     // backgroundImage: `url(${profileImg})`,
@@ -730,7 +725,6 @@ const ClientProfile = () => {
                                                     border: '3px solid #163758',
                                                     backgroundColor: ""
                                                 }}
-
                                                 src={file.dispFile}
                                                 sx={{
                                                     marginTop: 0, width: 200, height: 250
@@ -738,17 +732,15 @@ const ClientProfile = () => {
                                         </Badge>
                                     </Grid>
                                     <Grid item sm={12} xs={12}>
-
                                         {enable && <Button variant="contained" sx={{ marginTop: 2, backgroundColor: "#03a9f4" }} onClick={avatarSubmit}>Upload Photo </Button>}
                                     </Grid>
                                     <Grid item xs={12} sm={12}>
+                                        <Typography marginTop={1} gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'subtitle2' } }}>{email}</Typography>
                                         {/* <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].email : ''}</Typography> */}
                                         {role === "Helper" && <Rating name="half-rating"
-
                                             value={star}
                                             readOnly={Boolean(true)}
                                             size="medium"
-
                                         />}
                                     </Grid>
                                 </Grid>
@@ -905,39 +897,45 @@ const ClientProfile = () => {
                                             <FormControlLabel value="false" control={<Radio />} label="No" />
                                         </RadioGroup>
                                     </Grid>
-                                    <Grid xs={12} sm={4} item >
+                                    <Grid xs={12} sm={11} item >
+                                        <Grid container justifyContent="center">
+                                            <Grid xs={12} sm={5} item >
+                                                <label htmlFor="contained-button-file">
+                                                    <Input id="contained-button-file" type="file" name="aadharCard"
 
-                                        <label htmlFor="contained-button-file">
-                                            <Input id="contained-button-file" type="file" name="aadharCard"
-                                                required
-                                                ref={hiddenFileInput}
-                                                onChange={onAadharChange}
-                                                style={{ display: 'none' }}
-                                            />
-                                            <Button color="info" variant="contained" fullWidth component="span" >
-                                                Upload Aadhar
-                                            </Button>
-                                        </label>
-                                    </Grid>
-                                    <Grid xs={12} sm={7} item>
-                                        {aadhar.dispFile &&
-                                            <>
-                                                {!editHide &&
-                                                    < IconButton onClick={onAadharView} aria-label="upload picture" component="span">
-                                                        <VisibilityRoundedIcon color="info" fontSize="large" />
+                                                        ref={hiddenFileInput}
+                                                        onChange={onAadharChange}
+                                                        // disabled={fieldsDisable}
+                                                        style={{ display: 'none' }}
+                                                    />
+                                                    <Typography color="primary" variant="button" style={{ fontWeight: 800, cursor: "pointer" }} >
+                                                        Upload Aadhar
+                                                    </Typography>
+                                                </label>
+                                            </Grid>
+                                            <Grid xs={12} sm={7} item align="left" >
+                                                {aadhar.dispFile ?
+                                                    <>
+                                                        {!editHide &&
+                                                            < IconButton sx={{padding:0}} onClick={onAadharView} aria-label="upload picture" component="div">
+                                                                <VisibilityRoundedIcon color="info" size="large" />
+                                                            </IconButton>
+                                                        }
+                                                        <Typography marginLeft={1} marginRight={1} variant="caption">{aadhar.dispFile}</Typography>
+                                                    </>
+                                                    :
+                                                    <Typography variant="body2" align="right" marginTop={0.5} color="secondary" >1 MB size PDF file only!</Typography>
+                                                }
+                                                {aadhar.dispFile && !fieldsDisable &&
+                                                    <IconButton sx={{ padding: 0 }} onClick={onCancel} aria-label="upload picture" component="div">
+                                                        <CancelSharpIcon color="error" fontSize="medium" />
                                                     </IconButton>
                                                 }
-                                                {aadhar.dispFile}
-                                            </>
-                                        }
-                                        {aadhar.dispFile && !fieldsDisable &&
-                                            <IconButton onClick={onCancel} aria-label="upload picture" component="span">
-                                                <CancelSharpIcon color="error" fontSize="medium" />
-                                            </IconButton>
-                                        }
+                                            </Grid>
+                                        </Grid>
                                     </Grid>
                                     <Grid xs={11} sm={11} item align="left" color="#b71c1c">
-                                        <Typography variant="body2" display="block">1 MB size PDF file only!</Typography>
+                                        {/* <Typography variant="body2" display="block">1 MB size PDF file only!</Typography> */}
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -1079,17 +1077,17 @@ const ClientProfile = () => {
                                     </Grid>
 
                                 </Grid>
-                                <Grid container spacing={2} justifyContent="center" marginTop={17} marginLeft={1} >
-                                    <Grid item xs={12} sm={6} align="left">
-                                        {role === "Helper" && fieldsDisable &&
-
-                                            < Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth size="large" >
+                                <Grid container spacing={2} justifyContent="center" marginTop={15} marginLeft={1} >
+                                    {role === "Helper" && !fieldsDisable &&
+                                        <Grid item xs={12} sm={6} align="left">
+                                            <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth size="large" >
                                                 {editHide ? "Add Work" : !fieldsDisable && "Update Work "}
                                             </Button>
 
-                                        }
-                                    </Grid>
-                                    {(saveEnable && !editHide) && !fieldsDisable &&
+                                        </Grid>
+                                    }
+                                    {saveEnable && !fieldsDisable &&
+
                                         <Grid xs={12} sm={6} item align="right">
                                             <Button type='submit' variant="contained" color='primary' size="large" fullWidth >
                                                 {editHide ? "Save" : !fieldsDisable && "Update"}

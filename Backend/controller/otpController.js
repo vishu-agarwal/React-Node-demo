@@ -1,6 +1,7 @@
 const regModel = require("../model/tblReg")
 const optModel = require("../model/tempOtpModel")
 
+const userModel = require("../model/UserModel")
 // const fast2sms = require('fast-two-sms')
 const nodemailer = require("nodemailer");
 
@@ -26,8 +27,8 @@ async function otpFunction(email) {
                 // secure: false, // true for 465, false for other ports
                 service:"gmail",
                 auth: {
-                    user: "princyvadsak.dcs22n@vnsgu.ac.in", // generated ethereal user
-                    pass: "princy@25", // generated ethereal password
+                    user: "realadtest@gmail.com", // generated ethereal user
+                    pass: "smartdevs@123", // generated ethereal password
                 },
             });
         // var mailOptions = {
@@ -46,7 +47,7 @@ async function otpFunction(email) {
         // });
             // // send mail with defined transport object
             let info = await transporter.sendMail({
-                from: 'princyvadsak.dcs22n@vnsgu.ac.in', // sender address
+                from: 'realadtest@gmail.com', // sender address
                 to: receiverMail, // list of receivers
                 subject: "Otp SMS My Helpers ✔", // Subject line
                 text: mailText, // plain text body

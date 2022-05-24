@@ -62,7 +62,8 @@ const MenuProps = {
 
 const HireForm = (props) => {
 
-
+    const rid = localStorage.getItem("r_id")
+    const role = localStorage.getItem("role")
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
@@ -142,7 +143,8 @@ const HireForm = (props) => {
         const arg = {
             user_id: props.user_id,
             values: props.hireValues,
-            work: props.work
+            work: props.work,
+            rid
         }
         console.log("abc", arg)
         //create work Profile
@@ -160,7 +162,8 @@ const HireForm = (props) => {
         const arg = {
             user_id: props.user_id,
             values: props.hireValues,
-            work: props.work
+            work: props.work,
+            rid
         }
 
 
@@ -487,8 +490,19 @@ const HireForm = (props) => {
                     }}>
 
 
-                    <CardContent justifyContent="center" style={{ padding: 0 }}>
+                    <CardContent style={{ padding: 0 }}>
                         <Grid container direction={'row'} >
+                            <Snackbar
+                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                open={snackOpen}
+                                autoHideDuration={6000}
+                                onClose={closeSnackbar}
+                            // key={vertical + horizontal}
+                            >
+                                <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                    {snackMessage}
+                                </Alert>
+                            </Snackbar>
                             <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
                                 <Grid container direction={'row'} padding={2} >
                                     <Grid item xs={12} sm={10} align="left" >

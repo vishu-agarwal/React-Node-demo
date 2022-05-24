@@ -19,7 +19,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import Loading from '../layouts/LoadingFile'
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
-import workProfileActions from '../../store/slices/work-slice'
+import {workProfileActions} from '../../store/slices/work-slice'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 import profileActions from '../../store/slices/profile-slice'
 import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
@@ -45,6 +45,7 @@ const ViewClientProfile = () => {
     const navigate = useNavigate()
     const params = useParams()
     const rid = params.rid;
+    
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let {  workData, workError,workLoading,workMessage } = useSelector((state) => ({ ...state.workProfileStore }))
@@ -66,6 +67,7 @@ const ViewClientProfile = () => {
     const [values, setValues] = useState({
         name: '',
         dob: '',
+        mbl:'',
         altmbl: '',
         email: '',
         gender: '',
@@ -163,18 +165,25 @@ const ViewClientProfile = () => {
             <Card
                 elevation={16}
                 sx={{
-
                     maxWidth: 1200, minHeight: 600,
-
                     borderWidth: 3,
                     borderRadius: 6,
                     marginTop: 8,
-
-
                 }}
             >
                 <CardContent >
                     <Grid container direction={'row'} justifyContent="center">
+                        <Snackbar
+                            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                            open={snackOpen}
+                            autoHideDuration={6000}
+                            onClose={closeSnackbar}
+                        // key={vertical + horizontal}
+                        >
+                            <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                {snackMessage}
+                            </Alert>
+                        </Snackbar>
                         <Grid item xs={12} sm={12} md={12} align="left" >
                             <Button variant="contained" sx={{ backgroundColor: "#163758" }} onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
                         </Grid>

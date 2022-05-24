@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardContent, Divider, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 // import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { NavLink, useNavigate, useParams, Link } from 'react-router-dom';
@@ -71,8 +71,6 @@ const ScrollButton = () => {
 
   );
 }
-
-
 
 const HomePage = () => {
   let navigate = useNavigate()
@@ -405,4 +403,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default HomePage;

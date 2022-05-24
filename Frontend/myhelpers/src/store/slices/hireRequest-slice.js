@@ -7,17 +7,17 @@ const initialState = {
     singleUser: [],
     requestMessage: '',
     requestLoading: false,
-   requestError: ""
+    requestError: ""
 }
 
-const varToken = localStorage.getItem("token");
+const varToken = localStorage.getItem("logToken");
 
 //create work Details thunk
-export const sendHireRequestThunk = createAsyncThunk("hireRequest/workProfileThunk", async (arg) => {
-    
+export const sendHireRequestThunk = createAsyncThunk("hireRequest/sendHireRequestThunk", async (arg) => {
+
     try {
-        const rid = localStorage.getItem("r_id")
-      
+
+
         const data =
             [
                 {
@@ -33,13 +33,13 @@ export const sendHireRequestThunk = createAsyncThunk("hireRequest/workProfileThu
             ]
 
         // console.log("data", data)
-        const workDataRes = await axios.post(`/myhelpers/sendHelperRequest/C101`, data, {
+        const workDataRes = await axios.post(`/myhelpers/sendHelperRequest/${arg.rid}`, data, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
 
-        
+
         return workDataRes
 
     }
@@ -57,38 +57,31 @@ export const fetchHelperRequestsThunk = createAsyncThunk("hireRequest/fetchHelpe
                 Authorization: "Bearer " + varToken,
             },
         })
-
-        
+        // console.log(hireRequest)
         return hireRequest
-
     } catch (error) {
-        // console.log(error.response.data)
+        console.log(error.response.data)
         throw new Error(error.response.data)
     }
 })
-export const fetchSingleHireRequestThunk = createAsyncThunk("hireRequest/fetchHireRequestThunk", async (arg) => {
+export const fetchSingleHireRequestThunk = createAsyncThunk("hireRequest/fetchSingleHireRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const fetchHelperRes = await axios.get(`/myhelpers/fetchSingleHireRequest/C101/${arg}`, {
+        const fetchHelperRes = await axios.get(`/myhelpers/fetchSingleHireRequest/${arg.rid}/${arg.user_id}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
-        
         return fetchHelperRes
-
     } catch (error) {
         // console.log(error.response.data)
         throw new Error(error.response.data)
     }
 })
 //update work details thunk
-export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateWorkThunk", async (arg) => {
+export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateHireRequestThunk", async (arg) => {
     try {
-
         const rid = localStorage.getItem("r_id")
-
         const data =
 
         {
@@ -103,13 +96,11 @@ export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateWorkTh
         }
 
 
-        const updateRes = await axios.put(`/myhelpers/updateHireRequest/C106`, data, {
+        const updateRes = await axios.put(`/myhelpers/updateHireRequest/${arg.rid}`, data, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
-        
         return updateRes
 
     } catch (error) {
@@ -126,8 +117,6 @@ export const acceptRequestThunk = createAsyncThunk("hireRequest/acceptRequestThu
                 Authorization: "Bearer " + varToken,
             },
         })
-
-
         return response
 
     } catch (error) {
@@ -144,8 +133,6 @@ export const rejectRequestThunk = createAsyncThunk("hireRequest/rejectRequestThu
                 Authorization: "Bearer " + varToken,
             },
         })
-
-
         return response
 
     } catch (error) {
@@ -208,9 +195,9 @@ const hireRequestSlice = createSlice({
             state.hireRequestData = action.payload.data
             console.log("payload::", action.payload.data)
         },
-        [fetchHelperRequestsThunk.rejected]: (state, action) => {
+        [fetchHelperRequestsThunk.rejected]: (state, error) => {
             state.requestLoading = false
-            state.requestError = true
+            state.requestError = error.error.message
         },
 
         //fetch single helper request
@@ -220,9 +207,13 @@ const hireRequestSlice = createSlice({
         [fetchSingleHireRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
             //  state.isAuth = true
-            state.singleUser = action.payload.data[0]
-            console.log("single userState", state.singleUser)
-
+            if (action.payload.data === "Please fill deatils for enquiry!") {
+                state.requestMessage = action.payload.data
+            }
+            else {
+                state.singleUser = action.payload.data[0]
+                console.log("single userState", state.singleUser)
+            }
         },
         [fetchSingleHireRequestThunk.rejected]: (state, error) => {
             state.requestLoading = false

@@ -9,8 +9,9 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CardJS from "../Card"
 import { useSelector, useDispatch } from 'react-redux';
-import { displayActions, fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk } from '../../store/slices/display-slice';
-import workProfileActions from '../../store/slices/work-slice'
+import { displayActions, fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk,fetchAllAvatarThunk } from '../../store/slices/display-slice';
+
+import {workProfileActions} from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -73,15 +74,15 @@ const filterGender = [
 ];
 const DisplayData = () => {
     const navigate = useNavigate()
-
+    const rid = localStorage.getItem("r_id")
+    const role = localStorage.getItem("role")
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    let { displayData, saveUser, hireUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser, hireUser, displayMessage, displayLoading, displayError,userAvatar } = useSelector((state) => ({ ...state.displayStore }))
 
-    let rates, status, hireStatus
+    let rates, status, hireStatus,helperAvatar
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
-
 
     const [state, setState] = useState({
         snackOpen: false,
@@ -97,7 +98,8 @@ const DisplayData = () => {
 
     useEffect(() => {
         dispatch(fetchAllThunk())
-        dispatch(fetchSaveUserThunk())
+        dispatch(fetchAllAvatarThunk())
+        dispatch(fetchSaveUserThunk(rid))
     }, [])
 
     // console.log(workData[0].workDetails)
@@ -134,7 +136,13 @@ const DisplayData = () => {
             console.log("saveUser ::", saveUser);
         }
     }, [saveUser])
+    useEffect(() => {
 
+        if (userAvatar.length !== 0) {
+            console.log("avatar ::", userAvatar);
+            
+        }
+    }, [userAvatar])
     const searchChange = (e) => {
 
         // e.preventDefault();
@@ -143,7 +151,7 @@ const DisplayData = () => {
             workSearch, filterWork
         }
         dispatch(searchThunk(arg))
-        dispatch(fetchSaveUserThunk())
+        dispatch(fetchSaveUserThunk(rid))
     }
     const [sortField, setSortField] = useState('')
     const onSortChange = (sort, field) => {
@@ -151,14 +159,25 @@ const DisplayData = () => {
         const arg = {
             sort, field
         }
+        dispatch(fetchSaveUserThunk(rid))
         dispatch(sortThunk(arg))
-        dispatch(fetchSaveUserThunk())
     }
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={5}>
             {displayLoading && <Loading isLoad={true} />}
             <Grid item xs={11} sm={11} >
                 <Grid container spacing={2} marginBottom={2}>
+                    <Snackbar
+                        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                        open={snackOpen}
+                        autoHideDuration={6000}
+                        onClose={closeSnackbar}
+                    // key={vertical + horizontal}
+                    >
+                        <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                            {snackMessage}
+                        </Alert>
+                    </Snackbar>
                     <Grid item xs={12} sm={2}>
                         <Autocomplete
                             disablePortal
@@ -265,67 +284,37 @@ const DisplayData = () => {
 
                 </Grid>
             </Grid>
-            <Grid container direction="row" >
+            <Grid container direction="row" spacing={2}>
 
                 {
                     // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
                     displayData.map((values, index) => {
-                        {
-                            rates = values.rating[0] !== undefined ?
-                                values.rating[0].map((id) =>
-                                    id.rate
-                                ).reduce((prev, curr) => prev + curr, 0)
-                                /
-                                values.rating[0].map((id) =>
-                                    id.user_id
-                                ).length
+                        
+                        rates = values.rating[0] !== undefined ?
+                            values.rating[0].map((id) =>
+                                id.rate
+                            ).reduce((prev, curr) => prev + curr, 0)
+                            /
+                            values.rating[0].map((id) =>
+                                id.user_id
+                            ).length
 
-                                : null
+                            : null;
 
-                            status = saveUser.length !== 0 ? saveUser.map((val) => values.r_id === val.user_id).includes(true) ? true : false : false
+                        status = saveUser.length
+                            && !!saveUser.find((val) => values.r_id === val.user_id)
+                            
+                        helperAvatar = userAvatar.length && userAvatar.find((val) => values.r_id === val.r_id) 
+                        // console.log(helperAvatar)
+                            // hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : '';
 
-                            hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
-
-                        }
-                        return <Grid item xs={12} sm={3} align="center" key={index} >
-                            <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
+                        
+                        return <Grid item xs={12} sm={4} md={3} key={index} >
+                            <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} avatar={helperAvatar.avatar} />
                         </Grid>
                     })
                 }
-                {
-                    // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
-                    displayData.length !== 0 ? displayData.map((values, index) => {
-                        {
-                            rates = values.rating[0] !== undefined ?
-                                values.rating[0].map((id) =>
-                                    id.rate
-                                ).reduce((prev, curr) => prev + curr, 0)
-                                /
-                                values.rating[0].map((id) =>
-                                    id.user_id
-                                ).length
-
-                                : null
-
-                            status = saveUser.length !== 0 ? saveUser.map((val) => values.r_id === val.user_id).includes(true) ? true : false : false
-
-                            hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
-
-                        }
-                        return <Grid item xs={12} sm={3} align="center" key={index} >
-                            <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
-                        </Grid>
-                    })
-                        :
-                        <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
-                            <img
-                                src={require("../allImages/notfound.gif")}
-                                alt="Page No Found..."
-
-                                align="center"
-                            />
-                        </Grid>
-                }
+              
             </Grid>
         </Grid >
     )

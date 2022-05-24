@@ -165,7 +165,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                     onChange={e => handleChange(e, i)}
 
                                     error={errorEnable.salary}
-                                    helperText={errorEnable.salary && errorText}
+                                    helperText={(errorEnable.salary && errorText)|| "Per Day"}
                                     label="Expected salary Range"
                                     fullWidth
 

@@ -24,7 +24,7 @@ import { useState, useEffect } from 'react';
 
 // import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
 import { displayActions, fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
-import workProfileActions from '../../store/slices/work-slice'
+import {workProfileActions} from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import CardJS from '../Card';
@@ -76,7 +76,7 @@ const ShortListed = (props) => {
     // });
     useEffect(() => {
         dispatch(fetchAllThunk())
-        dispatch(fetchSaveUserThunk())
+        dispatch(fetchSaveUserThunk(rid))
     }, [])
 
     // console.log(workData[0].workDetails)
@@ -144,13 +144,24 @@ const ShortListed = (props) => {
                 {displayLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
-                        minWidth: 500, minHeight: 450,
+                        width: 500, height: 650,
                         padding: 0,
 
                         borderRadius: 3,
                     }}>
-                    <CardContent justifyContent="center" style={{ padding: 0 }}>
+                    <CardContent style={{ padding: 0 }}>
                         <Grid container direction={'row'} >
+                            <Snackbar
+                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                open={snackOpen}
+                                autoHideDuration={6000}
+                                onClose={closeSnackbar}
+                            // key={vertical + horizontal}
+                            >
+                                <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                    {snackMessage}
+                                </Alert>
+                            </Snackbar>
                             <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
                                 <Grid container direction={'row'} padding={2} >
                                     <Grid item xs={12} sm={10} align="left" >
@@ -166,10 +177,10 @@ const ShortListed = (props) => {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid container marginTop={0} marginBottom={0} style={{ maxHeight: '510px', overflow: 'auto' }}>
+                        <Grid container marginTop={0} marginBottom={0} style={{ height: '550px', overflow: 'auto' }}>
                             {
                                 // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
-                                saveUser.length !== 0 && displayData.length !== 0 ?
+                                saveUser.length && displayData.length ?
                                     saveUser.map((val, index) =>
                                         displayData.map((values, index) => {
                                             if (val.user_id === values.r_id) {

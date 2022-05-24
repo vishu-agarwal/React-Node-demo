@@ -26,8 +26,8 @@ export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) =
         };
         // console.log(data)
         const loginRes = await axios.post(`/myhelpers/register/${arg.role}`, data)
-        localStorage.setItem("logToken", loginRes.data.token)
-        localStorage.setItem("r_id", loginRes.data.newUser.r_id)
+        // localStorage.setItem("logToken", loginRes.data.token)
+        // localStorage.setItem("r_id", loginRes.data.newUser.r_id)
         console.log("loginRes", loginRes)
         return loginRes
 

@@ -25,12 +25,12 @@ import Modal from '@mui/material/Modal';
 
 import { fetchHelperRequestsThunk } from '../../store/slices/hireRequest-slice';
 import { fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
-import workProfileActions from '../../store/slices/work-slice'
+import {workProfileActions} from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './HireRequestCard';
 import HireRequestSlice from '../../store/slices/hireRequest-slice';
-import hireRequestActions from '../../store/slices/hireRequest-slice'
+import {hireRequestActions} from '../../store/slices/hireRequest-slice'
 // import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import { Box } from "@mui/system";
 // import theme from "../Theme";
@@ -47,8 +47,8 @@ const Alert = React.forwardRef(function Alert(
 
 
 const WorkRequest = (props) => {
-    // const rid = localStorage.getItem("r_id")
-    const rid = "H103"
+    const rid = localStorage.getItem("r_id")
+    // const rid = "H103"
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
@@ -83,7 +83,6 @@ const WorkRequest = (props) => {
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(requestMessage)
-
             dispatch(hireRequestActions.messageReducer())
 
         }
@@ -92,7 +91,6 @@ const WorkRequest = (props) => {
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(requestError)
-
             dispatch(hireRequestActions.errorReducer())
         }
 
@@ -123,13 +121,23 @@ const WorkRequest = (props) => {
                 {requestLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
-                        minWidth: 500, minHeight: 450,
+                        minWidth: 500, minHeight: 650,
                         padding: 0,
-
                         borderRadius: 3,
                     }}>
-                    <CardContent justifyContent="center" style={{ padding: 0 }}>
+                    <CardContent style={{ padding: 0 }}>
                         <Grid container direction={'row'} >
+                            <Snackbar
+                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                open={snackOpen}
+                                autoHideDuration={6000}
+                                onClose={closeSnackbar}
+                            // key={vertical + horizontal}
+                            >
+                                <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                    {snackMessage}
+                                </Alert>
+                            </Snackbar>
                             <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
                                 <Grid container direction={'row'} padding={2} >
                                     <Grid item xs={12} sm={10} align="left" >
@@ -145,7 +153,7 @@ const WorkRequest = (props) => {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid container justifyContent="center" style={{ maxHeight: '500px', overflow: 'auto' }}>
+                        <Grid container justifyContent="center" style={{ maxHeight: '550px', overflow: 'auto' }}>
                             {
                                 hireRequestData.length !== 0 ?
                                     hireRequestData.map((val, index) => {
@@ -166,7 +174,7 @@ const WorkRequest = (props) => {
                                     }
                                     )
                                     :
-                                    <Grid  item xs={12} sm={12} align="center" padding={0} sx={{margin:0}} >
+                                    <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }} >
 
                                         <img
                                             src={require("../allImages/notfound.gif")}

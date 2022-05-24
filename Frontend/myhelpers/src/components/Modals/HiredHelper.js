@@ -31,7 +31,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './HireRequestCard';
 import HireRequestSlice from '../../store/slices/hireRequest-slice';
 // import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
-import hireRequestActions from '../../store/slices/hireRequest-slice'
+import {hireRequestActions} from '../../store/slices/hireRequest-slice'
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -97,7 +97,7 @@ const HiredHelper = (props) => {
     // });
     useEffect(() => {
 
-        dispatch(fetchHelperRequestsThunk())
+        dispatch(fetchHelperRequestsThunk(rid))
 
     }, [])
 
@@ -121,13 +121,24 @@ const HiredHelper = (props) => {
                 {requestLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
-                        minWidth: 500, minHeight: 450,
+                        minWidth: 500, minHeight: 650,
                         padding: 0,
 
                         borderRadius: 3,
                     }}>
-                    <CardContent justifyContent="center" style={{ padding: 0 }}>
+                    <CardContent style={{ padding: 0 }}>
                         <Grid container direction={'row'} >
+                            <Snackbar
+                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                open={snackOpen}
+                                autoHideDuration={6000}
+                                onClose={closeSnackbar}
+                            // key={vertical + horizontal}
+                            >
+                                <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                    {snackMessage}
+                                </Alert>
+                            </Snackbar>
                             <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
                                 <Grid container direction={'row'} padding={2} >
                                     <Grid item xs={12} sm={10} align="left" >
@@ -143,7 +154,7 @@ const HiredHelper = (props) => {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid container style={{ maxHeight: '515px', overflow: 'auto' }}>
+                        <Grid container style={{ maxHeight: '550px', overflow: 'auto' }}>
                             {
                                 hireRequestData.length !== 0 ?
                                     hireRequestData.map((val, index) => {
@@ -164,7 +175,7 @@ const HiredHelper = (props) => {
                                         <img
                                             src={require("../allImages/notfound.gif")}
                                             alt="Page No Found..."
-
+                                            
                                             align="center"
                                         />
                                     </Grid>

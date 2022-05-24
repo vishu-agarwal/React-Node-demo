@@ -83,9 +83,10 @@ const Header = (props) => {
     let navigate = useNavigate()
 
     // let { token } = useSelector((state) => ({ ...state.loginStore }))
-    // const role = localStorage.getItem("role")
-    const role="Client"
-    const {isAuth} = useSelector(state => ({ ...state.loginStore }))
+    const role = localStorage.getItem("role")
+
+    // const role="Client"
+    const { isAuth } = useSelector(state => ({ ...state.loginStore }))
     // const isAuth = true
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -183,8 +184,8 @@ const Header = (props) => {
                                             <Typography textAlign="center">{page}</Typography>
                                         </MenuItem>
                                     ))} */}
-                                    <MenuItem onClick={() => navigate("/home")}>Home</MenuItem>
-                                    <MenuItem onClick={() => navigate("/findHelper")} >Hiring Process</MenuItem>
+                                    <MenuItem onClick={() => navigate("/Client/home")}>Home</MenuItem>
+                                    {/* <MenuItem onClick={() => navigate("/findHelper")} >Hiring Process</MenuItem> */}
                                     {role === "Client" && <MenuItem onClick={() => navigate("/findHelper")}>Find Helpers</MenuItem>}
                                     <MenuItem onClick={() => { return (navigate("/profile"), handleCloseNavMenu) }}>Profile</MenuItem>
 
@@ -207,27 +208,31 @@ const Header = (props) => {
                         {isAuth &&
                             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                                 {/* {pages.map((page) => ( */}
-                                <Button
+                                {role === "Client" &&
+                                    <>
+                                        <Button
 
-                                    onClick={() => navigate("/home")}
+                                            onClick={() => navigate("/Client/home")}
+                                            sx={{ my: 2, color: 'white', display: 'block' }}
+                                        >
+                                            Home
+                                        </Button>
+
+                                        <Button
+
+                                            onClick={() => navigate("/findHelper")}
+                                            sx={{ my: 2, color: 'white', display: 'block' }}
+                                        >
+                                            Find Helpers
+                                        </Button>
+                                    </>
+                                }
+                                {role === "Helper" && <Button
+
+                                    onClick={() => navigate("/Helper/home")}
                                     sx={{ my: 2, color: 'white', display: 'block' }}
                                 >
                                     Home
-                                </Button>
-                                {role === "Client" &&
-                                    <Button
-
-                                        onClick={() => navigate("/findHelper")}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
-                                    >
-                                        Find Helpers
-                                    </Button>}
-                                {role === "Helper" && <Button
-
-                                    onClick={() => navigate("/hiringProcess")}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
-                                >
-                                    Hiring Process
                                 </Button>}
                                 <Button
 
@@ -282,7 +287,7 @@ const Header = (props) => {
             {
                 isAuth &&
                 <ScrollTop {...props}>
-                    <Fab sx={{ backgroundColor: "#163758", color: "white",borderColor:"red" }} size="medium" aria-label="scroll back to top">
+                    <Fab sx={{ backgroundColor: "#163758", color: "white", borderColor: "red" }} size="medium" aria-label="scroll back to top">
                         <KeyboardArrowUpIcon />
                     </Fab>
                 </ScrollTop>

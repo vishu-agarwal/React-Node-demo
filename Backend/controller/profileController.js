@@ -83,40 +83,42 @@ const fetchProfile = async (req, res) => {
         console.log("profile::", error.message)
        return res.status(400).send(error.message)
     }
-
-
 }
 
 //update rating
 const updateStar = async (req, res) => {
     try {
-        // console.log(req.body.rating)
-        const found = await profileModel.findOne({ r_id: req.params.rid });
-
+        console.log(req.body.rate)
+        const found = await profileModel.findOne({ r_id: req.params.rid }); 
         if (found) {
-
-            const idIndex = found.rating.findIndex((c) => c.user_id === req.body.user_id);
-            // console.log("found old user", idIndex);
+            const findUser = await profileModel.findOne({ r_id: req.body.user_id })
+            console.log("finduser:::",findUser)
+            const idIndex = findUser.rating.findIndex((c) => c.user_id === req.params.rid);
+            // const idIndex = found.rating.findIndex((c) => c.user_id === req.body.user_id);
+            console.log("found old user", idIndex);
             if (idIndex < 0) {
                 console.log("found new user");
-                const rate = found.rating.concat(req.body)
+                const updateRate = {
+                    user_id: req.params.rid,
+                    rate: req.body.rate
+                }
+                const rate = findUser.rating.concat(updateRate)
                 const updtStar = await profileModel.findOneAndUpdate(
-                    { r_id: req.params.rid },
+                    { r_id: req.body.user_id },
 
                     { rating: rate }
                     ,
                     { new: true }
                 )
-                // console.log("new Update ::", updtStar)
+                console.log("new Update ::", updtStar)
                 return res.status(200).send("Thankyou for response!")
 
             }
 
-            else if (found.rating[idIndex].user_id === req.body.user_id) {
-                found.rating[idIndex].rate = req.body.rate
-
-                const update = await found.save();
-                // console.log("old user :: \n", update)
+            else if (findUser.rating[idIndex].user_id === req.params.rid) {
+                findUser.rating[idIndex].rate = req.body.rate
+                const update = await findUser.save();
+                console.log("old user :: \n", update)
                 return res.status(200).send("Thankyou for response!");
             }
 
@@ -143,10 +145,10 @@ const updateProfile = async (req, res) => {
             throw new Error("Some Problem while uupdating working details!")
         }
         // console.log("update data:: ", update)
-        return res.status(200).send("Update profilesuccessfully!")
+        return res.status(200).send("Update profile successfully!")
         // return res.send(isunique)
     } catch (error) {
-        res.status(404).send(error.message)
+       return res.status(404).send(error.message)
     }
 }
 

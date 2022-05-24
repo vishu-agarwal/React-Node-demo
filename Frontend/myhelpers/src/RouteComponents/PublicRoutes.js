@@ -25,7 +25,7 @@ import {
 //     );
 // }
 function PublicRoutes({ children, isAuthenticated, ...rest }) {
-    
+    const role = localStorage.getItem("role") 
     if (!isAuthenticated)
     {
         return (
@@ -34,12 +34,7 @@ function PublicRoutes({ children, isAuthenticated, ...rest }) {
             </React.Fragment>
         )
     }
-    return <Navigate
-        to={{
-            pathname: '/home',
-            
-        }}
-    /> 
+    return <Navigate to={{pathname: `${role}/home`}} /> 
 }
 
 export default PublicRoutes

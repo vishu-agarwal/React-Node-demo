@@ -1,5 +1,5 @@
 const regModel = require("../model/tblReg")
-
+const userModel = require("../model/UserModel")
 
 const loginController = async (req, res) => {
     // console.log(req.params.role)

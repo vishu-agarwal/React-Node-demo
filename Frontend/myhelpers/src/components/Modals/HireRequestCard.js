@@ -26,9 +26,9 @@ import hireRequestActions from '../../store/slices/hireRequest-slice'
 import Loading from '../layouts/LoadingFile'
 
 const HireRequestCard = (props) => {
-    console.log("status::",props.values.user_id)
+    // console.log("status::",props.values.user_id)
     const navigate = useNavigate()
-
+    const rid = localStorage.getItem("r_id")
     const dispatch = useDispatch()
     // let { status, error } = useSelector((state) => ({ ...state.displayStore }))
 
@@ -40,10 +40,18 @@ const HireRequestCard = (props) => {
     }
     const onAcceptHandler = () => {
         console.log("acctepted..", props.values.user_id)
-        dispatch(acceptRequestThunk(props.values.user_id))
+        const arg = {
+            user_id: props.values.user_id,
+            rid
+        }
+        dispatch(acceptRequestThunk(arg))
     }
     const onDeleteHandler = () => {
-        props.values.user_id.charAt(0) === "C" ? dispatch((rejectRequestThunk(props.values.user_id))) : dispatch((deleteRequestThunk(props.values.user_id)))
+        const arg = {
+            user_id: props.values.user_id,
+            rid
+        }
+        props.values.user_id.charAt(0) === "C" ? dispatch((rejectRequestThunk(arg))) : dispatch((deleteRequestThunk(arg)))
     }
 
     return (

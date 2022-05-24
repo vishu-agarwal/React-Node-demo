@@ -108,6 +108,7 @@ const HiringProcess = (props) => {
 
     return (
         <div>
+            {openRequest && <WorkRequest click={handleModelClose} />}
             <Grid container justifyContent="center">
                 <Grid item xs={12} md={12} sm={12} style={{ position: "relative" }}>
                     <div>
@@ -131,12 +132,13 @@ const HiringProcess = (props) => {
                                         // size="large"
                                         // color="#163758"
                                         variant="contained"
-                                        // onClick={ }
+                                        onClick={onRequestClick}
                                         sx={{ button: 'sm: "medium" xs="small" md: "large" ', backgroundColor: '#ff001d', color: "white", display: 'block', width: "20%", height: 50 }}
                                     >
-                                        SEE ENQUIRY
+                                        SEE REQUESTS
                                     </Button>
                                 </Grid>
+                                
                             </Box>
 
                             <Grid container justifyContent="center" >
@@ -208,7 +210,6 @@ const HiringProcess = (props) => {
                                 </Grid>
                                 <Grid item xs={6} sm={4} md={2}>
                                     <Grid container>
-
                                         <Grid item xs={12} sm={12} md={12} >
                                             <img src={require("../allImages/relax1.png")} onClick={onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
                                             {openHired && <HiredHelper click={handleModelClose} />}
@@ -218,20 +219,16 @@ const HiringProcess = (props) => {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} >
                     <Typography style={{ fontWeight: 500, color: "#163758" }} marginTop={2} marginBottom={2} variant="h3">
-
                         Why should you find & hire Workers from My Helpers ?
                     </Typography>
                     <Grid container justifyContent="center" >
                         <Grid item sm={11} xs={11} md={11}  >
-
-
                             <Card elevation={4} >
                                 <CardContent sx={{ padding: 0, backgroundColor:"white" }}>
                                     <Grid container direction="row">
@@ -241,37 +238,24 @@ const HiringProcess = (props) => {
                                                 sx={{ width: "100%", height: "100%" }}
                                                 image={require("../allImages/cardimg.jpg")}
                                                 alt="Image"
-
                                             />
                                         </Grid>
                                         <Grid item xs={12} sm={12} md={6} align="left"  >
-
                                             <Typography style={{ fontWeight: 600, color: "#163758" }} marginTop={1} variant="h6">
                                                 Simple choices affect the world we live in.
-
                                                 We are flooded with multiple choices for things we consume every day - Which Tea/Coffee? Which Cereal? Which Car? What kind of Fruits & Vegetables? Etc.
-
                                                 At times, these simple choices we make every moment affect our environment, planet or a group of individuals or community, directly or indirectly. Or else, they are just simple means of earning financial gains.
-
                                                 It is okay if an enterprise earns revenues for itself. However, we believe it would be great if financial gains could also impact the world we live in. And therefore, make the world better than what it is.
-
-
                                                 With your help, at My Helpers , we have the capabilities to make this happen.
-
                                                 So, go ahead. Connect with your nearby workers directly, without the middlemen in between. And impact the life of one, or a few, of whom you can.
                                             </Typography>
                                         </Grid>
-
                                     </Grid>
                                 </CardContent>
                             </Card>
-
                         </Grid>
-
-
                     </Grid>
                 </Grid>
-
             </Grid >
         </div >
     )

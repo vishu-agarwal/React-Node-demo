@@ -12,7 +12,6 @@ const saveUserSchema = new mongoose.Schema(
                 user_id: String,
             }
         ],
-        
     },
     {
         timestamps: true,
