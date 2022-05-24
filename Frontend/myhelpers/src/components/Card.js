@@ -14,36 +14,87 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { displayActions, fetchSaveUserThunk, isProfileThunk, saveThunk } from '../store/slices/display-slice';
-
-
+import { displayActions, fetchSaveUserThunk, saveThunk } from '../store/slices/display-slice';
+import { fetchUserProfileThunk } from "../store/slices/profile-slice";
+import Loading from './layouts/LoadingFile'
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 // import profileimg from "../../profileimg.gif"
+
 import { starThunk } from '../store/slices/profile-slice';
+
+const Alert = React.forwardRef(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
 const CardJS = (props) => {
     const rid = localStorage.getItem("r_id")
     // console.log("status::",props.status)
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    // let { status, error } = useSelector((state) => ({ ...state.displayStore }))
+    let { saveUser, displayLoading, displayError, displayMessage } = useSelector((state) => ({ ...state.displayStore }))
+    let { userProfile, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     const [star, setStar] = useState(2)
+    const [state, setState] = useState({
+        snackOpen: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const { vertical, horizontal, snackOpen } = state;
+    const closeSnackbar = () => {
+        setState({ ...state, snackOpen: false });
+    };
+    const [snackMessage, setSnackMessage] = useState('')
+    const [snackColor, setSnackColor] = useState("info")
+
+
+    useEffect(() => {
+        if (displayMessage.length !== 0) {
+            // alert(displayMessage)
+            setState({ snackOpen: true });
+            setSnackColor("info")
+            setSnackMessage(displayMessage)
+            dispatch(displayActions.messageReducer())
+
+        }
+        if (displayError.length !== 0) {
+            // console.log(error)
+            setState({ snackOpen: true });
+            setSnackColor("error")
+            setSnackMessage(displayError)
+
+            dispatch(displayActions.errorReducer())
+        }
+
+
+    }, [displayMessage, displayError])
     //save icon state
     // const [saveIcon, setSaveIcon] = useState(false)
 
     // props.status ? setSaveIcon(true) : setSaveIcon(false)
     //save icon click event
-    let { isProfile } = useSelector((state) => ({ ...state.displayStore }))
+    // let { isProfile } = useSelector((state) => ({ ...state.displayStore }))
     useEffect(() => {
-        if (isProfile) {
-            navigate(`/viewHelperDetails/${props.values.r_id}`)
-            dispatch(displayActions.profileReducer())
-        }
+        if (userProfile[0]?.isProfile) {
 
-    }, [isProfile])
+            navigate(`/viewHelperDetails/${props.values.r_id}`)
+        } else {
+            setState({ snackOpen: true })
+            setSnackColor("error")
+            setSnackMessage("Pleasde first create your profile")
+
+            dispatch(displayActions.errorReducer())
+            // dispatch(displayActions.profileReducer())
+        }
+    }, [userProfile])
     const onSaveClick = async () => {
         const arg = {
             user_id: props.values.r_id,
-
             rid
         }
         dispatch(saveThunk(arg))
@@ -51,7 +102,7 @@ const CardJS = (props) => {
     }
 
     const onViewClick = () => {
-        dispatch(isProfileThunk(rid))
+        dispatch(fetchSaveUserThunk(rid))
         // navigate(`/viewHelperDetails/${props.values.r_id}`)
     }
 
@@ -118,6 +169,17 @@ const CardJS = (props) => {
             >
                 <CardContent sx={{ padding: 1 }}>
                     <Grid container direction={'row'} >
+                        <Snackbar
+                            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                            open={snackOpen}
+                            autoHideDuration={6000}
+                            onClose={closeSnackbar}
+                        // key={vertical + horizontal}
+                        >
+                            <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                {snackMessage}
+                            </Alert>
+                        </Snackbar>
                         <Grid item xs={11} sm={11} md={11}>
                             <Typography color="#163758" variant="h6" paddingLeft={1} gutterBottom align="left">
                                 {String(props.values.name).toUpperCase()}

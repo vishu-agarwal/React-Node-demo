@@ -12,15 +12,10 @@ import {
   BrowserRouter, Routes, Route
 } from 'react-router-dom'
 
-
-// import DisplayData from './components/DisplayDataPages/DisplayData';
-// import ViewProfileDetail from './components/DisplayDataPages/ViewProfileDetail';
-// import ViewClientProfile from './components/DisplayDataPages/ViewClientProfile';
-// import HomePage from './components/Homepage/HomePage';
 import Profile from './components/ProfileFiles/ClientProfile';
 import Footer from './components/layouts/Footer';
 // import PageNotFound from './components/layouts/PageNotFound';
-// import HiringProcess from './components/Homepage/HiringProcess';
+import About from './components/Homepage/AboutPage';
 
 import { lazy, Suspense } from 'react';
 import Loader from './components/layouts/LoadingFile';
@@ -100,7 +95,7 @@ function App() {
           <Suspense fallback={<Loader isLoad={true} />}>
             <Routes>
               {/* private route for both client and helper */}
-
+              <Route path="/about" element={<About />} />
               <Route path='/profile'
                 element={
                   <PrivateRoute
@@ -123,7 +118,7 @@ function App() {
                   }
                 />
               ))}
-              {protectedRoutes.map(({ path, element:Component, role }) => (
+              {protectedRoutes.map(({ path, element: Component, role }) => (
                 <Route
                   key={`private-${path}`}
                   path={path}

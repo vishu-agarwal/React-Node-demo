@@ -191,7 +191,7 @@ const ViewProfileDetail = () => {
         if (userProfile.length !== 0) {
             if (workData.length !== 0) {
                 let list =
-                    workData[0].languages.map((value, index) => {
+                    workData.languages.map((value, index) => {
                         return value.language + ", "
                     })
 
@@ -212,11 +212,11 @@ const ViewProfileDetail = () => {
                 setValues({
                     name: userProfile[0].name,
                     dob: userProfile[0].dob,
-                    mbl: userProfile[0].mob_num,
-                    altmbl: userProfile[0].alt_mob_num,
+                    mbl: userProfile[0].mobile_number,
+                    altmbl: userProfile[0].alternate_mobile_number,
                     email: userProfile[0].email,
                     gender: userProfile[0].gender,
-                    married: userProfile[0].isMarried,
+                    married: userProfile[0].married,
                     physic_dis: userProfile[0].physical_disable,
                     house_no: userProfile[0].address[0].houseNo,
                     house_name: userProfile[0].address[0].house_name,
@@ -225,15 +225,14 @@ const ViewProfileDetail = () => {
                     state: userProfile[0].address[0].state,
                     pincode: userProfile[0].address[0].pincode,
                     about: userProfile[0].about,
-                    porf_mbl: workData[0].profession_mbl,
-                    workTime: workData[0].workTime,
-                    study: workData[0].education,
-                    otherStudy: workData[0].other_education,
+                    porf_mbl: workData.profession_mobile_number,
+                    workTime: workData.work_time,
+                    study: workData.education,
+                    otherStudy: workData.other_education,
                     language: list,
                     avatar: userProfile[0].avatar
-
                 })
-                let workDetails = workData[0]?.workDetails?.filter((data) => data)
+                let workDetails = workData?.workDetails?.filter((data) => data)
                 setFields(workDetails)
             }
         }
@@ -290,17 +289,17 @@ const ViewProfileDetail = () => {
     };
     const ageDate = () => {
         var today = new Date();
-        // console.log(today)
+        
         var birthDate = new Date(values.dob);
-        // console.log(birthDate)
+        
         var age = today.getFullYear() - birthDate.getFullYear();
-        // console.log(age)
+        
         var m = today.getMonth() - birthDate.getMonth();
-        // console.log(m)
+        
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-        // console.log(age)
+        
         return age;
     }
     return (
@@ -421,15 +420,12 @@ const ViewProfileDetail = () => {
                                             component="img"
 
                                             sx={{ marginTop: "5%", width: 250, height: 250, borderRadius: "50%" }}
-                                            image="https://images.unsplash.com/photo-1599103892985-253246c5558e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
+                                            image={`http://localhost:3001/${values.avatar}`}
                                             alt="Paella dish"
                                         />
                                         <Grid container item xs={12} sm={12} md={12} justifyContent="center">
                                             <Button sx={{ marginTop: "4%", backgroundColor: "#163758" }} size="medium" variant="contained" onClick={onHireUser}>Hire</Button>
-
-                                            {/* <HelperProfile click={handleClose} /> */}
-                                            <HireForm open={open} hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData.length !== 0 ? workData[0].r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
-
+                                            <HireForm open={open} hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData.length !== 0 ? workData.r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -512,7 +508,6 @@ const ViewProfileDetail = () => {
                     </Grid>
                     <Divider textAlign="left" sx={{ marginTop: 2, marginBottom: 1 }}> </Divider>
                     <Grid container direction={'row'} justifyContent="center">
-
                         <Grid item xs={12} sm={12} md={10} align="center" >
                             <TableContainer >
                                 <Table sx={{ maxWidth: "100%", maxHeight: "100%" }} size="small" aria-label="caption table">
@@ -527,7 +522,7 @@ const ViewProfileDetail = () => {
                                         {fields.map((row, index) => (
                                             <TableRow key={index}>
                                                 <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.category}</TableCell>
-                                                <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.exeprience}</TableCell>
+                                                <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.experience}</TableCell>
                                                 <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.salary}</TableCell>
                                             </TableRow>
                                         ))}

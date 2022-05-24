@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-
-
 const initialState = {
     otpUser: '',
     otpMessage: "",
@@ -9,7 +7,6 @@ const initialState = {
     loadingOtp: false,
     otpError: ""
 }
-
 export const otpThunk = createAsyncThunk("otpLogin/otpThunk", async (arg) => {
     console.log("diapatch::", arg)
     try {
@@ -17,18 +14,15 @@ export const otpThunk = createAsyncThunk("otpLogin/otpThunk", async (arg) => {
             email: arg.email,
         };
         console.log("data",data)
-        
         const otpRes = await axios.post(`/myhelpers/otp/${arg.role}`,data)
         console.log("otpResponse :: ", otpRes)
         return otpRes
-
     }
     catch (error) {
         console.log(error.response.data)
         throw new Error(error.response.data)
     }
 })
-
 const otpSlice = createSlice({
     name: 'otpLogin',
     initialState,//: initialState
@@ -55,12 +49,9 @@ const otpSlice = createSlice({
         },
         [otpThunk.rejected]: (state, error) => {
             state.loadingOtp = false
-            // console.log("rejected::", error.error.message)
             state.otpError = error.error.message
         },
-
     }
-
 })
 export const otpActions = otpSlice.actions
 export default otpSlice.reducer

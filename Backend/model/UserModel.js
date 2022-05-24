@@ -45,11 +45,11 @@ const userSchema = new mongoose.Schema(
             //   message: 'An age must be at least 1 year from now .',
             // },
         },
-        isProfile: {
+        is_profile: {
             type: Boolean,
             default: false
         },
-        mob_num: {
+        mobile_number: {
             type: Number,
             // required: false,
             trim: true,
@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema(
             trim: true,
 
         },
-        isMarried: {
+        married: {
             type: Boolean,
             // required: true,
             default: false,
@@ -115,7 +115,7 @@ const userSchema = new mongoose.Schema(
                     trim: true,
                 },
             },
-        alt_mob_num: {
+        alternate_mobile_number: {
             type: Number,
             // required: false,
             trim: true,
@@ -131,7 +131,7 @@ const userSchema = new mongoose.Schema(
             max: 300,
             // required: true,
         },
-        saveUser: [
+        saved_user: [
             {
                 user_id: String,
             }
@@ -191,8 +191,8 @@ userSchema.pre('remove', async function (next) {
 });
 
 const userModel = mongoose.model(
-    'UserModel',
+    'users',
     userSchema,
-    'UserModel'
+    'users'
 );
 module.exports = userModel;

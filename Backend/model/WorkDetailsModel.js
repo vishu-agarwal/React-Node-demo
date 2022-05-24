@@ -10,7 +10,7 @@ const workSchema = new mongoose.Schema({
         type: String,
         ref: "UserModel"
     },
-    profession_mbl: {
+    profession_mobile_number: {
         type: Number,
         required: true,
         trim: true,
@@ -22,7 +22,7 @@ const workSchema = new mongoose.Schema({
         }
 
     },
-    workTime: {
+    work_time: {
         type: String,
         required: true,
     },
@@ -34,7 +34,7 @@ const workSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    workDetails: [
+    work_details: [
         {
             category: {
                 type: String,
@@ -71,5 +71,5 @@ const workSchema = new mongoose.Schema({
 
 
 
-const workModel = mongoose.model("WorkDetailsModel", workSchema, "WorkDetailsModel")
+const workModel = mongoose.model("work_details", workSchema, "work_details")
 module.exports = workModel

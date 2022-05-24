@@ -10,7 +10,7 @@ const initialState = {
     avatar:[]
 }
 const varToken = localStorage.getItem("logToken");
-// console.log("varToken", varToken)
+
 export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
     try {
         const data = {
@@ -30,35 +30,24 @@ export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) =
     }
 })
 export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (arg) => {
-    // console.log("avatarDispatch:: ", formdata,config)
     try {
-        // const rid = localStorage.getItem("r_id")
-console.log("argument avatar :: ",arg,varToken)
         const res = await axios.post(`/myhelper/upldAvatar/${arg.rid}`, arg.formdata,  {
             headers: {
                 Authorization: "Bearer " + varToken
             },
         }, arg.config)
-        // console.log("response :: ", res)
         return res
-
     } catch (error) {
         throw new Error(error.response.data)
     }
 })
 export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (arg) => {
-    // console.log("avatarDispatch:: ", formdata,config)
     try {
-        // const rid = localStorage.getItem("r_id")
-
-        const res = await axios.post(`/myhelper/upldAadhar/${arg.rid}`, arg.formdata
-            , {
+        const res = await axios.post(`/myhelper/upldAadhar/${arg.rid}`, arg.formdata, {
                 headers: {
                     Authorization: "Bearer " + varToken,
                 },
-            }
-            , arg.config)
-        // console.log("response :: ", res)
+            }, arg.config)
         return res
 
     } catch (error) {
@@ -66,19 +55,16 @@ export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (ar
     }
 })
 export const createProfileThunk = createAsyncThunk("userProfile/createProfileThunk", async (arg) => {
-    // console.log("profilediapatch::", arg)
     try {
-
-        // const varToken = localStorage.getItem("token");
         const data = {
             name: arg.values.fname + ' ' + arg.values.lname,
             dob: arg.values.dob,
-            isProfile:true,
-            mob_num: arg.values.mbl,
+            is_profile:true,
+            mobile_number: arg.values.mbl,
             gender: arg.values.gender,
-            isMarried: arg.values.married,
+            married: arg.values.married,
             physical_disable: arg.values.physic_dis,
-            address: [
+            address: 
                 {
                     state: arg.values.state,
                     city: arg.values.city,
@@ -86,32 +72,24 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
                     landmark: arg.values.street,
                     house_name: arg.values.house_name,
                     houseNo: arg.values.house_no,
-                }
-            ],
-            alt_mob_num: arg.values.altmbl,
+                },
+            alternate_mobile_number: arg.values.altmbl,
             about: arg.values.about
         };
-        // console.log("data", data)
         const userRes = await axios.post(`/myhelpers/crtProfile/${arg.rid}`, data, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
-        // console.log("loginRes", loginRes)
         return userRes
-
     }
     catch (error) {
-        console.log(error.response)
         throw new Error(error.response.data)
     }
 })
 
 export const fetchEmailThunk = createAsyncThunk("userProfile/fetchEmailThunk", async (arg) => {
     try {
-        // console.log("arg ",arg)    
-
         const fetchemail = await axios.get(`/myhelpers/userProfile/fetchEmail/${arg}`,
             {
                 headers: {
@@ -147,18 +125,14 @@ export const fetchAvatarThunk = createAsyncThunk("userProfile/fetchAvatarThunk",
 })
 
 export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk", async (arg) => {
-    try {
-        // console.log("arg ",arg)    
+    try {   
         const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
             {
                 headers: {
                     Authorization: "Bearer " + varToken,
                 },
             })
-
-        // console.log("Fwtch Response:: ", fetchUser)
         return fetchUser
-
     } catch (error) {
         throw new Error(error.response.data)
     }
@@ -169,11 +143,11 @@ export const updateProfileThunk = createAsyncThunk("userProfile/updateProfileThu
         const data = {
             name: arg.values.fname + ' ' + arg.values.lname,
             dob: arg.values.dob,
-            mob_num: arg.values.mbl,
+            mobile_number: arg.values.mbl,
             gender: arg.values.gender,
-            isMarried: arg.values.married,
+            married: arg.values.married,
             physical_disable: arg.values.physic_dis,
-            address: [
+            address: 
                 {
                     state: arg.values.state,
                     city: arg.values.city,
@@ -181,9 +155,8 @@ export const updateProfileThunk = createAsyncThunk("userProfile/updateProfileThu
                     landmark: arg.values.street,
                     house_name: arg.values.house_name,
                     houseNo: arg.values.house_no,
-                }
-            ],
-            alt_mob_num: arg.values.altmbl,
+                },
+            alternate_mobile_number: arg.values.altmbl,
             about: arg.values.about,
             aadhar_card: arg.aadhar
         }

@@ -27,6 +27,7 @@ import { loginActions } from '../../store/slices/login-slice'
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import { profileActions } from '../../store/slices/profile-slice'
+import Loading from './LoadingFile';
 
 function ScrollTop(props) {
     const { children, window } = props;
@@ -53,6 +54,7 @@ function ScrollTop(props) {
             });
         }
     };
+
 
     return (
         <Zoom in={trigger}>
@@ -86,7 +88,7 @@ const Header = (props) => {
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     // let { token } = useSelector((state) => ({ ...state.loginStore }))
     const role = localStorage.getItem("role")
-
+    const rid = localStorage.getItem("r_id")
     // const role="Client"
     const { isAuth } = useSelector(state => ({ ...state.loginStore }))
     // const isAuth = true
@@ -96,6 +98,9 @@ const Header = (props) => {
     const [openShortlist, setOpenShortlist] = useState(false)
     const [openHired, setOpenHired] = useState(false)
     const [avatar, setAvatar] = useState("")
+    useEffect(() => {
+        dispatch(fetchUserProfileThunk(rid))
+    },[])
     useEffect(() => {
         userProfile[0]?.avatar && setAvatar(userProfile[0].avatar)
     }, [userProfile])
@@ -143,7 +148,7 @@ const Header = (props) => {
         <>
             <AppBar position="fixed" sx={{ marginTop: 0, background: '#163758', color: "" }} >
                 <Container maxWidth="xl">
-
+                    {profileLoading && <Loading isLoad={true} />}
                     <Toolbar disableGutters>
                         <Typography
                             variant="h4"
@@ -251,11 +256,11 @@ const Header = (props) => {
                         }
                         {isAuth &&
                             <Box sx={{ flexGrow: 0 }}>
-                                {/* <Tooltip title="My Profile"> */}
+
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar alt="Remy Sharp" src={`${avatar}`} />
                                 </IconButton>
-                                {/* </Tooltip> */}
+
                                 <Menu
                                     sx={{ mt: '45px' }}
                                     id="menu-appbar"

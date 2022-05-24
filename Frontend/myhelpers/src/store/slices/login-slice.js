@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-
 const initialState = {
     logUser: null,
     token: "",
@@ -16,8 +15,6 @@ if (isToken) {
     initialState.isAuth = true
     initialState.token=isToken
 }
-
-
 export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) => {
     try {
         // console.log("diapatch::", arg)
@@ -30,14 +27,12 @@ export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) =
         // localStorage.setItem("r_id", loginRes.data.newUser.r_id)
         console.log("loginRes", loginRes)
         return loginRes
-
     }
     catch (error) {
         // console.log(error.response.data)
         throw new Error(error.response.data)
     }
 })
-
 const loginSlice = createSlice({
     name: 'userLogin',
     initialState,//: initialState
@@ -45,13 +40,11 @@ const loginSlice = createSlice({
         errorReducer(state) {
             state.error = ""
         },
-
         logoutReducer(state) {
             state.isAuth = false
             state.logUser = null
             state.token = ""
         },
-
     },
     extraReducers: {
         [loginThunk.pending]: (state, action) => {
@@ -61,17 +54,13 @@ const loginSlice = createSlice({
             state.loadingLogin = false
             state.isAuth = true
             state.token = action.payload.data.token
-            // console.log(state.token)
             state.logUser = action.payload.data.removeOtp
         },
         [loginThunk.rejected]: (state, error) => {
             state.loadingLogin = false
-            // console.log("rejected::", error.error.message)
             state.error = error.error.message
         },
-
     }
-
 })
 export const loginActions = loginSlice.actions
 export default loginSlice.reducer

@@ -77,8 +77,6 @@ const WorkRequest = (props) => {
     }, [])
 
     useEffect(() => {
-
-
         if (requestMessage.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("info")
@@ -99,17 +97,12 @@ const WorkRequest = (props) => {
     useEffect(() => {
         if (hireRequestData.length !== 0) {
             console.log("hireRequestdata :: ", hireRequestData)
-
         }
 
     }, [hireRequestData])
 
     return (
-        // <Backdrop
-        //     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        //     onClick={props.click}
-        //     open={true}
-        // >
+       
         <Modal
             open={true}
             onClose={props.click}
@@ -132,7 +125,6 @@ const WorkRequest = (props) => {
                                 open={snackOpen}
                                 autoHideDuration={6000}
                                 onClose={closeSnackbar}
-                            // key={vertical + horizontal}
                             >
                                 <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                     {snackMessage}
@@ -158,16 +150,12 @@ const WorkRequest = (props) => {
                                 hireRequestData.length !== 0 ?
                                     hireRequestData.map((val, index) => {
                                         if (rid.charAt(0) === "H" && val.status === "pending!") {
-
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
-
                                                 <HireRequestCard values={val} />
                                             </Grid>
                                         }
                                         else if (rid.charAt(0) === "C" && val.status !== "hired!") {
-
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
-
                                                 <HireRequestCard values={val} />
                                             </Grid>
                                         }
@@ -175,14 +163,12 @@ const WorkRequest = (props) => {
                                     )
                                     :
                                     <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }} >
-
                                         <img
                                             src={require("../allImages/notfound.gif")}
                                             alt="Page No Found..."
 
                                             align="center"
                                         />
-
                                     </Grid>
                             }
                         </Grid>

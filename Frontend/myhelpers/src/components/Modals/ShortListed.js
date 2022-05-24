@@ -169,7 +169,6 @@ const ShortListed = (props) => {
                                             Sortlist
                                         </Typography>
                                     </Grid>
-
                                     <Grid item xs={12} sm={2} align="right">
                                         {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
                                         <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
@@ -195,34 +194,26 @@ const ShortListed = (props) => {
                                                         ).length
                                                         : null
                                                 }
-
                                                 hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
                                                 return <Grid marginBottom={1} item xs={12} sm={12} align="center" key={index}>
-
                                                     <CardJS values={values} rates={rates} saveStatus={true} hireStatus={hireStatus} />
                                                 </Grid>
                                             }
                                         })
-
                                     )
                                     :
-
-
                                     <Grid  item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
                                         <img
                                             src={require("../allImages/notfound.gif")}
                                             alt="Page No Found..."
-
                                             align="center"
                                         />
                                     </Grid>
-
                             }
                         </Grid>
                     </CardContent>
                 </Card>
             </Grid>
-
         </Modal >
     );
 }

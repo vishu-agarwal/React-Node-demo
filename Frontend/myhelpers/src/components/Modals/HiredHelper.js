@@ -73,7 +73,6 @@ const HiredHelper = (props) => {
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(requestMessage)
-
             dispatch(hireRequestActions.messageReducer())
 
         }
@@ -82,7 +81,6 @@ const HiredHelper = (props) => {
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(requestError)
-
             dispatch(hireRequestActions.errorReducer())
         }
 
@@ -96,15 +94,12 @@ const HiredHelper = (props) => {
     //     time: '',
     // });
     useEffect(() => {
-
         dispatch(fetchHelperRequestsThunk(rid))
-
     }, [])
 
     useEffect(() => {
         if (hireRequestData.length !== 0) {
             console.log("hireRequestdata :: ", hireRequestData)
-
         }
 
     }, [hireRequestData])
@@ -166,28 +161,21 @@ const HiredHelper = (props) => {
                                             </Grid>
                                         }
                                     }
-
                                     )
                                     :
-
-
                                     <Grid  item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
                                         <img
                                             src={require("../allImages/notfound.gif")}
-                                            alt="Page No Found..."
-                                            
+                                            alt="Page No Found..."                                            
                                             align="center"
                                         />
                                     </Grid>
-
                             }
                         </Grid>
                     </CardContent>
                 </Card>
             </Grid>
-
         </Modal >
     );
 }
-
 export default HiredHelper

@@ -20,7 +20,6 @@ export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarTh
                 Authorization: "Bearer " + varToken,
             },
         })
-        // console.log("Fwtch Response:: ", fetchavatar)
         return fetchavatar
     } catch (error) {
         throw new Error(error.response.data)
@@ -33,7 +32,6 @@ export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async 
                 Authorization: "Bearer " + varToken,
             },
         })
-        // console.log("Fwtch Response:: ", fetchRes)
         return fetchRes
     } catch (error) {
         throw new Error(error.response.data)
@@ -54,17 +52,13 @@ export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThun
 })
 export const searchThunk = createAsyncThunk("displayAll/searchThunk", async (arg) => {
     try {
-        // console.log(searchText)
         const fetchRes = await axios.get(`/myhelpers/search?field=${arg.workSearch}&searchValue=${arg.filterWork}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
         console.log("Fwtch Response:: ", fetchRes)
-
         return fetchRes
-
     } catch (error) {
         throw new Error(error.response.data)
     }
@@ -76,7 +70,6 @@ export const sortThunk = createAsyncThunk("displayAll/sortThunk", async (arg) =>
                 Authorization: "Bearer " + varToken,
             },
         })
-        console.log("Fwtch Response:: ", fetchRes)
         return fetchRes
     } catch (error) {
         throw new Error(error.response.data)
@@ -93,24 +86,22 @@ export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) =>
             }
         }
         )
-        console.log("response---", fetchRes)
         return fetchRes
     }
     catch (error) {
         throw new Error(error.response.data)
     }
 })
-export const isProfileThunk = createAsyncThunk("displayAll/isProfileThunk", async (arg) => {
+// export const isProfileThunk = createAsyncThunk("displayAll/isProfileThunk", async (arg) => {
 
+//     const fetchRes = await axios.get(`/myhelpers/isProfile/${arg}`, {
+//         headers: {
+//             Authorization: "Bearer " + varToken,
+//         },
+//     })
 
-    const fetchRes = await axios.get(`/myhelpers/isProfile/${arg}`, {
-        headers: {
-            Authorization: "Bearer " + varToken,
-        },
-    })
-
-    return fetchRes
-})
+//     return fetchRes
+// })
 // export const hireUserThunk = createAsyncThunk("displayAll/hireUserThunk", async (arg) => {
 //     const data = {
 //         user_id: arg
@@ -165,20 +156,20 @@ const displaySlice = createSlice({
 
             state.displayError = error.error.message
         },
-        [isProfileThunk.pending]: (state, action) => {
-            state.displayLoading = true
-        },
-        [isProfileThunk.fulfilled]: (state, action) => {
-            state.displayLoading = false
+        // [isProfileThunk.pending]: (state, action) => {
+        //     state.displayLoading = true
+        // },
+        // [isProfileThunk.fulfilled]: (state, action) => {
+        //     state.displayLoading = false
 
-            state.isProfile = action.payload.data
-            // console.log(state.displayData)
-        },
-        [isProfileThunk.rejected]: (state, error) => {
-            state.displayLoading = false
-            // console.log("rejected::", error.displayError.message)
-            state.displayError = error.error.message
-        },
+        //     state.isProfile = action.payload.data
+        //     // console.log(state.displayData)
+        // },
+        // [isProfileThunk.rejected]: (state, error) => {
+        //     state.displayLoading = false
+        //     // console.log("rejected::", error.displayError.message)
+        //     state.displayError = error.error.message
+        // },
         //search result
         [searchThunk.pending]: (state, action) => {
             state.displayLoading = true

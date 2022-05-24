@@ -16,7 +16,7 @@ const fetchAllData = async (req, res) => {
                 {
                     $lookup:
                     {
-                        from: 'UserModel',
+                        from: 'users',
                         localField: 'r_id',
                         foreignField: 'r_id',
                         as: 'profile'
@@ -25,13 +25,14 @@ const fetchAllData = async (req, res) => {
                 {
                     $project: {
                         r_id: 1,
-                        workTime: 1,
-                        profession_mbl: 1,
-                        "workDetails.category": 1,
+                        work_time: 1,
+                        profession_mobile_number: 1,
+                        "work_details.category": 1,
                         "name": "$profile.name",
                         "dob": "$profile.dob",
                         "avatar": "$profile.avatar",
-                        "rating": "$profile.rating"
+                        "rating": "$profile.rating",
+                        status: 1
                     }
                 },
             ])
@@ -52,17 +53,17 @@ const saveUserData = async (req, res) => {
             throw new Error("Please first create your profile!")
         }
         const saveIdFound = await userModel.find({ r_id: user.r_id, "saveUser.user_id": req.body.user_id })
-        console.log("user Found", userFound)
+        console.log("user Found", saveIdFound)
         if (saveIdFound.length !== 0) {
-            const removeSave = await userModel.findOneAndUpdate({ r_id: user.r_id, "saveUser.user_id": req.body.user_id }, { $pull: { saveUser: { user_id: req.body.user_id } } }, { new: true })
+            const removeSave = await userModel.findOneAndUpdate({ r_id: user.r_id, "saved_user.user_id": req.body.user_id }, { $pull: { saved_user: { user_id: req.body.user_id } } }, { new: true })
             console.log("remove user :: ", removeSave)
-            return res.status(200).sendsend(removeSave.map((val) => val.saveUser).flat())
+            return res.status(200).sendsend(removeSave.saved_user)
         }
         const saveNewUser = user.saveUser.concat(req.body)
 
-        const addSave = await userModel.findOneAndUpdate({ r_id: req.params.rid }, { saveUser: saveNewUser }, { new: true })
+        const addSave = await userModel.findOneAndUpdate({ r_id: req.params.rid }, { saved_user: saveNewUser }, { new: true })
         console.log("update newUser :: ", addSave);
-        return res.status(200).send(addSave.map((val) => val.saveUser).flat())
+        return res.status(200).send(addSave.saved_user)
     }
     catch (error) {
         return res.status(400).send(error.message)
@@ -111,8 +112,8 @@ const saveUserData = async (req, res) => {
 const fetchSaveUser = async (req, res) => {
     try {
         const found = await userModel.find({ r_id: req.params.rid })
-        console.log("save Users ::::::: ", found.map((val) => val.saveUser).flat())
-        return res.status(200).send(found.map((val) => val.saveUser).flat())
+        console.log("save Users ::::::: ", found.map((val) => val.saved_user).flat())
+        return res.status(200).send(found.map((val) => val.saved_user).flat())
     }
     catch (error) {
         return res.status(400).send(error.message)
@@ -169,9 +170,9 @@ const searching = async (req, res) => {
             : field === "Gender" ?
                 field = "gender" :
                 field === "Work Category" ?
-                    field2 = "workDetails.category" :
+                    field2 = "work_details.category" :
                     field === "Work Timing" ?
-                        field2 = "workTime" :
+                        field2 = "work_time" :
                         ""
     if (field2) {
         console.log("field2::", field2)
@@ -189,13 +190,14 @@ const searching = async (req, res) => {
                     return userModel.find({ r_id: val.r_id }).then((res) => {
                         fetch.push({
                             r_id: val.r_id,
-                            workDetails: [val.workDetails.map((cat) => { return { category: cat.category } })],
-                            workTime: val.workTime,
-                            profession_mbl: val.profession_mbl,
+                            work_details: [val.work_details.map((cat) => { return { category: cat.category } })],
+                            work_time: val.work_time,
+                            profession_mobile_number: val.profession_mobile_number,
                             name: res.map((val) => val.name),
                             dob: res.map((val) => val.dob),
                             avatar: res.map((val) => val.avatar),
-                            rating: res.map((val) => val.rating)
+                            rating: res.map((val) => val.rating),
+                            status:val.status
                         })
                     }).catch((error) => {
                         return res.status(400).send(error.massage)
@@ -223,13 +225,14 @@ const searching = async (req, res) => {
                         console.log(res)
                         fetch.push({
                             r_id: res.map((val) => val.r_id),
-                            workDetails: res.map((val) => val.workDetails.map((cat) => { return { category: cat.category } })),
-                            workTime: res.map((val) => val.workTime),
-                            profession_mbl: res.map((val) => val.profession_mbl),
+                            work_details: res.map((val) => val.work_details.map((cat) => { return { category: cat.category } })),
+                            work_time: res.map((val) => val.work_time),
+                            profession_mobile_number: res.map((val) => val.profession_mobile_number),
                             name: val.name,
                             dob: val.dob,
                             avatar: val.avatar,
-                            rating: [val.rating]
+                            rating: [val.rating],
+                            status:res.map((val)=>val.status)
                         })
                         // console.log(fetch)
                     }).catch((error) => {
@@ -276,13 +279,14 @@ const sorting = async (req, res) => {
                     console.log(res)
                     fetch.push({
                         r_id: res.map((val) => val.r_id),
-                        workDetails: res.map((val) => val.workDetails.map((cat) => { return { category: cat.category } })),
-                        workTime: res.map((val) => val.workTime),
-                        profession_mbl: res.map((val) => val.profession_mbl),
+                        work_Details: res.map((val) => val.work_details.map((cat) => { return { category: cat.category } })),
+                        work_time: res.map((val) => val.work_time),
+                        profession_mobile_number: res.map((val) => val.profession_mobile_number),
                         name: val.name,
                         dob: val.dob,
                         avatar: val.avatar,
-                        rating: [val.rating]
+                        rating: [val.rating],
+                        status: res.map((val) => val.status),
                     })
                     // console.log(fetch)
                 }).catch((error) => {

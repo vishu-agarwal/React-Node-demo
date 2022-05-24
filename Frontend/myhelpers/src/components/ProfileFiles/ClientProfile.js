@@ -165,18 +165,16 @@ const ClientProfile = () => {
                 : 2)
             userProfile[0]?.email &&
                 setValues((prevState) => { return { ...prevState, email: userProfile[0].email } })
-
             userProfile[0]?.name && setValues((prevState) => {
                 return {
                     ...prevState,
                     fname: userProfile[0].name.split(" ")[0],
                     lname: userProfile[0].name.split(" ")[1],
-
                     dob: userProfile[0].dob,
-                    altmbl: userProfile[0].alt_mob_num,
-                    mbl: userProfile[0].mob_num,
+                    altmbl: userProfile[0].alternate_mobile_number,
+                    mbl: userProfile[0].mobile_number,
                     gender: userProfile[0].gender,
-                    married: userProfile[0].isMarried,
+                    married: userProfile[0].married,
                     physic_dis: userProfile[0].physical_disable,
                     house_no: userProfile[0].address[0].houseNo,
                     house_name: userProfile[0].address[0].house_name,
@@ -191,7 +189,6 @@ const ClientProfile = () => {
                 ...file,
                 // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
                 dispFile: userProfile[0].avatar
-
             })
             userProfile[0]?.aadhar_card && setaadhar({ ...aadhar, dispFile: userProfile[0].aadhar_card })
             userProfile[0]?.name && setEditHide(false)

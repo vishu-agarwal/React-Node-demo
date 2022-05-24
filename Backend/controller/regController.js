@@ -180,7 +180,7 @@ const loginController = async (req, res) => {
     }
     catch (error) {
         // console.log(error.message)
-        res.status(400).send(error.message)
+        return res.status(400).send(error.message)
     }
 }
 

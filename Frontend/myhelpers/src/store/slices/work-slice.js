@@ -10,69 +10,51 @@ const initialState = {
 const varToken = localStorage.getItem("logToken");
 //create work Details thunk
 export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk", async (arg) => {
-    // // console.log("values::", values)
-    // console.log("languages", lang)
-    // const obj = { ...arg.lang };
-    console.log("workFields::", arg)
     try {
-
         const lang = arg.lang.map(l => ({ language: l }));
-        // console.log("lang->>", lang)
         const data = {
-            profession_mbl: arg.values.porf_mbl,
-            workTime: arg.values.workTime,
+            profession_mobile_number: arg.values.porf_mbl,
+            work_time: arg.values.workTime,
             education: arg.values.study,
             other_education: arg.values.otherStudy,
-            workDetails: arg.fields,
+            work_details: arg.fields,
             languages: lang
         };
-        // console.log("data", data)
         const workDataRes = await axios.post(`/myhelpers/createWorkProfile/${arg.rid}`, data, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
-        console.log("Response::", workDataRes)
         return workDataRes
-
     }
     catch (error) {
-        // console.log("backend error: ",error.response.data)
         throw new Error(error.response.data)
     }
 })
 //fetch workDetails thunk
 export const fetchWorkThunk = createAsyncThunk("workProfile/fetchWorkThunk", async (arg) => {
     try {
-        // console.log("abc")
         const fetchRes = await axios.get(`/myhelpers/fetchWorkDetail/${arg}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
-        console.log("Fetch work Response:: ", fetchRes)
         return fetchRes
-
     } catch (error) {
-        // console.log(error.response.data)
         throw new Error(error.response.data)
     }
 })
 //update work details thunk
 export const updateWorkThunk = createAsyncThunk("workProfile/updateWorkThunk", async (arg) => {
     try {
-
-        const rid = localStorage.getItem("r_id")
         const lang = arg.lang.map(l => ({ language: l }));
         // console.log("lang->>", lang)
         const data = {
-            profession_mbl: arg.values.porf_mbl,
-            workTime: arg.values.workTime,
+            profession_mobile_number: arg.values.porf_mbl,
+            work_time: arg.values.workTime,
             education: arg.values.study,
             other_education: arg.values.otherStudy,
-            workDetails: arg.fields,
+            work_details: arg.fields,
             languages: lang
         };
         const updateRes = await axios.put(`/myhelpers/updateWorkDetail/${arg.rid}`, data, {
@@ -80,16 +62,12 @@ export const updateWorkThunk = createAsyncThunk("workProfile/updateWorkThunk", a
                 Authorization: "Bearer " + varToken,
             },
         })
-
-        console.log("update work Response:: ", updateRes)
         return updateRes
-
     } catch (error) {
         console.log(error.response.data)
         throw new Error(error.response.data)
     }
 })
-
 
 const workSlice = createSlice({
     name: 'workProfile',

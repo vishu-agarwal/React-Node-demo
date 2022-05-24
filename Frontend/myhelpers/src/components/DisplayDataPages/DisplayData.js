@@ -1,29 +1,24 @@
 import React from 'react'
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField'
 import { useState, useEffect } from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CardJS from "../Card"
 import { useSelector, useDispatch } from 'react-redux';
-import { displayActions, fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk,fetchAllAvatarThunk } from '../../store/slices/display-slice';
-
+import { displayActions, fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk } from '../../store/slices/display-slice';
 import {workProfileActions} from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+
 import Typography from "@mui/material/Typography";
 import Loading from '../layouts/LoadingFile'
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(
@@ -32,8 +27,6 @@ const Alert = React.forwardRef(function Alert(
 ) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-
 
 const workSearchBy = [
     // { label: 'All' },
@@ -78,9 +71,9 @@ const DisplayData = () => {
     const role = localStorage.getItem("role")
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    let { displayData, saveUser, hireUser, displayMessage, displayLoading, displayError,userAvatar } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser, hireUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
 
-    let rates, status, hireStatus,helperAvatar
+    let rates, status, hireStatus
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
 
@@ -98,30 +91,21 @@ const DisplayData = () => {
 
     useEffect(() => {
         dispatch(fetchAllThunk())
-        // dispatch(fetchAllAvatarThunk())
         dispatch(fetchSaveUserThunk(rid))
     }, [])
-
-    // console.log(workData[0].workDetails)
     useEffect(() => {
         if (displayMessage.length !== 0) {
-            // alert(displayMessage)
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(displayMessage)
             dispatch(displayActions.messageReducer())
-
         }
         if (displayError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(displayError)
-
             dispatch(displayActions.errorReducer())
         }
-     
-
     }, [displayMessage, displayError])
 
     useEffect(() => {
@@ -136,17 +120,8 @@ const DisplayData = () => {
             console.log("saveUser ::", saveUser);
         }
     }, [saveUser])
-    // useEffect(() => {
-
-    //     if (userAvatar.length !== 0) {
-    //         console.log("avatar ::", userAvatar);
-            
-    //     }
-    // }, [userAvatar])
+  
     const searchChange = (e) => {
-
-        // e.preventDefault();
-        console.log(workSearch, filterWork)
         const arg = {
             workSearch, filterWork
         }
@@ -159,8 +134,8 @@ const DisplayData = () => {
         const arg = {
             sort, field
         }
-        dispatch(fetchSaveUserThunk(rid))
         dispatch(sortThunk(arg))
+        dispatch(fetchSaveUserThunk(rid))
     }
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={5}>
@@ -172,7 +147,6 @@ const DisplayData = () => {
                         open={snackOpen}
                         autoHideDuration={6000}
                         onClose={closeSnackbar}
-                    // key={vertical + horizontal}
                     >
                         <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                             {snackMessage}
@@ -188,17 +162,16 @@ const DisplayData = () => {
                                 "& .MuiOutlinedInput-root": {
                                     "& > fieldset": { borderColor: "#163758" },
                                 },
-
                                 color: "#163758"
                             }}
                             onInputChange={(e, values) => {
                                 setWorkSearch(values)
                             }}
-                            renderInput={(params) => <TextField
+                            renderInput={(params) =>
+                                <TextField
                                 {...params} label="Search By"
                                 value={workSearch}
                             />}
-
                         />
                     </Grid>
                     <Grid item xs={11} sm={2}>
@@ -215,36 +188,27 @@ const DisplayData = () => {
                                             "& .MuiOutlinedInput-root": {
                                                 "& > fieldset": { borderColor: "#163758" },
                                             },
-
                                             color: "#163758"
                                         }}
                                         options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : workSearch === "Gender" ? filterGender : ['']}
-
                                         onInputChange={(e, value) => setFilterWork(value)}
-
                                         renderInput={(params) =>
-
                                             <TextField {...params}
                                                 id="er"
                                                 label="Filter By"
                                                 value={filterWork}
                                             />
                                         }
-
                                     />
-
                                     :
                                     <>
-
                                         <TextField
                                             id="search-bar"
                                             className="text"
-
                                             label={` ${workSearch === "Location" ? "Enter Pincode" : workSearch === "Name" ? "Enter Name" : "Search Input"}`}
                                             variant="outlined"
                                             placeholder="Search..."
                                             fullWidth
-
                                             sx={{
                                                 "& .MuiInputLabel-root": { color: '#163758' },//styles the label
                                                 "& .MuiOutlinedInput-root": {
@@ -256,23 +220,18 @@ const DisplayData = () => {
                                             value={filterWork}
                                             onChange={(val) => setFilterWork(val.target.value)}
                                         />
-
                                     </>
-
                         }
                     </Grid>
                     <Grid item xs={1} sm={0.5} marginTop={3}>
                         {workSearch !== "" &&
-
                             <InputAdornment position="end">
                                 <SearchIcon cursor={"pointer"} sx={{ colo: "#163758" }} onClick={(e) => searchChange(e)} />
                             </InputAdornment>}
                     </Grid>
                     <Grid item xs={0} sm={5}>
                     </Grid>
-
                     <Grid item xs={12} sm={2.5} display="flex" alignItems='center' >
-
                         <Typography variant="h6"> Sort By : Age </Typography>
                         <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("up", "dob")} >
                             <ArrowUpwardRoundedIcon />
@@ -281,15 +240,12 @@ const DisplayData = () => {
                             <ArrowDownwardRoundedIcon />
                         </IconButton>
                     </Grid>
-
                 </Grid>
             </Grid>
             <Grid container direction="row" spacing={2}>
-
                 {
                     // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
                     displayData.map((values, index) => {
-                        
                         rates = values.rating[0] !== undefined ?
                             values.rating[0].map((id) =>
                                 id.rate
@@ -306,14 +262,11 @@ const DisplayData = () => {
                         // helperAvatar = userAvatar.length && userAvatar.find((val) => values.r_id === val.r_id) 
                         // console.log(helperAvatar)
                             // hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : '';
-
-                        
                         return <Grid item xs={12} sm={4} md={3} key={index} >
                             <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
                         </Grid>
                     })
                 }
-              
             </Grid>
         </Grid >
     )

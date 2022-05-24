@@ -7,15 +7,15 @@ const hireRequestSchema = new mongoose.Schema(
             type: String,
             ref: 'tblC_Profile',
         },
-        hireUser: [
+        requested_user: [
             {
                 user_id: String,
                 status: String,
                 work: Array,
-                fromDate: String,
-                toDate: String,
-                fromTime: String,
-                toTime: String,
+                from_date: String,
+                to_Date: String,
+                from_time: String,
+                to_time: String,
                 description: String,
                 message : String
             }
@@ -28,8 +28,8 @@ const hireRequestSchema = new mongoose.Schema(
 
 
 const hireRequestModel = mongoose.model(
-    'tblHireRequest',
+    'hire_request',
     hireRequestSchema,
-    'tblHireRequest'
+    'hire_request'
 );
 module.exports = hireRequestModel;

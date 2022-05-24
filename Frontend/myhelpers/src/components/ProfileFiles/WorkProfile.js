@@ -138,8 +138,8 @@ const WorkProfile = (props) => {
         if (workData.length !==0) {
             // console.log(workData,"...workData file")
             setValues({
-                porf_mbl: workData?.profession_mbl,
-                workTime: workData?.workTime,
+                porf_mbl: workData?.profession_mobile_number,
+                workTime: workData?.work_time,
                 study: workData?.education,
                 otherStudy: workData?.other_education
             })
@@ -372,7 +372,6 @@ const WorkProfile = (props) => {
 
                                         <Grid xs={12} sm={6} item>
                                             <TextField
-                                                // disabled={fieldsDisable}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
                                                 }}

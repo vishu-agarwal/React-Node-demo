@@ -101,7 +101,6 @@ const ViewClientProfile = () => {
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(profileMessage)
-
             dispatch(profileActions.messageReducer())
         }
         if (profileError.length !== 0) {
@@ -109,7 +108,6 @@ const ViewClientProfile = () => {
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(profileError)
-
             dispatch(profileActions.errorReducer())
             
         }
@@ -119,10 +117,11 @@ const ViewClientProfile = () => {
             setValues({
                 name: userProfile[0].name,
                 dob: userProfile[0].dob,
-                altmbl: userProfile[0].alt_mob_num,
+                mbl: userProfile[0].mobile_number,
+                altmbl: userProfile[0].alternate_mobile_number,
                 email: userProfile[0].email,
                 gender: userProfile[0].gender,
-                married: userProfile[0].isMarried,
+                married: userProfile[0].married,
                 physic_dis: userProfile[0].physical_disable,
                 house_no: userProfile[0].address[0].houseNo,
                 house_name: userProfile[0].address[0].house_name,
@@ -131,12 +130,9 @@ const ViewClientProfile = () => {
                 state: userProfile[0].address[0].state,
                 pincode: userProfile[0].address[0].pincode,
                 about: userProfile[0].about,
-
             })
-
         }
     }, [userProfile])
-
 
     //save icon state
     const [saveIcon, setSaveIcon] = useState(false)
@@ -209,33 +205,27 @@ const ViewClientProfile = () => {
                                                 Mobile No.
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
                                                 Alternate No.
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
                                                 Address
                                             </Typography>
                                         </Grid>
-
                                         <Grid item xs={5} sm={5} md={5} align="left" >
                                             <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
                                                 : {values.name}
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.mbl}
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
-                                                : {values.altml}
+                                                : {values.altmbl}
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.address}
                                             </Typography>
@@ -244,17 +234,13 @@ const ViewClientProfile = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={4} md={3} >
                                     <Grid container justifyContent="center" item xs={12} sm={12} md={12}>
-
-
                                         <CardMedia
                                             component="img"
-
                                             sx={{ marginTop: "10%", width: 250, height: 250, borderRadius: "50%" }}
-                                            image="https://images.unsplash.com/photo-1599103892985-253246c5558e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80"
+                                            image={`http://localhost:3001/${values.avatar}`}
                                             alt="Paella dish"
                                         />
                                         <Grid container item xs={12} sm={12} md={12}>
-
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -265,51 +251,39 @@ const ViewClientProfile = () => {
                                                 Gender
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
                                                 Age
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
                                                 Married
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
                                                 Physical Disability
                                             </Typography>
                                             <br />
-
-
                                         </Grid>
-
                                         <Grid item xs={4} sm={4} md={4} align="left" >
                                             <Typography color="" gutterBottom variant="h6"  >
                                                 : {values.gender.charAt(0).toUpperCase() + values.gender.slice(1)}
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
                                                 : {ageDate()} Years
                                             </Typography>
-
                                             <br />
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.married === false ? "No" : "Yes"}
                                             </Typography>
                                             <br />
-
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.physic_dis === false ? "No" : "Yes"}
                                             </Typography>
-
                                             <br />
-
                                         </Grid>
                                     </Grid>
                                 </Grid>
-
                             </Grid>
                         </Grid>
                     </Grid>
