@@ -38,8 +38,6 @@ function createData(skill, experience, price) {
     return { skill, experience, price };
 }
 
-
-
 const ViewClientProfile = () => {
 
     const navigate = useNavigate()
@@ -47,11 +45,9 @@ const ViewClientProfile = () => {
     const rid = params.rid;
     
     const dispatch = useDispatch()
-    // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    // let {  workData, workError,workLoading,workMessage } = useSelector((state) => ({ ...state.workProfileStore }))
+
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     
-
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
@@ -86,17 +82,8 @@ const ViewClientProfile = () => {
         dispatch(fetchUserProfileThunk(rid))
     }, [])
 
-    // console.log(workData[0].workDetails)
+    
     useEffect(() => {
-        // if (workMessage.length !== 0) {
-        //     alert(workMessage)
-
-        // }
-        // if (workError.length !== 0) {
-        //     // console.log(error)
-        //     alert(workError)
-        //     dispatch(workProfileActions.errorReducer())
-        // }
         if (profileMessage.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("info")
@@ -104,14 +91,13 @@ const ViewClientProfile = () => {
             dispatch(profileActions.messageReducer())
         }
         if (profileError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(profileError)
-            dispatch(profileActions.errorReducer())
-            
+            dispatch(profileActions.errorReducer())            
         }
-    }, [ profileMessage, profileError])
+    }, [profileMessage, profileError])
+    
     useEffect(() => {
         if (userProfile.length !== 0) {
             setValues({
@@ -140,19 +126,15 @@ const ViewClientProfile = () => {
     const onSaveClick = () => {
         setSaveIcon(!saveIcon)
     }
+
     const ageDate = () => {
         var today = new Date();
-        // console.log(today)
         var birthDate = new Date(values.dob);
-        // console.log(birthDate)
         var age = today.getFullYear() - birthDate.getFullYear();
-        // console.log(age)
         var m = today.getMonth() - birthDate.getMonth();
-        // console.log(m)
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-        // console.log(age)
         return age;
     }
     return (
@@ -174,7 +156,6 @@ const ViewClientProfile = () => {
                             open={snackOpen}
                             autoHideDuration={6000}
                             onClose={closeSnackbar}
-                        // key={vertical + horizontal}
                         >
                             <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                 {snackMessage}

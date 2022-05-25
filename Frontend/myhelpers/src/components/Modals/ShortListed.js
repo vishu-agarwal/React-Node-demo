@@ -66,20 +66,13 @@ const ShortListed = (props) => {
     const [snackMessage, setSnackMessage] = useState('')
     const [snackColor, setSnackColor] = useState("info")
 
-    // const [values,message, setValues] = useState({
-    //     name: '',
-    //     porf_mbl: '',
-    //     age: '',
-    //     work: '',
-    //     experience: '',
-    //     time: '',
-    // });
+   
     useEffect(() => {
         dispatch(fetchAllThunk())
         dispatch(fetchSaveUserThunk(rid))
     }, [])
 
-    // console.log(workData[0].workDetails)
+    
     useEffect(() => {
         if (displayMessage.length !== 0) {
             setState({ snackOpen: true });
@@ -90,11 +83,9 @@ const ShortListed = (props) => {
 
         }
         if (displayError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(displayError)
-
             dispatch(displayActions.errorReducer())
         }
 
@@ -114,22 +105,6 @@ const ShortListed = (props) => {
             // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
         }
     }, [saveUser])
-
-
-    // useEffect(() => {
-
-
-    //     if (message.length !== 0) {
-    //         alert(message)
-
-    //     }
-    //     // if (error.length !== 0) {
-    //     //     // console.log(error)
-    //     //     alert(error)
-    //     //     dispatch(workProfileActions.errorReducer())
-    //     // }
-
-    // }, [message, error])
 
     let rates, hireStatus
     return (
@@ -156,7 +131,6 @@ const ShortListed = (props) => {
                                 open={snackOpen}
                                 autoHideDuration={6000}
                                 onClose={closeSnackbar}
-                            // key={vertical + horizontal}
                             >
                                 <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                     {snackMessage}

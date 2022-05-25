@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 console.log('Client Profile model file ...............');
-const regModel = require('./tblReg');
-const avatarModel = require('./tblProfileAvatar')
+const regModel = require('../model/tblReg');
+const avatarModel = require('../model/tblProfileAvatar')
 const clientSchema = new mongoose.Schema(
   {
     r_id: {

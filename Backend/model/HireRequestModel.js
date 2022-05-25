@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-console.log('hire Request model file ...............');
 
 const hireRequestSchema = new mongoose.Schema(
     {
@@ -25,7 +24,6 @@ const hireRequestSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
-
 
 const hireRequestModel = mongoose.model(
     'hire_request',

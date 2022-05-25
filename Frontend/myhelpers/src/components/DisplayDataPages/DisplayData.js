@@ -70,7 +70,7 @@ const DisplayData = () => {
     const rid = localStorage.getItem("r_id")
     const role = localStorage.getItem("role")
     const dispatch = useDispatch()
-    // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
+
     let { displayData, saveUser, hireUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
 
     let rates, status, hireStatus
@@ -93,6 +93,7 @@ const DisplayData = () => {
         dispatch(fetchAllThunk())
         dispatch(fetchSaveUserThunk(rid))
     }, [])
+
     useEffect(() => {
         if (displayMessage.length !== 0) {
             setState({ snackOpen: true });
@@ -117,7 +118,7 @@ const DisplayData = () => {
     useEffect(() => {
 
         if (saveUser.length !== 0) {
-            console.log("saveUser ::", saveUser);
+
         }
     }, [saveUser])
 
@@ -130,7 +131,6 @@ const DisplayData = () => {
     }
     const [sortField, setSortField] = useState('')
     const onSortChange = (sort, field) => {
-        console.log(sort, field)
         const arg = {
             sort, field
         }
@@ -138,24 +138,15 @@ const DisplayData = () => {
         dispatch(fetchSaveUserThunk(rid))
     }
     const onSearchChange = (event, value) => {
-
-        console.log("onsearch:::", event.target.value, value)
         if (event.target.name === "searchText") {
             setFilterWork(event.target.value.toLowerCase())
             const arg = {
                 workSearch,
                 filterWork: event.target.value.toLowerCase()
             }
-            console.log("argument ::: ", arg)
             const debouncedSave = debounce(() => (dispatch(searchThunk(arg)),
                 dispatch(fetchSaveUserThunk(rid))), 3000);
             debouncedSave();
-            // setTimeout(async function () {
-            //     dispatch(searchThunk(arg))
-            //     dispatch(fetchSaveUserThunk(rid))
-            // }, 10000 );
-            // dispatch(searchThunk(arg))
-            // dispatch(fetchSaveUserThunk(rid))
         }
         else {
             setFilterWork(value)
@@ -245,7 +236,6 @@ const DisplayData = () => {
                                             "& .MuiOutlinedInput-root": {
                                                 "& > fieldset": { borderColor: "#163758" },
                                             },
-
                                             color: "#163758"
                                         }}
                                         value={filterWork}
@@ -254,12 +244,7 @@ const DisplayData = () => {
 
                         }
                     </Grid>
-                    {/* <Grid item xs={1} sm={0.5} marginTop={3}>
-                        {workSearch !== "" &&
-                            <InputAdornment position="end">
-                                <SearchIcon cursor={"pointer"} sx={{ colo: "#163758" }} onClick={(e) => searchChange(e)} />
-                            </InputAdornment>}
-                    </Grid> */}
+                    
                     <Grid item xs={0} sm={5}>
                     </Grid>
                     <Grid item xs={12} sm={2.5} display="flex" alignItems='center' >
@@ -274,8 +259,7 @@ const DisplayData = () => {
                 </Grid>
             </Grid>
             <Grid container direction="row" spacing={2}>
-                {
-                    // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
+                {                    
                     displayData.map((values, index) => {
                         rates = values.rating[0] !== undefined ?
                             values.rating[0]?.map((id) =>
@@ -290,9 +274,7 @@ const DisplayData = () => {
 
                         status = saveUser.length
                             && !!saveUser.find((val) => values.r_id === val.user_id)
-                        // helperAvatar = userAvatar.length && userAvatar.find((val) => values.r_id === val.r_id) 
-                        // console.log(helperAvatar)
-                        // hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : '';
+                        
                         return <Grid item xs={12} sm={4} md={3} key={index} >
                             <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
                         </Grid>

@@ -1,8 +1,12 @@
 const express = require("express")
 const router = new express.Router()
+
+//mideleware authorization file
 const auth = require("../middleware/authMidleware")
+
 //controller
-const HireRequestController= require("../controller/HireRequestController")
+const HireRequestController = require("../controller/HireRequestController")
+
 // hire user
 router.post("/myhelpers/sendHelperRequest/:rid",auth, HireRequestController.createHireRequest)
 // requestfor work
@@ -16,5 +20,6 @@ router.patch("/myhelpers/acceptRequest/:rid/:cid",auth, HireRequestController.ac
 //reject request
 router.patch("/myhelpers/rejectRequest/:rid/:cid",auth, HireRequestController.rejectClientRequest)
 //delete request by client
-router.patch("/myhelpers/deleteRequest/:rid/:hid",auth, HireRequestController.deleteHelperRequest)    
+router.patch("/myhelpers/deleteRequest/:rid/:hid", auth, HireRequestController.deleteHelperRequest)  
+  
 module.exports = router

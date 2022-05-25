@@ -47,12 +47,7 @@ const ScrollButton = () => {
       left: 0,
       behavior: 'smooth',
     });
-    // window.scrollTo({
-    //   top: document.documentElement.scrollHeight,
-    //   behavior: 'auto'
-    //   /* you can also use 'auto' behaviour 
-    //      in place of 'smooth' */
-    // });
+  
   };
 
   window.addEventListener('scroll', toggleVisible);
@@ -66,18 +61,6 @@ const ScrollButton = () => {
         transition: "all .5s ease -in -out"
       }}
     />
-    // <ExpandCircleDownIcon
-    //   onClick={scrollToBottom}
-
-    //   size="large"
-    //   variant="contained"
-    //   sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
-    // style={{
-    //   display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
-    //   transition: "all .5s ease -in -out"
-    // }} 
-    // />
-
   );
 }
 
@@ -129,18 +112,14 @@ const HomePage = () => {
             </Box>
             <Box mt={"5%"} >
               <Button
-
-
                 // color="#163758"
                 variant="contained"
                 onClick={() => navigate("/findHelper")}
                 // size="large"
-
                 sx={{ button: { sm: "medium", xs: "small", md: "large" }, width: "50%", height: "60%", backgroundColor: '#e91e1e', display: 'block' }}
               >
                 Find Helpers
               </Button>
-
             </Box>
           </div>
         </Grid>

@@ -1,10 +1,12 @@
 const express = require("express")
 const router = new express.Router()
+
+//mideleware authorization file
 const auth = require("../middleware/authMidleware")
+
 //controller
 const DisplayController = require("../controller/DisplayController")
-//fecth all avatar
-router.get("/myhelpers/fetchAllAvatar", auth, DisplayController.fetchAllAvatar)
+
 //fecth Details
 router.get("/myhelpers/fetchAllData/:role",auth, DisplayController.fetchAllData)
 //save Route
@@ -15,6 +17,5 @@ router.get("/myhelpers/fetchSaveUser/:rid",auth,DisplayController.fetchSaveUser)
 router.get("/myhelpers/search",auth, DisplayController.searching)
 //sort
 router.get("/myhelpers/sort", auth, DisplayController.sorting)
-//check profile avail or not
-// router.get("/myhelpers/isProfile/:rid", auth, DisplayController.profileAvailable)
+
 module.exports = router

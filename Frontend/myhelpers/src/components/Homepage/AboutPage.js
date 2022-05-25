@@ -61,15 +61,7 @@ const ScrollButton = () => {
 
     return (
         <Box mt="">
-            {/* <ExpandCircleDownIcon
-                onClick={scrollToBottom}
-
-                variant="contained"
-                sx={{ display: 'block', color: "#02a1ff", height: { xs: "40%", sm: "60%", md: "70%" }, width: "50%" }}
-                style={{
-                    display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
-                    transition: "all .5s ease -in -out"
-                }} /> */}
+           
             <img
                 src={`${require("../allImages/down.gif")}`} onClick={scrollToBottom}
                 sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
@@ -83,24 +75,23 @@ const ScrollButton = () => {
 }
 
 const AboutPage = (props) => {
+
     let navigate = useNavigate()
     const theme = useTheme();
     const [openRequest, setOpenRequest] = useState(false)
 
     const [openHired, setOpenHired] = useState(false)
     const onRequestClick = () => {
-
         setOpenRequest(true)
     }
 
     const onHireClick = () => {
-
         setOpenHired(true)
     }
+
     const handleModelClose = () => {
         setOpenRequest(false);
         setOpenHired(false);
-
     };
 
     return (
@@ -112,7 +103,6 @@ const AboutPage = (props) => {
                         <img src={require("../allImages/aboutimg.png")} width={"100%"} />
                     </div>
                     <div style={{ height: "99.5%", width: "100%", background: "", opacity: 0.5, position: "absolute", top: 0, }} align="center">
-
                         <Box mt={"28%"} >
                             <Grid container justifyContent="center" >
                                 <ScrollButton />
@@ -123,7 +113,6 @@ const AboutPage = (props) => {
                 <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} backgroundColor="white">
                     <Grid container justifyContent="center" >
                         <Grid item sm={11} xs={11} md={11}  >
-
                             <Card elevation={0} >
                                 <CardContent sx={{ padding: 0 }}>
                                     <Grid container justifyContent="center" >
@@ -176,10 +165,8 @@ const AboutPage = (props) => {
                                         <CardContent sx={{ padding: 0 }}>
                                             <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
                                                 53,500+
-
                                             </Typography>
                                             <Typography style={{ fontWeight: 900 }} variant="h5"  >
-
                                                 Workers have joined My Helpers to connect directly with nearby Employers
                                             </Typography>
                                         </CardContent>
@@ -190,13 +177,10 @@ const AboutPage = (props) => {
                                         <CardContent sx={{ padding: 0 }}>
                                             <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
                                                 25,300+
-
                                             </Typography>
                                             <Typography style={{ fontWeight: 900 }} variant="h5"  >
-
                                                 Workers have received employment offers directly from Users
                                             </Typography>
-
                                         </CardContent>
                                     </Card>
                                 </Grid>
@@ -205,10 +189,8 @@ const AboutPage = (props) => {
                                         <CardContent sx={{ padding: 0 }}>
                                             < Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
                                                 20,500+
-
                                             </Typography>
                                             <Typography style={{ fontWeight: 900 }} variant="h5" >
-
                                                 Women Workers have received employment offers directly from nearby Employers
                                             </Typography>
                                         </CardContent>
@@ -219,7 +201,6 @@ const AboutPage = (props) => {
                                         <CardContent sx={{ padding: 0 }}>
                                             <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
                                                 1,26,300+
-
                                             </Typography>
                                             <Typography style={{ fontWeight: 900 }} variant="h5"  >
                                                 Family members of Workers have been supported by the My Helpers initiative
@@ -247,9 +228,6 @@ const AboutPage = (props) => {
                                             expandIcon={<ExpandMoreIcon />}
                                             aria-controls="panel1a-content"
                                             id="panel1a-header"
-                                            style={{
-                                                // backgroundColor: "#007bf717"
-                                            }}
                                         >
                                             <Typography>Convenient, Easy & Organized</Typography>
                                         </AccordionSummary>
@@ -264,13 +242,9 @@ const AboutPage = (props) => {
                                 <Grid item sm={12} xs={12} md={12} marginTop={1}  >
                                     <Accordion elevation={24}>
                                         <AccordionSummary
-
                                             expandIcon={<ExpandMoreIcon />}
                                             aria-controls="panel1a-content"
                                             id="panel1a-header"
-                                            style={{
-                                                // backgroundColor: "#007bf717"
-                                            }}
                                         >
                                             <Typography>Find & Hire Workers at a free of cost</Typography>
                                         </AccordionSummary>
@@ -284,13 +258,9 @@ const AboutPage = (props) => {
                                 <Grid item sm={12} xs={12} md={12} marginTop={1} >
                                     <Accordion elevation={24}>
                                         <AccordionSummary
-
                                             expandIcon={<ExpandMoreIcon />}
                                             aria-controls="panel1a-content"
                                             id="panel1a-header"
-                                            style={{
-                                                // backgroundColor: "#007bf717"
-                                            }}
                                         >
                                             <Typography>Empowers the Workers to connect with you directly</Typography>
                                         </AccordionSummary>
@@ -301,18 +271,13 @@ const AboutPage = (props) => {
                                             </Typography>
                                         </AccordionDetails>
                                     </Accordion>
-
                                 </Grid>
                                 <Grid item sm={12} xs={12} md={12} marginTop={1} >
                                     <Accordion elevation={24}>
                                         <AccordionSummary
-
                                             expandIcon={<ExpandMoreIcon />}
                                             aria-controls="panel1a-content"
                                             id="panel1a-header"
-                                            style={{
-                                                // backgroundColor: "#007bf717"
-                                            }}
                                         >
                                             <Typography>No middlemen & commissions in between</Typography>
                                         </AccordionSummary>
@@ -323,18 +288,13 @@ const AboutPage = (props) => {
                                             </Typography>
                                         </AccordionDetails>
                                     </Accordion>
-
                                 </Grid>
                                 <Grid item sm={12} xs={12} md={12} marginTop={1} >
                                     <Accordion elevation={24}>
                                         <AccordionSummary
-
                                             expandIcon={<ExpandMoreIcon />}
                                             aria-controls="panel1a-content"
                                             id="panel1a-header"
-                                            style={{
-                                                // backgroundColor: "#007bf717"
-                                            }}
                                         >
                                             <Typography>Get the best-shortlisted Workers from a vast pool</Typography>
                                         </AccordionSummary>
@@ -344,18 +304,13 @@ const AboutPage = (props) => {
                                             </Typography>
                                         </AccordionDetails>
                                     </Accordion>
-
                                 </Grid>
                                 <Grid item sm={12} xs={12} md={12} marginTop={1} >
                                     <Accordion elevation={24}>
                                         <AccordionSummary
-
                                             expandIcon={<ExpandMoreIcon />}
                                             aria-controls="panel1a-content"
                                             id="panel1a-header"
-                                            style={{
-                                                // backgroundColor: "#007bf717"
-                                            }}
                                         >
                                             <Typography>Speak to multiple Workers at a time</Typography>
                                         </AccordionSummary>

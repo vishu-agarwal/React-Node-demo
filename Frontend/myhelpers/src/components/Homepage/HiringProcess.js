@@ -65,31 +65,7 @@ const ScrollButton = () => {
                     transition: "all .5s ease -in -out"
                 }}
             />
-            {/* <Button
-                variant="contained"
-                // startIcon={<ExpandCircleDownIcon />}
-                sx={{ borderRadius: "50%", display: 'block', color: "white" }}
-                style={{ display: visible ? 'inline' : 'none', cursor: "pointer", height: "100%", width: "100%" }}
-            >
-                <ExpandCircleDownIcon size="large" />
-            </Button> */}
-            {/* <ExpandCircleDownIcon
-                onClick={scrollToBottom}
-
-                size="large"
-                variant="contained"
-                sx={{ display: 'block', color: "white", height: "70%", width: "50%" }}
-                style={{
-                    display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
-                    transition: "all .5s ease -in -out"
-                }} /> */}
-            {/* <ExpandCircleDownIcon
-                onClick={scrollToBottom}
-                size="large"
-                variant="contained"
-                sx={{ display: 'block', color: "white" }}
-                style={{ display: visible ? 'inline' : 'none', cursor: "pointer", height: "30%", width: "100%" }} /> */}
-        </Box >
+           </Box >
     );
 }
 

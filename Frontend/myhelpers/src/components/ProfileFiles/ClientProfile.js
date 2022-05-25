@@ -686,7 +686,6 @@ const ClientProfile = () => {
                                         open={open}
                                         autoHideDuration={6000}
                                         onClose={closeSnackbar}
-                                    // key={vertical + horizontal}
                                     >
                                         <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                             {snackMessage}
@@ -694,9 +693,7 @@ const ClientProfile = () => {
                                     </Snackbar>
 
                                     <Grid item sm={12} xs={12} marginTop={10}>
-
                                         <Badge
-
                                             overlap="circular"
                                             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                                             badgeContent={

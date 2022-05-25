@@ -101,7 +101,7 @@ export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateHireRe
 export const acceptRequestThunk = createAsyncThunk("hireRequest/acceptRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const response = await axios.patch(`/myhelpers/acceptRequest/${arg.rid}/${arg.user_id}`, {
+        const response = await axios.patch(`/myhelpers/acceptRequest/${arg.rid}/${arg.user_id}`, "accept request",{
             headers: {
                 Authorization: "Bearer " + varToken,
             },
@@ -117,10 +117,10 @@ export const acceptRequestThunk = createAsyncThunk("hireRequest/acceptRequestThu
 export const rejectRequestThunk = createAsyncThunk("hireRequest/rejectRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const response = await axios.patch(`/myhelpers/rejectRequest/${arg.rid}/${arg.user_id}`, {
+        const response = await axios.patch(`/myhelpers/rejectRequest/${arg.rid}/${arg.user_id}`,"reject request", {
             headers: {
                 Authorization: "Bearer " + varToken,
-            },
+            }
         })
         return response
 
@@ -133,7 +133,7 @@ export const rejectRequestThunk = createAsyncThunk("hireRequest/rejectRequestThu
 export const deleteRequestThunk = createAsyncThunk("hireRequest/deleteRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const response = await axios.patch(`/myhelpers/deleteRequest/${arg.rid}/${arg.user_id}`, {
+        const response = await axios.patch(`/myhelpers/deleteRequest/${arg.rid}/${arg.user_id}`,"delete request by client", {
             headers: {
                 Authorization: "Bearer " + varToken,
             },

@@ -14,15 +14,10 @@ import FormControl from '@mui/material/FormControl';
 import { Backdrop, Card, Grid, InputLabel, Typography } from '@mui/material';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-
 import ListItemText from '@mui/material/ListItemText';
 import Loading from '../layouts/LoadingFile'
-
-// import DisplayWorkingFields from './DisplayWorkingFields';
 import { useState, useEffect } from 'react';
-// import workProfileActions from '../../store/slices/work-slice'
 import Modal from '@mui/material/Modal';
-
 import { fetchHelperRequestsThunk } from '../../store/slices/hireRequest-slice';
 import { fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
 import {workProfileActions} from '../../store/slices/work-slice'
@@ -31,9 +26,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './HireRequestCard';
 import HireRequestSlice from '../../store/slices/hireRequest-slice';
 import {hireRequestActions} from '../../store/slices/hireRequest-slice'
-// import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import { Box } from "@mui/system";
-// import theme from "../Theme";
 import CloseIcon from '@mui/icons-material/Close';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -44,15 +37,12 @@ const Alert = React.forwardRef(function Alert(
 ) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
 const WorkRequest = (props) => {
     const rid = localStorage.getItem("r_id")
-    // const rid = "H103"
     const navigate = useNavigate()
-
     const dispatch = useDispatch()
     let { requestMessage, hireRequestData, requestError, requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
-
-
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
@@ -65,42 +55,30 @@ const WorkRequest = (props) => {
     const [snackMessage, setSnackMessage] = useState('')
     const [snackColor, setSnackColor] = useState("info")
 
-
-    // let { hireRequestData, message, error } = useSelector((state) => ({ ...state.hireRequestStore }))
-
     useEffect(() => {
-
         dispatch(fetchHelperRequestsThunk(rid))
-
     }, [])
-
     useEffect(() => {
         if (requestMessage.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(requestMessage)
             dispatch(hireRequestActions.messageReducer())
-
         }
         if (requestError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(requestError)
             dispatch(hireRequestActions.errorReducer())
         }
-
     }, [requestMessage, requestError])
 
     useEffect(() => {
         if (hireRequestData.length !== 0) {
             console.log("hireRequestdata :: ", hireRequestData)
         }
-
     }, [hireRequestData])
-
     return (
-       
         <Modal
             open={true}
             onClose={props.click}
@@ -135,9 +113,7 @@ const WorkRequest = (props) => {
                                             Enquiry
                                         </Typography>
                                     </Grid>
-
-                                    <Grid item xs={12} sm={2} align="right">
-                                        {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
+                                    <Grid item xs={12} sm={2} align="right">                                       
                                         <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
                                     </Grid>
                                 </Grid>
@@ -164,7 +140,6 @@ const WorkRequest = (props) => {
                                         <img
                                             src={require("../allImages/notfound.gif")}
                                             alt="Page No Found..."
-
                                             align="center"
                                         />
                                     </Grid>
@@ -174,7 +149,6 @@ const WorkRequest = (props) => {
                 </Card>
             </Grid>
         </Modal>
-        // </Backdrop >
     );
 }
 

@@ -2,8 +2,6 @@
 const mongoose = require("mongoose")
 const validator = require("validator")
 
-console.log("helper profile model file ...............")
-// const regModel = require("./tblReg")
 const workSchema = new mongoose.Schema({
 
     r_id: {
@@ -20,7 +18,6 @@ const workSchema = new mongoose.Schema({
             },
             message: val => `${val.value} has to be 10 digits`
         }
-
     },
     work_time: {
         type: String,
@@ -38,20 +35,14 @@ const workSchema = new mongoose.Schema({
         {
             category: {
                 type: String,
-                // required: true,
                 trim: true,
-                // lowercase: true,
             },
             experience: {
                 type: String,
-                // required: true,
                 trim: true,
-                // lowercase: true,
             },
             salary: {
                 type: String,
-                // required: true,
-                // lowercase: true,
                 trim: true,
             },
         },
@@ -68,8 +59,6 @@ const workSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
-
-
 
 const workModel = mongoose.model("work_details", workSchema, "work_details")
 module.exports = workModel

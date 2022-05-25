@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 //   mui
 import Modal from '@mui/material/Modal';
 import CardContent from '@mui/material/CardContent';
@@ -18,12 +17,9 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-
 import { useState, useEffect } from 'react';
-import {hireRequestActions} from '../../store/slices/hireRequest-slice'
-
+import { hireRequestActions } from '../../store/slices/hireRequest-slice'
 import { sendHireRequestThunk, updateHireRequestThunk, fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
-
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
@@ -48,6 +44,7 @@ const Alert = React.forwardRef(function Alert(
 const Input = styled('input')({
     display: 'none',
 });
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -59,7 +56,6 @@ const MenuProps = {
     },
 };
 
-
 const HireForm = (props) => {
 
     const rid = localStorage.getItem("r_id")
@@ -67,14 +63,14 @@ const HireForm = (props) => {
     const navigate = useNavigate()
 
     const dispatch = useDispatch()
-    let { requestMessage, singleUser, requestError,requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
-
+    let { requestMessage, singleUser, requestError, requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
 
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
         horizontal: 'center',
     });
+
     const { vertical, horizontal, snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
@@ -86,41 +82,24 @@ const HireForm = (props) => {
     const [editHide, setEditHide] = useState(true)
     //fields enable or diable on hide button
     const [fieldsDisable, setDisable] = useState(false)
-    // console.log(fields)
-
-    // useEffect(() => {
-    //     console.log("userid",props.user_id)
-
-    //     dispatch(fetchSingleHireRequestThunk(props.user_id))
-    // }, [props.user_id])
 
     useEffect(() => {
-
-
         if (requestMessage.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(requestMessage)
-
             dispatch(hireRequestActions.messageReducer())
-
         }
         if (requestError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(requestError)
-
             dispatch(hireRequestActions.errorReducer())
         }
-
     }, [requestMessage, requestError])
 
-
     useEffect(() => {
-        console.log("hireData", props.hireValues)
         if (singleUser && singleUser.length !== 0) {
-            console.log("hireRequest")
             props.sethireValues({
                 fromDate: singleUser.from_date,
                 toDate: singleUser.to_date,
@@ -128,7 +107,6 @@ const HireForm = (props) => {
                 toTime: singleUser.to_time,
                 description: singleUser.description,
             })
-
             props.setWork(
                 singleUser.work
             );
@@ -138,7 +116,6 @@ const HireForm = (props) => {
     }, [singleUser])
 
     const onSendRequest = (e) => {
-        console.log("save works")
         e.preventDefault()
         const arg = {
             user_id: props.user_id,
@@ -146,15 +123,9 @@ const HireForm = (props) => {
             work: props.work,
             rid
         }
-        console.log("abc", arg)
-        //create work Profile
         dispatch(sendHireRequestThunk(arg))
-        //Edit button display
         setEditHide(false)
         setDisable(true)
-        //close this form model
-        // props.click()
-
     }
 
     const onUpdateRequest = (e) => {
@@ -171,9 +142,7 @@ const HireForm = (props) => {
     }
     const onEditClick = () => {
         setDisable(!fieldsDisable)
-
     }
-
     const [errorEnable, setErrorEnable] = useState({
 
         work: false,
@@ -192,36 +161,19 @@ const HireForm = (props) => {
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
-        // console.log("language::", work)
         if (event.target.value.length === 0) {
-            // console.log("wrong::", event.target.value)
             setErrorEnable({ ...errorEnable, work: true })
             setErrorText("Please choose it!")
         }
         else {
-            // console.log("correct::", event.target.value)
             setErrorEnable({ ...errorEnable, work: false })
-
         }
     };
     const onChange = (event) => {
-        
-        console.log("props...-------------",props.hireValues)
-        console.log(event.target.name, event.target.id)
         const isTrue = props.workTime === "Custom (1-4 Hrs)" || props.workTime === "Custom Night Shift (After 8 PM)"
         const today = new Date()
         if (event.target.name === "fromDate") {
-            // console.log(event.target.value)
-            // console.log(new Date(event.target.value) < new Date())
             props.sethireValues((prevState) => { return { ...prevState, fromDate: event.target.value } })
-            if (props.hireValues.toDate)
-            {
-                console.log(props.hireValues)
-                // if (new Date(event.target.value) <= new Date(props.hireValues.toDate)) {
-                setErrorEnable({ ...errorEnable, toDate: true })
-                setErrorText("Again select date!")
-                // }
-            }
             if (isTrue) {
                 const prevDay = new Date(today.setDate(today.getDate() - 1))
                 if (new Date(event.target.value) < prevDay) {
@@ -229,19 +181,29 @@ const HireForm = (props) => {
                     setErrorText("Should be today or future date!")
                 }
                 else {
-
-                    setErrorEnable({ ...errorEnable, fromDate: false })
+                    if (props.hireValues.toDate) {
+                        setErrorEnable({ ...errorEnable, toDate: true })
+                        setErrorText("Again select date!")
+                    }
+                    else {
+                        setErrorEnable({ ...errorEnable, fromDate: false })
+                    }
                 }
             }
-
             else {
                 if (new Date(event.target.value) < today) {
-
                     setErrorEnable({ ...errorEnable, fromDate: true })
                     setErrorText("Date should be future date!")
                 }
                 else {
-                    setErrorEnable({ ...errorEnable, fromDate: false })
+                    if (props.hireValues.toDate) {
+                        setErrorEnable({ ...errorEnable, toDate: true })
+                        setErrorText("Again select date!")
+                    }
+                    else {
+                        setErrorEnable({ ...errorEnable, fromDate: false })
+                        setErrorText("")
+                    }
                 }
             }
         }
@@ -249,6 +211,7 @@ const HireForm = (props) => {
             props.sethireValues((prevState) => { return { ...prevState, toDate: event.target.value } })
             if (new Date(event.target.value) >= new Date(props.hireValues.fromDate)) {
                 setErrorEnable({ ...errorEnable, toDate: false })
+                setErrorText("")
             }
             else {
                 setErrorEnable({ ...errorEnable, toDate: true })
@@ -256,58 +219,73 @@ const HireForm = (props) => {
             }
         }
         else if (event.target.name === "fromTime") {
-            // var nowTime = nowDateTime.split('T')[1].split('.')[0];
-            if (props.hireValues.toTime.length !== 0) {
-                // if (event.target.value <= new Date(props.hireValues.fromDate)) {
-                setErrorEnable({ ...errorEnable, toTime: true })
-                setErrorText("Again select time!")
-                // }
-            }
             props.sethireValues((prevState) => { return { ...prevState, fromTime: event.target.value } })
-            // if (isTrue) {
             if (new Date(props.hireValues.fromDate).getDate() === today.getDate() && props.hireValues.toDate.length !== 0) {
-
                 const nextTime = new Date(today.setTime(today.getTime() + 3 * 60 * 60 * 1000))
                 const nowTime = nextTime.getHours() + ":" + nextTime.getMinutes() + ":" + nextTime.getSeconds()
-
                 if (event.target.value < nowTime) {
                     setErrorEnable({ ...errorEnable, fromTime: true })
                     setErrorText("Time should be 3 hours later!")
                 }
                 else {
-                    setErrorEnable({ ...errorEnable, fromTime: false })
+                    if (props.hireValues.toTime.length) {
+                        setErrorEnable({ ...errorEnable, toTime: true })
+                        setErrorText("Again select time!")                        
+                    }
+                    else {
+                        setErrorEnable({ ...errorEnable, fromTime: false })
+                        setErrorText("")
+                    }
                 }
             }
             else if (props.hireValues.fromDate !== "" && props.hireValues.toDate !== "") {// for future dates
                 if (props.workTime === "Custom (1-4 Hrs)") {
-                    // console.log(event.target.value)
-                    // console.log(event.target.value < "06:00" && event.target.value > "20:00")
                     if (event.target.value < "06:00" || event.target.value > "20:00") {
                         setErrorEnable({ ...errorEnable, fromTime: true })
                         setErrorText("Between 6 AM to 8 PM!")
                     }
                     else {
-                        setErrorEnable({ ...errorEnable, fromTime: false })
+                        if (props.hireValues.toTime) {
+                            setErrorEnable({ ...errorEnable, toTime: true })
+                            setErrorText("Again select time!")
+                        }
+                        else {
+                            setErrorEnable({ ...errorEnable, fromTime: false })
+                            setErrorText("")
+                        }
                     }
                 }
                 else if (props.workTime === "Custom Night Shift (After 8 PM)") {
+                   
                     if (event.target.value > "05:00" && event.target.value < "20:00") {
                         setErrorEnable({ ...errorEnable, fromTime: true })
                         setErrorText("Between 8 PM to 6 AM!")
                     }
                     else {
-                        setErrorEnable({ ...errorEnable, fromTime: false })
+                        if (props.hireValues.toTime) {
+                            setErrorEnable({ ...errorEnable, toTime: true })
+                            setErrorText("Again select time!")
+                        }
+                        else {
+                            setErrorEnable({ ...errorEnable, fromTime: false })
+                            setErrorText("")
+                        }
                     }
                 }
                 else if (props.workTime === "Full Day (12 Hrs)") {
-                    console.log(event.target.value)
-                    console.log(event.target.value < "06:00" && event.target.value > "20:00")
                     if (event.target.value < "06:00" || event.target.value > "10:00") {
                         setErrorEnable({ ...errorEnable, fromTime: true })
                         setErrorText("Between 6 AM to 10 AM!")
                     }
                     else {
-                        setErrorEnable({ ...errorEnable, fromTime: false })
+                        if (props.hireValues.toTime) {
+                            setErrorEnable({ ...errorEnable, toTime: true })
+                            setErrorText("Again select time!")
+                        }
+                        else {
+                            setErrorEnable({ ...errorEnable, fromTime: false })
+                            setErrorText("")
+                        }
                     }
                 }
                 else if (props.workTime === "Night Shift (12 Hrs)") {
@@ -316,46 +294,49 @@ const HireForm = (props) => {
                         setErrorText("Between 8 PM to 10 PM!")
                     }
                     else {
-                        setErrorEnable({ ...errorEnable, fromTime: false })
-
+                        if (props.hireValues.toTime) {
+                            setErrorEnable({ ...errorEnable, toTime: true })
+                            setErrorText("Again select time!")
+                        }
+                        else {
+                            setErrorEnable({ ...errorEnable, fromTime: false })
+                            setErrorText("")
+                        }
                     }
                 }
                 else if (props.workTime === "Half Day (6 Hrs)") {
-
 
                     if (event.target.value < "06:00" || event.target.value > "15:00") {
                         setErrorEnable({ ...errorEnable, fromTime: true })
                         setErrorText("Between 6 AM to 3 PM!")
                     }
                     else {
-                        setErrorEnable({ ...errorEnable, fromTime: false })
+                        if (props.hireValues.toTime) {
+                            setErrorEnable({ ...errorEnable, toTime: true })
+                            setErrorText("Again select time!")
+                        }
+                        else {
+                            setErrorEnable({ ...errorEnable, fromTime: false })
+                            setErrorText("")
+                        }
                     }
                 }
-
             }
             else {
                 setErrorEnable({ ...errorEnable, fromTime: true })
                 setErrorText("Please first select Dates !")
             }
-            // }
-
         }
         else if (event.target.name === "toTime") {
             props.sethireValues((prevState) => { return { ...prevState, toTime: event.target.value } })
-            // console.log("is trueeee", isTrue);
-            // if (isTrue) {
             const minfrom = moment(props.hireValues.fromTime, "HH:mm").add(1, "hours").format("HH:mm")
             const maxfrom = moment(props.hireValues.fromTime, "HH:mm").add(4, "hours").format("HH:mm")
-            console.log(event.target.value, minfrom, maxfrom)
-            // console.log("tiiime", minfrom,maxfrom)
-            // console.log(event.target.value >= minfrom && event.target.value <= maxfrom)
             if (props.hireValues.fromTime !== "") {
                 if (props.workTime === "Custom (1-4 Hrs)") {
                     if (event.target.value >= "07:00" && event.target.value <= "21:00") {
-                        console.log(minfrom, maxfrom)
-                        console.log(event.target.value >= minfrom && event.target.value <= maxfrom)
                         if (event.target.value >= minfrom && event.target.value <= maxfrom) {
                             setErrorEnable({ ...errorEnable, toTime: false })
+                            setErrorText("")
                         }
                         else {
                             setErrorEnable({ ...errorEnable, toTime: true })
@@ -369,41 +350,35 @@ const HireForm = (props) => {
                 }
                 else if (props.workTime === "Custom Night Shift (After 8 PM)") {
                     if (event.target.value >= "06:00" && event.target.value <= "21:00") {
-
                         setErrorEnable({ ...errorEnable, toTime: true })
                         setErrorText("Between 9 PM to 6 AM!")
-
                     }
                     else {
-                        console.log(event.target.value >= minfrom && event.target.value <= maxfrom)
                         if (event.target.value < minfrom && event.target.value > maxfrom) {
                             setErrorEnable({ ...errorEnable, toTime: true })
                             setErrorText("For 1 to 4 Hours only!")
                         }
                         else {
                             setErrorEnable({ ...errorEnable, toTime: false })
-
+                            setErrorText("")
                         }
                     }
                 }
                 else if (props.workTime === "Full Day (12 Hrs)") {
-
-
                     if (event.target.value < "18:00" || event.target.value > "22:00") {
                         setErrorEnable({ ...errorEnable, toTime: true })
                         setErrorText("Between 6 PM to 10 PM!")
                     }
                     else {
                         const hours = moment(props.hireValues.fromTime, "HH:mm").add(12, "hours").format("HH:mm")
-                        console.log(hours)
                         if (event.target.value === hours) {
                             setErrorEnable({ ...errorEnable, toTime: false })
+                            setErrorText("")
                         }
                         else {
                             setErrorEnable({ ...errorEnable, toTime: true })
                             setErrorText("For 12 Hours only!")
                         }
-
                     }
                 }
                 else if (props.workTime === "Night Shift (12 Hrs)") {
@@ -413,15 +388,14 @@ const HireForm = (props) => {
                     }
                     else {
                         const hours = moment(props.hireValues.fromTime, "HH:mm").add(12, "hours").format("HH:mm")
-                        console.log(hours)
                         if (event.target.value === hours) {
                             setErrorEnable({ ...errorEnable, toTime: false })
+                            setErrorText("")
                         }
                         else {
                             setErrorEnable({ ...errorEnable, toTime: true })
                             setErrorText("For 12 Hours only!")
                         }
-
                     }
                 }
                 else if (props.workTime === "Half Day (6 Hrs)") {
@@ -431,9 +405,9 @@ const HireForm = (props) => {
                     }
                     else {
                         const hours = moment(props.hireValues.fromTime, "HH:mm").add(6, "hours").format("HH:mm")
-                        console.log(hours)
                         if (event.target.value === hours) {
                             setErrorEnable({ ...errorEnable, toTime: false })
+                            setErrorText("")
                         }
                         else {
                             setErrorEnable({ ...errorEnable, toTime: true })
@@ -442,7 +416,6 @@ const HireForm = (props) => {
                     }
                 }
             }
-
             else {
                 setErrorEnable({ ...errorEnable, toTime: true })
                 setErrorText("First select From time!")
@@ -451,22 +424,18 @@ const HireForm = (props) => {
     }
     const [saveEnable, setSaveEnable] = useState(false)
     useEffect(() => {
-
         const areTrue = Object.values(errorEnable).every(
             value => value !== true
-
         );
         const isNullish = Object.values(props.hireValues).every(value => value !== "");
-
-
         if (props.workTime === "Live In (24 Hrs)") {
-
             const nullTime = props.hireValues.toDate !== "" && props.hireValues.fromDate !== "" && props.hireValues.description !== ""
             props.work.length !== 0 ? nullTime ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
         }
-
-        else { props.work.length !== 0 ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false) }
-
+        else {
+            props.work.length !== 0 ? isNullish ? areTrue ? setSaveEnable(true)
+                : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
+        }
     }, [errorEnable, props.hireValues, props.work])
     return (
         <Modal
@@ -476,7 +445,6 @@ const HireForm = (props) => {
             aria-describedby="modal-modal-description"
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-
             <Grid >
                 {requestLoading && <Loading isLoad={true} />}
                 <Card
@@ -486,8 +454,6 @@ const HireForm = (props) => {
                         paddingTop: 0,
                         borderRadius: 5,
                     }}>
-
-
                     <CardContent style={{ padding: 0 }}>
                         <Grid container direction={'row'} >
                             <Snackbar
@@ -495,7 +461,6 @@ const HireForm = (props) => {
                                 open={snackOpen}
                                 autoHideDuration={5000}
                                 onClose={closeSnackbar}
-                            // key={vertical + horizontal}
                             >
                                 <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                     {snackMessage}
@@ -508,7 +473,6 @@ const HireForm = (props) => {
                                             Enquiry
                                         </Typography>
                                     </Grid>
-
                                     <Grid item xs={12} sm={1} justifyContent="left" >
                                         {!editHide && singleUser && singleUser.status === "pending!" &&
                                             <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
@@ -519,8 +483,7 @@ const HireForm = (props) => {
                                             </IconButton>
                                         }
                                     </Grid>
-                                    <Grid item xs={12} sm={1} align="right">
-                                        {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
+                                    <Grid item xs={12} sm={1} align="right">                                       
                                         <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
                                     </Grid>
                                 </Grid>
@@ -528,7 +491,6 @@ const HireForm = (props) => {
                         </Grid>
                         <Grid container justifyContent="center">
                             <Grid item xs={11} sm={11} md={11} margin={1} align="center">
-
                                 <form onSubmit={editHide ? onSendRequest : onUpdateRequest}>
                                     <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Work : </Typography>
                                     <Grid container spacing={1} >
@@ -558,9 +520,7 @@ const HireForm = (props) => {
                                                 <FormHelperText>{errorEnable.work && errorText}</FormHelperText>
                                             </FormControl>
                                         </Grid>
-
                                     </Grid>
-
                                     <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Work Time : </Typography>
                                     <Grid container spacing={1} >
                                         <Grid xs={12} sm={12} item>
@@ -568,12 +528,10 @@ const HireForm = (props) => {
                                                 id="time"
                                                 required
                                                 name="time"
-                                                // style={{marginTop:"2%" }}
                                                 fullWidth
                                                 value={props.workTime}
                                                 inputProps={{
                                                     readOnly: Boolean(true),
-                                                    // disabled: Boolean(true),
                                                 }}
                                                 InputLabelProps={{
                                                     shrink: true,
@@ -592,7 +550,6 @@ const HireForm = (props) => {
                                                 name="fromDate"
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
-
                                                 }}
                                                 fullWidth
                                                 value={props.hireValues.fromDate}
@@ -611,7 +568,6 @@ const HireForm = (props) => {
                                                 type="date"
                                                 required
                                                 name="toDate"
-                                                // style={{ width: "90%" }}
                                                 fullWidth
                                                 value={props.hireValues.toDate}
                                                 onChange={onChange}
@@ -619,22 +575,16 @@ const HireForm = (props) => {
                                                 helperText={errorEnable.toDate && errorText}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
-
                                                 }}
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
                                             />
                                         </Grid>
-
                                     </Grid>
                                     <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Your Suitable Timming : </Typography>
-
-                                    <Grid container spacing={1}>
-                                        {/* {props.workTime === "Full Day (12 Hrs)" || props.workTime === "Live In (24 Hrs)" || props.workTime === "Night Shift (12 Hrs)" */}
-
+                                    <Grid container spacing={1}>                                   
                                         < Grid xs={12} sm={6} item>
-
                                             <TextField
                                                 id="fromTime"
                                                 label="From Time"
@@ -648,7 +598,6 @@ const HireForm = (props) => {
                                                 helperText={errorEnable.fromTime && errorText}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
-
                                                 }}
                                                 onChange={onChange}
                                                 InputLabelProps={{
@@ -665,7 +614,6 @@ const HireForm = (props) => {
                                                 name="toTime"
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
-
                                                 }}
                                                 disabled={props.workTime === "Live In (24 Hrs)" ? true : false}
                                                 fullWidth
@@ -676,15 +624,10 @@ const HireForm = (props) => {
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
-
                                             />
                                         </Grid>
-
-
                                     </Grid>
-
                                     <Grid container spacing={1} marginTop={1}>
-
                                         <Grid xs={12} sm={12} item>
                                             <TextField
                                                 required
@@ -694,7 +637,6 @@ const HireForm = (props) => {
                                                     maxLength: 100,
                                                     readOnly: Boolean(fieldsDisable),
                                                 }}
-
                                                 variant='outlined'
                                                 id="description"
                                                 label="Add Any Description"
@@ -713,7 +655,6 @@ const HireForm = (props) => {
                                         </Grid>
                                     }
                                 </form>
-
                             </Grid>
                         </Grid>
                     </CardContent>

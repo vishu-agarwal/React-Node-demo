@@ -78,20 +78,18 @@ ScrollTop.propTypes = {
     window: PropTypes.func,
 };
 
-
-
 const pages = ['Home', 'Find Helpers', 'About Us', 'Profile'];
 
 const Header = (props) => {
     const dispatch = useDispatch()
     let navigate = useNavigate()
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
-    // let { token } = useSelector((state) => ({ ...state.loginStore }))
+    
     const role = localStorage.getItem("role")
     const rid = localStorage.getItem("r_id")
-    // const role="Client"
+    
     const { isAuth } = useSelector(state => ({ ...state.loginStore }))
-    // const isAuth = true
+    
     const [anchorElNav, setAnchorElNav] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(false);
     const [openRequest, setOpenRequest] = useState(false)
@@ -143,7 +141,7 @@ const Header = (props) => {
         dispatch(loginActions.logoutReducer())
         navigate("/")
     }
-    // const navigate = useNavigate()
+    
     return (
         <>
             <AppBar position="fixed" sx={{ marginTop: 0, background: '#163758', color: "" }} >
@@ -189,13 +187,9 @@ const Header = (props) => {
                                         display: { xs: 'block', md: 'none' },
                                     }}
                                 >
-                                    {/* {pages.map((page) => (
-                                        <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                            <Typography textAlign="center">{page}</Typography>
-                                        </MenuItem>
-                                    ))} */}
+                                   
                                     <MenuItem onClick={() => navigate("/Client/home")}>Home</MenuItem>
-                                    {/* <MenuItem onClick={() => navigate("/findHelper")} >Hiring Process</MenuItem> */}
+                                  
                                     {role === "Client" && <MenuItem onClick={() => navigate("/findHelper")}>Find Helpers</MenuItem>}
                                     <MenuItem onClick={() => { return (navigate("/profile"), handleCloseNavMenu) }}>Profile</MenuItem>
 
@@ -217,7 +211,6 @@ const Header = (props) => {
                         }} />
                         {isAuth &&
                             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                                {/* {pages.map((page) => ( */}
                                 {role === "Client" &&
                                     <>
                                         <Button

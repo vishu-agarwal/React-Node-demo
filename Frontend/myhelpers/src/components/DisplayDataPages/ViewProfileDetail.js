@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import Backdrop from '@mui/material/Backdrop';
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -43,16 +42,13 @@ const Alert = React.forwardRef(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-
 const ViewProfileDetail = () => {
+    
     const navigate = useNavigate()
-
     const dispatch = useDispatch()
     const params = useParams()
     const user_id = params.rid;
-
-    // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    // let { saveUser } = useSelector((state) => ({ ...state.displayStore }))
+    
     let { saveUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
     let { workMessage, workData, workError, workLoading } = useSelector((state) => ({ ...state.workProfileStore }))
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
@@ -137,7 +133,7 @@ const ViewProfileDetail = () => {
             // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
         }
     }, [saveUser])
-    // console.log(workData[0].workDetails)
+    
     useEffect(() => {
         const body = document.querySelector('body');
         body.style.overflow = open ? 'hidden' : 'auto';
@@ -146,17 +142,14 @@ const ViewProfileDetail = () => {
             setSnackColor("info")
             setSnackMessage(profileMessage)
             dispatch(profileActions.messageReducer())
-
         }
         if (profileError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(profileError)
             dispatch(profileActions.errorReducer())
         }
         if (workMessage.length !== 0) {
-
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(workMessage)
@@ -166,22 +159,18 @@ const ViewProfileDetail = () => {
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(workError)
-
             dispatch(workProfileActions.errorReducer())
         }
         if (displayMessage.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(displayMessage)
-
             dispatch(displayActions.messageReducer())
-
         }
         if (displayError.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(displayError)
-
             dispatch(displayActions.errorReducer())
         }
 
@@ -208,7 +197,6 @@ const ViewProfileDetail = () => {
 
                 setStatus(saveUser.length !== 0 ? saveUser.map((val) => userProfile[0].r_id === val.user_id).includes(true) ? true : false : false)
 
-                // console.log(userProfile[0].avatar)
                 setValues({
                     name: userProfile[0]?.name,
                     dob: userProfile[0]?.dob,
@@ -237,7 +225,7 @@ const ViewProfileDetail = () => {
             }
         }
     }, [userProfile, workData])
-    // console.log(status)
+    
     const [fields, setFields] = useState(
         [
             {
@@ -252,30 +240,23 @@ const ViewProfileDetail = () => {
         const arg = {
             user_id,
             rid,
-
         }
         dispatch(saveThunk(arg))
     }
     const onRateClick = (val) => {
-
         setStar(parseFloat(val.target.value))
-
         const arg = {
             rid,
             user_id,
             rate: star
         }
-        console.log("argument :: ", arg);
-        // console.log("stars update..........................")
         dispatch(starThunk(arg))
 
     }
+
     //hire button enable disble
     const [enableHire, setEnableHire] = useState(true)
-    // const onHireUser = () => {
-    //     dispatch(hireUserThunk(rid))
-    //     setEnableHire(false)
-    // }
+   
     const onHireUser = () => {
         setOpen(true);
         const arg = {
@@ -288,32 +269,24 @@ const ViewProfileDetail = () => {
         setOpen(false);
     };
     const ageDate = () => {
-        var today = new Date();
-        
-        var birthDate = new Date(values.dob);
-        
-        var age = today.getFullYear() - birthDate.getFullYear();
-        
-        var m = today.getMonth() - birthDate.getMonth();
-        
+        var today = new Date();        
+        var birthDate = new Date(values.dob);        
+        var age = today.getFullYear() - birthDate.getFullYear();        
+        var m = today.getMonth() - birthDate.getMonth();        
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-        
         return age;
     }
     return (
         <Grid>
             {(displayLoading || workLoading || profileLoading) && <Loading isLoad={true} />}
             <Card elevation={16}
-
                 sx={{
-
                     // paddingLeft: "10%",
                     // paddingRight: "10%",
                     maxWidth: 1300, minHeight: 660,
-                    borderRadius: 0,
-                    
+                    borderRadius: 0,                    
                     marginTop: 3,
                     // backgroundColor: "#007bf717"
                 }}
@@ -325,7 +298,6 @@ const ViewProfileDetail = () => {
                             open={snackOpen}
                             autoHideDuration={6000}
                             onClose={closeSnackbar}
-                        // key={vertical + horizontal}
                         >
                             <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                 {snackMessage}
@@ -376,13 +348,11 @@ const ViewProfileDetail = () => {
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.altmbl}
                                             </Typography>
-
                                         </Grid>
                                         <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
                                             <Typography gutterBottom variant="h6"  >
                                                 Married
                                             </Typography>
-
                                         </Grid>
                                         <Grid item xs={5} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
@@ -409,16 +379,12 @@ const ViewProfileDetail = () => {
                                                 : {values.address}
                                             </Typography>
                                         </Grid>
-
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={3} >
                                     <Grid container justifyContent="center" item xs={12} sm={12} md={12}>
-
-
                                         <CardMedia
                                             component="img"
-
                                             sx={{ marginTop: "5%", width: 250, height: 250, borderRadius: "50%" }}
                                             image={`http://localhost:3001/${values.avatar}`}
                                             alt="Paella dish"
@@ -526,14 +492,11 @@ const ViewProfileDetail = () => {
                                                 <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.salary}</TableCell>
                                             </TableRow>
                                         ))}
-
                                     </TableBody>
                                 </Table>
                             </TableContainer>
                         </Grid>
-
                     </Grid>
-
                 </CardContent >
             </Card >
         </Grid>

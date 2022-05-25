@@ -48,8 +48,6 @@ const HiredHelper = (props) => {
     const navigate = useNavigate()
     const role = localStorage.getItem("role")
     const dispatch = useDispatch()
-    // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
 
     let { hireRequestData, requestMessage, requestError, requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
 
@@ -85,14 +83,7 @@ const HiredHelper = (props) => {
         }
 
     }, [requestMessage, requestError])
-    // const [values,message, setValues] = useState({
-    //     name: '',
-    //     porf_mbl: '',
-    //     age: '',
-    //     work: '',
-    //     experience: '',
-    //     time: '',
-    // });
+   
     useEffect(() => {
         dispatch(fetchHelperRequestsThunk(rid))
     }, [])
@@ -128,7 +119,6 @@ const HiredHelper = (props) => {
                                 open={snackOpen}
                                 autoHideDuration={6000}
                                 onClose={closeSnackbar}
-                            // key={vertical + horizontal}
                             >
                                 <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                     {snackMessage}
@@ -143,7 +133,7 @@ const HiredHelper = (props) => {
                                     </Grid>
 
                                     <Grid item xs={12} sm={2} align="right">
-                                        {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
+                                       
                                         <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
                                     </Grid>
                                 </Grid>

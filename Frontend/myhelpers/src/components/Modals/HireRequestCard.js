@@ -30,7 +30,6 @@ const HireRequestCard = (props) => {
     const navigate = useNavigate()
     const rid = localStorage.getItem("r_id")
     const dispatch = useDispatch()
-    // let { status, error } = useSelector((state) => ({ ...state.displayStore }))
 
     const onViewClick = () => {
         props.values.user_id.charAt(0) === "H" ?
@@ -39,7 +38,6 @@ const HireRequestCard = (props) => {
             navigate(`/viewClientDetails/${props.values.user_id}`)
     }
     const onAcceptHandler = () => {
-        console.log("acctepted..", props.values.user_id)
         const arg = {
             user_id: props.values.user_id,
             rid
@@ -74,17 +72,12 @@ const HireRequestCard = (props) => {
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
 
-                            {/* <Tooltip title="Edit">
-
-                                <ModeEditIcon fontSize="medium" color="info" onClick={onEditHandler} />
-
-                            </Tooltip> */}
                             {props.values.user_id.charAt(0) === "C" && props.values.status === "pending!" && <Tooltip title="Accepted">
                                 < IconButton onClick={onAcceptHandler} aria-label="upload picture" component="span">
                                     <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" />
                                 </IconButton>
                             </Tooltip>}
-                            {/* <CheckOutlinedIcon fontSize="large" sx={{ color:"#faaf00"}} onClick={onEditHandler} /> */}
+                            
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
                             {props.values.status !== "hired!" && <Tooltip title="Delete">
