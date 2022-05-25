@@ -7,11 +7,11 @@ const auth = async (req, res, next) => {
     console.log("middleware file ...................")
     try {
         const token = req.header("Authorization").replace("Bearer ", "")
-        //console.log("token : " + token);
+        console.log("token : " + token);
         const decode = jwt.verify(token, process.env.JSON_TOKEN)
-        //console.log(decode);
+        console.log(decode);
         const user = await userModel.findOne({ _id: decode.id })
-        //console.log(user);
+        console.log(user);
         if (!user) {
             throw new Error()
         }
@@ -20,7 +20,8 @@ const auth = async (req, res, next) => {
         next()
 
     } catch (error) {
-        res.status(404).send("You need to login!")
+        console.log(error)
+       return res.status(400).send("You need to login!")
     }
 }
 

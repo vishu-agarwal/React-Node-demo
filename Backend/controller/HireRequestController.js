@@ -13,7 +13,7 @@ const createHireRequest = async (req, res) => {
         if (found) {
             const update = await hireRequestModel.findOneAndUpdate({ r_id: req.params.rid }, { requested_user: found.requested_user.concat(...req.body) }, { new: true })
             console.log("update newUser :: ", update);
-            return res.status(200).send("hire user added")
+            return res.status(200).send(update)
         }
         else {
             if (!r_id.charAt(0) === "H") {
@@ -24,7 +24,7 @@ const createHireRequest = async (req, res) => {
             const hireRequest = new hireRequestModel(hireDetail)
             console.log(hireRequest);
             await hireRequest.save()
-            return res.status(200).send("Successfully hireRequest saved!")
+            return res.status(200).send(hireRequest)
         }
     } catch (error) {
         res.status(400).send(error.message)
@@ -36,54 +36,55 @@ const fetchHireRequest = async (req, res) => {
         let hireRequest = []
         if (req.params.rid.charAt(0) === "C") {
             const found = await hireRequestModel.findOne({ r_id: req.params.rid })
-            // console.log(found,"....found")
+            console.log(found, "....found")
             if (found) {
-                const helper = await Promise.all(
-                    found.hireUser.map((val) => {
-                        return userModel.find({ r_id: val.user_id }).then((res) => {
-                            console.log("values:: ", val)
-                            hireRequest.push({
-                                name: res.map(val => val.name),
-                                user_id: val.user_id,
-                                status: val.status,
-                                work: val.work,
-                                from_date: val.from_date,
-                                to_date: val.to_date,
-                                from_time: val.from_time,
-                                to_time: val.to_time,
-                                description: val.description,
-                            })
-                        }).catch((error) => {
-                            return res.status(400).send(error.massage)
+                for (let val of found.requested_user) {
+                    const res = await userModel.find({ r_id: val.user_id });
+                    console.log("response::", res)
+                    if (res.length) {
+                        hireRequest.push({
+                            name: res.map(val => val.name),
+                            user_id: val.user_id,
+                            status: val.status,
+                            work: val.work,
+                            from_date: val.from_date,
+                            to_date: val.to_date,
+                            from_time: val.from_time,
+                            to_time: val.to_time,
+                            description: val.description,
                         })
                     }
-                    ))
+                }
+                // console.log(foundHelper)
+                console.log("fetch ::", hireRequest)
+                return res.status(200).send(hireRequest)
             }
         }
         else if (req.params.rid.charAt(0) === "H") {
             const found = await hireRequestModel.find({ "requested_user.user_id": req.params.rid })
-            if (found) {
-                const helper = await Promise.all(
-                    found.map((val) => {
-                        return userModel.find({ r_id: val.r_id }).then((res) => {
-                            const data = val.hireUser.find((value) => value.user_id === req.params.rid)
-                            hireRequest.push({
-                                name: res.map(val => val.name),
-                                user_id: val.r_id,
-                                status: data.status,
-                                work: data.work,
-                                from_date: data.from_date,
-                                to_date: data.to_date,
-                                from_time: data.from_time,
-                                to_time: data.to_time,
-                                description: data.description
-                            })
-
-                        }).catch((error) => {
-                            return res.status(400).send(error.massage)
+            console.log(found, "....found")
+            if (found.length) {
+                for (let val of found) {
+                    const res = await userModel.find({ r_id: val.r_id });
+                    console.log("response::", res)
+                    if (res.length) {
+                        const data = val.requested_user.find((value) => value.user_id === req.params.rid)
+                        hireRequest.push({
+                            name: res.map(val => val.name),
+                            user_id: val.r_id,
+                            status: data.status,
+                            work: data.work,
+                            from_date: data.from_date,
+                            to_date: data.to_date,
+                            from_time: data.from_time,
+                            to_time: data.to_time,
+                            description: data.description
                         })
                     }
-                    ))
+                }
+                // console.log(foundHelper)
+                console.log("fetch ::", hireRequest)
+                return res.status(200).send(hireRequest)
             }
         }
         console.log(hireRequest, typeof hireRequest)
@@ -104,8 +105,8 @@ const fetchSingleHireRequest = async (req, res) => {
                 }
             })
             console.log("found Helper :: ", foundHelper)
-            if (foundHelper) {
-                return res.status(200).send({ ...foundHelper })
+            if (foundHelper.length) {
+                return res.status(200).send(foundHelper )
             }
         }
         return res.status(200).send("Please fill deatils for enquiry!")
@@ -124,11 +125,11 @@ const acceptClientRequest = async (req, res) => {
             }
             const update = await found.save();
             console.log("old user :: \n", update)
-            return res.status(200).send();
+            return res.status(200).send(update);
         }
 
     } catch (error) {
-        res.status(400).send(error.message)
+        return res.status(400).send(error.message)
     }
 }
 const rejectClientRequest = async (req, res) => {
@@ -142,18 +143,16 @@ const rejectClientRequest = async (req, res) => {
             }
             const update = await found.save();
             console.log("old user :: \n", update)
-            return res.status(200).send();
+            return res.status(200).send(update);
         }
-
     } catch (error) {
         res.status(400).send(error.message)
     }
 }
-
 const deleteHelperRequest = async (req, res) => {
     const update = await hireRequestModel.findOneAndUpdate({ r_id: req.params.rid }, { $pull: { requested_user: { user_id: req.params.hid } } }, { new: true })
     console.log("remove request :: ", update)
-    return res.status(200).send("")
+    return res.status(200).send(update)
 }
 const updateHireRequest = async (req, res) => {
     //which field are allowed to update
@@ -162,7 +161,6 @@ const updateHireRequest = async (req, res) => {
         // console.log("user_id", req.body)
         // console.log("r_id", req.params.rid)
         if (found) {
-
             const idIndex = found.requested_user.findIndex((c) => c.user_id === req.body.user_id);
             // console.log("found old user", idIndex);
             if (idIndex < 0) {
@@ -173,9 +171,7 @@ const updateHireRequest = async (req, res) => {
                 // console.log("update newUser :: ", update);
                 return res.status(200).send(update)
             }
-
             else if (found.requested_user[idIndex].user_id === req.body.user_id) {
-
                 found.requested_user[idIndex].status = req.body.status,
                     found.requested_user[idIndex].work = req.body.work,
                     found.requested_user[idIndex].from_date = req.body.from_date,
@@ -183,14 +179,11 @@ const updateHireRequest = async (req, res) => {
                     found.requested_user[idIndex].from_time = req.body.from_time,
                     found.requested_user[idIndex].to_time = req.body.to_time,
                     found.requested_user[idIndex].description = req.body.description
-
                 const update = await found.save();
                 // console.log("old user :: \n", update)
-                return res.status(200).send();
+                return res.status(200).send(update);
             }
-
         }
-
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -259,7 +252,7 @@ const hireUser = async (req, res) => {
 }
 
 module.exports = {
-    hireUser,
+
     createHireRequest,
     fetchHireRequest,
     fetchSingleHireRequest,

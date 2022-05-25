@@ -168,21 +168,21 @@ const ClientProfile = () => {
             userProfile[0]?.name && setValues((prevState) => {
                 return {
                     ...prevState,
-                    fname: userProfile[0].name.split(" ")[0],
-                    lname: userProfile[0].name.split(" ")[1],
-                    dob: userProfile[0].dob,
-                    altmbl: userProfile[0].alternate_mobile_number,
-                    mbl: userProfile[0].mobile_number,
-                    gender: userProfile[0].gender,
-                    married: userProfile[0].married,
-                    physic_dis: userProfile[0].physical_disable,
-                    house_no: userProfile[0].address[0].houseNo,
-                    house_name: userProfile[0].address[0].house_name,
-                    street: userProfile[0].address[0].landmark,
-                    city: userProfile[0].address[0].city,
-                    state: userProfile[0].address[0].state,
-                    pincode: userProfile[0].address[0].pincode,
-                    about: userProfile[0].about,
+                    fname: userProfile[0]?.name.split(" ")[0],
+                    lname: userProfile[0]?.name.split(" ")[1],
+                    dob: userProfile[0]?.dob,
+                    altmbl: userProfile[0]?.alternate_mobile_number,
+                    mbl: userProfile[0]?.mobile_number,
+                    gender: userProfile[0]?.gender,
+                    married: userProfile[0]?.married,
+                    physic_dis: userProfile[0]?.physical_disable,
+                    house_no: userProfile[0]?.address.house_no,
+                    house_name: userProfile[0]?.address.house_name,
+                    street: userProfile[0]?.address.landmark,
+                    city: userProfile[0]?.address.city,
+                    state: userProfile[0]?.address?.state,
+                    pincode: userProfile[0]?.address?.pincode,
+                    about: userProfile[0]?.about,
                 }
             })
             userProfile[0]?.avatar && setfile({
@@ -207,7 +207,7 @@ const ClientProfile = () => {
     const profileSaveHandler = (e) => {
         // console.log("save call")
         e.preventDefault()
-        if (clicked) {
+        if (clicked || file.dispFile) {
             if (aadhar.dispFile) {
                 const formdata = new FormData()
 
@@ -231,6 +231,7 @@ const ClientProfile = () => {
                 }
                 dispatch(createProfileThunk(argCreateProfile))
                 dispatch(aadharThunk(argAadhar))
+                
                 // setClicked(true)
                 // console.log("values:: ", values)
                 setEditHide(false)

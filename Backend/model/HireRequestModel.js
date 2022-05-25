@@ -13,7 +13,7 @@ const hireRequestSchema = new mongoose.Schema(
                 status: String,
                 work: Array,
                 from_date: String,
-                to_Date: String,
+                to_date: String,
                 from_time: String,
                 to_time: String,
                 description: String,

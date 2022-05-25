@@ -114,7 +114,7 @@ const otpLoginController = async (req, res) => {
         const found = await userModel.find({ email: email })
         console.log("found otp controller ::", found)
         if (found.length) {
-            const fnd_role = found[0].r_id.charAt(0)
+            const fnd_role = found[0]?.r_id.charAt(0)
             if (role !== fnd_role) {
 
                 throw new Error("You are unauthorized for this role!")

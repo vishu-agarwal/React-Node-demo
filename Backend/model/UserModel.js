@@ -108,7 +108,7 @@ const userSchema = new mongoose.Schema(
                     // required: true,
                     trim: true,
                 },
-                houseNo: {
+                house_no: {
                     type: String,
                     // required: true,
                     uppercase: true,

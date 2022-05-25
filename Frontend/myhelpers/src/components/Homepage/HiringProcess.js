@@ -57,6 +57,14 @@ const ScrollButton = () => {
 
     return (
         <Box mt="5%">
+            <img
+                src={`${require("../allImages/down.gif")}`} onClick={scrollToBottom}
+                sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
+                style={{
+                    display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
+                    transition: "all .5s ease -in -out"
+                }}
+            />
             {/* <Button
                 variant="contained"
                 // startIcon={<ExpandCircleDownIcon />}
@@ -65,7 +73,7 @@ const ScrollButton = () => {
             >
                 <ExpandCircleDownIcon size="large" />
             </Button> */}
-            <ExpandCircleDownIcon
+            {/* <ExpandCircleDownIcon
                 onClick={scrollToBottom}
 
                 size="large"
@@ -74,7 +82,7 @@ const ScrollButton = () => {
                 style={{
                     display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
                     transition: "all .5s ease -in -out"
-                }} />
+                }} /> */}
             {/* <ExpandCircleDownIcon
                 onClick={scrollToBottom}
                 size="large"
@@ -155,7 +163,7 @@ const HiringProcess = (props) => {
                                 <CardContent sx={{ padding: 0 }}>
                                     <Grid container >
                                         <Grid item xs={12} sm={12} md={12} >
-                                            <Typography style={{ fontWeight: 600, color: "#163758" }} marginTop={1} variant="h5">
+                                            <Typography style={{ fontWeight: 600 }} marginTop={1} variant="h5">
                                                 Are you less educated? Or are you not educated? It is always difficult for you to find work. My Helpers helps you find work as per your choice. This service is absolutely free for you.
 
                                                 Now you don't have to roam around for work. For work, you will get a requests from clients on My Helpers site.
@@ -231,17 +239,17 @@ const HiringProcess = (props) => {
                         <Grid item sm={11} xs={11} md={11}  >
                             <Card elevation={4} >
                                 <CardContent sx={{ padding: 0, backgroundColor:"white" }}>
-                                    <Grid container direction="row">
-                                        <Grid item xs={12} sm={12} md={6} >
+                                    <Grid container direction="row" justifyContent="center">
+                                        <Grid item xs={12} sm={12} md={4} align="center">
                                             <CardMedia
                                                 component="img"
-                                                sx={{ width: "100%", height: "100%" }}
+                                                sx={{ width: "100%", height: "100%",align:"center" }}
                                                 image={require("../allImages/cardimg.jpg")}
                                                 alt="Image"
                                             />
                                         </Grid>
-                                        <Grid item xs={12} sm={12} md={6} align="left"  >
-                                            <Typography style={{ fontWeight: 600, color: "#163758" }} marginTop={1} variant="h6">
+                                        <Grid item xs={12} sm={12} md={8} align="left"  >
+                                            <Typography style={{ fontWeight: 600, textAlign:"justify"}} margin={2} variant="h6">
                                                 Simple choices affect the world we live in.
                                                 We are flooded with multiple choices for things we consume every day - Which Tea/Coffee? Which Cereal? Which Car? What kind of Fruits & Vegetables? Etc.
                                                 At times, these simple choices we make every moment affect our environment, planet or a group of individuals or community, directly or indirectly. Or else, they are just simple means of earning financial gains.

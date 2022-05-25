@@ -11,10 +11,9 @@ const initialState = {
 }
 
 const varToken = localStorage.getItem("logToken");
-
+console.log(varToken)
 //create work Details thunk
 export const sendHireRequestThunk = createAsyncThunk("hireRequest/sendHireRequestThunk", async (arg) => {
-
     try {
         const data =
             [
@@ -29,17 +28,13 @@ export const sendHireRequestThunk = createAsyncThunk("hireRequest/sendHireReques
                     description: arg.values.description
                 }
             ]
-
         // console.log("data", data)
         const workDataRes = await axios.post(`/myhelpers/sendHelperRequest/${arg.rid}`, data, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-
-
         return workDataRes
-
     }
     catch (error) {
         // console.log("backend error: ",error.response.data)
@@ -79,9 +74,8 @@ export const fetchSingleHireRequestThunk = createAsyncThunk("hireRequest/fetchSi
 //update work details thunk
 export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateHireRequestThunk", async (arg) => {
     try {
-        const rid = localStorage.getItem("r_id")
-        const data =
 
+        const data =
         {
             user_id: arg.user_id,
             status: "pending!",
@@ -107,7 +101,7 @@ export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateHireRe
 export const acceptRequestThunk = createAsyncThunk("hireRequest/acceptRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const response = await axios.patch(`/myhelpers/acceptRequest/H102/${arg}`, {
+        const response = await axios.patch(`/myhelpers/acceptRequest/${arg.rid}/${arg.user_id}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
@@ -123,7 +117,7 @@ export const acceptRequestThunk = createAsyncThunk("hireRequest/acceptRequestThu
 export const rejectRequestThunk = createAsyncThunk("hireRequest/rejectRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const response = await axios.patch(`/myhelpers/rejectRequest/H103/${arg}`, {
+        const response = await axios.patch(`/myhelpers/rejectRequest/${arg.rid}/${arg.user_id}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
@@ -139,7 +133,7 @@ export const rejectRequestThunk = createAsyncThunk("hireRequest/rejectRequestThu
 export const deleteRequestThunk = createAsyncThunk("hireRequest/deleteRequestThunk", async (arg) => {
     try {
         // console.log("abc")
-        const response = await axios.patch(`/myhelpers/deleteRequest/C101/${arg}`, {
+        const response = await axios.patch(`/myhelpers/deleteRequest/${arg.rid}/${arg.user_id}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
@@ -207,7 +201,7 @@ const hireRequestSlice = createSlice({
             }
             else {
                 state.singleUser = action.payload.data[0]
-                console.log("single userState", state.singleUser)
+                console.log("single userState", action.payload.data[0])
             }
         },
         [fetchSingleHireRequestThunk.rejected]: (state, error) => {

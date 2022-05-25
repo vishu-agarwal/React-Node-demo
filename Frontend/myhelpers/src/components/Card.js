@@ -80,17 +80,7 @@ const CardJS = (props) => {
     //save icon click event
     // let { isProfile } = useSelector((state) => ({ ...state.displayStore }))
     useEffect(() => {
-        if (userProfile[0]?.isProfile) {
-
-            navigate(`/viewHelperDetails/${props.values.r_id}`)
-        } else {
-            setState({ snackOpen: true })
-            setSnackColor("error")
-            setSnackMessage("Pleasde first create your profile")
-
-            dispatch(displayActions.errorReducer())
-            // dispatch(displayActions.profileReducer())
-        }
+        
     }, [userProfile])
     const onSaveClick = async () => {
         const arg = {
@@ -102,23 +92,44 @@ const CardJS = (props) => {
     }
 
     const onViewClick = () => {
-        dispatch(fetchSaveUserThunk(rid))
+        if (userProfile[0]?.is_profile) {
+
+            navigate(`/viewHelperDetails/${props.values.r_id}`)
+        } else {
+            setState({ snackOpen: true })
+            setSnackColor("error")
+            setSnackMessage("Pleasde first create your profile")
+            dispatch(displayActions.errorReducer())
+            // dispatch(displayActions.profileReducer())
+        }
+        // dispatch(fetchSaveUserThunk(rid))
         // navigate(`/viewHelperDetails/${props.values.r_id}`)
     }
 
     const onRateClick = (event) => {
         console.log("onRate", event.target.value)
-        setStar(parseInt(event.target.value))
+        if (userProfile[0]?.is_profile) {
 
-        const arg = {
-            user_id: props.values.r_id,
-            rate: parseInt(event.target.value),
-            rid
-        }
-        console.log("argument :: ", arg);
-        // console.log("stars update..........................")
-        dispatch(starThunk(arg))
+            setStar(parseInt(event.target.value))
+
+            const arg = {
+                user_id: props.values.r_id,
+                rate: parseInt(event.target.value),
+                rid
+            }
+            console.log("argument :: ", arg);
+            // console.log("stars update..........................")
+            dispatch(starThunk(arg))
         // dispatch(fetchAllThunk())
+        } else {
+            setState({ snackOpen: true })
+            setSnackColor("error")
+            setSnackMessage("Pleasde first create your profile")
+
+            dispatch(displayActions.errorReducer())
+            // dispatch(displayActions.profileReducer())
+        }
+       
 
     }
 
@@ -231,15 +242,15 @@ const CardJS = (props) => {
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
                                 Work : {
-                                    Array.isArray(props.values.workDetails[0]) ?
-                                        props.values.workDetails[0].map((value, index) =>
+                                    Array.isArray(props.values.work_details[0]) ?
+                                        props.values.work_details[0]?.map((value, index) =>
                                             // console.log(value)
 
                                             value.category.split("(")[0] + ", "
                                         )
 
                                         :
-                                        props.values.workDetails.map((value, index) =>
+                                        props.values.work_details?.map((value, index) =>
 
                                             // console.log(value)
                                             value.category.split("(")[0] + ", "
@@ -249,7 +260,7 @@ const CardJS = (props) => {
                             </Typography>
 
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
-                                Prefer Time : {props.values.workTime}
+                                Prefer Time : {props.values.work_time}
                             </Typography>
                             {/* {
                                 props.hireStatus.length !== 0 ?

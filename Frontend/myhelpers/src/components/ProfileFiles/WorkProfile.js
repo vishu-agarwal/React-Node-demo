@@ -151,7 +151,7 @@ const WorkProfile = (props) => {
             setlang(
                 list
             );
-            let workDetails = workData?.workDetails?.filter((data) => data)
+            let workDetails = workData?.work_details?.filter((data) => data)
             setFields(workDetails)
             setEditHide(false)
             setDisable(true)

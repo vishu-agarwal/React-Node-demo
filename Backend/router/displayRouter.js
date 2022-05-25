@@ -16,5 +16,5 @@ router.get("/myhelpers/search",auth, DisplayController.searching)
 //sort
 router.get("/myhelpers/sort", auth, DisplayController.sorting)
 //check profile avail or not
-router.get("/myhelpers/isProfile/:rid", auth, DisplayController.profileAvailable)
+// router.get("/myhelpers/isProfile/:rid", auth, DisplayController.profileAvailable)
 module.exports = router

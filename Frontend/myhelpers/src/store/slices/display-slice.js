@@ -10,7 +10,7 @@ const initialState = {
     displayMessage: '',
     displayLoading: false,
     displayError: "",
-    isProfile: false
+    // isProfile: false
 }
 const varToken = localStorage.getItem("logToken");
 export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarThunk", async (arg) => {
@@ -52,6 +52,7 @@ export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThun
 })
 export const searchThunk = createAsyncThunk("displayAll/searchThunk", async (arg) => {
     try {
+        console.log("searchThunk :: ",arg)
         const fetchRes = await axios.get(`/myhelpers/search?field=${arg.workSearch}&searchValue=${arg.filterWork}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
@@ -122,9 +123,9 @@ const displaySlice = createSlice({
         messageReducer(state) {
             state.displayMessage = ""
         },
-        profileReducer(state) {
-            state.isProfile = false
-        },
+        // profileReducer(state) {
+        //     state.isrofile = false
+        // },
     },
     extraReducers: {
         //fetchProfileData

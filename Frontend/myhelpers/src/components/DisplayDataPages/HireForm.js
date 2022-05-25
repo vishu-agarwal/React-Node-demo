@@ -122,10 +122,10 @@ const HireForm = (props) => {
         if (singleUser && singleUser.length !== 0) {
             console.log("hireRequest")
             props.sethireValues({
-                fromDate: singleUser.fromDate,
-                toDate: singleUser.toDate,
-                fromTime: singleUser.fromTime,
-                toTime: singleUser.toTime,
+                fromDate: singleUser.from_date,
+                toDate: singleUser.to_date,
+                fromTime: singleUser.from_time,
+                toTime: singleUser.to_time,
                 description: singleUser.description,
             })
 
@@ -165,15 +165,9 @@ const HireForm = (props) => {
             work: props.work,
             rid
         }
-
-
         dispatch(updateHireRequestThunk(arg))
-        //Edit button display
         setEditHide(false)
         setDisable(TouchRipple)
-        //close this form model
-        // props.click()
-
     }
     const onEditClick = () => {
         setDisable(!fieldsDisable)
@@ -211,19 +205,23 @@ const HireForm = (props) => {
         }
     };
     const onChange = (event) => {
+        
+        console.log("props...-------------",props.hireValues)
         console.log(event.target.name, event.target.id)
         const isTrue = props.workTime === "Custom (1-4 Hrs)" || props.workTime === "Custom Night Shift (After 8 PM)"
         const today = new Date()
         if (event.target.name === "fromDate") {
             // console.log(event.target.value)
             // console.log(new Date(event.target.value) < new Date())
-            if (props.hireValues.toDate.length !== 0) {
+            props.sethireValues((prevState) => { return { ...prevState, fromDate: event.target.value } })
+            if (props.hireValues.toDate)
+            {
+                console.log(props.hireValues)
                 // if (new Date(event.target.value) <= new Date(props.hireValues.toDate)) {
                 setErrorEnable({ ...errorEnable, toDate: true })
                 setErrorText("Again select date!")
                 // }
             }
-            props.sethireValues((prevState) => { return { ...prevState, fromDate: event.target.value } })
             if (isTrue) {
                 const prevDay = new Date(today.setDate(today.getDate() - 1))
                 if (new Date(event.target.value) < prevDay) {
@@ -495,7 +493,7 @@ const HireForm = (props) => {
                             <Snackbar
                                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
                                 open={snackOpen}
-                                autoHideDuration={6000}
+                                autoHideDuration={5000}
                                 onClose={closeSnackbar}
                             // key={vertical + horizontal}
                             >

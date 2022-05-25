@@ -208,23 +208,23 @@ const ViewProfileDetail = () => {
 
                 setStatus(saveUser.length !== 0 ? saveUser.map((val) => userProfile[0].r_id === val.user_id).includes(true) ? true : false : false)
 
-                console.log(userProfile[0].avatar)
+                // console.log(userProfile[0].avatar)
                 setValues({
-                    name: userProfile[0].name,
-                    dob: userProfile[0].dob,
-                    mbl: userProfile[0].mobile_number,
-                    altmbl: userProfile[0].alternate_mobile_number,
-                    email: userProfile[0].email,
-                    gender: userProfile[0].gender,
-                    married: userProfile[0].married,
-                    physic_dis: userProfile[0].physical_disable,
-                    house_no: userProfile[0].address[0].houseNo,
-                    house_name: userProfile[0].address[0].house_name,
-                    street: userProfile[0].address[0].landmark,
-                    city: userProfile[0].address[0].city,
-                    state: userProfile[0].address[0].state,
-                    pincode: userProfile[0].address[0].pincode,
-                    about: userProfile[0].about,
+                    name: userProfile[0]?.name,
+                    dob: userProfile[0]?.dob,
+                    mbl: userProfile[0]?.mobile_number,
+                    altmbl: userProfile[0]?.alternate_mobile_number,
+                    email: userProfile[0]?.email,
+                    gender: userProfile[0]?.gender,
+                    married: userProfile[0]?.married,
+                    physic_dis: userProfile[0]?.physical_disable,
+                    house_no: userProfile[0]?.address?.house_no,
+                    house_name: userProfile[0]?.address?.house_name,
+                    street: userProfile[0]?.address?.landmark,
+                    city: userProfile[0]?.address?.city,
+                    state: userProfile[0]?.address?.state,
+                    pincode: userProfile[0]?.address?.pincode,
+                    about: userProfile[0]?.about,
                     porf_mbl: workData.profession_mobile_number,
                     workTime: workData.work_time,
                     study: workData.education,
@@ -232,7 +232,7 @@ const ViewProfileDetail = () => {
                     language: list,
                     avatar: userProfile[0].avatar
                 })
-                let workDetails = workData?.workDetails?.filter((data) => data)
+                let workDetails = workData?.work_details?.filter((data) => data)
                 setFields(workDetails)
             }
         }
@@ -279,7 +279,7 @@ const ViewProfileDetail = () => {
     const onHireUser = () => {
         setOpen(true);
         const arg = {
-            user_id: workData[0].r_id,
+            user_id: workData?.r_id,
             rid
         }
         dispatch(fetchSingleHireRequestThunk(arg))

@@ -58,16 +58,25 @@ const ScrollButton = () => {
   window.addEventListener('scroll', toggleVisible);
 
   return (
-    <ExpandCircleDownIcon
-      onClick={scrollToBottom}
-
-      size="large"
-      variant="contained"
+    <img
+      src={`${require("../allImages/down.gif")}`} onClick={scrollToBottom}
       sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
       style={{
         display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
         transition: "all .5s ease -in -out"
-      }} />
+      }}
+    />
+    // <ExpandCircleDownIcon
+    //   onClick={scrollToBottom}
+
+    //   size="large"
+    //   variant="contained"
+    //   sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
+    // style={{
+    //   display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
+    //   transition: "all .5s ease -in -out"
+    // }} 
+    // />
 
   );
 }
@@ -102,7 +111,7 @@ const HomePage = () => {
           <div>
             <img src={require("../allImages/homeImg.png")} height={"100%"} width={"100%"} />
           </div>
-          <Grid container style={{ opacity: 0.5, position: "absolute", top: "70%" }} justifyContent="center">
+          <Grid container style={{ opacity: 0.5, position: "absolute", top: "65%" }} justifyContent="center">
             <ScrollButton />
           </Grid>
           <div style={{ height: "99.5%", width: "35%", background: "#000000", opacity: 0.5, position: "absolute", top: 0, left: "70%", transform: "translateX(-15%)" }} align="center">
@@ -127,7 +136,7 @@ const HomePage = () => {
                 onClick={() => navigate("/findHelper")}
                 // size="large"
 
-                sx={{ button: 'sm: "medium" xs:"small" md: "large" ', width: "50%", height: "50%", backgroundColor: '#e91e1e', display: 'block' }}
+                sx={{ button: { sm: "medium", xs: "small", md: "large" }, width: "50%", height: "60%", backgroundColor: '#e91e1e', display: 'block' }}
               >
                 Find Helpers
               </Button>

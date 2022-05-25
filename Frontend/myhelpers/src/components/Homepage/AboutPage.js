@@ -17,7 +17,11 @@ import PropTypes from 'prop-types';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 // import { Button } from "../../App.css"
 import { useTheme } from '@mui/material/styles';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CardMedia from '@mui/material/CardMedia';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
@@ -57,7 +61,7 @@ const ScrollButton = () => {
 
     return (
         <Box mt="">
-            <ExpandCircleDownIcon
+            {/* <ExpandCircleDownIcon
                 onClick={scrollToBottom}
 
                 variant="contained"
@@ -65,7 +69,15 @@ const ScrollButton = () => {
                 style={{
                     display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
                     transition: "all .5s ease -in -out"
-                }} />
+                }} /> */}
+            <img
+                src={`${require("../allImages/down.gif")}`} onClick={scrollToBottom}
+                sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
+                style={{
+                    display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
+                    transition: "all .5s ease -in -out"
+                }}
+            />
         </Box >
     );
 }
@@ -219,39 +231,145 @@ const AboutPage = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} >
-                    <Typography style={{ fontWeight: 500, color: "#163758" }} marginTop={2} marginBottom={2} variant="h3">
-                        Why should you find & hire Workers from My Helpers ?
-                    </Typography>
+                <Grid item xs={11} sm={11} md={11} margin={1} marginBottom={0} >
                     <Grid container justifyContent="center" >
-                        <Grid item sm={11} xs={11} md={11}  >
-                            <Card elevation={4} >
-                                <CardContent sx={{ padding: 0, backgroundColor: "white" }}>
-                                    <Grid container direction="row">
-                                        <Grid item xs={12} sm={12} md={6} >
-                                            <CardMedia
-                                                component="img"
-                                                sx={{ width: "100%", height: "100%" }}
-                                                image={require("../allImages/cardimg.jpg")}
-                                                alt="Image"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={12} md={6} align="left"  >
-                                            <Typography style={{ fontWeight: 600, color: "#163758" }} marginTop={1} variant="h6">
-                                                Simple choices affect the world we live in.
-                                                We are flooded with multiple choices for things we consume every day - Which Tea/Coffee? Which Cereal? Which Car? What kind of Fruits & Vegetables? Etc.
-                                                At times, these simple choices we make every moment affect our environment, planet or a group of individuals or community, directly or indirectly. Or else, they are just simple means of earning financial gains.
-                                                It is okay if an enterprise earns revenues for itself. However, we believe it would be great if financial gains could also impact the world we live in. And therefore, make the world better than what it is.
-                                                With your help, at My Helpers , we have the capabilities to make this happen.
-                                                So, go ahead. Connect with your nearby workers directly, without the middlemen in between. And impact the life of one, or a few, of whom you can.
+                        <Grid item sm={12} xs={12} md={12}>
+                            <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
+                                Why My Helpers ?
+                            </Typography>
+                        </Grid>
+                        <Grid item sm={8} xs={12} md={5} marginTop={4}>
+                            <Grid container justifyContent="center" >
+                                <Grid item sm={12} xs={12} md={12} >
+                                    <Accordion elevation={24}>
+                                        <AccordionSummary
+                                            elevation={24}
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                            style={{
+                                                // backgroundColor: "#007bf717"
+                                            }}
+                                        >
+                                            <Typography>Convenient, Easy & Organized</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography textAlign="justify">
+                                                It is an Easier, Simpler & Better way of finding Workers. 5 minutes and
+                                                just a click of a few buttons, that’s all it takes to find Workers at My Helpers.
                                             </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </CardContent>
-                            </Card>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </Grid>
+                                <Grid item sm={12} xs={12} md={12} marginTop={1}  >
+                                    <Accordion elevation={24}>
+                                        <AccordionSummary
+
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                            style={{
+                                                // backgroundColor: "#007bf717"
+                                            }}
+                                        >
+                                            <Typography>Find & Hire Workers at a free of cost</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography textAlign="justify">
+                                                At My Helpers, you get to connect with multiple Workers at a starting fee of ₹0 only
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </Grid>
+                                <Grid item sm={12} xs={12} md={12} marginTop={1} >
+                                    <Accordion elevation={24}>
+                                        <AccordionSummary
+
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                            style={{
+                                                // backgroundColor: "#007bf717"
+                                            }}
+                                        >
+                                            <Typography>Empowers the Workers to connect with you directly</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography textAlign="justify">
+                                                My Helpers supports the Workers in finding nearby Work Opportunities and
+                                                connecting with you directly. Workers join My Helpers free of cost, and on their free will.
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+
+                                </Grid>
+                                <Grid item sm={12} xs={12} md={12} marginTop={1} >
+                                    <Accordion elevation={24}>
+                                        <AccordionSummary
+
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                            style={{
+                                                // backgroundColor: "#007bf717"
+                                            }}
+                                        >
+                                            <Typography>No middlemen & commissions in between</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography textAlign="justify">
+                                                At My Helpers, you get to connect with the Workers directly,
+                                                so there are no middlemen & commissions in between
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+
+                                </Grid>
+                                <Grid item sm={12} xs={12} md={12} marginTop={1} >
+                                    <Accordion elevation={24}>
+                                        <AccordionSummary
+
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                            style={{
+                                                // backgroundColor: "#007bf717"
+                                            }}
+                                        >
+                                            <Typography>Get the best-shortlisted Workers from a vast pool</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography textAlign="justify">
+                                                A unique rating system allows My Helpers to connect you with the best Workers from around
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+
+                                </Grid>
+                                <Grid item sm={12} xs={12} md={12} marginTop={1} >
+                                    <Accordion elevation={24}>
+                                        <AccordionSummary
+
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                            style={{
+                                                // backgroundColor: "#007bf717"
+                                            }}
+                                        >
+                                            <Typography>Speak to multiple Workers at a time</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography textAlign="justify">
+                                                If available, My Helpers connects you with multiple Workers from nearby, and not just one or two
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid >
             </Grid >
         </div >
     )

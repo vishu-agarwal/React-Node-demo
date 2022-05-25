@@ -47,19 +47,19 @@ const fetchAllData = async (req, res) => {
 const saveUserData = async (req, res) => {
     try {
         const user = await userModel.findOne({ r_id: req.params.rid })
-        console.log("save user", user.isProfile)
-        if (!user.isProfile) {
+        console.log("save user", user.is_profile)
+        if (!user.is_profile) {
             console.log("not created")
             throw new Error("Please first create your profile!")
         }
-        const saveIdFound = await userModel.find({ r_id: user.r_id, "saveUser.user_id": req.body.user_id })
+        const saveIdFound = await userModel.find({ r_id: user.r_id, "saved_user.user_id": req.body.user_id })
         console.log("user Found", saveIdFound)
         if (saveIdFound.length !== 0) {
             const removeSave = await userModel.findOneAndUpdate({ r_id: user.r_id, "saved_user.user_id": req.body.user_id }, { $pull: { saved_user: { user_id: req.body.user_id } } }, { new: true })
             console.log("remove user :: ", removeSave)
             return res.status(200).sendsend(removeSave.saved_user)
         }
-        const saveNewUser = user.saveUser.concat(req.body)
+        const saveNewUser = user.saved_user.concat(req.body)
 
         const addSave = await userModel.findOneAndUpdate({ r_id: req.params.rid }, { saved_user: saveNewUser }, { new: true })
         console.log("update newUser :: ", addSave);
@@ -185,32 +185,33 @@ const searching = async (req, res) => {
         }
         else {
             let fetch = []
-            const foundHelper = await Promise.all(
-                found.map((val) => {
-                    return userModel.find({ r_id: val.r_id }).then((res) => {
-                        fetch.push({
-                            r_id: val.r_id,
-                            work_details: [val.work_details.map((cat) => { return { category: cat.category } })],
-                            work_time: val.work_time,
-                            profession_mobile_number: val.profession_mobile_number,
-                            name: res.map((val) => val.name),
-                            dob: res.map((val) => val.dob),
-                            avatar: res.map((val) => val.avatar),
-                            rating: res.map((val) => val.rating),
-                            status:val.status
-                        })
-                    }).catch((error) => {
-                        return res.status(400).send(error.massage)
+            for (let val of found) {
+                const res = await userModel.find({ r_id: val.r_id });
+                console.log("response::", res)
+                if (res.length) {
+                    fetch.push({
+                        r_id: val.r_id,
+                        work_details: [val.work_details.map((cat) => { return { category: cat.category } })],
+                        work_time: val.work_time,
+                        profession_mobile_number: val.profession_mobile_number,
+                        name: res.map((val) => val.name),
+                        dob: res.map((val) => val.dob),
+                        avatar: res.map((val) => val.avatar),
+                        rating: res.map((val) => val.rating),
+                        status: val.status
                     })
                 }
-                ))
-            // console.log("fetch ::", fetch)
+            }
+            console.log("fetch ::", fetch)
             return res.status(200).send(fetch)
         }
     }
     else if (field) {
-        // console.log("field::", req.params.searchValue)
-        const found = await userModel.find({ [field]: req.query.searchValue })
+        let found
+        console.log("field::", req.query.searchValue)
+        field === "gender" ? found = await userModel.find({ [field]: req.query.searchValue })
+            :
+            found = await userModel.find({ $where: `/^${req.query.searchValue}.*/.test(this.${field})` })
         console.log("found::", found)
         if (found.length === 0) {
             console.log("not found :: ", found)
@@ -218,28 +219,24 @@ const searching = async (req, res) => {
             return fetchAllData(req, res)
         }
         else {
-            let fetch = []
-            const foundHelper = await Promise.all(
-                found.map((val) => {
-                    workModel.then((res) => {
-                        console.log(res)
-                        fetch.push({
-                            r_id: res.map((val) => val.r_id),
-                            work_details: res.map((val) => val.work_details.map((cat) => { return { category: cat.category } })),
-                            work_time: res.map((val) => val.work_time),
-                            profession_mobile_number: res.map((val) => val.profession_mobile_number),
-                            name: val.name,
-                            dob: val.dob,
-                            avatar: val.avatar,
-                            rating: [val.rating],
-                            status:res.map((val)=>val.status)
-                        })
-                        // console.log(fetch)
-                    }).catch((error) => {
-                        return res.status(400).send(error)
+            const fetch = [];
+            for (let val of found) {
+                const res = await workModel.find({ r_id: val.r_id });
+                console.log("response::", res)
+                if (res.length) {
+                    fetch.push({
+                        r_id: res.map((val) => val.r_id),
+                        work_details: res.map((val) => val.work_details.map((cat) => { return { category: cat.category } })),
+                        work_time: res.map((val) => val.work_time),
+                        profession_mobile_number: res.map((val) => val.profession_mobile_number),
+                        name: val.name,
+                        dob: val.dob,
+                        avatar: val.avatar,
+                        rating: [val.rating],
+                        status: res.map((val) => val.status)
                     })
                 }
-                ))
+            }
             // console.log(foundHelper)
             console.log("fetch ::", fetch)
             return res.status(200).send(fetch)
@@ -252,7 +249,7 @@ const sorting = async (req, res) => {
     let field = req.query.field
     // req.params.seachValue
     const order = req.query.sortValue
-    console.log(field, order)
+    // console.log(field, order)
     let num
     if (order === "up") {
         num = -1
@@ -279,7 +276,7 @@ const sorting = async (req, res) => {
                     console.log(res)
                     fetch.push({
                         r_id: res.map((val) => val.r_id),
-                        work_Details: res.map((val) => val.work_details.map((cat) => { return { category: cat.category } })),
+                        work_details: res.map((val) => val.work_details.map((cat) => { return { category: cat.category } })),
                         work_time: res.map((val) => val.work_time),
                         profession_mobile_number: res.map((val) => val.profession_mobile_number),
                         name: val.name,

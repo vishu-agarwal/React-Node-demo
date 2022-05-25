@@ -9,13 +9,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import CardJS from "../Card"
 import { useSelector, useDispatch } from 'react-redux';
 import { displayActions, fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk } from '../../store/slices/display-slice';
-import {workProfileActions} from '../../store/slices/work-slice'
+import { workProfileActions } from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import Pagination from '@mui/material/Pagination';
-
+import debounce from 'lodash.debounce';
 import Typography from "@mui/material/Typography";
 import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
@@ -120,7 +120,7 @@ const DisplayData = () => {
             console.log("saveUser ::", saveUser);
         }
     }, [saveUser])
-  
+
     const searchChange = (e) => {
         const arg = {
             workSearch, filterWork
@@ -136,6 +136,36 @@ const DisplayData = () => {
         }
         dispatch(sortThunk(arg))
         dispatch(fetchSaveUserThunk(rid))
+    }
+    const onSearchChange = (event, value) => {
+
+        console.log("onsearch:::", event.target.value, value)
+        if (event.target.name === "searchText") {
+            setFilterWork(event.target.value.toLowerCase())
+            const arg = {
+                workSearch,
+                filterWork: event.target.value.toLowerCase()
+            }
+            console.log("argument ::: ", arg)
+            const debouncedSave = debounce(() => (dispatch(searchThunk(arg)),
+                dispatch(fetchSaveUserThunk(rid))), 3000);
+            debouncedSave();
+            // setTimeout(async function () {
+            //     dispatch(searchThunk(arg))
+            //     dispatch(fetchSaveUserThunk(rid))
+            // }, 10000 );
+            // dispatch(searchThunk(arg))
+            // dispatch(fetchSaveUserThunk(rid))
+        }
+        else {
+            setFilterWork(value)
+            const arg = {
+                workSearch,
+                filterWork: value
+            }
+            dispatch(searchThunk(arg))
+            dispatch(fetchSaveUserThunk(rid))
+        }
     }
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={5}>
@@ -169,9 +199,9 @@ const DisplayData = () => {
                             }}
                             renderInput={(params) =>
                                 <TextField
-                                {...params} label="Search By"
-                                value={workSearch}
-                            />}
+                                    {...params} label="Search By"
+                                    value={workSearch}
+                                />}
                         />
                     </Grid>
                     <Grid item xs={11} sm={2}>
@@ -190,8 +220,9 @@ const DisplayData = () => {
                                             },
                                             color: "#163758"
                                         }}
-                                        options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ? filterTime : workSearch === "Gender" ? filterGender : ['']}
-                                        onInputChange={(e, value) => setFilterWork(value)}
+                                        options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ?
+                                            filterTime : workSearch === "Gender" ? filterGender : ['']}
+                                        onInputChange={onSearchChange}
                                         renderInput={(params) =>
                                             <TextField {...params}
                                                 id="er"
@@ -201,34 +232,34 @@ const DisplayData = () => {
                                         }
                                     />
                                     :
-                                    <>
-                                        <TextField
-                                            id="search-bar"
-                                            className="text"
-                                            label={` ${workSearch === "Location" ? "Enter Pincode" : workSearch === "Name" ? "Enter Name" : "Search Input"}`}
-                                            variant="outlined"
-                                            placeholder="Search..."
-                                            fullWidth
-                                            sx={{
-                                                "& .MuiInputLabel-root": { color: '#163758' },//styles the label
-                                                "& .MuiOutlinedInput-root": {
-                                                    "& > fieldset": { borderColor: "#163758" },
-                                                },
-                                                marginTop: 2,
-                                                color: "#163758"
-                                            }}
-                                            value={filterWork}
-                                            onChange={(val) => setFilterWork(val.target.value)}
-                                        />
-                                    </>
+                                    <TextField
+                                        id="search-bar"
+                                        name="searchText"
+                                        className="text"
+                                        label={` ${workSearch === "Location" ? "Enter Pincode" : workSearch === "Name" ? "Enter Name" : "Search Input"}`}
+                                        variant="outlined"
+                                        placeholder="Search..."
+                                        fullWidth
+                                        sx={{
+                                            "& .MuiInputLabel-root": { color: '#163758' },//styles the label
+                                            "& .MuiOutlinedInput-root": {
+                                                "& > fieldset": { borderColor: "#163758" },
+                                            },
+
+                                            color: "#163758"
+                                        }}
+                                        value={filterWork}
+                                        onChange={onSearchChange}
+                                    />
+
                         }
                     </Grid>
-                    <Grid item xs={1} sm={0.5} marginTop={3}>
+                    {/* <Grid item xs={1} sm={0.5} marginTop={3}>
                         {workSearch !== "" &&
                             <InputAdornment position="end">
                                 <SearchIcon cursor={"pointer"} sx={{ colo: "#163758" }} onClick={(e) => searchChange(e)} />
                             </InputAdornment>}
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={0} sm={5}>
                     </Grid>
                     <Grid item xs={12} sm={2.5} display="flex" alignItems='center' >
@@ -247,21 +278,21 @@ const DisplayData = () => {
                     // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
                     displayData.map((values, index) => {
                         rates = values.rating[0] !== undefined ?
-                            values.rating[0].map((id) =>
+                            values.rating[0]?.map((id) =>
                                 id.rate
                             ).reduce((prev, curr) => prev + curr, 0)
                             /
-                            values.rating[0].map((id) =>
+                            values.rating[0]?.map((id) =>
                                 id.user_id
                             ).length
 
                             : null;
 
                         status = saveUser.length
-                            && !!saveUser.find((val) => values.r_id === val.user_id) 
+                            && !!saveUser.find((val) => values.r_id === val.user_id)
                         // helperAvatar = userAvatar.length && userAvatar.find((val) => values.r_id === val.r_id) 
                         // console.log(helperAvatar)
-                            // hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : '';
+                        // hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : '';
                         return <Grid item xs={12} sm={4} md={3} key={index} >
                             <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
                         </Grid>

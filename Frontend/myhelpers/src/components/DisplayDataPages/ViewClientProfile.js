@@ -115,21 +115,21 @@ const ViewClientProfile = () => {
     useEffect(() => {
         if (userProfile.length !== 0) {
             setValues({
-                name: userProfile[0].name,
-                dob: userProfile[0].dob,
-                mbl: userProfile[0].mobile_number,
-                altmbl: userProfile[0].alternate_mobile_number,
-                email: userProfile[0].email,
-                gender: userProfile[0].gender,
-                married: userProfile[0].married,
-                physic_dis: userProfile[0].physical_disable,
-                house_no: userProfile[0].address[0].houseNo,
-                house_name: userProfile[0].address[0].house_name,
-                street: userProfile[0].address[0].landmark,
-                city: userProfile[0].address[0].city,
-                state: userProfile[0].address[0].state,
-                pincode: userProfile[0].address[0].pincode,
-                about: userProfile[0].about,
+                name: userProfile[0]?.name,
+                dob: userProfile[0]?.dob,
+                mbl: userProfile[0]?.mobile_number,
+                altmbl: userProfile[0]?.alternate_mobile_number,
+                email: userProfile[0]?.email,
+                gender: userProfile[0]?.gender,
+                married: userProfile[0]?.married,
+                physic_dis: userProfile[0]?.physical_disable,
+                house_no: userProfile[0].address?.house_no,
+                house_name: userProfile[0]?.address?.house_name,
+                street: userProfile[0]?.address?.landmark,
+                city: userProfile[0]?.address?.city,
+                state: userProfile[0]?.address?.state,
+                pincode: userProfile[0]?.address?.pincode,
+                about: userProfile[0]?.about,
             })
         }
     }, [userProfile])

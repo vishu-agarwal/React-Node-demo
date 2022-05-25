@@ -71,7 +71,7 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
                     pincode: arg.values.pincode,
                     landmark: arg.values.street,
                     house_name: arg.values.house_name,
-                    houseNo: arg.values.house_no,
+                    house_no: arg.values.house_no,
                 },
             alternate_mobile_number: arg.values.altmbl,
             about: arg.values.about
@@ -154,7 +154,7 @@ export const updateProfileThunk = createAsyncThunk("userProfile/updateProfileThu
                     pincode: arg.values.pincode,
                     landmark: arg.values.street,
                     house_name: arg.values.house_name,
-                    houseNo: arg.values.house_no,
+                    house_no: arg.values.house_no,
                 },
             alternate_mobile_number: arg.values.altmbl,
             about: arg.values.about,
