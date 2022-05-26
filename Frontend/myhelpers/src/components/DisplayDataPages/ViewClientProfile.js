@@ -18,12 +18,12 @@ import { useState, useEffect } from 'react';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import Loading from '../layouts/LoadingFile'
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchWorkThunk } from '../../store/slices/work-slice';
+
 import {workProfileActions} from '../../store/slices/work-slice'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import profileActions from '../../store/slices/profile-slice'
-import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 
+import { profileActions,fetchUserProfileThunk,starThunk, } from '../../store/slices/profile-slice';
+import { fetchAllThunk, displayActions } from '../../store/slices/display-slice';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -42,8 +42,9 @@ const ViewClientProfile = () => {
 
     const navigate = useNavigate()
     const params = useParams()
-    const rid = params.rid;
-    
+    const user_id = params.rid;
+    const rid = localStorage.getItem("r_id")
+    const role = localStorage.getItem("role")
     const dispatch = useDispatch()
 
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
@@ -76,10 +77,11 @@ const ViewClientProfile = () => {
         state: '',
         pincode: '',
         about: '',
+        avatar: '',
     });
     const [star, setStar] = useState(0)
     useEffect(() => {
-        dispatch(fetchUserProfileThunk(rid))
+        dispatch(fetchUserProfileThunk(user_id))
     }, [])
 
     
@@ -100,6 +102,7 @@ const ViewClientProfile = () => {
     
     useEffect(() => {
         if (userProfile.length !== 0) {
+            
             setValues({
                 name: userProfile[0]?.name,
                 dob: userProfile[0]?.dob,
@@ -109,23 +112,17 @@ const ViewClientProfile = () => {
                 gender: userProfile[0]?.gender,
                 married: userProfile[0]?.married,
                 physic_dis: userProfile[0]?.physical_disable,
-                house_no: userProfile[0].address?.house_no,
+                house_no: userProfile[0]?.address?.house_no,
                 house_name: userProfile[0]?.address?.house_name,
                 street: userProfile[0]?.address?.landmark,
                 city: userProfile[0]?.address?.city,
                 state: userProfile[0]?.address?.state,
                 pincode: userProfile[0]?.address?.pincode,
                 about: userProfile[0]?.about,
+                avatar: userProfile[0]?.avatar
             })
         }
     }, [userProfile])
-
-    //save icon state
-    const [saveIcon, setSaveIcon] = useState(false)
-    //save icon click event
-    const onSaveClick = () => {
-        setSaveIcon(!saveIcon)
-    }
 
     const ageDate = () => {
         var today = new Date();
@@ -137,6 +134,7 @@ const ViewClientProfile = () => {
         }
         return age;
     }
+  
     return (
         <Container align="center" >
             {profileLoading && <Loading isLoad={true} />}
@@ -170,50 +168,76 @@ const ViewClientProfile = () => {
                         <Grid item xs={12} sm={12} md={12} >
                             <Typography variant="h5" sx={{ fontWeight: 500, color: "#163758" }}> {values.email} </Typography>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={12} >
-                            <Rating sx={{ marginBottom: 2, marginLeft: 3 }} name="size-small" defaultValue={2} size="medium" />
-                        </Grid>
+                       
                         <Grid item xs={12} sm={12} md={12}>
                             <Grid container justifyContent="center"  >
-                                <Grid item xs={12} sm={4} md={4} sx={{ marginTop: "5%" }}>
-                                    <Grid container direction={'row'} >
-                                        <Grid item xs={5} sm={5} md={5} marginLeft={"2%"} align="left" colo="#163758">
-                                            <Typography gutterBottom variant="h6"  >
+                                <Grid item xs={12} sm={11} md={4} sx={{ marginTop: "5%" }}>
+                                    <Grid container direction={'row'} justifyContent="left" >
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
+                                            <Typography   gutterBottom variant="h6"  >
                                                 Name
                                             </Typography>
-                                            <br />
-                                            <Typography gutterBottom variant="h6"  >
-                                                Mobile No.
-                                            </Typography>
-                                            <br />
-                                            <Typography gutterBottom variant="h6"  >
-                                                Alternate No.
-                                            </Typography>
-                                            <br />
-                                            <Typography gutterBottom variant="h6"  >
-                                                Address
-                                            </Typography>
                                         </Grid>
-                                        <Grid item xs={5} sm={5} md={5} align="left" >
+                                        <Grid item xs={4} sm={5} md={5} align="left" >
                                             <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
                                                 : {values.name}
                                             </Typography>
-                                            <br />
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                Gender
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={5} sm={5} md={5} align="left" >
+                                            <Typography color="" gutterBottom variant="h6"  >
+                                                : {values.gender}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                Age
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={5} sm={5} md={5} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                : {ageDate()} Years
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"}  align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                Mobile No.
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={5} sm={5} md={5} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.mbl}
                                             </Typography>
-                                            <br />
+                                        </Grid>
+
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"}  align="left" >
                                             <Typography gutterBottom variant="h6"  >
-                                                : {values.altmbl}
-                                            </Typography>
-                                            <br />
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {values.address}
+                                                Married
                                             </Typography>
                                         </Grid>
+                                        <Grid item xs={5} sm={5} md={5} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                : {values.married === false ? "No" : "Yes"}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"}  align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                Physical Disability
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={5} sm={5} md={5} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                : {values.physic_dis === false ? "No" : "Yes"}
+                                            </Typography>
+                                        </Grid>
+                                        
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={12} sm={4} md={3} >
+                                <Grid item xs={12} sm={4} md={3} sx={{ marginTop: "5%" }} >
                                     <Grid container justifyContent="center" item xs={12} sm={12} md={12}>
                                         <CardMedia
                                             component="img"
@@ -225,44 +249,60 @@ const ViewClientProfile = () => {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={12} sm={4} md={4} sx={{ marginTop: "5%" }}>
-                                    <Grid container direction={'row'} >
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"5%"} align="left" colo="#163758">
+                                <Grid item xs={12} sm={11} md={5} sx={{ marginTop: "5%" }}>
+                                    <Grid container direction={'row'} >     
+                                        <Grid item xs={4} sm={4} md={4} marginLeft={"3%"} align="left">
                                             <Typography gutterBottom variant="h6"  >
-                                                Gender
+                                                Alternate No.
                                             </Typography>
-                                            <br />
-                                            <Typography gutterBottom variant="h6"  >
-                                                Age
-                                            </Typography>
-                                            <br />
-                                            <Typography gutterBottom variant="h6"  >
-                                                Married
-                                            </Typography>
-                                            <br />
-                                            <Typography gutterBottom variant="h6"  >
-                                                Physical Disability
-                                            </Typography>
-                                            <br />
                                         </Grid>
-                                        <Grid item xs={4} sm={4} md={4} align="left" >
-                                            <Typography color="" gutterBottom variant="h6"  >
-                                                : {values.gender.charAt(0).toUpperCase() + values.gender.slice(1)}
-                                            </Typography>
-                                            <br />
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
-                                                : {ageDate()} Years
+                                                : {values.altmbl}
                                             </Typography>
-                                            <br />
+                                        </Grid>    
+                                        <Grid item xs={4} sm={4} md={4} align="left" marginLeft={"3%"} >
                                             <Typography gutterBottom variant="h6"  >
-                                                : {values.married === false ? "No" : "Yes"}
+                                                Address
                                             </Typography>
-                                            <br />
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {values.physic_dis === false ? "No" : "Yes"}
-                                            </Typography>
-                                            <br />
                                         </Grid>
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                : {values.house_no}, {values.house_name}, {values.street}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} align="left" marginLeft={"3%"} >
+                                            <Typography gutterBottom variant="h6"  >
+                                                City
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
+                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                : {values.city}, {values.pincode}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} marginLeft={"3%"} align="left">
+                                            <Typography gutterBottom variant="h6"  >
+                                                State
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
+                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                : {values.state}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} marginLeft={"3%"} align="left">
+                                            <Typography gutterBottom variant="h6"  >
+                                                About
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
+                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                : {values.about}
+                                            </Typography>
+                                        </Grid>
+                                        
+                                        
                                     </Grid>
                                 </Grid>
                             </Grid>

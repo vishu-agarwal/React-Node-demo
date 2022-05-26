@@ -1,6 +1,5 @@
 import React from 'react'
 import { Card, CardContent, Divider, Grid, Typography } from '@mui/material';
-// import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { NavLink, useNavigate, useParams, Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -15,16 +14,16 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Zoom from '@mui/material/Zoom';
 import PropTypes from 'prop-types';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-// import { Button } from "../../App.css"
-import { useTheme } from '@mui/material/styles';
-
+import { useTheme } from '@mui/material/styles'
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import CardMedia from '@mui/material/CardMedia';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
-// import cardimg from '../cardimg.jpg'
+
 const ScrollButton = () => {
 
     const [visible, setVisible] = useState(true)
@@ -65,31 +64,36 @@ const ScrollButton = () => {
                     transition: "all .5s ease -in -out"
                 }}
             />
-           </Box >
+        </Box >
     );
 }
 
 const HiringProcess = (props) => {
     let navigate = useNavigate()
     const theme = useTheme();
+    const dispatch = useDispatch()
+    let { userProfile } = useSelector((state) => ({ ...state.profileStore }))
+
     const [openRequest, setOpenRequest] = useState(false)
-
     const [openHired, setOpenHired] = useState(false)
-    const onRequestClick = () => {
 
+    useEffect(() => {
+        if (!userProfile[0]?.is_profile) {
+            navigate("/profile")
+        }
+    }, [userProfile])
+
+    const onRequestClick = () => {
         setOpenRequest(true)
     }
-
     const onHireClick = () => {
-
         setOpenHired(true)
     }
     const handleModelClose = () => {
         setOpenRequest(false);
-        setOpenHired(false);
-
+        setOpenHired(false)
     };
-
+    
     return (
         <div>
             {openRequest && <WorkRequest click={handleModelClose} />}
@@ -122,7 +126,7 @@ const HiringProcess = (props) => {
                                         SEE REQUESTS
                                     </Button>
                                 </Grid>
-                                
+
                             </Box>
 
                             <Grid container justifyContent="center" >
@@ -134,7 +138,7 @@ const HiringProcess = (props) => {
                 <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} backgroundColor="white">
                     <Grid container justifyContent="center" >
                         <Grid item sm={11} xs={11} md={11}  >
-                           
+
                             <Card elevation={0}>
                                 <CardContent sx={{ padding: 0 }}>
                                     <Grid container >
@@ -154,8 +158,8 @@ const HiringProcess = (props) => {
                                 </CardContent>
                             </Card>
 
-                        </Grid> 
-                  
+                        </Grid>
+
                     </Grid>
                 </Grid>
 
@@ -214,18 +218,18 @@ const HiringProcess = (props) => {
                     <Grid container justifyContent="center" >
                         <Grid item sm={11} xs={11} md={11}  >
                             <Card elevation={4} >
-                                <CardContent sx={{ padding: 0, backgroundColor:"white" }}>
+                                <CardContent sx={{ padding: 0, backgroundColor: "white" }}>
                                     <Grid container direction="row" justifyContent="center">
                                         <Grid item xs={12} sm={12} md={4} align="center">
                                             <CardMedia
                                                 component="img"
-                                                sx={{ width: "100%", height: "100%",align:"center" }}
+                                                sx={{ width: "100%", height: "100%", align: "center" }}
                                                 image={require("../allImages/cardimg.jpg")}
                                                 alt="Image"
                                             />
                                         </Grid>
                                         <Grid item xs={12} sm={12} md={8} align="left"  >
-                                            <Typography style={{ fontWeight: 600, textAlign:"justify"}} margin={2} variant="h6">
+                                            <Typography style={{ fontWeight: 600, textAlign: "justify" }} margin={2} variant="h6">
                                                 Simple choices affect the world we live in.
                                                 We are flooded with multiple choices for things we consume every day - Which Tea/Coffee? Which Cereal? Which Car? What kind of Fruits & Vegetables? Etc.
                                                 At times, these simple choices we make every moment affect our environment, planet or a group of individuals or community, directly or indirectly. Or else, they are just simple means of earning financial gains.

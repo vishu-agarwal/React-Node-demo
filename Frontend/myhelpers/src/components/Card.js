@@ -14,14 +14,12 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { displayActions, fetchSaveUserThunk, saveThunk } from '../store/slices/display-slice';
-import { fetchUserProfileThunk } from "../store/slices/profile-slice";
+import { displayActions, fetchAllThunk, saveThunk } from '../store/slices/display-slice';
+import { fetchUserProfileThunk, starThunk } from "../store/slices/profile-slice";
 import Loading from './layouts/LoadingFile'
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-// import profileimg from "../../profileimg.gif"
 
-import { starThunk } from '../store/slices/profile-slice';
 
 const Alert = React.forwardRef(function Alert(
     props,
@@ -30,15 +28,15 @@ const Alert = React.forwardRef(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-
 const CardJS = (props) => {
     const rid = localStorage.getItem("r_id")
-    // console.log("status::",props.status)
-    const navigate = useNavigate()
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
-    let { saveUser, displayLoading, displayError, displayMessage } = useSelector((state) => ({ ...state.displayStore }))
+
+    let { displayLoading, displayError, displayMessage } = useSelector((state) => ({ ...state.displayStore }))
     let { userProfile, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
+
     const [star, setStar] = useState(2)
     const [state, setState] = useState({
         snackOpen: false,
@@ -52,35 +50,23 @@ const CardJS = (props) => {
     const [snackMessage, setSnackMessage] = useState('')
     const [snackColor, setSnackColor] = useState("info")
 
-
     useEffect(() => {
         if (displayMessage.length !== 0) {
-            // alert(displayMessage)
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(displayMessage)
             dispatch(displayActions.messageReducer())
-
         }
         if (displayError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(displayError)
-
             dispatch(displayActions.errorReducer())
         }
-
-
     }, [displayMessage, displayError])
-    //save icon state
-    // const [saveIcon, setSaveIcon] = useState(false)
 
-    // props.status ? setSaveIcon(true) : setSaveIcon(false)
-    //save icon click event
-    // let { isProfile } = useSelector((state) => ({ ...state.displayStore }))
     useEffect(() => {
-        
+
     }, [userProfile])
     const onSaveClick = async () => {
         const arg = {
@@ -88,72 +74,50 @@ const CardJS = (props) => {
             rid
         }
         dispatch(saveThunk(arg))
-        // dispatch(fetchSaveUserThunk())
     }
 
     const onViewClick = () => {
         if (userProfile[0]?.is_profile) {
-
             navigate(`/viewHelperDetails/${props.values.r_id}`)
         } else {
             setState({ snackOpen: true })
             setSnackColor("error")
             setSnackMessage("Pleasde first create your profile")
-            dispatch(displayActions.errorReducer())
-            // dispatch(displayActions.profileReducer())
         }
-        // dispatch(fetchSaveUserThunk(rid))
-        // navigate(`/viewHelperDetails/${props.values.r_id}`)
     }
-
     const onRateClick = (event) => {
-        console.log("onRate", event.target.value)
         if (userProfile[0]?.is_profile) {
-
             setStar(parseInt(event.target.value))
-
             const arg = {
                 user_id: props.values.r_id,
                 rate: parseInt(event.target.value),
                 rid
             }
-            console.log("argument :: ", arg);
-            // console.log("stars update..........................")
             dispatch(starThunk(arg))
-        // dispatch(fetchAllThunk())
+            dispatch(fetchAllThunk())
         } else {
             setState({ snackOpen: true })
             setSnackColor("error")
             setSnackMessage("Pleasde first create your profile")
-
             dispatch(displayActions.errorReducer())
-            // dispatch(displayActions.profileReducer())
         }
-       
-
     }
 
     useEffect(() => {
-        // console.log("setStars-------------------------")
         setStar(props.rates)
     }, [props.rates])
 
     const ageDate = () => {
         var today = new Date();
-        // console.log(today)
         var birthDate = new Date(props.values.dob);
-        // console.log(birthDate)
         var age = today.getFullYear() - birthDate.getFullYear();
-        // console.log(age)
         var m = today.getMonth() - birthDate.getMonth();
-        // console.log(m)
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-        // console.log(age)
         return age;
     }
-    console.log("save........", props.saveStatus)
+
     return (
         <Container >
             <Card

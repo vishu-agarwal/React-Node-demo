@@ -1,10 +1,7 @@
 //main file
 import './App.css';
 import Header from "./components/layouts/Header"
-// import Content from "./components/LoginFiles/Content"
-// import ClientProfile from './components/ProfileFiles/ClientProfile';
 
-// import Login from './components/LoginFiles/login';
 
 
 import { useSelector } from 'react-redux'
@@ -17,7 +14,7 @@ import Footer from './components/layouts/Footer';
 // import PageNotFound from './components/layouts/PageNotFound';
 import About from './components/Homepage/AboutPage';
 
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import Loader from './components/layouts/LoadingFile';
 import ProtectedRoutes from './RouteComponents/ProtectedRoutes'; //Authenticated routes
 import PublicRoute from './RouteComponents/PublicRoutes';
@@ -28,7 +25,7 @@ const LoginPage = lazy(() => import('./components/LoginFiles/login'));
 const HomePage = lazy(() => import('./components/Homepage/HomePage'));
 
 // const ForgotPassword = lazy(() => import('components/ForgotPassword'));
-// const NoFoundComponent = lazy(() => import('./components/layouts/PageNotFound'));
+const NoFoundComponent = lazy(() => import('./components/layouts/PageNotFound'));
 
 const publicRoutes = [
   {
@@ -80,26 +77,29 @@ const protectedRoutes = [
 ]
 
 function App() {
-  const { isAuth } = useSelector(state => state.loginStore)
+  // const { isAuth } = useSelector(state => state.loginStore)
   // console.log(isAuth)
   // const role = localStorage.getItem("role")
 
-  const isToken = localStorage.getItem("logToken")
+  // const isToken = localStorage.getItem("logToken")
 
   // console.log("is authhhhhhh", isAuth, isToken)
+  useEffect(() => {
+    console.log("App rendered");
+  }, [])
   return (
     <BrowserRouter>
       <div className="App">
         <Header />
+
         <div className="xyz" aligm="center">
           <Suspense fallback={<Loader isLoad={true} />}>
             <Routes>
               {/* private route for both client and helper */}
-              <Route path="/about" element={<About />} />
+              {/* <Route path="/about" element={<About />} /> */}
               <Route path='/profile'
                 element={
                   <PrivateRoute
-                    isAuthenticated={isToken}
                   >
                     <Profile />
                   </PrivateRoute>
@@ -111,7 +111,6 @@ function App() {
                   key={`public-${path}`}
                   element={
                     <PublicRoute
-                      isAuthenticated={isToken}
                     >
                       <Component />
                     </PublicRoute>
@@ -124,7 +123,6 @@ function App() {
                   path={path}
                   element={
                     <PrivateRoute
-                      isAuthenticated={isToken}
                     >
                       <ProtectedRoutes role={role}>
                         <Component />
@@ -133,6 +131,8 @@ function App() {
                   }
                 />
               ))}
+              <Route path='*'
+                element={<NoFoundComponent />} />
               {/* <Route path='/'
               element={
                 <PublicRoute

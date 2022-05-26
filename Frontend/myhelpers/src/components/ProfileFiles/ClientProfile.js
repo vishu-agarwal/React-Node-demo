@@ -49,23 +49,28 @@ const Input = styled('input')({
 });
 
 const ClientProfile = () => {
-    const rid = localStorage.getItem("r_id")
-    const navigate = useNavigate()
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
-    const role = localStorage.getItem("role")
-    // let role = "Client"
+    let { r_id: logRid, role: logRole } = useSelector((state) => ({ ...state.loginStore }))
+
+    let rid = localStorage.getItem("r_id") ? localStorage.getItem("r_id") : logRid
+    let role = localStorage.getItem("role") ? localStorage.getItem("role") : logRole
 
     const [state, setState] = useState({
         open: false,
         vertical: 'top',
         horizontal: 'center',
     });
+
     const { vertical, horizontal, open } = state;
+
     const closeSnackbar = () => {
         setState({ ...state, open: false });
     };
+
     const [snackMessage, setSnackMessage] = useState('')
     const [snackColor, setSnackColor] = useState("info")
 
@@ -88,8 +93,10 @@ const ClientProfile = () => {
         pincode: '',
         about: '',
     });
+
     const [clicked, setClicked] = useState(false)
     const [enable, setenable] = useState(false)
+
     const [file, setfile] = useState({
         upldfile: [],
         dispFile: ''
@@ -100,12 +107,9 @@ const ClientProfile = () => {
         dispFile: ''
     })
 
-    //helper profile Modal state
     const [openModal, setopenModal] = useState(false);
 
     useEffect(() => {
-        // dispatch(fetchAvatarThunk(rid))
-        // dispatch(fetchEmailThunk(rid))
         dispatch(fetchUserProfileThunk(rid))
     }, [])
 
@@ -134,22 +138,7 @@ const ClientProfile = () => {
     const [editHide, setEditHide] = useState(true)
     //fields enable or diable on hide button
     const [fieldsDisable, setDisable] = useState(false)
-    // console.log(fields)
-    // useEffect(() => {
-    //     console.log("avatar::", avatar)
-    //     if (avatar.length !== 0) {
-    //         dispatch(fetchUserProfileThunk(rid))
 
-    //         setfile({
-    //             ...file,
-    //             // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
-    //             dispFile: avatar[0].avatar
-
-    //         })
-
-    //     }
-    // }, [avatar])
-    // const str2blob = txt => new Blob([txt]);
     useEffect(() => {
         console.log("userProfile::", userProfile)
         if (userProfile.length !== 0) {
@@ -231,22 +220,16 @@ const ClientProfile = () => {
                 }
                 dispatch(createProfileThunk(argCreateProfile))
                 dispatch(aadharThunk(argAadhar))
-                
-                // setClicked(true)
-                // console.log("values:: ", values)
                 setEditHide(false)
                 setDisable(true)
             }
             else {
-                // alert("please Choose Aadhar Card PDf !")
                 setState({ open: true });
                 setSnackColor("error")
                 setSnackMessage("Please Choose Aadhar Card PDf !")
             }
-            // console.log(values)
         }
         else {
-            // alert("Please click on upload photo button before save!")
             setState({ open: true });
             setSnackColor("error")
             setSnackMessage("Please click on upload photo button before save!")
@@ -400,18 +383,6 @@ const ClientProfile = () => {
     const [errorText, setErrorText] = useState("");
 
     const onChange = (event) => {
-        // const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-        // if (phoneRegex.test(event.target.value)) {
-        //     console.log(event.target.value)
-        // setValues((prevState) => { return { ...prevState, altmbl: event.target.value } }) 
-
-        // alpha numeric  expression /^[a-zA-Z0-9]*$/
-        ///^[A-Za-z]+$/ only letters
-        // only numbers
-        // only alphabels and limited characters /^[a-zA-Z ]{2,30}$/;
-        //mobile no validation /^[6-9][0-9]{9}$/
-        // /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im 
-        // console.log("field id :: ", event.target.id)
 
         if (event.target.id === "firstname") {
             setValues((prevState) => {
@@ -653,9 +624,10 @@ const ClientProfile = () => {
         // console.log("dhjsddsgf", aadhar.dispFile !== "" ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false))
         aadhar.dispFile !== "" ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
     }, [errorEnable, values, aadhar.dispFile])
+    console.log("loading::",profileLoading);
     return (
         <Grid >
-            {profileLoading && <Loading isLoad={true} />}
+            {profileLoading && <Loading isLoad={true} />  }
             <Card
                 elevation={16}
                 sx={{
@@ -945,10 +917,8 @@ const ClientProfile = () => {
                                             placeholder='A-101'
                                             fullWidth
                                             value={values.house_no.toUpperCase()}
-
                                             inputProps={{
                                                 readOnly: Boolean(fieldsDisable),
-
                                             }}
                                             onChange={onChange}
                                             error={errorEnable.house_no}
@@ -963,10 +933,8 @@ const ClientProfile = () => {
                                             label="House/Appartment Name"
                                             fullWidth
                                             value={values.house_name.toUpperCase()}
-
                                             inputProps={{
                                                 readOnly: Boolean(fieldsDisable),
-
                                             }}
                                             onChange={onChange}
                                             error={errorEnable.house_name}
@@ -981,10 +949,8 @@ const ClientProfile = () => {
                                             label="Landmark/Area/Street"
                                             fullWidth
                                             value={values.street.toUpperCase()}
-
                                             inputProps={{
                                                 readOnly: Boolean(fieldsDisable),
-
                                             }}
                                             onChange={onChange}
                                             error={errorEnable.street}
@@ -999,10 +965,8 @@ const ClientProfile = () => {
                                             label="City"
                                             fullWidth
                                             value={values.city.toUpperCase()}
-
                                             inputProps={{
                                                 readOnly: Boolean(fieldsDisable),
-
                                             }}
                                             onChange={onChange}
                                             error={errorEnable.city}
@@ -1035,21 +999,16 @@ const ClientProfile = () => {
                                             value={values.pincode}
                                             inputProps={{
                                                 readOnly: Boolean(fieldsDisable),
-
                                             }}
-
                                             onChange={onChange}
                                             error={errorEnable.pincode}
                                             helperText={errorEnable.pincode && errorText}
                                         />
                                     </Grid>
-
-
                                     <Grid xs={12} sm={11} item>
                                         <TextField
                                             required
                                             multiline
-
                                             maxRows={3}
                                             variant='outlined'
                                             id="about"
@@ -1064,7 +1023,6 @@ const ClientProfile = () => {
                                             onChange={(event) => setValues((prevState) => { return { ...prevState, about: event.target.value } })}
                                         />
                                     </Grid>
-
                                 </Grid>
                                 <Grid container spacing={2} justifyContent="center" marginTop={15} marginLeft={1} >
                                     {role === "Helper" && !fieldsDisable &&
@@ -1076,19 +1034,16 @@ const ClientProfile = () => {
                                         </Grid>
                                     }
                                     {saveEnable && !fieldsDisable &&
-
                                         <Grid xs={12} sm={6} item align="right">
                                             <Button type='submit' variant="contained" color='primary' size="large" fullWidth >
                                                 {editHide ? "Save" : !fieldsDisable && "Update"}
                                             </Button>
                                         </Grid>
-
                                     }
                                 </Grid>
                             </Grid>
                         </Grid>
                     </form>
-
                 </CardContent>
             </Card>
         </Grid >

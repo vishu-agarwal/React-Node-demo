@@ -102,7 +102,7 @@ const userSchema = new mongoose.Schema(
                 },
                 house_name: {
                     type: String,
-                    // required: true,
+                    lowercase: true,
                     trim: true,
                 },
                 house_no: {
@@ -114,7 +114,6 @@ const userSchema = new mongoose.Schema(
             },
         alternate_mobile_number: {
             type: Number,
-            // required: false,
             trim: true,
             validate: {
                 validator: function (val) {
@@ -149,13 +148,11 @@ const userSchema = new mongoose.Schema(
     }
 );
 
-
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ id: user._id.toString() }, process.env.JSON_TOKEN)
     return token
 }
-
 
 const userModel = mongoose.model(
     'users',

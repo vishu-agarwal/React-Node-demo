@@ -59,7 +59,8 @@ const filterTime = [
     { label: 'Full Day (12 Hrs)' },
     { label: 'Half Day (6 Hrs)' },
     { label: 'Custom (1-4 Hrs)' },
-    { label: 'Night Shift (2-12 Hrs)' },
+    { label: 'Custom Night Shift (After 8 PM)' },
+    { label: 'Night Shift (12 Hrs)' },
 ];
 const filterGender = [
     { label: 'Male' },
@@ -70,8 +71,8 @@ const DisplayData = () => {
     const rid = localStorage.getItem("r_id")
     const role = localStorage.getItem("role")
     const dispatch = useDispatch()
-
-    let { displayData, saveUser, hireUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
+    
+    let { displayData, saveUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
 
     let rates, status, hireStatus
     const [workSearch, setWorkSearch] = useState('')

@@ -166,6 +166,7 @@ const HireForm = (props) => {
             setErrorText("Please choose it!")
         }
         else {
+            setErrorText("")
             setErrorEnable({ ...errorEnable, work: false })
         }
     };
@@ -186,6 +187,7 @@ const HireForm = (props) => {
                         setErrorText("Again select date!")
                     }
                     else {
+                        setErrorText("")
                         setErrorEnable({ ...errorEnable, fromDate: false })
                     }
                 }
@@ -201,8 +203,8 @@ const HireForm = (props) => {
                         setErrorText("Again select date!")
                     }
                     else {
-                        setErrorEnable({ ...errorEnable, fromDate: false })
                         setErrorText("")
+                        setErrorEnable({ ...errorEnable, fromDate: false })
                     }
                 }
             }
@@ -210,8 +212,8 @@ const HireForm = (props) => {
         else if (event.target.name === "toDate") {
             props.sethireValues((prevState) => { return { ...prevState, toDate: event.target.value } })
             if (new Date(event.target.value) >= new Date(props.hireValues.fromDate)) {
-                setErrorEnable({ ...errorEnable, toDate: false })
                 setErrorText("")
+                setErrorEnable({ ...errorEnable, toDate: false })
             }
             else {
                 setErrorEnable({ ...errorEnable, toDate: true })
@@ -233,8 +235,8 @@ const HireForm = (props) => {
                         setErrorText("Again select time!")                        
                     }
                     else {
-                        setErrorEnable({ ...errorEnable, fromTime: false })
                         setErrorText("")
+                        setErrorEnable({ ...errorEnable, fromTime: false })
                     }
                 }
             }
@@ -250,13 +252,12 @@ const HireForm = (props) => {
                             setErrorText("Again select time!")
                         }
                         else {
-                            setErrorEnable({ ...errorEnable, fromTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, fromTime: false })
                         }
                     }
                 }
                 else if (props.workTime === "Custom Night Shift (After 8 PM)") {
-                   
                     if (event.target.value > "05:00" && event.target.value < "20:00") {
                         setErrorEnable({ ...errorEnable, fromTime: true })
                         setErrorText("Between 8 PM to 6 AM!")
@@ -267,8 +268,8 @@ const HireForm = (props) => {
                             setErrorText("Again select time!")
                         }
                         else {
-                            setErrorEnable({ ...errorEnable, fromTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, fromTime: false })
                         }
                     }
                 }
@@ -283,8 +284,8 @@ const HireForm = (props) => {
                             setErrorText("Again select time!")
                         }
                         else {
-                            setErrorEnable({ ...errorEnable, fromTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, fromTime: false })
                         }
                     }
                 }
@@ -299,8 +300,8 @@ const HireForm = (props) => {
                             setErrorText("Again select time!")
                         }
                         else {
-                            setErrorEnable({ ...errorEnable, fromTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, fromTime: false })
                         }
                     }
                 }
@@ -316,8 +317,8 @@ const HireForm = (props) => {
                             setErrorText("Again select time!")
                         }
                         else {
-                            setErrorEnable({ ...errorEnable, fromTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, fromTime: false })
                         }
                     }
                 }
@@ -335,8 +336,8 @@ const HireForm = (props) => {
                 if (props.workTime === "Custom (1-4 Hrs)") {
                     if (event.target.value >= "07:00" && event.target.value <= "21:00") {
                         if (event.target.value >= minfrom && event.target.value <= maxfrom) {
-                            setErrorEnable({ ...errorEnable, toTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, toTime: false })
                         }
                         else {
                             setErrorEnable({ ...errorEnable, toTime: true })
@@ -359,8 +360,8 @@ const HireForm = (props) => {
                             setErrorText("For 1 to 4 Hours only!")
                         }
                         else {
-                            setErrorEnable({ ...errorEnable, toTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, toTime: false })
                         }
                     }
                 }
@@ -372,8 +373,8 @@ const HireForm = (props) => {
                     else {
                         const hours = moment(props.hireValues.fromTime, "HH:mm").add(12, "hours").format("HH:mm")
                         if (event.target.value === hours) {
-                            setErrorEnable({ ...errorEnable, toTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, toTime: false })
                         }
                         else {
                             setErrorEnable({ ...errorEnable, toTime: true })
@@ -389,8 +390,8 @@ const HireForm = (props) => {
                     else {
                         const hours = moment(props.hireValues.fromTime, "HH:mm").add(12, "hours").format("HH:mm")
                         if (event.target.value === hours) {
-                            setErrorEnable({ ...errorEnable, toTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, toTime: false })
                         }
                         else {
                             setErrorEnable({ ...errorEnable, toTime: true })
@@ -406,8 +407,8 @@ const HireForm = (props) => {
                     else {
                         const hours = moment(props.hireValues.fromTime, "HH:mm").add(6, "hours").format("HH:mm")
                         if (event.target.value === hours) {
-                            setErrorEnable({ ...errorEnable, toTime: false })
                             setErrorText("")
+                            setErrorEnable({ ...errorEnable, toTime: false })
                         }
                         else {
                             setErrorEnable({ ...errorEnable, toTime: true })
@@ -437,6 +438,7 @@ const HireForm = (props) => {
                 : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
         }
     }, [errorEnable, props.hireValues, props.work])
+    
     return (
         <Modal
             open={props.open}

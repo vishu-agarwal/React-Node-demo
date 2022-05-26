@@ -1,9 +1,8 @@
 import { Suspense } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { HelperRoutesList } from './RoutesList'; // Route list
-import { ClientRoutesList } from './RoutesList'; // Route list
 import Loader from '../components/layouts/LoadingFile';
 import HiringProcess from '../components/Homepage/HiringProcess';
+import { useSelector } from 'react-redux';
 // const ProtectedRoutes = ({ role }) => (
 
 //         <Suspense
@@ -47,8 +46,10 @@ import HiringProcess from '../components/Homepage/HiringProcess';
 // );
 
 const ProtectedRoutes = ({ role, children }) => {
-console.log(children)
-    const userRole = localStorage.getItem('role')
+    console.log(children)
+    // const userRole = localStorage.getItem('role')
+    const { role: userRole } = useSelector(state => state.loginStore)
+    
 
     if (role.toLowerCase() === userRole.charAt(0).toLowerCase()) {
         return (
@@ -58,19 +59,13 @@ console.log(children)
     else if (userRole === "Client") {
         return (
             <Navigate
-                to={{
-                    pathname: '/Client/home',
-
-                }}
+                to={'/Client/home'} replace={true}
             />
         )
     }
-
-    return (
+    else return (
         <Navigate
-            to={{
-                pathname: '/Helper/home',
-            }}
+            to={'/Helper/home'} replace={true}
         />
     )
 }

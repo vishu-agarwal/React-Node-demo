@@ -99,7 +99,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
         <Fragment >
             {
                 fields?.map((x, i) => {
-                    console.log(x, "dropdown value")
+                    
                     return (
                         <Fragment key={i}>
                             <Grid xs={12} sm={4} item>
@@ -158,7 +158,6 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                             </Grid>
                             <Grid xs={12} sm={3.5} item>
                                 <TextField
-                                    // disabled={fieldsDisable}
                                     inputProps={{
                                         readOnly: Boolean(fieldsDisable),
                                     }}
@@ -168,34 +167,24 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                     name="salary"
                                     value={x.salary}
                                     onChange={e => handleChange(e, i)}
-
                                     error={errorEnable.salary}
                                     helperText={(errorEnable.salary && errorText) || "Per Day"}
                                     label="Expected salary Range"
                                     fullWidth
-
                                 />
                             </Grid>
                             {!fieldsDisable &&
                                 < Grid xs={12} sm={1} item>
-
                                     {fields.length !== 1 &&
                                         <IconButton color="error" onClick={() => handleRemove(i)} component="span">
-
                                             <DeleteIcon fontSize="medium" />
-
                                         </IconButton>
-
-
                                     }
                                     {!disable &&
                                         fields.length - 1 === i &&
                                         <IconButton color="primary" onClick={handleAdd} component="span">
-
                                             <AddIcon color="info" fontSize="large" />
-
                                         </IconButton>
-
                                     }
                                 </Grid>}
                         </Fragment>

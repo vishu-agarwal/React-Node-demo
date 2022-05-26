@@ -32,7 +32,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const Login = () => {
     const params = useParams();
     const navigate = useNavigate();
-
     const dispatch = useDispatch();
 
     const [values, setValues] = useState({
@@ -56,20 +55,14 @@ const Login = () => {
     };
     const [snackMessage, setSnackMessage] = useState('');
     const [snackColor, setSnackColor] = useState('info');
-    const [aa, setAa] = useState('')
 
     const [otp, setotp] = useState('');
 
-    const { logUser: a1, error, token, loadingLogin } = useSelector((state) => {
+    const { logUser: logUser, error, token, loadingLogin } = useSelector((state) => {
         console.log('state :::::::,', JSON.parse(JSON.stringify(state)));
-        // if (state.loginStore?.a1?.length > 0)
-        // setAa(state.loginStore)
+
         return { ...state.loginStore }
     });
-
-    console.log('login state===========', a1, error, token, loadingLogin)
-    console.log('starte::', aa)
-
 
     let { otpUser, otpError, isOtp, otpMessage, loadingOtp } = useSelector(
         (state) => ({ ...state.otpStore })
@@ -89,16 +82,13 @@ const Login = () => {
             setSnackMessage(error);
             dispatch(loginActions.errorReducer());
         }
-
         if (otpError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor('error');
             setSnackMessage(otpError);
             dispatch(otpActions.errorReducer());
         }
         if (otpMessage.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor('info');
             setSnackMessage(otpMessage);
@@ -108,26 +98,22 @@ const Login = () => {
 
     useEffect(() => {
         console.log('set login user ');
-        console.log(a1);
-        if (a1) {
-            if (a1?.r_id?.charAt(0) === 'C') {
-                localStorage.setItem('role', 'Client');
-                console.log('client');
+        console.log(logUser);
+        let redirectPath = ''
+        if (logUser) {
+            if (logUser?.r_id?.charAt(0) === 'C') {
+                // localStorage.setItem('role', 'Client');
+                redirectPath = '/Client/home'
             } else {
-                console.log('Helper');
-                localStorage.setItem('role', 'Helper');
+                // localStorage.setItem('role', 'Helper');
+                redirectPath = '/Helper/home'
             }
-            console.log('navigate');
-            // dispatch(loginActions.isAuthReducer())
-            localStorage.setItem("logToken", token)
-            localStorage.setItem("r_id", a1.r_id)
-            navigate('/profile');
-            // window.location.reload()
+           
+            // navigate(redirectPath, { replace: true })
         }
-    }, [a1]);
+    }, [logUser]);
 
     const sendOtpHandler = () => {
-        // console.log("values:::",values)
         if (values.email.length !== 0) {
             dispatch(otpThunk(values));
         } else {
@@ -136,29 +122,28 @@ const Login = () => {
             setSnackMessage('Please write valid email');
         }
     };
-    // setValues({ ...values, role: params.role })
+
     const loginSubmitHandler = (event) => {
+
         event.preventDefault();
-        // console.log("otp is :: ",typeof(otpUser),typeof(parseInt(otp)))
         if (values.email.length !== 0) {
             if (otp == parseInt(otpUser)) {
+
                 dispatch(loginThunk(values));
-                setValues((prevState) => {
-                    return { ...prevState, email: '' };
-                });
-                setotp('');
+                // setValues((prevState) => {
+                //     return { ...prevState, email: '' };
+                // });
+                // setotp('');
             } else {
                 setState({ snackOpen: true });
                 setSnackColor('error');
                 return setSnackMessage('Opps! \n OTP did not match.');
-                // return alert("Opps! \n OTP did not match.")
             }
         } else {
             setState({ snackOpen: true });
             setSnackColor('error');
             setSnackMessage('Please write valid email');
         }
-        //console.log("value : ",{values})
     };
     const [errorText, setErrorText] = useState('');
     const [errorEnable, setErrorEnable] = useState({
@@ -174,10 +159,9 @@ const Login = () => {
                 event.target.value
             )
         ) {
-            // console.log("correct!")
+            setErrorText("")
             setErrorEnable({ ...errorEnable, email: false });
         } else {
-            // console.log("wrong!")
             setErrorEnable({ ...errorEnable, email: true });
             setErrorText('Please enter valid Email address!');
         }
@@ -186,15 +170,12 @@ const Login = () => {
         <Grid align="center">
             {(loadingOtp || loadingLogin) && <Loading isLoad={true} />}
             <Card
-                // variant="outlined"
                 elevation={16}
                 sx={{
                     maxWidth: 600,
                     minHeight: 350,
-
                     borderWidth: 3,
                     borderRadius: 6,
-
                     backgroundImage: `url(${abc})`,
                     backgroundRepeat: 'no-repeat',
                     // borderColor: '#163758',
@@ -209,7 +190,6 @@ const Login = () => {
                             open={snackOpen}
                             autoHideDuration={2000}
                             onClose={closeSnackbar}
-                        // key={vertical + horizontal}
                         >
                             <Alert
                                 onClose={closeSnackbar}
@@ -221,7 +201,6 @@ const Login = () => {
                         </Snackbar>
                         <Grid item xs={6} sm={12} align="left">
                             <NavLink to="/" style={{ textDecoration: 'none' }}>
-                                {/* <Button variant="contained" color="error">Back</Button> */}
                                 <ArrowBackIcon
                                     cusror="pointer"
                                     sx={{ color: '#163758' }}
@@ -233,15 +212,12 @@ const Login = () => {
 
                     <Grid align="center">
                         <Typography variant="h4" fontWeight="1000" fontSize="30px">
-                            {/* <Typography variant="h4" sx={{ color: "#163758" }}> */}
                             Sign In as {values.role}
-                            {/* {abc ? nav("/role")    :  console.log(abc)} */}
                         </Typography>
                         <form onSubmit={loginSubmitHandler}>
                             <Grid container>
                                 <Grid xs={12} sm={12} item>
                                     <TextField
-                                        // sx={{ marginTop: 2 }}
                                         required
                                         fullWidth
                                         id="email"
@@ -265,13 +241,11 @@ const Login = () => {
                                             marginTop: 2,
                                             color: '#163758',
                                         }}
-                                    // background= "#007bf717"
                                     />
                                 </Grid>
                                 <Grid xs={12} sm={12} item>
                                     {isOtp && (
                                         <TextField
-                                            // sx={{ marginTop: 2 }}
                                             required
                                             fullWidth
                                             id="otp"
@@ -292,7 +266,6 @@ const Login = () => {
                                     )}
                                 </Grid>
                             </Grid>
-
                             <Grid xs={12} sm={12} item>
                                 {!isOtp ? (
                                     <Button

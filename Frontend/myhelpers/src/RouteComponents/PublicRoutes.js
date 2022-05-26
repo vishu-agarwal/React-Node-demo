@@ -3,6 +3,7 @@ import {
     Route,
     Navigate
 } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 
 // function PublicRoutes({ children, isAuthenticated, ...rest }) {
 //     return (
@@ -25,16 +26,19 @@ import {
 //     );
 // }
 function PublicRoutes({ children, isAuthenticated, ...rest }) {
-    const role = localStorage.getItem("role") 
-    if (!isAuthenticated)
-    {
+    
+    // const role = localStorage.getItem("role")
+    const { isAuth, role } = useSelector(state => state.loginStore)
+
+    console.log('role::', role);
+    if (!isAuth) {
         return (
             <React.Fragment>
                 {children}
             </React.Fragment>
         )
     }
-    return <Navigate to={{pathname: `${role}/home`}} /> 
+    return <Navigate to={`/${role}/home`} replace={true} />
 }
 
 export default PublicRoutes

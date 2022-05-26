@@ -25,7 +25,7 @@ import CallIcon from '@mui/icons-material/Call';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
 import { workProfileActions } from '../../store/slices/work-slice'
-import { hireUserThunk, fetchSaveUserThunk, saveThunk, displayActions } from '../../store/slices/display-slice';
+import { fetchSaveUserThunk, fetchAllThunk, saveThunk, displayActions } from '../../store/slices/display-slice';
 import { fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
 import profileActions from '../../store/slices/profile-slice'
 import { fetchUserProfileThunk, starThunk } from '../../store/slices/profile-slice';
@@ -43,13 +43,13 @@ const Alert = React.forwardRef(function Alert(
 });
 
 const ViewProfileDetail = () => {
-    
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const params = useParams()
     const user_id = params.rid;
-    
-    let { saveUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
+
+    let { saveUser, displayData, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
     let { workMessage, workData, workError, workLoading } = useSelector((state) => ({ ...state.workProfileStore }))
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
 
@@ -93,7 +93,6 @@ const ViewProfileDetail = () => {
     });
 
     const [hireValues, sethireValues] = useState({
-
         fromDate: '',
         toDate: '',
         fromTime: '',
@@ -104,15 +103,16 @@ const ViewProfileDetail = () => {
     const [hireWork, setHireWork] = useState([]);
     //for open module
     const [open, setOpen] = useState(false);
-
     const [status, setStatus] = useState(false)
     const [star, setStar] = useState(2)
+
     useEffect(() => {
         dispatch(fetchUserProfileThunk(user_id))
         dispatch(fetchWorkThunk(user_id))
         dispatch(fetchSaveUserThunk(rid))
-
+        dispatch(fetchAllThunk())
     }, [])
+
     useEffect(() => {
 
         sethireValues({
@@ -129,11 +129,9 @@ const ViewProfileDetail = () => {
 
         if (saveUser.length !== 0) {
             console.log("saveUser ::", saveUser);
-            // saveUser.map((val)=> values.r_id === val.user_id)
-            // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
         }
     }, [saveUser])
-    
+
     useEffect(() => {
         const body = document.querySelector('body');
         body.style.overflow = open ? 'hidden' : 'auto';
@@ -183,20 +181,9 @@ const ViewProfileDetail = () => {
                     workData.languages.map((value, index) => {
                         return value.language + ", "
                     })
-
-                setStar(userProfile.rating !== undefined ?
-                    userProfile[0].rating.map((id) =>
-                        id.rate
-                    ).reduce((prev, curr) => prev + curr, 0)
-                    /
-                    userProfile[0].rating.map((id) =>
-                        id.user_id
-                    ).length
-
-                    : 2)
-
-                setStatus(saveUser.length !== 0 ? saveUser.map((val) => userProfile[0].r_id === val.user_id).includes(true) ? true : false : false)
-
+                setStatus(
+                    saveUser.length
+                    && !!saveUser.find((val) => values.r_id === val.user_id))
                 setValues({
                     name: userProfile[0]?.name,
                     dob: userProfile[0]?.dob,
@@ -213,19 +200,35 @@ const ViewProfileDetail = () => {
                     state: userProfile[0]?.address?.state,
                     pincode: userProfile[0]?.address?.pincode,
                     about: userProfile[0]?.about,
-                    porf_mbl: workData.profession_mobile_number,
-                    workTime: workData.work_time,
-                    study: workData.education,
-                    otherStudy: workData.other_education,
+                    porf_mbl: workData?.profession_mobile_number,
+                    workTime: workData?.work_time,
+                    study: workData?.education,
+                    otherStudy: workData?.other_education,
                     language: list,
-                    avatar: userProfile[0].avatar
+                    avatar: userProfile[0]?.avatar
                 })
                 let workDetails = workData?.work_details?.filter((data) => data)
                 setFields(workDetails)
             }
         }
-    }, [userProfile, workData])
-    
+    }, [userProfile, workData, saveUser])
+    useEffect(() => {
+        displayData?.map((value) => {
+            console.log("match userid:::",value.r_id === user_id)
+             value.r_id === user_id &&
+                setStar(value.rating[0] !== undefined ?
+                    value.rating[0]?.map((id) =>
+                        id.rate
+                    ).reduce((prev, curr) => prev + curr, 0)
+                    /
+                    value.rating[0]?.map((id) =>
+                        id.rate
+                    ).length
+                    : 2);
+        })
+
+    }, [displayData])
+
     const [fields, setFields] = useState(
         [
             {
@@ -248,15 +251,16 @@ const ViewProfileDetail = () => {
         const arg = {
             rid,
             user_id,
-            rate: star
+            rate: parseInt(val.target.value)
         }
         dispatch(starThunk(arg))
-
+        dispatch(fetchUserProfileThunk(user_id))
+        dispatch(fetchAllThunk())
     }
 
     //hire button enable disble
     const [enableHire, setEnableHire] = useState(true)
-   
+
     const onHireUser = () => {
         setOpen(true);
         const arg = {
@@ -269,24 +273,24 @@ const ViewProfileDetail = () => {
         setOpen(false);
     };
     const ageDate = () => {
-        var today = new Date();        
-        var birthDate = new Date(values.dob);        
-        var age = today.getFullYear() - birthDate.getFullYear();        
-        var m = today.getMonth() - birthDate.getMonth();        
+        var today = new Date();
+        var birthDate = new Date(values.dob);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
         return age;
     }
     return (
-        <Grid>
+        <Container align="center">
             {(displayLoading || workLoading || profileLoading) && <Loading isLoad={true} />}
             <Card elevation={16}
                 sx={{
                     // paddingLeft: "10%",
                     // paddingRight: "10%",
-                    maxWidth: 1300, minHeight: 660,
-                    borderRadius: 0,                    
+                    maxWidth: 1400, minHeight: 660,
+                    borderRadius: 0,
                     marginTop: 3,
                     // backgroundColor: "#007bf717"
                 }}
@@ -303,8 +307,18 @@ const ViewProfileDetail = () => {
                                 {snackMessage}
                             </Alert>
                         </Snackbar>
-                        <Grid item xs={12} sm={12} md={12} align="left" >
+                        <Grid item xs={11} sm={11} md={11} align="left" >
                             <Button variant="contained" sx={{ backgroundColor: "#163758" }} onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
+                        </Grid>
+                        <Grid item xs={1} sm={1} justifyContent="right" >
+                            {console.log("status save::", status)}
+                            <Tooltip title="Save">
+                                {status ?
+                                    <BookmarkIcon fontSize="large" cursor="pointer" onClick={onSaveClick} />
+                                    :
+                                    <BookmarkBorderIcon fontSize="large" cursor="pointer" onClick={onSaveClick} />
+                                }
+                            </Tooltip>
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
                             <Typography variant="h4" sx={{ fontWeight: 500, color: "#163758" }}> PROFILE</Typography>
@@ -313,70 +327,81 @@ const ViewProfileDetail = () => {
                             <Typography variant="h5" sx={{ fontWeight: 500, color: "#163758" }}> {values.email} </Typography>
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} >
-                            <Rating sx={{ marginBottom: 2, marginLeft: 3 }} name="size-small" defaultValue={2} size="medium" />
+                            <Rating sx={{ marginBottom: 2, marginLeft: 3 }} name="size-small" onChange={onRateClick} value={star} size="medium" />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12}>
                             <Grid container justifyContent="center"  >
                                 <Grid item xs={12} sm={11} md={4} sx={{ marginTop: "2%" }}>
                                     <Grid container direction={'row'} justifyContent="left" >
-                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} align="left"  >
                                             <Typography gutterBottom variant="h6"  >
                                                 Name
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={5} sm={6} md={6} align="left" >
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
                                             <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
                                                 : {values.name}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Mobile No.
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={5} sm={6} md={6} align="left" >
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.mbl}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
-                                            <Typography gutterBottom variant="h6"  >
-                                                Alternate No.
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={5} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {values.altmbl}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
+
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Married
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={5} sm={6} md={6} align="left" >
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.married === false ? "No" : "Yes"}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Physical Disability
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={5} sm={6} md={6} align="left" >
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.physic_dis === false ? "No" : "Yes"}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={12} sm={6} md={6} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Address
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={5} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="body1"  >
-                                                : {values.address}
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                : {values.house_no}, {values.house_name}, {values.street}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                City
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
+                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                : {values.city}, {values.pincode}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                State
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} align="left" >
+                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                : {values.state}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -397,17 +422,17 @@ const ViewProfileDetail = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={11} md={5} sx={{ marginTop: "2%" }}>
                                     <Grid container direction={'row'} >
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Gender
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={4} sm={4} md={4} align="left" >
-                                            <Typography color="" gutterBottom variant="h6"  >
-                                                : {values.gender.charAt(0).toUpperCase() + values.gender.slice(1)}
+                                            <Typography gutterBottom variant="h6"  >
+                                                : {values.gender}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Age
                                             </Typography>
@@ -417,7 +442,7 @@ const ViewProfileDetail = () => {
                                                 : {ageDate()} Years
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Profession No.
                                             </Typography>
@@ -427,7 +452,17 @@ const ViewProfileDetail = () => {
                                                 : {values.porf_mbl}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left">
+                                            <Typography gutterBottom variant="h6"  >
+                                                Alternate No.
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={4} md={4} align="left" >
+                                            <Typography gutterBottom variant="h6"  >
+                                                : {values.altmbl}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Preffered Time
                                             </Typography>
@@ -437,7 +472,7 @@ const ViewProfileDetail = () => {
                                                 :  {values.workTime}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Languages
                                             </Typography>
@@ -447,7 +482,7 @@ const ViewProfileDetail = () => {
                                                 :  {values.language}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Education
                                             </Typography>
@@ -457,7 +492,7 @@ const ViewProfileDetail = () => {
                                                 :  {values.study}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" colo="#163758">
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Other Education
                                             </Typography>
@@ -499,7 +534,7 @@ const ViewProfileDetail = () => {
                     </Grid>
                 </CardContent >
             </Card >
-        </Grid>
+        </Container>
     )
 }
 

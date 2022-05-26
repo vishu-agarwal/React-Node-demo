@@ -28,6 +28,9 @@ import WorkRequest from '../Modals/WorkRequests';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import style from "./AboutPage.module.css"
+
+
 // import cardimg from '../cardimg.jpg'
 const ScrollButton = () => {
 
@@ -60,8 +63,7 @@ const ScrollButton = () => {
     window.addEventListener('scroll', toggleVisible);
 
     return (
-        <Box mt="">
-           
+        <Box>
             <img
                 src={`${require("../allImages/down.gif")}`} onClick={scrollToBottom}
                 sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}

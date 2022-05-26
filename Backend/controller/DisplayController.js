@@ -45,11 +45,13 @@ const saveUserData = async (req, res) => {
         }
         const saveIdFound = await userModel.find({ r_id: user.r_id, "saved_user.user_id": req.body.user_id })
         if (saveIdFound.length !== 0) {
-            const removeSave = await userModel.findOneAndUpdate({ r_id: user.r_id, "saved_user.user_id": req.body.user_id }, { $pull: { saved_user: { user_id: req.body.user_id } } }, { new: true })
-            return res.status(200).sendsend(removeSave.saved_user)
+            const removeSave = await userModel.findOneAndUpdate({ r_id: user.r_id, "saved_user.user_id": req.body.user_id },
+                { $pull: { saved_user: { user_id: req.body.user_id } } }, { new: true })
+            return res.status(200).send(removeSave.saved_user)
         }
         const saveNewUser = user.saved_user.concat(req.body)
-        const addSave = await userModel.findOneAndUpdate({ r_id: req.params.rid }, { saved_user: saveNewUser }, { new: true })
+        const addSave = await userModel.findOneAndUpdate({ r_id: req.params.rid },
+            { saved_user: saveNewUser }, { new: true })
         return res.status(200).send(addSave.saved_user)
     }
     catch (error) {

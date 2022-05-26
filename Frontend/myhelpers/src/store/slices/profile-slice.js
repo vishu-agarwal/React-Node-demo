@@ -3,11 +3,12 @@ import axios from 'axios'
 
 const initialState = {
     userProfile: [],
+    viewUserProfile: [],
     profileMessage: '',
     profileLoading: false,
     profileError: "",
     email: "",
-    avatar:[]
+    avatar: []
 }
 const varToken = localStorage.getItem("logToken");
 
@@ -17,7 +18,6 @@ export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) =
             user_id: arg.user_id,
             rate: arg.rate
         }
-        console.log(data,"-=-===========")
         const res = await axios.put(`/myhelper/updateStar/${arg.rid}`, data, {
             headers: {
                 Authorization: "Bearer " + varToken,
@@ -31,7 +31,7 @@ export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) =
 })
 export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (arg) => {
     try {
-        const res = await axios.post(`/myhelper/upldAvatar/${arg.rid}`, arg.formdata,  {
+        const res = await axios.post(`/myhelper/upldAvatar/${arg.rid}`, arg.formdata, {
             headers: {
                 Authorization: "Bearer " + varToken
             },
@@ -44,10 +44,10 @@ export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (ar
 export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (arg) => {
     try {
         const res = await axios.post(`/myhelper/upldAadhar/${arg.rid}`, arg.formdata, {
-                headers: {
-                    Authorization: "Bearer " + varToken,
-                },
-            }, arg.config)
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        }, arg.config)
         return res
 
     } catch (error) {
@@ -59,20 +59,20 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
         const data = {
             name: arg.values.fname + ' ' + arg.values.lname,
             dob: arg.values.dob,
-            is_profile:true,
+            is_profile: true,
             mobile_number: arg.values.mbl,
             gender: arg.values.gender,
             married: arg.values.married,
             physical_disable: arg.values.physic_dis,
-            address: 
-                {
-                    state: arg.values.state,
-                    city: arg.values.city,
-                    pincode: arg.values.pincode,
-                    landmark: arg.values.street,
-                    house_name: arg.values.house_name,
-                    house_no: arg.values.house_no,
-                },
+            address:
+            {
+                state: arg.values.state,
+                city: arg.values.city,
+                pincode: arg.values.pincode,
+                landmark: arg.values.street,
+                house_name: arg.values.house_name,
+                house_no: arg.values.house_no,
+            },
             alternate_mobile_number: arg.values.altmbl,
             about: arg.values.about
         };
@@ -125,13 +125,14 @@ export const fetchAvatarThunk = createAsyncThunk("userProfile/fetchAvatarThunk",
 })
 
 export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk", async (arg) => {
-    try {   
+    try {
         const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
             {
                 headers: {
                     Authorization: "Bearer " + varToken,
                 },
             })
+       
         return fetchUser
     } catch (error) {
         throw new Error(error.response.data)
@@ -147,15 +148,15 @@ export const updateProfileThunk = createAsyncThunk("userProfile/updateProfileThu
             gender: arg.values.gender,
             married: arg.values.married,
             physical_disable: arg.values.physic_dis,
-            address: 
-                {
-                    state: arg.values.state,
-                    city: arg.values.city,
-                    pincode: arg.values.pincode,
-                    landmark: arg.values.street,
-                    house_name: arg.values.house_name,
-                    house_no: arg.values.house_no,
-                },
+            address:
+            {
+                state: arg.values.state,
+                city: arg.values.city,
+                pincode: arg.values.pincode,
+                landmark: arg.values.street,
+                house_name: arg.values.house_name,
+                house_no: arg.values.house_no,
+            },
             alternate_mobile_number: arg.values.altmbl,
             about: arg.values.about,
             aadhar_card: arg.aadhar
@@ -194,7 +195,7 @@ const profileSlice = createSlice({
         },
         [avatarThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
-      
+
             state.userProfile = action.payload.data
             state.profileMessage = "Photo uploaded successfully!"
         },
@@ -207,7 +208,7 @@ const profileSlice = createSlice({
             state.profileLoading = true
         },
         [aadharThunk.fulfilled]: (state, action) => {
-            state.profileLoading = false          
+            state.profileLoading = false
             state.userProfile = action.payload.data
             state.profileMessage = "Addhar card uploaded successfully!"
         },
@@ -243,7 +244,7 @@ const profileSlice = createSlice({
             state.profileError = error.error.message
         },
         //fetch avatar
-        
+
         [fetchAvatarThunk.pending]: (state, action) => {
             state.profileLoading = true
         },
@@ -278,7 +279,7 @@ const profileSlice = createSlice({
             // console.log("userProfile::",state.userProfile)
         },
         [fetchUserProfileThunk.rejected]: (state, error) => {
-            state.profileLoading = false        
+            state.profileLoading = false
             state.profileError = error.error.message
         },
         //update userProfileData
@@ -300,7 +301,7 @@ const profileSlice = createSlice({
             state.profileLoading = true
         },
         [starThunk.fulfilled]: (state, action) => {
-            state.profileLoading = false           
+            state.profileLoading = false
             state.userProfile = action.payload.data
         },
         [starThunk.rejected]: (state, error) => {

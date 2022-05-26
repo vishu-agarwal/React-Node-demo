@@ -143,11 +143,10 @@ const WorkProfile = (props) => {
                 study: workData?.education,
                 otherStudy: workData?.other_education
             })
-            let list = workData?.languages?.map((value, index) => {
-                // console.log(value.language, "list value----")
+            let list = workData?.languages?.map((value, index) => {                
                 return value.language
             }).flat()
-            // console.log(list, "language list")
+
             setlang(
                 list
             );
@@ -159,7 +158,6 @@ const WorkProfile = (props) => {
     }, [workData])
 
     const onSaveWorkSubmit = (e) => {
-        // console.log("save works")
         e.preventDefault()
         const arg = {
             values,
@@ -167,15 +165,11 @@ const WorkProfile = (props) => {
             fields,
             rid
         }
-        // console.log("abc", arg)
         //create work Profile
         dispatch(workProfileThunk(arg))
         //Edit button display
         setEditHide(false)
         setDisable(true)
-        //close this form model
-        // props.click()
-
     }
 
     const onUpdateWorkSubmit = (e) => {
@@ -186,24 +180,18 @@ const WorkProfile = (props) => {
             fields,
             rid
         }
-        // console.log("argument...", arg)
-
         dispatch(updateWorkThunk(arg))
         //Edit button display
         setEditHide(false)
         setDisable(TouchRipple)
-        //close this form model
-        // props.click()
-
     }
     const onEditClick = () => {
         setDisable(!fieldsDisable)
-
     }
+
     //validations
     const [saveEnable, setSaveEnable] = useState(false)
     const [errorEnable, setErrorEnable] = useState({
-
         porf_mbl: false,
         workTime: false,
         study: false,
@@ -214,10 +202,8 @@ const WorkProfile = (props) => {
         salary: false,
     })
 
-
     const [errorText, setErrorText] = useState("");
     const langHandleChange = (event) => {
-        // console.log("event", event.target)
         const {
             target: { value },
         } = event;
@@ -225,23 +211,17 @@ const WorkProfile = (props) => {
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
-        // console.log("language::", event.target.value)
         if (event.target.value.length === 0) {
-            // console.log("wrong::", event.target.value)
             setErrorEnable({ ...errorEnable, language: true })
             setErrorText("Please choose it!")
         }
         else {
-            // console.log("correct::", event.target.value)
             setErrorEnable({ ...errorEnable, language: false })
-
         }
     };
     const onChange = (event) => {
-        // console.log("event....", event.target)
         if (event.target.name === "otherStudy") {
             setValues((prevState) => { return { ...prevState, otherStudy: event.target.value } })
-
             if (/^[A-Za-z/*]+$/.test(event.target.value)) {
                 setErrorEnable({ ...errorEnable, otherStudy: false })
             }
@@ -251,7 +231,6 @@ const WorkProfile = (props) => {
             }
         }
         else if (event.target.name === "studyselect") {
-            // console.log(event.target.value, "study")
             setValues((prevState) => { return { ...prevState, study: event.target.value } })
             if (event.target.value !== "") {
                 setErrorEnable({ ...errorEnable, study: false })
@@ -264,12 +243,9 @@ const WorkProfile = (props) => {
         else if (event.target.name === "time") {
             setValues((prevState) => { return { ...prevState, workTime: event.target.value } })
             if (event.target.value !== "") {
-
                 setErrorEnable({ ...errorEnable, workTime: false })
-
             }
             else {
-
                 setErrorEnable({ ...errorEnable, workTime: true })
                 setErrorText("Please choose it!")
             }
@@ -282,12 +258,9 @@ const WorkProfile = (props) => {
                 }
             })
             if (/^[6-9][0-9]{9}$/.test(event.target.value)) {
-
                 setErrorEnable({ ...errorEnable, porf_mbl: false })
-
             }
             else {
-
                 setErrorEnable({ ...errorEnable, porf_mbl: true })
                 setErrorText("Please enter valid Mobile No.!")
             }
@@ -297,15 +270,11 @@ const WorkProfile = (props) => {
         }
     };
     useEffect(() => {
-        // console.log("error::", errorEnable)
         const areTrue = Object.values(errorEnable).every(
             value => value !== true
         );
-        // console.log("allerror::", areTrue);
         const isNullish = Object.values(values).every(value => value !== "");
-        // console.log("null", isNullish)
         isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false)
-
     }, [errorEnable, values])
     return (
         <Modal
@@ -367,9 +336,7 @@ const WorkProfile = (props) => {
                                 <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>
                                     {/* <Typography variant='subtitle1' marginLeft={1.5}  align='left' color='InfoText'>Personal Details : </Typography> */}
                                     <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Working Details : </Typography>
-
                                     <Grid container spacing={1}>
-
                                         <Grid xs={12} sm={6} item>
                                             <TextField
                                                 inputProps={{
@@ -385,22 +352,18 @@ const WorkProfile = (props) => {
                                                 onChange={onChange}
                                                 error={errorEnable.porf_mbl}
                                                 helperText={errorEnable.porf_mbl && errorText}
-                                            // onChange={(val) => { setValues((prevState) => { return { ...prevState, porf_mbl: val.target.value } }) }}
+                                          
                                             />
                                         </Grid>
                                         <Grid xs={12} sm={6} item>
-
                                             <FormControl fullWidth error={errorEnable.workTime} >
                                                 <InputLabel htmlFor="grouped-native-select">Working Time</InputLabel>
                                                 <Select name="time" label="Working Time"
-                                                    // disabled={fieldsDisable}
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
                                                     }}
-                                                    value={values.workTime}
-                                                    // onChange={(val) => { setValues((prevState) => { return { ...prevState, workTime: val.target.value } }) }}
+                                                    value={values.workTime}                                                    
                                                     onChange={onChange}
-
                                                 >
                                                     <MenuItem value="">---select---</MenuItem>
                                                     <MenuItem value="Live In (24 Hrs)">Live In (24 Hrs)</MenuItem>

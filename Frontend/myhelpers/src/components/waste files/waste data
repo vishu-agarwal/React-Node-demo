@@ -136,3 +136,35 @@
     //     experience: '',
     //     time: '',
     // });
+
+
+    // const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        // if (phoneRegex.test(event.target.value)) {
+        //     console.log(event.target.value)
+        // setValues((prevState) => { return { ...prevState, altmbl: event.target.value } }) 
+
+        // alpha numeric  expression /^[a-zA-Z0-9]*$/
+        ///^[A-Za-z]+$/ only letters
+        // only numbers
+        // only alphabels and limited characters /^[a-zA-Z ]{2,30}$/;
+        //mobile no validation /^[6-9][0-9]{9}$/
+        // /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im 
+        // console.log("field id :: ", event.target.id)
+        
+        
+        // console.log(fields)
+    // useEffect(() => {
+    //     console.log("avatar::", avatar)
+    //     if (avatar.length !== 0) {
+    //         dispatch(fetchUserProfileThunk(rid))
+
+    //         setfile({
+    //             ...file,
+    //             // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+    //             dispFile: avatar[0].avatar
+
+    //         })
+
+    //     }
+    // }, [avatar])
+    // const str2blob = txt => new Blob([txt]);

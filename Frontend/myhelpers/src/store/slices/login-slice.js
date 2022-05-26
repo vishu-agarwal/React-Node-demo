@@ -6,15 +6,20 @@ const initialState = {
     token: "",
     isAuth: false,
     loadingLogin: false,
-    error: ""
+    error: "",
+    role: "",
+    r_id: ""
 }
 
 const isToken = localStorage.getItem("logToken")
-// console.log(isToken)
+
 if (isToken) {
     initialState.isAuth = true
-    initialState.token=isToken
+    initialState.token = isToken
+    initialState.role = localStorage.getItem("role")
+    initialState.r_id = localStorage.getItem("r_id")
 }
+
 export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) => {
     try {
         // console.log("diapatch::", arg)
@@ -23,10 +28,18 @@ export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) =
         };
         // console.log(data)
         const loginRes = await axios.post(`/myhelpers/register/${arg.role}`, data)
+
         // localStorage.setItem("logToken", loginRes.data.token)
         // localStorage.setItem("r_id", loginRes.data.newUser.r_id)
         console.log("loginRes", loginRes)
-        return loginRes
+        let role = 'Client';
+        if (loginRes?.data?.removeOtp?.r_id?.charAt(0) === 'C') {
+            role = 'Client'
+        } else {
+            role = 'Helper'
+
+        }
+        return { ...loginRes, role }
     }
     catch (error) {
         // console.log(error.response.data)
@@ -55,6 +68,12 @@ const loginSlice = createSlice({
             state.isAuth = true
             state.token = action.payload.data.token
             state.logUser = action.payload.data.removeOtp
+            state.role = action.payload.role
+            state.r_id = action.payload.data.removeOtp.r_id
+
+            localStorage.setItem("logToken", state.token)
+            localStorage.setItem("r_id", state.r_id)
+            localStorage.setItem("role", state.role)
         },
         [loginThunk.rejected]: (state, error) => {
             state.loadingLogin = false
@@ -62,5 +81,6 @@ const loginSlice = createSlice({
         },
     }
 })
+
 export const loginActions = loginSlice.actions
 export default loginSlice.reducer

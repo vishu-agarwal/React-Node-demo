@@ -10,8 +10,8 @@ const initialState = {
     displayMessage: '',
     displayLoading: false,
     displayError: "",
-    // isProfile: false
 }
+
 const varToken = localStorage.getItem("logToken");
 export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarThunk", async (arg) => {
     try {
@@ -52,7 +52,7 @@ export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThun
 })
 export const searchThunk = createAsyncThunk("displayAll/searchThunk", async (arg) => {
     try {
-        console.log("searchThunk :: ",arg)
+        console.log("searchThunk :: ", arg)
         const fetchRes = await axios.get(`/myhelpers/search?field=${arg.workSearch}&searchValue=${arg.filterWork}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
@@ -93,28 +93,9 @@ export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) =>
         throw new Error(error.response.data)
     }
 })
-// export const isProfileThunk = createAsyncThunk("displayAll/isProfileThunk", async (arg) => {
 
-//     const fetchRes = await axios.get(`/myhelpers/isProfile/${arg}`, {
-//         headers: {
-//             Authorization: "Bearer " + varToken,
-//         },
-//     })
-
-//     return fetchRes
-// })
-// export const hireUserThunk = createAsyncThunk("displayAll/hireUserThunk", async (arg) => {
-//     const data = {
-//         user_id: arg
-//     }
-//     console.log(arg);
-//     const fetchRes = await axios.post(`/myhelpers/hireUser/C106`, data)
-//     console.log(fetchRes)
-//     return fetchRes
-// })
 const displaySlice = createSlice({
     name: 'displayAll',
-
     initialState,//: initialState
     reducers: {
         errorReducer(state) {
@@ -123,9 +104,6 @@ const displaySlice = createSlice({
         messageReducer(state) {
             state.displayMessage = ""
         },
-        // profileReducer(state) {
-        //     state.isrofile = false
-        // },
     },
     extraReducers: {
         //fetchProfileData
@@ -134,9 +112,7 @@ const displaySlice = createSlice({
         },
         [fetchAllThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            //  state.isAuth = true
             state.displayData = action.payload.data
-            // console.log(state.displayData)
         },
         [fetchAllThunk.rejected]: (state, error) => {
             state.displayLoading = false
@@ -148,42 +124,22 @@ const displaySlice = createSlice({
         },
         [fetchAllAvatarThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            //  state.isAuth = true
             state.userAvatar = action.payload.data
-            // console.log(state.userAvatar)
         },
         [fetchAllAvatarThunk.rejected]: (state, error) => {
             state.displayLoading = false
-
             state.displayError = error.error.message
         },
-        // [isProfileThunk.pending]: (state, action) => {
-        //     state.displayLoading = true
-        // },
-        // [isProfileThunk.fulfilled]: (state, action) => {
-        //     state.displayLoading = false
-
-        //     state.isProfile = action.payload.data
-        //     // console.log(state.displayData)
-        // },
-        // [isProfileThunk.rejected]: (state, error) => {
-        //     state.displayLoading = false
-        //     // console.log("rejected::", error.displayError.message)
-        //     state.displayError = error.error.message
-        // },
         //search result
         [searchThunk.pending]: (state, action) => {
             state.displayLoading = true
         },
         [searchThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            //  state.isAuth = true
             state.displayData = action.payload.data
-            // console.log(state.displayData)
         },
         [searchThunk.rejected]: (state, error) => {
             state.displayLoading = false
-            // console.log("rejected::", error.error.message)
             state.displayError = error.error.message
         },
         //sort result
@@ -192,13 +148,10 @@ const displaySlice = createSlice({
         },
         [sortThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            //  state.isAuth = true
             state.displayData = action.payload.data
-            // console.log(state.displayData)
         },
         [sortThunk.rejected]: (state, error) => {
             state.displayLoading = false
-            // console.log("rejected::", error.error.message)
             state.displayError = error.error.message
         },
         //saveUser
@@ -207,13 +160,10 @@ const displaySlice = createSlice({
         },
         [saveThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            //  state.isAuth = true
             state.saveUser = action.payload.data
-            console.log(state.saveUser)
         },
         [saveThunk.rejected]: (state, error) => {
             state.displayLoading = false
-            // console.log("rejected::", error.error.message)
             state.displayError = error.error.message
         },
         //fetch saveUser
@@ -222,28 +172,12 @@ const displaySlice = createSlice({
         },
         [fetchSaveUserThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            //  state.isAuth = true
             state.saveUser = action.payload.data
         },
         [fetchSaveUserThunk.rejected]: (state, error) => {
             state.displayLoading = false
-            // console.log("rejected::", error.error.message)
             state.displayError = error.error.message
         },
-        // [hireUserThunk.pending]: (state, action) => {
-        //     state.displayLoading = true
-        // },
-        // [hireUserThunk.fulfilled]: (state, action) => {
-        //     state.displayLoading = false
-        //     //  state.isAuth = true
-        //     // state.saveUser = action.payload.data
-        //     // console.log(state.displayData)
-        // },
-        // [hireUserThunk.rejected]: (state, error) => {
-        //     state.displayLoading = false
-        //     // console.log("rejected::", error.error.message)
-        //     state.error = error.error.message
-        // },
     }
 })
 

@@ -11,6 +11,9 @@ import Box from '@mui/material/Box';
 import ShortListed from '../Modals/ShortListed';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
+import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
+
+import { useSelector, useDispatch } from 'react-redux';
 // const helperImages = [
 //   { image: require("../cook.jpg") },
 //   { image: require("../parent.png") },
@@ -47,7 +50,7 @@ const ScrollButton = () => {
       left: 0,
       behavior: 'smooth',
     });
-  
+
   };
 
   window.addEventListener('scroll', toggleVisible);
@@ -63,14 +66,23 @@ const ScrollButton = () => {
     />
   );
 }
-
 const HomePage = () => {
   let navigate = useNavigate()
+  const dispatch = useDispatch()
+  let { userProfile } = useSelector((state) => ({ ...state.profileStore }))
+
   const [openRequest, setOpenRequest] = useState(false)
   const [openShortlist, setOpenShortlist] = useState(false)
   const [openHired, setOpenHired] = useState(false)
-  const onRequestClick = () => {
 
+  useEffect(() => {
+    if (!userProfile[0]?.is_profile) {
+      navigate("/profile")
+    }
+  }, [userProfile])
+
+
+  const onRequestClick = () => {
     setOpenRequest(true)
   }
   const onShortlistClick = () => {

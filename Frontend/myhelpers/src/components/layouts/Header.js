@@ -84,24 +84,28 @@ const Header = (props) => {
     const dispatch = useDispatch()
     let navigate = useNavigate()
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
-    
+    console.log("my profile ", userProfile);
     const role = localStorage.getItem("role")
     const rid = localStorage.getItem("r_id")
-    
+
     const { isAuth } = useSelector(state => ({ ...state.loginStore }))
-    
+
     const [anchorElNav, setAnchorElNav] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(false);
     const [openRequest, setOpenRequest] = useState(false)
     const [openShortlist, setOpenShortlist] = useState(false)
     const [openHired, setOpenHired] = useState(false)
     const [avatar, setAvatar] = useState("")
+
     useEffect(() => {
         dispatch(fetchUserProfileThunk(rid))
-    },[])
+    }, [])
+
     useEffect(() => {
+        console.log("userPRofile")
         userProfile[0]?.avatar && setAvatar(userProfile[0].avatar)
     }, [userProfile])
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -133,7 +137,8 @@ const Header = (props) => {
         setOpenHired(false);
         setOpenShortlist(false);
     };
-    console.log("request open :: ", openRequest)
+
+    console.log("request open :: ")
     const onLogoutClick = () => {
         localStorage.removeItem("r_id")
         localStorage.removeItem("logToken")
@@ -141,7 +146,7 @@ const Header = (props) => {
         dispatch(loginActions.logoutReducer())
         navigate("/")
     }
-    
+
     return (
         <>
             <AppBar position="fixed" sx={{ marginTop: 0, background: '#163758', color: "" }} >
@@ -187,9 +192,8 @@ const Header = (props) => {
                                         display: { xs: 'block', md: 'none' },
                                     }}
                                 >
-                                   
-                                    <MenuItem onClick={() => navigate("/Client/home")}>Home</MenuItem>
-                                  
+                                    {role === "Client" && <MenuItem onClick={() => navigate("/Client/home")}>Home</MenuItem>}
+                                    {role === "Helper" && <MenuItem onClick={() => navigate("/Helper/home")}>Home</MenuItem>}
                                     {role === "Client" && <MenuItem onClick={() => navigate("/findHelper")}>Find Helpers</MenuItem>}
                                     <MenuItem onClick={() => { return (navigate("/profile"), handleCloseNavMenu) }}>Profile</MenuItem>
 
@@ -251,7 +255,7 @@ const Header = (props) => {
                             <Box sx={{ flexGrow: 0 }}>
 
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src={`${avatar}`} />
+                                    <Avatar alt="Remy Sharp" src={`http://localhost:3000/${userProfile[0]?.avatar}`} />
                                 </IconButton>
 
                                 <Menu
