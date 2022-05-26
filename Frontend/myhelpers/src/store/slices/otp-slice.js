@@ -8,18 +8,14 @@ const initialState = {
     otpError: ""
 }
 export const otpThunk = createAsyncThunk("otpLogin/otpThunk", async (arg) => {
-    console.log("diapatch::", arg)
     try {
         const data = {
             email: arg.email,
         };
-        console.log("data",data)
         const otpRes = await axios.post(`/myhelpers/otp/${arg.role}`,data)
-        console.log("otpResponse :: ", otpRes)
         return otpRes
     }
     catch (error) {
-        console.log(error.response.data)
         throw new Error(error.response.data)
     }
 })
@@ -43,7 +39,6 @@ const otpSlice = createSlice({
         },
         [otpThunk.fulfilled]: (state, action) => {
             state.loadingOtp = false
-            // console.log(action.payload.data.message)
             state.otpMessage = action.payload.data.message
             state.otpUser = action.payload.data.otp
         },

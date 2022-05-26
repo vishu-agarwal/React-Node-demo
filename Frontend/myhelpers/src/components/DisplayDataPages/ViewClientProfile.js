@@ -19,11 +19,11 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import Loading from '../layouts/LoadingFile'
 import { useSelector, useDispatch } from 'react-redux';
 
-import {workProfileActions} from '../../store/slices/work-slice'
+import { workProfileActions } from '../../store/slices/work-slice'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
-import { profileActions,fetchUserProfileThunk,starThunk, } from '../../store/slices/profile-slice';
-import { fetchAllThunk, displayActions } from '../../store/slices/display-slice';
+import { profileActions } from '../../store/slices/profile-slice';
+import { fetchViewUserDataThunk, displayActions } from '../../store/slices/display-slice';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -47,7 +47,7 @@ const ViewClientProfile = () => {
     const role = localStorage.getItem("role")
     const dispatch = useDispatch()
 
-    let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
+    let { viewUserProfile, displayError, displayMessage, displayLoading } = useSelector((state) => ({ ...state.displayStore }))
     
     const [state, setState] = useState({
         snackOpen: false,
@@ -64,7 +64,7 @@ const ViewClientProfile = () => {
     const [values, setValues] = useState({
         name: '',
         dob: '',
-        mbl:'',
+        mbl: '',
         altmbl: '',
         email: '',
         gender: '',
@@ -81,48 +81,47 @@ const ViewClientProfile = () => {
     });
     const [star, setStar] = useState(0)
     useEffect(() => {
-        dispatch(fetchUserProfileThunk(user_id))
-    }, [])
+        dispatch(fetchViewUserDataThunk(user_id))
+    }, [user_id])
 
-    
+
     useEffect(() => {
-        if (profileMessage.length !== 0) {
+        if (displayMessage.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("info")
-            setSnackMessage(profileMessage)
+            setSnackMessage(displayMessage)
             dispatch(profileActions.messageReducer())
         }
-        if (profileError.length !== 0) {
+        if (displayError.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("error")
-            setSnackMessage(profileError)
-            dispatch(profileActions.errorReducer())            
+            setSnackMessage(displayError)
+            dispatch(profileActions.errorReducer())
         }
-    }, [profileMessage, profileError])
-    
+    }, [displayMessage, displayError])
+
     useEffect(() => {
-        if (userProfile.length !== 0) {
-            
+        if (viewUserProfile.length !== 0) {
             setValues({
-                name: userProfile[0]?.name,
-                dob: userProfile[0]?.dob,
-                mbl: userProfile[0]?.mobile_number,
-                altmbl: userProfile[0]?.alternate_mobile_number,
-                email: userProfile[0]?.email,
-                gender: userProfile[0]?.gender,
-                married: userProfile[0]?.married,
-                physic_dis: userProfile[0]?.physical_disable,
-                house_no: userProfile[0]?.address?.house_no,
-                house_name: userProfile[0]?.address?.house_name,
-                street: userProfile[0]?.address?.landmark,
-                city: userProfile[0]?.address?.city,
-                state: userProfile[0]?.address?.state,
-                pincode: userProfile[0]?.address?.pincode,
-                about: userProfile[0]?.about,
-                avatar: userProfile[0]?.avatar
+                name: viewUserProfile[0]?.name,
+                dob: viewUserProfile[0]?.dob,
+                mbl: viewUserProfile[0]?.mobile_number,
+                altmbl: viewUserProfile[0]?.alternate_mobile_number,
+                email: viewUserProfile[0]?.email,
+                gender: viewUserProfile[0]?.gender,
+                married: viewUserProfile[0]?.married,
+                physic_dis: viewUserProfile[0]?.physical_disable,
+                house_no: viewUserProfile[0]?.address?.house_no,
+                house_name: viewUserProfile[0]?.address?.house_name,
+                street: viewUserProfile[0]?.address?.landmark,
+                city: viewUserProfile[0]?.address?.city,
+                state: viewUserProfile[0]?.address?.state,
+                pincode: viewUserProfile[0]?.address?.pincode,
+                about: viewUserProfile[0]?.about,
+                avatar: viewUserProfile[0]?.avatar
             })
         }
-    }, [userProfile])
+    }, [viewUserProfile])
 
     const ageDate = () => {
         var today = new Date();
@@ -134,10 +133,10 @@ const ViewClientProfile = () => {
         }
         return age;
     }
-  
+
     return (
         <Container align="center" >
-            {profileLoading && <Loading isLoad={true} />}
+            {displayLoading && <Loading isLoad={true} />}
             <Card
                 elevation={16}
                 sx={{
@@ -168,13 +167,13 @@ const ViewClientProfile = () => {
                         <Grid item xs={12} sm={12} md={12} >
                             <Typography variant="h5" sx={{ fontWeight: 500, color: "#163758" }}> {values.email} </Typography>
                         </Grid>
-                       
+
                         <Grid item xs={12} sm={12} md={12}>
                             <Grid container justifyContent="center"  >
                                 <Grid item xs={12} sm={11} md={4} sx={{ marginTop: "5%" }}>
                                     <Grid container direction={'row'} justifyContent="left" >
                                         <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
-                                            <Typography   gutterBottom variant="h6"  >
+                                            <Typography gutterBottom variant="h6"  >
                                                 Name
                                             </Typography>
                                         </Grid>
@@ -203,7 +202,7 @@ const ViewClientProfile = () => {
                                                 : {ageDate()} Years
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"}  align="left" >
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Mobile No.
                                             </Typography>
@@ -214,7 +213,7 @@ const ViewClientProfile = () => {
                                             </Typography>
                                         </Grid>
 
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"}  align="left" >
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Married
                                             </Typography>
@@ -224,7 +223,7 @@ const ViewClientProfile = () => {
                                                 : {values.married === false ? "No" : "Yes"}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"}  align="left" >
+                                        <Grid item xs={6} sm={6} md={6} marginLeft={"3%"} align="left" >
                                             <Typography gutterBottom variant="h6"  >
                                                 Physical Disability
                                             </Typography>
@@ -234,7 +233,7 @@ const ViewClientProfile = () => {
                                                 : {values.physic_dis === false ? "No" : "Yes"}
                                             </Typography>
                                         </Grid>
-                                        
+
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={4} md={3} sx={{ marginTop: "5%" }} >
@@ -250,7 +249,7 @@ const ViewClientProfile = () => {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} sm={11} md={5} sx={{ marginTop: "5%" }}>
-                                    <Grid container direction={'row'} >     
+                                    <Grid container direction={'row'} >
                                         <Grid item xs={4} sm={4} md={4} marginLeft={"3%"} align="left">
                                             <Typography gutterBottom variant="h6"  >
                                                 Alternate No.
@@ -260,7 +259,7 @@ const ViewClientProfile = () => {
                                             <Typography gutterBottom variant="h6"  >
                                                 : {values.altmbl}
                                             </Typography>
-                                        </Grid>    
+                                        </Grid>
                                         <Grid item xs={4} sm={4} md={4} align="left" marginLeft={"3%"} >
                                             <Typography gutterBottom variant="h6"  >
                                                 Address
@@ -301,8 +300,8 @@ const ViewClientProfile = () => {
                                                 : {values.about}
                                             </Typography>
                                         </Grid>
-                                        
-                                        
+
+
                                     </Grid>
                                 </Grid>
                             </Grid>

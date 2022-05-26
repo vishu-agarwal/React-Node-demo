@@ -133,7 +133,6 @@ const clientSchema = new mongoose.Schema(
 
 // check alternate password and registered no is not same
 clientSchema.statics.findByCredentials = async (mob_num, r_id) => {
-  console.log('Check mobile no');
   const ismbl = await regModel.find({ r_id, mob_num }); //short hand syntax
   // console.log(ismbl);
   if (ismbl.length !== 0) {

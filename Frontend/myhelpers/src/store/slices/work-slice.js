@@ -48,7 +48,6 @@ export const fetchWorkThunk = createAsyncThunk("workProfile/fetchWorkThunk", asy
 export const updateWorkThunk = createAsyncThunk("workProfile/updateWorkThunk", async (arg) => {
     try {
         const lang = arg.lang.map(l => ({ language: l }));
-        // console.log("lang->>", lang)
         const data = {
             profession_mobile_number: arg.values.porf_mbl,
             work_time: arg.values.workTime,
@@ -64,7 +63,6 @@ export const updateWorkThunk = createAsyncThunk("workProfile/updateWorkThunk", a
         })
         return updateRes
     } catch (error) {
-        console.log(error.response.data)
         throw new Error(error.response.data)
     }
 })
@@ -81,14 +79,12 @@ const workSlice = createSlice({
         },
     },
     extraReducers: {
-
         //workProfileData
         [workProfileThunk.pending]: (state, action) => {
             state.workLoading = true
         },
         [workProfileThunk.fulfilled]: (state, action) => {
             state.workLoading = false
-
             state.workData = action.payload.data
             state.workMessage = "Work details saved successfully!"
         },
@@ -102,7 +98,6 @@ const workSlice = createSlice({
         },
         [fetchWorkThunk.fulfilled]: (state, action) => {
             state.workLoading = false
-            console.log("workdata ...",action.payload.data)
             state.workData = action.payload.data
         },
         [fetchWorkThunk.rejected]: (state, error) => {
@@ -115,7 +110,6 @@ const workSlice = createSlice({
         },
         [updateWorkThunk.fulfilled]: (state, action) => {
             state.workLoading = false
-            console.log("workdata ...", action.payload.data)
             state.workData = action.payload.data
             state.workMessage = "Work details update successfully!"
         },

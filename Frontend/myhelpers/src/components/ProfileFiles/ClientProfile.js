@@ -124,8 +124,6 @@ const ClientProfile = () => {
             dispatch(profileActions.messageReducer())
         }
         if (profileError.length !== 0) {
-            // console.log(error)
-            // alert(error)
             setState({ open: true });
             setSnackColor("error")
             setSnackMessage(profileError)
@@ -140,8 +138,8 @@ const ClientProfile = () => {
     const [fieldsDisable, setDisable] = useState(false)
 
     useEffect(() => {
-        console.log("userProfile::", userProfile)
         if (userProfile.length !== 0) {
+
             setStar(userProfile[0]?.rating ?
                 userProfile[0].rating.map((id) =>
                     id.rate
@@ -152,8 +150,10 @@ const ClientProfile = () => {
                 ).length
 
                 : 2)
+            
             userProfile[0]?.email &&
                 setValues((prevState) => { return { ...prevState, email: userProfile[0].email } })
+            
             userProfile[0]?.name && setValues((prevState) => {
                 return {
                     ...prevState,
@@ -176,17 +176,14 @@ const ClientProfile = () => {
             })
             userProfile[0]?.avatar && setfile({
                 ...file,
-                // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
                 dispFile: userProfile[0].avatar
             })
             userProfile[0]?.aadhar_card && setaadhar({ ...aadhar, dispFile: userProfile[0].aadhar_card })
             userProfile[0]?.name && setEditHide(false)
             userProfile[0]?.name && setDisable(true)
         }
-    }, [userProfile[0]])
+    }, [userProfile])
 
-
-    // console.log(values,file.dispFile)
     const addWorkHandler = () => {
         setopenModal(true);
     }
@@ -194,20 +191,16 @@ const ClientProfile = () => {
         setopenModal(false);
     };
     const profileSaveHandler = (e) => {
-        // console.log("save call")
         e.preventDefault()
         if (clicked || file.dispFile) {
             if (aadhar.dispFile) {
                 const formdata = new FormData()
-
                 formdata.append('aadharCard', aadhar.upldfile)
-                // console.log(formdata)
                 const config = {
                     headers: {
                         'content-type': 'multipart/form-data'
                     }
                 }
-                // console.log("config :: ", config)
                 setOnClick(true)
                 const argAadhar = {
                     config,
@@ -242,23 +235,17 @@ const ClientProfile = () => {
             aadhar: aadhar.dispFile,
             rid
         }
-        console.log(arg)
         dispatch(createProfileThunk(arg))
         //Edit button display
         setEditHide(false)
         setDisable(TouchRipple)
-        //close this form model
-        // props.click()
     }
     const onEditClick = () => {
         setDisable(!fieldsDisable)
     }
     const avatarFileType = ["image/png", "image/jpeg"]
-    // const avatarFileSize = 
     const onAvatarChang = (e) => {
-        // console.log("onchange")
         let avatarFile = e.target.files[0]
-        // console.log(avatarFile)
         if (avatarFile && avatarFileType.includes(avatarFile.type)) {
             // size in bytes
             if (avatarFile.size <= 512000) {
@@ -270,14 +257,12 @@ const ClientProfile = () => {
                 setenable(true)
             }
             else {
-                // alert("select file with size below 500 KB!")
                 setState({ open: true });
                 setSnackColor("error")
                 setSnackMessage("select file with size below 500 KB!")
             }
         }
         else {
-            // alert("Please select Image file with (png|jpg|jpeg)!")
             setState({ open: true });
             setSnackColor("error")
             setSnackMessage("Please select Image file with (png|jpg|jpeg)!")
@@ -285,20 +270,14 @@ const ClientProfile = () => {
     }
 
     const avatarSubmit = () => {
-
-        // e.preventDefault()
-        // console.log("form submit")
         if (file.dispFile) {
             const formdata = new FormData()
-
             formdata.append('avatar', file.upldfile)
-            // console.log(formdata)
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
             }
-            // console.log("config :: ", config)
             const argAvatar = {
                 config,
                 formdata,
@@ -306,21 +285,16 @@ const ClientProfile = () => {
             }
             dispatch(avatarThunk(argAvatar))
             setenable(false)
-            // setClicked(true)
-            // console.log("values:: ", values)
         }
         else {
-            // alert("please upload profile picture !")
             setState({ open: true });
             setSnackColor("error")
             setSnackMessage("Please upload profile picture!")
-
         }
     }
     const aadharFileType = ['application/pdf']
     const onAadharChange = (val) => {
         let aadharFile = val.target.files[0]
-        // console.log("aadharFile:: ", aadharFile)
         if (aadharFile && aadharFileType.includes(aadharFile.type)) {
             if (aadharFile.size <= 1048576) {
                 setaadhar((prevState) => {
@@ -332,35 +306,26 @@ const ClientProfile = () => {
                 })
             }
             else {
-                // alert("select file with size below 1 MB!")
                 setState({ open: true });
                 setSnackColor("error")
                 setSnackMessage("select file with size below 1 MB!")
             }
         }
         else {
-            // alert("Please select only  PDF file! ")
             setState({ open: true });
             setSnackColor("error")
             setSnackMessage("Please select only  PDF file! ")
         }
     }
     const onCancel = () => {
-        // console.log("setaadhar")
-        // window.location.reload()
         setaadhar({
             upldfile: [],
             dispFile: ''
         })
     }
-
     const onAadharView = () => {
         window.open(`http://localhost:3001/${aadhar.dispFile}`)
-
-
     }
-
-
     const [onClick, setOnClick] = useState(false)
     const hiddenFileInput = React.useRef(null);
 
@@ -378,8 +343,6 @@ const ClientProfile = () => {
         state: false,
         pincode: false,
     })
-
-
     const [errorText, setErrorText] = useState("");
 
     const onChange = (event) => {
@@ -392,12 +355,10 @@ const ClientProfile = () => {
                 }
             })
             if (/^[A-Za-z]+$/.test(event.target.value)) {
-                // console.log("correct!")
+                setErrorText("")
                 setErrorEnable({ ...errorEnable, fname: false })
-
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, fname: true })
                 setErrorText("Please enter valid Name!")
             }
@@ -410,32 +371,23 @@ const ClientProfile = () => {
                 }
             })
             if (/^[A-Za-z]+$/.test(event.target.value)) {
-                // console.log("correct!")
+                setErrorText("")
                 setErrorEnable({ ...errorEnable, lname: false })
-
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, lname: true })
                 setErrorText("Please enter valid Name!")
             }
         }
         else if (event.target.id === "dob") {
-
             var today = new Date();
-            console.log(today)
             var birthDate = new Date(event.target.value);
-            // console.log(birthDate.toISOString())
             var age = today.getFullYear() - birthDate.getFullYear();
-            // console.log(age)
             var m = today.getMonth() - birthDate.getMonth();
-            // console.log(m)
             if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
                 age--;
             }
-            // console.log(age)
             if (age >= 18) {
-
                 setErrorEnable({ ...errorEnable, dob: false })
                 setValues((prevState) => {
                     return {
@@ -445,7 +397,6 @@ const ClientProfile = () => {
                 })
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, dob: true })
                 setErrorText("Age should me 18 or more than!")
             }
@@ -458,19 +409,14 @@ const ClientProfile = () => {
                 }
             })
             if (/^[6-9][0-9]{9}$/.test(event.target.value)) {
-                // console.log("correct!", values.mbl)
                 if (event.target.value !== values.mbl) {
-                    // console.log("alternate no valid",event.target.value)
                     setErrorEnable({ ...errorEnable, altmbl: false })
                 } else {
-                    // console.log("alternate no invalid")
                     setErrorEnable({ ...errorEnable, altmbl: true })
                     setErrorText("Different from mobile no.!")
                 }
             }
             else {
-                // console.log("wrong!")
-
                 setErrorEnable({ ...errorEnable, altmbl: true })
                 setErrorText("Please enter valid Mobile No.!")
             }
@@ -483,18 +429,14 @@ const ClientProfile = () => {
                 }
             })
             if (/^[6-9][0-9]{9}$/.test(event.target.value)) {
-                // console.log("correct!", values.altmbl)
                 if (event.target.value !== values.altmbl) {
-                    // console.log("mob no valid")
                     setErrorEnable({ ...errorEnable, mbl: false })
                 } else {
-                    // console.log("mob no invalid")
                     setErrorEnable({ ...errorEnable, mbl: true })
                     setErrorText("Different from alaternate no.!")
                 }
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, mbl: true })
                 setErrorText("Please enter valid Mobile No.!")
             }
@@ -507,12 +449,9 @@ const ClientProfile = () => {
                 }
             })
             if (/^[-A-Z0-9]*$/.test(event.target.value)) {
-                // console.log("correct!")
                 setErrorEnable({ ...errorEnable, house_no: false })
-
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, house_no: true })
                 setErrorText("Please enter valid House No.!")
             }
@@ -525,12 +464,9 @@ const ClientProfile = () => {
                 }
             })
             if (/^[A-Z a-z]+$/.test(event.target.value)) {
-                // console.log("correct!")
                 setErrorEnable({ ...errorEnable, house_name: false })
-
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, house_name: true })
                 setErrorText("Please enter valid House Name!")
             }
@@ -543,12 +479,9 @@ const ClientProfile = () => {
                 }
             })
             if (/^[a-z A-Z0-9]*$/.test(event.target.value)) {
-                // console.log("correct!")
                 setErrorEnable({ ...errorEnable, street: false })
-
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, street: true })
                 setErrorText("Please enter valid Street Name!")
             }
@@ -561,12 +494,9 @@ const ClientProfile = () => {
                 }
             })
             if (/^[A-Za-z]+$/.test(event.target.value)) {
-                // console.log("correct!")
                 setErrorEnable({ ...errorEnable, city: false })
-
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, city: true })
                 setErrorText("Please enter valid City Name!")
             }
@@ -579,12 +509,9 @@ const ClientProfile = () => {
                 }
             })
             if (/^[A-Za-z]+$/.test(event.target.value)) {
-                // console.log("correct!")
                 setErrorEnable({ ...errorEnable, state: false })
-
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, state: true })
                 setErrorText("Please enter valid State Name!")
             }
@@ -597,34 +524,24 @@ const ClientProfile = () => {
                 }
             })
             if (/^[0-9]{6}$/.test(event.target.value)) {
-                // console.log("correct!")
                 setErrorEnable({ ...errorEnable, pincode: false })
-
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, pincode: true })
                 setErrorText("Please enter valid Pincode!")
             }
         }
-
         else {
             setErrorText("")
         }
     };
     useEffect(() => {
-        console.log("error::", aadhar.dispFile)
         const areTrue = Object.values(errorEnable).every(
             value => value !== true
         );
-        console.log("allerror::", areTrue);
         const isNullish = Object.values(values).every(value => value !== "");
-        console.log("null", isNullish)
-
-        // console.log("dhjsddsgf", aadhar.dispFile !== "" ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false))
         aadhar.dispFile !== "" ? isNullish ? areTrue ? setSaveEnable(true) : setSaveEnable(false) : setSaveEnable(false) : setSaveEnable(false)
     }, [errorEnable, values, aadhar.dispFile])
-    console.log("loading::",profileLoading);
     return (
         <Grid >
             {profileLoading && <Loading isLoad={true} />  }

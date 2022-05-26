@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken")
-console.log(' Profile model file ...............');
+
 const userSchema = new mongoose.Schema(
     {
         r_id: {
@@ -10,37 +10,25 @@ const userSchema = new mongoose.Schema(
         },
         email: {
             type: String,
-
             lowercase: true,
         },
         otp: {
             type: String,
-
             trim: true,
         },
         name: {
             type: String,
-            // required: true,
             lowercase: true,
             trim: true,
         },
         avatar: {
             type: Object,
-            // required: true,
         },
         aadhar_card: {
             type: String,
-            // required: true,
         },
         dob: {
             type: String,
-            // required: true,
-            // validate: {
-            //   validator: function (value) {
-            //     return value.getTime() < Date.now() - 365 * 24 * 60 * 60 * 1000;
-            //   },
-            //   message: 'An age must be at least 1 year from now .',
-            // },
         },
         is_profile: {
             type: Boolean,
@@ -48,7 +36,6 @@ const userSchema = new mongoose.Schema(
         },
         mobile_number: {
             type: Number,
-            // required: false,
             trim: true,
             validate: {
                 validator: function (val) {
@@ -59,44 +46,35 @@ const userSchema = new mongoose.Schema(
         },
         gender: {
             type: String,
-            // required: true,
             trim: true,
-
         },
         married: {
             type: Boolean,
-            // required: true,
             default: false,
         },
         physical_disable: {
             type: Boolean,
-            // required: true,
             default: false,
         },
         address: 
             {
                 state: {
                     type: String,
-                    // required: true,
                     trim: true,
                     lowercase: true,
                 },
                 city: {
                     type: String,
-                    // required: true,
                     trim: true,
                     lowercase: true,
                 },
                 pincode: {
                     type: Number,
-                    // required: true,
                     min: 6,
-
                     trim: true,
                 },
                 landmark: {
                     type: String,
-                    // required: true,
                     lowercase: true,
                     trim: true,
                 },
@@ -107,7 +85,6 @@ const userSchema = new mongoose.Schema(
                 },
                 house_no: {
                     type: String,
-                    // required: true,
                     uppercase: true,
                     trim: true,
                 },
@@ -125,7 +102,6 @@ const userSchema = new mongoose.Schema(
         about: {
             type: String,
             max: 300,
-            // required: true,
         },
         saved_user: [
             {

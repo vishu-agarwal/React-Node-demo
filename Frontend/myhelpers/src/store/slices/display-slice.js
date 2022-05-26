@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-
 const initialState = {
     displayData: [],
+    viewUserProfile: [],
     userAvatar: [],
     saveUser: [],
     hireUser: [],
@@ -13,18 +13,8 @@ const initialState = {
 }
 
 const varToken = localStorage.getItem("logToken");
-export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarThunk", async (arg) => {
-    try {
-        const fetchavatar = await axios.get(`/myhelpers/fetchAllAvatar`, {
-            headers: {
-                Authorization: "Bearer " + varToken,
-            },
-        })
-        return fetchavatar
-    } catch (error) {
-        throw new Error(error.response.data)
-    }
-})
+
+//fetch all data of helpers
 export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async (arg) => {
     try {
         const fetchRes = await axios.get(`/myhelpers/fetchAllData/Client`, {
@@ -37,6 +27,21 @@ export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async 
         throw new Error(error.response.data)
     }
 })
+//fetch view details of user 
+export const fetchViewUserDataThunk = createAsyncThunk("displayAll/fetchViewUserDataThunk", async (arg) => {
+    try {
+        const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
+            {
+                headers: {
+                    Authorization: "Bearer " + varToken,
+                },
+            })
+        return fetchUser
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
+//fetch save user data
 export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThunk", async (arg) => {
     try {
         const fetchRes = await axios.get(`/myhelpers/fetchSaveUser/${arg}`, {
@@ -44,7 +49,6 @@ export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThun
                 Authorization: "Bearer " + varToken,
             },
         })
-        console.log("save Response:: ", fetchRes)
         return fetchRes
     } catch (error) {
         throw new Error(error.response.data)
@@ -52,13 +56,11 @@ export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThun
 })
 export const searchThunk = createAsyncThunk("displayAll/searchThunk", async (arg) => {
     try {
-        console.log("searchThunk :: ", arg)
         const fetchRes = await axios.get(`/myhelpers/search?field=${arg.workSearch}&searchValue=${arg.filterWork}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-        console.log("Fwtch Response:: ", fetchRes)
         return fetchRes
     } catch (error) {
         throw new Error(error.response.data)
@@ -93,7 +95,23 @@ export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) =>
         throw new Error(error.response.data)
     }
 })
-
+export const starThunk = createAsyncThunk("displayAll/starThunk", async (arg) => {
+    try {
+        const data = {
+            user_id: arg.user_id,
+            rate: arg.rate
+        }
+        const res = await axios.put(`/myhelper/updateStar/${arg.rid}`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
+        return res;
+    }
+    catch (error) {
+        throw new Error(error.response.data)
+    }
+})
 const displaySlice = createSlice({
     name: 'displayAll',
     initialState,//: initialState
@@ -118,15 +136,15 @@ const displaySlice = createSlice({
             state.displayLoading = false
             state.displayError = error.error.message
         },
-        //fetch avatar of all helpers
-        [fetchAllAvatarThunk.pending]: (state, action) => {
+        //fetch view user profile data
+        [fetchViewUserDataThunk.pending]: (state, action) => {
             state.displayLoading = true
         },
-        [fetchAllAvatarThunk.fulfilled]: (state, action) => {
+        [fetchViewUserDataThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            state.userAvatar = action.payload.data
+            state.viewUserProfile = action.payload.data
         },
-        [fetchAllAvatarThunk.rejected]: (state, error) => {
+        [fetchViewUserDataThunk.rejected]: (state, error) => {
             state.displayLoading = false
             state.displayError = error.error.message
         },
@@ -165,6 +183,18 @@ const displaySlice = createSlice({
         [saveThunk.rejected]: (state, error) => {
             state.displayLoading = false
             state.displayError = error.error.message
+        },
+        //update stars
+        [starThunk.pending]: (state, action) => {
+            state.profileLoading = true
+        },
+        [starThunk.fulfilled]: (state, action) => {
+            state.profileLoading = false
+            state.viewUserProfile = action.payload.data
+        },
+        [starThunk.rejected]: (state, error) => {
+            state.profileLoading = false
+            state.profileError = error.error.message
         },
         //fetch saveUser
         [fetchSaveUserThunk.pending]: (state, action) => {

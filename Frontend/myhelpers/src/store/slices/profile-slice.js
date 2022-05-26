@@ -3,7 +3,6 @@ import axios from 'axios'
 
 const initialState = {
     userProfile: [],
-    viewUserProfile: [],
     profileMessage: '',
     profileLoading: false,
     profileError: "",
@@ -12,23 +11,6 @@ const initialState = {
 }
 const varToken = localStorage.getItem("logToken");
 
-export const starThunk = createAsyncThunk("userProfile/starThunk", async (arg) => {
-    try {
-        const data = {
-            user_id: arg.user_id,
-            rate: arg.rate
-        }
-        const res = await axios.put(`/myhelper/updateStar/${arg.rid}`, data, {
-            headers: {
-                Authorization: "Bearer " + varToken,
-            },
-        })
-        return res;
-    }
-    catch (error) {
-        throw new Error(error.response.data)
-    }
-})
 export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (arg) => {
     try {
         const res = await axios.post(`/myhelper/upldAvatar/${arg.rid}`, arg.formdata, {
@@ -88,42 +70,7 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
     }
 })
 
-export const fetchEmailThunk = createAsyncThunk("userProfile/fetchEmailThunk", async (arg) => {
-    try {
-        const fetchemail = await axios.get(`/myhelpers/userProfile/fetchEmail/${arg}`,
-            {
-                headers: {
-                    Authorization: "Bearer " + varToken,
-                },
-            })
-
-        // console.log("Fwtch Response:: ", fetchUser)
-        return fetchemail
-
-    } catch (error) {
-        throw new Error(error.response.data)
-    }
-})
-
-export const fetchAvatarThunk = createAsyncThunk("userProfile/fetchAvatarThunk", async (arg) => {
-    try {
-        // console.log("arg ",arg)    
-
-        const fetchemail = await axios.get(`/myhelpers/userProfile/fetchAvatar/${arg}`,
-            {
-                headers: {
-                    Authorization: "Bearer " + varToken,
-                },
-            })
-
-        // console.log("Fwtch Response:: ", fetchUser)
-        return fetchemail
-
-    } catch (error) {
-        throw new Error(error.response.data)
-    }
-})
-
+//fetch logged in user data
 export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileThunk", async (arg) => {
     try {
         const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
@@ -132,49 +79,12 @@ export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileT
                     Authorization: "Bearer " + varToken,
                 },
             })
-       
         return fetchUser
     } catch (error) {
         throw new Error(error.response.data)
     }
 })
-//update profile of user
-export const updateProfileThunk = createAsyncThunk("userProfile/updateProfileThunk", async (arg) => {
-    try {
-        const data = {
-            name: arg.values.fname + ' ' + arg.values.lname,
-            dob: arg.values.dob,
-            mobile_number: arg.values.mbl,
-            gender: arg.values.gender,
-            married: arg.values.married,
-            physical_disable: arg.values.physic_dis,
-            address:
-            {
-                state: arg.values.state,
-                city: arg.values.city,
-                pincode: arg.values.pincode,
-                landmark: arg.values.street,
-                house_name: arg.values.house_name,
-                house_no: arg.values.house_no,
-            },
-            alternate_mobile_number: arg.values.altmbl,
-            about: arg.values.about,
-            aadhar_card: arg.aadhar
-        }
-        // console.log("data::",data)
-        const updateuser = await axios.put(`/myhelpers/client/update/${arg.rid}`, data, {
-            headers: {
-                Authorization: "Bearer " + varToken,
-            },
-        })
 
-        // console.log("Fwtch Response:: ", fetchRes)
-        return updateuser
-
-    } catch (error) {
-        throw new Error(error.response.data)
-    }
-})
 
 const profileSlice = createSlice({
     name: 'userProfile',
@@ -229,85 +139,25 @@ const profileSlice = createSlice({
             state.profileLoading = false
             state.profileError = error.error.message
         },
-        //fetchEmail
-        [fetchEmailThunk.pending]: (state, action) => {
-            state.profileLoading = true
-        },
-        [fetchEmailThunk.fulfilled]: (state, action) => {
-            state.profileLoading = false
-            state.email = action.payload.data
-        },
-        [fetchEmailThunk.rejected]: (state, error) => {
-            state.profileLoading = false
-            // console.log("rejected::", error.error.message)
-
-            state.profileError = error.error.message
-        },
-        //fetch avatar
-
-        [fetchAvatarThunk.pending]: (state, action) => {
-            state.profileLoading = true
-        },
-        [fetchAvatarThunk.fulfilled]: (state, action) => {
-            state.profileLoading = false
-            //  state.isAuth = true
-            if (action.payload.data === "First upload photo for create profile!") {
-                state.profileMessage = action.payload.data
-            }
-            else {
-                state.avatar = action.payload.data
-            }
-        },
-        [fetchAvatarThunk.rejected]: (state, error) => {
-            state.profileLoading = false
-            // console.log("rejected::", error.error.message)
-            state.profileError = error.error.message
-        },
         //fetchProfileData
         [fetchUserProfileThunk.pending]: (state, action) => {
             state.profileLoading = true
         },
         [fetchUserProfileThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
-            //  state.isAuth = true
             if (action.payload.data === "Please create profile for move forward!") {
                 state.profileMessage = action.payload.data
             }
             else {
                 state.userProfile = action.payload.data
             }
-            // console.log("userProfile::",state.userProfile)
         },
         [fetchUserProfileThunk.rejected]: (state, error) => {
             state.profileLoading = false
             state.profileError = error.error.message
         },
-        //update userProfileData
-        [updateProfileThunk.pending]: (state, action) => {
-            state.profileLoading = true
-        },
-        [updateProfileThunk.fulfilled]: (state, action) => {
-            state.profileLoading = false
-            state.profileMessage = action.payload.data
-        },
-        [updateProfileThunk.rejected]: (state, error) => {
-            state.profileLoading = false
-            // console.log("rejected::", error.error.message)
-
-            state.profileError = error.error.message
-        },
-        //update stars
-        [starThunk.pending]: (state, action) => {
-            state.profileLoading = true
-        },
-        [starThunk.fulfilled]: (state, action) => {
-            state.profileLoading = false
-            state.userProfile = action.payload.data
-        },
-        [starThunk.rejected]: (state, error) => {
-            state.profileLoading = false
-            state.profileError = error.error.message
-        },
+        
+        
     }
 })
 

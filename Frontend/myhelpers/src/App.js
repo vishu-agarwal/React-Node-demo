@@ -77,16 +77,7 @@ const protectedRoutes = [
 ]
 
 function App() {
-  // const { isAuth } = useSelector(state => state.loginStore)
-  // console.log(isAuth)
-  // const role = localStorage.getItem("role")
-
-  // const isToken = localStorage.getItem("logToken")
-
-  // console.log("is authhhhhhh", isAuth, isToken)
-  useEffect(() => {
-    console.log("App rendered");
-  }, [])
+ 
   return (
     <BrowserRouter>
       <div className="App">

@@ -36,6 +36,41 @@ const fetchAllData = async (req, res) => {
         return res.status(400).send(error.message)
     }
 }
+
+//update rating
+const updateStar = async (req, res) => {
+    try {
+        const found = await userModel.findOne({ r_id: req.params.rid });
+        if (found) {
+            const findUser = await userModel.findOne({ r_id: req.body.user_id })
+            const idIndex = findUser.rating.findIndex((c) => c.user_id === req.params.rid);
+            if (idIndex < 0) {
+                const updateRate = {
+                    user_id: req.params.rid,
+                    rate: req.body.rate
+                }
+                const rate = findUser.rating.concat(updateRate)
+                const updtStar = await userModel.findOneAndUpdate(
+                    { r_id: req.body.user_id },
+                    { rating: rate },
+                    { new: true }
+                )                
+                return res.status(200).send([updtStar])
+            }
+            else if (findUser.rating[idIndex].user_id === req.params.rid) {
+                findUser.rating[idIndex].rate = req.body.rate
+                const update = await findUser.save();
+                return res.status(200).send([update]);
+            }
+        }
+        else {
+            throw new Error("Please first create your profile!")
+        }
+    }
+    catch (error) {
+        return res.status(400).send(error.message)
+    }
+}
 //save user data 
 const saveUserData = async (req, res) => {
     try {
@@ -176,7 +211,7 @@ const sorting = async (req, res) => {
 }
 
 module.exports = {
-
+    updateStar,
     fetchAllData,
     saveUserData,
     fetchSaveUser,

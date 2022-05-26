@@ -16,14 +16,12 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Zoom from '@mui/material/Zoom';
 import PropTypes from 'prop-types';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-
 import { NavLink, useNavigate, useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import WorkRequest from '../Modals/WorkRequests'
 import ShortListed from '../Modals/ShortListed';
 import HiredHelper from '../Modals/HiredHelper';
 import { loginActions } from '../../store/slices/login-slice'
-
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import { profileActions } from '../../store/slices/profile-slice'
@@ -84,7 +82,6 @@ const Header = (props) => {
     const dispatch = useDispatch()
     let navigate = useNavigate()
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
-    console.log("my profile ", userProfile);
     const role = localStorage.getItem("role")
     const rid = localStorage.getItem("r_id")
 
@@ -98,11 +95,11 @@ const Header = (props) => {
     const [avatar, setAvatar] = useState("")
 
     useEffect(() => {
+        isAuth &&
         dispatch(fetchUserProfileThunk(rid))
-    }, [])
+    }, [rid])
 
     useEffect(() => {
-        console.log("userPRofile")
         userProfile[0]?.avatar && setAvatar(userProfile[0].avatar)
     }, [userProfile])
 
@@ -137,8 +134,6 @@ const Header = (props) => {
         setOpenHired(false);
         setOpenShortlist(false);
     };
-
-    console.log("request open :: ")
     const onLogoutClick = () => {
         localStorage.removeItem("r_id")
         localStorage.removeItem("logToken")

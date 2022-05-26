@@ -14,8 +14,8 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { displayActions, fetchAllThunk, saveThunk } from '../store/slices/display-slice';
-import { fetchUserProfileThunk, starThunk } from "../store/slices/profile-slice";
+import { displayActions, fetchAllThunk, starThunk, saveThunk } from '../store/slices/display-slice';
+import { fetchUserProfileThunk } from "../store/slices/profile-slice";
 import Loading from './layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -208,33 +208,17 @@ const CardJS = (props) => {
                                 Work : {
                                     Array.isArray(props.values.work_details[0]) ?
                                         props.values.work_details[0]?.map((value, index) =>
-                                            // console.log(value)
-
                                             value.category.split("(")[0] + ", "
                                         )
-
                                         :
                                         props.values.work_details?.map((value, index) =>
-
-                                            // console.log(value)
                                             value.category.split("(")[0] + ", "
                                         )
-                                    // console.log(props.values)
                                 }
                             </Typography>
-
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
                                 Prefer Time : {props.values.work_time}
-                            </Typography>
-                            {/* {
-                                props.hireStatus.length !== 0 ?
-                                    // console.log("status::",)
-                                    <>
-                                        <Typography gutterBottom sx={{ fontSize: 15 }} display="inline">Hire Status :</Typography>
-                                        <Typography gutterBottom color={props.hireStatus[0] ? "#1b5e20" : "#faaf00"} sx={{ fontSize: 15 }} display="inline"> {props.hireStatus[0] ? "Hired!" : "Pending!"}</Typography>
-                                    </>
-                                    : ''
-                            } */}
+                            </Typography>                            
                         </Grid>
                     </Grid>
                     <Grid container direction={'row'} justifyContent="center" >

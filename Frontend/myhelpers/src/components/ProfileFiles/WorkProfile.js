@@ -108,15 +108,12 @@ const WorkProfile = (props) => {
     const [editHide, setEditHide] = useState(true)
     //fields enable or diable on hide button
     const [fieldsDisable, setDisable] = useState(false)
-    // console.log(fields)
 
     useEffect(() => {
         dispatch(fetchWorkThunk(rid))
     }, [])
 
     useEffect(() => {
-
-
         if (workMessage.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("info")
@@ -124,7 +121,6 @@ const WorkProfile = (props) => {
             dispatch(workProfileActions.messageReducer())
         }
         if (workError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(workError)
@@ -134,9 +130,7 @@ const WorkProfile = (props) => {
     }, [workMessage, workError])
 
     useEffect(() => {
-        // console.log("workdata ;;;", workData, typeof workData.languages)
         if (workData.length !==0) {
-            // console.log(workData,"...workData file")
             setValues({
                 porf_mbl: workData?.profession_mobile_number,
                 workTime: workData?.work_time,
@@ -408,7 +402,6 @@ const WorkProfile = (props) => {
                                                     {languageName.map((name) => (
                                                         <MenuItem key={name} value={name}>
                                                             <Checkbox checked={lang?.indexOf(name) > -1} />
-                                                            {/* {console.log(lang.indexOf(name) )} */}
                                                             <ListItemText primary={name} />
                                                         </MenuItem>
                                                     ))}

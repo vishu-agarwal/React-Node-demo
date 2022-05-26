@@ -17,5 +17,6 @@ router.get("/myhelpers/fetchSaveUser/:rid",auth,DisplayController.fetchSaveUser)
 router.get("/myhelpers/search",auth, DisplayController.searching)
 //sort
 router.get("/myhelpers/sort", auth, DisplayController.sorting)
-
+//update star
+router.put("/myhelper/updateStar/:rid", auth, DisplayController.updateStar)
 module.exports = router

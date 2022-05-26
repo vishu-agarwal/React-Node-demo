@@ -5,22 +5,22 @@
                             </InputAdornment>}
                     </Grid> */}
 
-                    // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
+// status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
 
-                    // helperAvatar = userAvatar.length && userAvatar.find((val) => values.r_id === val.r_id) 
-                        // console.log(helperAvatar)
-                        // hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : '';
-                        
+// helperAvatar = userAvatar.length && userAvatar.find((val) => values.r_id === val.r_id) 
+// console.log(helperAvatar)
+// hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : '';
+
 {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */ }
 
 
 {/* {props.workTime === "Full Day (12 Hrs)" || props.workTime === "Live In (24 Hrs)" || props.workTime === "Night Shift (12 Hrs)" */ }
 
 
- // const onHireUser = () => {
-    //     dispatch(hireUserThunk(rid))
-    //     setEnableHire(false)
-    // }
+// const onHireUser = () => {
+//     dispatch(hireUserThunk(rid))
+//     setEnableHire(false)
+// }
 
 
 {/* <ExpandCircleDownIcon
@@ -59,37 +59,37 @@
                 sx={{ display: 'block', color: "white" }}
                 style={{ display: visible ? 'inline' : 'none', cursor: "pointer", height: "30%", width: "100%" }} /> */}
 
-                  // window.scrollTo({
-    //   top: document.documentElement.scrollHeight,
-    //   behavior: 'auto'
-    //   /* you can also use 'auto' behaviour 
-    //      in place of 'smooth' */
-    // });
-    
-    
-     // <ExpandCircleDownIcon
-    //   onClick={scrollToBottom}
+// window.scrollTo({
+//   top: document.documentElement.scrollHeight,
+//   behavior: 'auto'
+//   /* you can also use 'auto' behaviour 
+//      in place of 'smooth' */
+// });
 
-    //   size="large"
-    //   variant="contained"
-    //   sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
-    // style={{
-    //   display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
-    //   transition: "all .5s ease -in -out"
-    // }} 
-    // />
-    
-    
-    
-      // const handleClose = () => {
-    //     setOpen(false);
-    // };
-    // const handleToggle = () => {
-    //     setOpen();
-    // };
-    
-    
-    
+
+// <ExpandCircleDownIcon
+//   onClick={scrollToBottom}
+
+//   size="large"
+//   variant="contained"
+//   sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
+// style={{
+//   display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
+//   transition: "all .5s ease -in -out"
+// }} 
+// />
+
+
+
+// const handleClose = () => {
+//     setOpen(false);
+// };
+// const handleToggle = () => {
+//     setOpen();
+// };
+
+
+
 
 {/* <Button onClick={handleToggle}>Show backdrop</Button> */ }
 
@@ -107,14 +107,14 @@
 
 
 
- // const [values,message, setValues] = useState({
-    //     name: '',
-    //     porf_mbl: '',
-    //     age: '',
-    //     work: '',
-    //     experience: '',
-    //     time: '',
-    // });
+// const [values,message, setValues] = useState({
+//     name: '',
+//     porf_mbl: '',
+//     age: '',
+//     work: '',
+//     experience: '',
+//     time: '',
+// });
 
 
 
@@ -128,43 +128,327 @@
 {/* <CheckOutlinedIcon fontSize="large" sx={{ color:"#faaf00"}} onClick={onEditHandler} /> */ }
 
 
- // const [values,message, setValues] = useState({
-    //     name: '',
-    //     porf_mbl: '',
-    //     age: '',
-    //     work: '',
-    //     experience: '',
-    //     time: '',
-    // });
+// const [values,message, setValues] = useState({
+//     name: '',
+//     porf_mbl: '',
+//     age: '',
+//     work: '',
+//     experience: '',
+//     time: '',
+// });
 
 
-    // const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-        // if (phoneRegex.test(event.target.value)) {
-        //     console.log(event.target.value)
-        // setValues((prevState) => { return { ...prevState, altmbl: event.target.value } }) 
+// const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+// if (phoneRegex.test(event.target.value)) {
+//     console.log(event.target.value)
+// setValues((prevState) => { return { ...prevState, altmbl: event.target.value } }) 
 
-        // alpha numeric  expression /^[a-zA-Z0-9]*$/
-        ///^[A-Za-z]+$/ only letters
-        // only numbers
-        // only alphabels and limited characters /^[a-zA-Z ]{2,30}$/;
-        //mobile no validation /^[6-9][0-9]{9}$/
-        // /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im 
-        // console.log("field id :: ", event.target.id)
-        
-        
-        // console.log(fields)
-    // useEffect(() => {
-    //     console.log("avatar::", avatar)
-    //     if (avatar.length !== 0) {
-    //         dispatch(fetchUserProfileThunk(rid))
+// alpha numeric  expression /^[a-zA-Z0-9]*$/
+///^[A-Za-z]+$/ only letters
+// only numbers
+// only alphabels and limited characters /^[a-zA-Z ]{2,30}$/;
+//mobile no validation /^[6-9][0-9]{9}$/
+// /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im 
+// console.log("field id :: ", event.target.id)
 
-    //         setfile({
-    //             ...file,
-    //             // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
-    //             dispFile: avatar[0].avatar
 
-    //         })
+// console.log(fields)
+// useEffect(() => {
+//     console.log("avatar::", avatar)
+//     if (avatar.length !== 0) {
+//         dispatch(fetchUserProfileThunk(rid))
 
+//         setfile({
+//             ...file,
+//             // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+//             dispFile: avatar[0].avatar
+
+//         })
+
+//     }
+// }, [avatar])
+// const str2blob = txt => new Blob([txt]);
+//fetchEmail
+[fetchEmailThunk.pending]: (state, action) => {
+    state.profileLoading = true
+},
+    [fetchEmailThunk.fulfilled]: (state, action) => {
+        state.profileLoading = false
+        state.email = action.payload.data
+    },
+        [fetchEmailThunk.rejected]: (state, error) => {
+            state.profileLoading = false
+            // console.log("rejected::", error.error.message)
+
+            state.profileError = error.error.message
+        },
+            //fetch avatar
+
+            [fetchAvatarThunk.pending]: (state, action) => {
+                state.profileLoading = true
+            },
+                [fetchAvatarThunk.fulfilled]: (state, action) => {
+                    state.profileLoading = false
+                    //  state.isAuth = true
+                    if (action.payload.data === "First upload photo for create profile!") {
+                        state.profileMessage = action.payload.data
+                    }
+                    else {
+                        state.avatar = action.payload.data
+                    }
+                },
+                    [fetchAvatarThunk.rejected]: (state, error) => {
+                        state.profileLoading = false
+                        // console.log("rejected::", error.error.message)
+                        state.profileError = error.error.message
+},
+                        
+                        export const fetchEmailThunk = createAsyncThunk("userProfile/fetchEmailThunk", async (arg) => {
+                            try {
+                                const fetchemail = await axios.get(`/myhelpers/userProfile/fetchEmail/${arg}`,
+                                    {
+                                        headers: {
+                                            Authorization: "Bearer " + varToken,
+                                        },
+                                    })
+
+                                // console.log("Fwtch Response:: ", fetchUser)
+                                return fetchemail
+
+                            } catch (error) {
+                                throw new Error(error.response.data)
+                            }
+                        })
+
+
+//fetch avatar of all helpers
+[fetchAllAvatarThunk.pending]: (state, action) => {
+    state.displayLoading = true
+},
+    [fetchAllAvatarThunk.fulfilled]: (state, action) => {
+        state.displayLoading = false
+        state.userAvatar = action.payload.data
+    },
+        [fetchAllAvatarThunk.rejected]: (state, error) => {
+            state.displayLoading = false
+            state.displayError = error.error.message
+},
+            
+            
+            // const { isAuth } = useSelector(state => state.loginStore)
+            // console.log(isAuth)
+            // const role = localStorage.getItem("role")
+
+            // const isToken = localStorage.getItem("logToken")
+
+            // console.log("is authhhhhhh", isAuth, isToken)
+            useEffect(() => {
+                console.log("App rendered");
+            }, [])
+
+
+{/* {
+                                props.hireStatus.length !== 0 ?
+                                    // console.log("status::",)
+                                    <>
+                                        <Typography gutterBottom sx={{ fontSize: 15 }} display="inline">Hire Status :</Typography>
+                                        <Typography gutterBottom color={props.hireStatus[0] ? "#1b5e20" : "#faaf00"} sx={{ fontSize: 15 }} display="inline"> {props.hireStatus[0] ? "Hired!" : "Pending!"}</Typography>
+                                    </>
+                                    : ''
+                            } */}
+
+
+
+    // const searchChange = (e) => {
+    //     const arg = {
+    //         workSearch, filterWork
     //     }
-    // }, [avatar])
-    // const str2blob = txt => new Blob([txt]);
+    //     dispatch(searchThunk(arg))
+    //     dispatch(fetchSaveUserThunk(rid))
+    // }
+
+
+useEffect(() => {
+    console.log("did mount called")
+    return () => {
+        console.log("component unmount")
+    }
+}, [])
+
+console.log('state :::::::,', JSON.parse(JSON.stringify(state)));
+
+
+
+                // dispFile: URL.createObjectURL(str2blob(userProfile[0].avatar)),
+
+//update userProfileData
+[updateProfileThunk.pending]: (state, action) => {
+    state.profileLoading = true
+},
+    [updateProfileThunk.fulfilled]: (state, action) => {
+        state.profileLoading = false
+        state.userProfile = action.payload.data
+        state.profileMessage = "Profile details updated successfully!"
+    },
+        [updateProfileThunk.rejected]: (state, error) => {
+            state.profileLoading = false
+            state.profileError = error.error.message
+},
+            
+            
+            //update profile of user
+export const updateProfileThunk = createAsyncThunk("userProfile/updateProfileThunk", async (arg) => {
+    try {
+        const data = {
+            name: arg.values.fname + ' ' + arg.values.lname,
+            dob: arg.values.dob,
+            mobile_number: arg.values.mbl,
+            gender: arg.values.gender,
+            married: arg.values.married,
+            physical_disable: arg.values.physic_dis,
+            address:
+            {
+                state: arg.values.state,
+                city: arg.values.city,
+                pincode: arg.values.pincode,
+                landmark: arg.values.street,
+                house_name: arg.values.house_name,
+                house_no: arg.values.house_no,
+            },
+            alternate_mobile_number: arg.values.altmbl,
+            about: arg.values.about,
+            aadhar_card: arg.aadhar
+        }
+        // console.log("data::",data)
+        const updateuser = await axios.put(`/myhelpers/client/update/${arg.rid}`, data, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
+
+        // console.log("Fwtch Response:: ", fetchRes)
+        return updateuser
+
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
+
+export const fetchAvatarThunk = createAsyncThunk("userProfile/fetchAvatarThunk", async (arg) => {
+    try {
+        // console.log("arg ",arg)    
+
+        const fetchemail = await axios.get(`/myhelpers/userProfile/fetchAvatar/${arg}`,
+            {
+                headers: {
+                    Authorization: "Bearer " + varToken,
+                },
+            })
+        return fetchemail
+
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
+
+export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarThunk", async (arg) => {
+    try {
+        const fetchavatar = await axios.get(`/myhelpers/fetchAllAvatar`, {
+            headers: {
+                Authorization: "Bearer " + varToken,
+            },
+        })
+        return fetchavatar
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
+})
+
+
+
+// return (
+    //     <Route
+    //         {...rest}
+    //         render={
+    //             ({ location }) => (
+    //                 isAuthenticated
+    //                     ? (
+    //                         children
+    //                     ) : (
+    //                         <Navigate
+    //                             to={{
+    //                                 pathname: '/',
+    //                                 state: { from: location }
+    //                             }}
+    //                         />
+    //                     ))
+    //         }
+    //     />
+    // );
+
+
+
+// function PublicRoutes({ children, isAuthenticated, ...rest }) {
+//     return (
+//         <Route
+//             {...rest}
+//             render={
+//                 ({ location }) => (
+//                     !isAuthenticated ? (
+//                         children
+//                     ) : (
+//                         <Navigate
+//                             to={{
+//                                 pathname: '/home',
+//                                 state: { from: location }
+//                             }}
+//                         />
+//                     ))
+//             }
+//         />
+//     );
+// }
+
+
+
+// const ProtectedRoutes = ({ role }) => (
+
+//         <Suspense
+//             fallback={<Loader />}
+//         >
+//             {role === "C" ?
+//                 ClientRoutesList.map(({ element: Component, path, exact }) => (
+//                     // <Route
+//                     //     path={`/${path}`}
+//                     //     key={path}
+//                     //     exact={exact}
+//                     // >
+//                     //     <Component />
+//                     // </Route>
+//                     Temp(role, Component)
+//                 ))
+
+//                 :
+//                 role === "H" &&
+//                     HelperRoutesList.map(({ element: Component, path, exact }) => (
+//                         // <Route
+//                         //     path={`/${path}`}
+//                         //     key={path}
+//                         //     exact={exact}
+//                         // >
+//                         //     <Component />
+//                         // </Route>
+//                         Temp(role, Component)
+//                     ))
+//                     // :
+//                     // <Route
+//                     //     exact
+//                     //     path={`/home`}
+//                     // >
+//                     //     <HiringProcess />
+//                     // </Route>
+
+//             }
+//         </Suspense>
+
+// );

@@ -38,12 +38,7 @@ const Login = () => {
         email: '',
         role: params.role,
     });
-    useEffect(() => {
-        console.log("did mount called")
-        return () => {
-            console.log("component unmount")
-        }
-    }, [])
+    
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
@@ -59,8 +54,6 @@ const Login = () => {
     const [otp, setotp] = useState('');
 
     const { logUser: logUser, error, token, loadingLogin } = useSelector((state) => {
-        console.log('state :::::::,', JSON.parse(JSON.stringify(state)));
-
         return { ...state.loginStore }
     });
 
@@ -76,7 +69,6 @@ const Login = () => {
 
     useEffect(() => {
         if (error.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor('error');
             setSnackMessage(error);
@@ -97,19 +89,10 @@ const Login = () => {
     }, [error, otpError, otpMessage]);
 
     useEffect(() => {
-        console.log('set login user ');
-        console.log(logUser);
         let redirectPath = ''
-        if (logUser) {
-            if (logUser?.r_id?.charAt(0) === 'C') {
-                // localStorage.setItem('role', 'Client');
-                redirectPath = '/Client/home'
-            } else {
-                // localStorage.setItem('role', 'Helper');
-                redirectPath = '/Helper/home'
-            }
+        if (logUser.length) {
            
-            // navigate(redirectPath, { replace: true })
+            !logUser.is_profile && navigate(`/profile`, { replace: true })
         }
     }, [logUser]);
 

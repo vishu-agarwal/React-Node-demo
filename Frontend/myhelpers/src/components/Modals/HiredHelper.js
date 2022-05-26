@@ -31,7 +31,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './HireRequestCard';
 import HireRequestSlice from '../../store/slices/hireRequest-slice';
 // import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
-import {hireRequestActions} from '../../store/slices/hireRequest-slice'
+import { hireRequestActions } from '../../store/slices/hireRequest-slice'
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -75,7 +75,6 @@ const HiredHelper = (props) => {
 
         }
         if (requestError.length !== 0) {
-            // console.log(error)
             setState({ snackOpen: true });
             setSnackColor("error")
             setSnackMessage(requestError)
@@ -83,7 +82,7 @@ const HiredHelper = (props) => {
         }
 
     }, [requestMessage, requestError])
-   
+
     useEffect(() => {
         dispatch(fetchHelperRequestsThunk(rid))
     }, [])
@@ -133,7 +132,7 @@ const HiredHelper = (props) => {
                                     </Grid>
 
                                     <Grid item xs={12} sm={2} align="right">
-                                       
+
                                         <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
                                     </Grid>
                                 </Grid>
@@ -144,19 +143,26 @@ const HiredHelper = (props) => {
                                 hireRequestData.length !== 0 ?
                                     hireRequestData.map((val, index) => {
                                         if (val.status === "hired!") {
-
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
-
                                                 <HireRequestCard values={val} />
+                                            </Grid>
+                                        }
+                                        else {
+                                            <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                                                <img
+                                                    src={require("../allImages/notfound.gif")}
+                                                    alt="Page No Found..."
+                                                    align="center"
+                                                />
                                             </Grid>
                                         }
                                     }
                                     )
                                     :
-                                    <Grid  item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                                    <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
                                         <img
                                             src={require("../allImages/notfound.gif")}
-                                            alt="Page No Found..."                                            
+                                            alt="Page No Found..."
                                             align="center"
                                         />
                                     </Grid>

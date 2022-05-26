@@ -24,7 +24,7 @@ import { useState, useEffect } from 'react';
 
 // import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
 import { displayActions, fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
-import {workProfileActions} from '../../store/slices/work-slice'
+import { workProfileActions } from '../../store/slices/work-slice'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import CardJS from '../Card';
@@ -51,7 +51,7 @@ const ShortListed = (props) => {
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
-    let { displayData, saveUser, hireUser, displayMessage,displayError,displayLoading } = useSelector((state) => ({ ...state.displayStore }))
+    let { displayData, saveUser, hireUser, displayMessage, displayError, displayLoading } = useSelector((state) => ({ ...state.displayStore }))
 
 
     const [state, setState] = useState({
@@ -66,13 +66,13 @@ const ShortListed = (props) => {
     const [snackMessage, setSnackMessage] = useState('')
     const [snackColor, setSnackColor] = useState("info")
 
-   
+
     useEffect(() => {
         dispatch(fetchAllThunk())
         dispatch(fetchSaveUserThunk(rid))
     }, [])
 
-    
+
     useEffect(() => {
         if (displayMessage.length !== 0) {
             setState({ snackOpen: true });
@@ -157,17 +157,17 @@ const ShortListed = (props) => {
                                     saveUser.map((val, index) =>
                                         displayData.map((values, index) => {
                                             if (val.user_id === values.r_id) {
-                                                {
-                                                    rates = values.rating[0] !== undefined ?
-                                                        values.rating[0].map((id) =>
-                                                            id.rate
-                                                        ).reduce((prev, curr) => prev + curr, 0)
-                                                        /
-                                                        values.rating[0].map((id) =>
-                                                            id.user_id
-                                                        ).length
-                                                        : null
-                                                }
+
+                                                rates = values.rating[0] !== undefined ?
+                                                    values.rating[0].map((id) =>
+                                                        id.rate
+                                                    ).reduce((prev, curr) => prev + curr, 0)
+                                                    /
+                                                    values.rating[0].map((id) =>
+                                                        id.user_id
+                                                    ).length
+                                                    : null
+
                                                 hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
                                                 return <Grid marginBottom={1} item xs={12} sm={12} align="center" key={index}>
                                                     <CardJS values={values} rates={rates} saveStatus={true} hireStatus={hireStatus} />
@@ -176,7 +176,7 @@ const ShortListed = (props) => {
                                         })
                                     )
                                     :
-                                    <Grid  item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                                    <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
                                         <img
                                             src={require("../allImages/notfound.gif")}
                                             alt="Page No Found..."

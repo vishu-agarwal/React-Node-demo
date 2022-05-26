@@ -123,13 +123,6 @@ const DisplayData = () => {
         }
     }, [saveUser])
 
-    const searchChange = (e) => {
-        const arg = {
-            workSearch, filterWork
-        }
-        dispatch(searchThunk(arg))
-        dispatch(fetchSaveUserThunk(rid))
-    }
     const [sortField, setSortField] = useState('')
     const onSortChange = (sort, field) => {
         const arg = {
@@ -277,7 +270,7 @@ const DisplayData = () => {
                             && !!saveUser.find((val) => values.r_id === val.user_id)
                         
                         return <Grid item xs={12} sm={4} md={3} key={index} >
-                            <CardJS values={values} rates={rates} saveStatus={status} hireStatus={hireStatus} />
+                            <CardJS values={values} rates={rates} saveStatus={status} />
                         </Grid>
                     })
                 }

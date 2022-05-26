@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const initialState = {
-    logUser: null,
+    logUser: [],
     token: "",
     isAuth: false,
     loadingLogin: false,
@@ -22,16 +22,10 @@ if (isToken) {
 
 export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) => {
     try {
-        // console.log("diapatch::", arg)
         const data = {
             email: arg.email
         };
-        // console.log(data)
         const loginRes = await axios.post(`/myhelpers/register/${arg.role}`, data)
-
-        // localStorage.setItem("logToken", loginRes.data.token)
-        // localStorage.setItem("r_id", loginRes.data.newUser.r_id)
-        console.log("loginRes", loginRes)
         let role = 'Client';
         if (loginRes?.data?.removeOtp?.r_id?.charAt(0) === 'C') {
             role = 'Client'
@@ -42,7 +36,6 @@ export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) =
         return { ...loginRes, role }
     }
     catch (error) {
-        // console.log(error.response.data)
         throw new Error(error.response.data)
     }
 })

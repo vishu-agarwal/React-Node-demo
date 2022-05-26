@@ -5,11 +5,9 @@ import {
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import React from 'react';
+
 function PrivateRoutes({ children, isAuthenticated, ...rest }) {
-
     const { isAuth } = useSelector(state => state.loginStore)
-
-    // console.log(children)
     if (isAuth) {
         return (
             <React.Fragment>
@@ -17,27 +15,7 @@ function PrivateRoutes({ children, isAuthenticated, ...rest }) {
             </React.Fragment>
         )
     }
-    return <Navigate to={'/'} replace={true} />
-
-    // return (
-    //     <Route
-    //         {...rest}
-    //         render={
-    //             ({ location }) => (
-    //                 isAuthenticated
-    //                     ? (
-    //                         children
-    //                     ) : (
-    //                         <Navigate
-    //                             to={{
-    //                                 pathname: '/',
-    //                                 state: { from: location }
-    //                             }}
-    //                         />
-    //                     ))
-    //         }
-    //     />
-    // );
+    else return <Navigate to={'/'} replace={true} />    
 }
 
 export default PrivateRoutes;

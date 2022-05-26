@@ -22,8 +22,7 @@ router.post("/myhelper/upldAadhar/:rid", auth,
 )
 //fecth profile
 router.get("/myhelpers/userProfile/fetch/:rid", auth, profileController.fetchProfile)
-//update star
-router.put("/myhelper/updateStar/:rid", auth, profileController.updateStar)
+
 //update profile
 router.put("/myhelpers/client/update/:rid", auth, profileController.updateProfile)
 //delete profile

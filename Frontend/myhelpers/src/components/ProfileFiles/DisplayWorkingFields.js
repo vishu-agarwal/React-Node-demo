@@ -22,13 +22,10 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
     const [errorText, setErrorText] = useState("");
 
     const handleChange = (e, index) => {
-        // console.log("value--->", e.target);
         const { name, value } = e.target
         let list = [...fields]
         if (name === "category") {
-            // console.log("befor set", list, list[index][name], index, name, value)
             list[index] = { ...list[index], [name]: value }
-            // console.log("after change", list, list[index][name])
             setFields(list)
             if (list[index][name] === "") {
                 setErrorEnable({ ...errorEnable, [name]: true })
@@ -39,7 +36,6 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
             }
         }
         if (name === "experience") {
-            // list[index][name] = value
             list[index] = { ...list[index], [name]: value }
             setFields(list)
             if (list[index][name] === "") {
@@ -47,6 +43,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                 setErrorText("Please choose it!")
             }
             else {
+                setErrorText("")
                 setErrorEnable({ ...errorEnable, [name]: false })
             }
         }
@@ -55,29 +52,22 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
             list[index] = { ...list[index], [name]: value }
             setFields(list)
             if (/^[0-9]{1,6}$/.test(list[index][name])) {
-                // console.log("correct!")
                 setErrorEnable({ ...errorEnable, salary: false })
-
             }
             else {
-                // console.log("wrong!")
                 setErrorEnable({ ...errorEnable, salary: true })
                 setErrorText("Please enter valid Amount!")
             }
         }
-
     };
-    // console.log(fields)
     const handleRemove = (index) => {
         if (count === 5) {
             setDisable(false)
         }
-
         const list = [...fields];
         list.splice(index, 1);
         setFields(list);
         setCount(count - 1)
-        // console.log("delete:: ", count - 1)
     };
     let [count, setCount] = useState(1)
 
@@ -86,27 +76,23 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
             setDisable(true)
         }
         setFields([...fields, {
-
             category: "",
             experience: "",
             salary: "",
         }])
         setCount(count + 1)
-        // console.log("add:: ", count + 1)
     }
     const [disable, setDisable] = useState(false)
     return (
         <Fragment >
             {
-                fields?.map((x, i) => {
-                    
+                fields?.map((x, i) => {                    
                     return (
                         <Fragment key={i}>
                             <Grid xs={12} sm={4} item>
                                 <FormControl fullWidth error={errorEnable.category}>
                                     <InputLabel htmlFor="grouped-native-select">Working Category</InputLabel>
                                     <Select
-                                        // disabled={fieldsDisable}
                                         inputProps={{
                                             readOnly: Boolean(fieldsDisable),
                                         }}
@@ -137,7 +123,6 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                 <FormControl fullWidth error={errorEnable.experience}>
                                     <InputLabel htmlFor="grouped-native-select">Experience</InputLabel>
                                     <Select label="Experience"
-                                        // disabled={fieldsDisable}
                                         inputProps={{
                                             readOnly: Boolean(fieldsDisable),
                                         }}
