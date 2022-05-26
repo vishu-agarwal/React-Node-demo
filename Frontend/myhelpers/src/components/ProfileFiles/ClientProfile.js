@@ -10,31 +10,27 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
-import { Backdrop, Card, Grid, InputLabel, Typography } from '@mui/material';
-import InputAdornment from '@mui/material/InputAdornment';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import {  Card, Grid, InputLabel, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-
-import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import WorkProfile from './WorkProfile';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 // import axios from 'axios';
 import Loading from '../layouts/LoadingFile'
 import Divider from '@mui/material/Divider';
 
 import { profileActions } from '../../store/slices/profile-slice'
 import {
-    createProfileThunk, updateProfileThunk, avatarThunk,
-    aadharThunk, fetchUserProfileThunk, fetchEmailThunk, fetchAvatarThunk
+    createProfileThunk, avatarThunk,
+    aadharThunk, fetchUserProfileThunk
 } from '../../store/slices/profile-slice';
 import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import Rating from '@mui/material/Rating';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(
@@ -50,7 +46,6 @@ const Input = styled('input')({
 
 const ClientProfile = () => {
 
-    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
@@ -65,7 +60,7 @@ const ClientProfile = () => {
         horizontal: 'center',
     });
 
-    const { vertical, horizontal, open } = state;
+    const { open } = state;
 
     const closeSnackbar = () => {
         setState({ ...state, open: false });

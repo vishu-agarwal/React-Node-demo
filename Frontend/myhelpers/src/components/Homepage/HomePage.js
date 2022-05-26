@@ -1,11 +1,9 @@
 import React from 'react'
 import { Card, CardContent, Grid, Typography } from '@mui/material';
-// import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { NavLink, useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import { useState, useEffect } from 'react';
-import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import "../../App.css"
 import Box from '@mui/material/Box';
 import ShortListed from '../Modals/ShortListed';

@@ -10,10 +10,10 @@ import { Grid } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import Rating from '@mui/material/Rating';
 import Divider from '@mui/material/Divider';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import Chip from '@mui/material/Chip';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -21,16 +21,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import CallIcon from '@mui/icons-material/Call';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
 import { workProfileActions } from '../../store/slices/work-slice'
-import { fetchSaveUserThunk, starThunk, fetchAllThunk, saveThunk, fetchViewUserDataThunk, displayActions } from '../../store/slices/display-slice';
+import { fetchSaveUserThunk, starThunk,  saveThunk, fetchViewUserDataThunk, displayActions } from '../../store/slices/display-slice';
 import { fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
 import profileActions from '../../store/slices/profile-slice'
 import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import HireForm from './HireForm';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -54,14 +53,13 @@ const ViewProfileDetail = () => {
     let { viewUserProfile, saveUser, displayError, displayMessage, displayLoading } = useSelector((state) => ({ ...state.displayStore }))
 
     const rid = localStorage.getItem("r_id")
-    const role = localStorage.getItem("role")
 
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
         horizontal: 'center',
     });
-    const { vertical, horizontal, snackOpen } = state;
+    const {  snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };

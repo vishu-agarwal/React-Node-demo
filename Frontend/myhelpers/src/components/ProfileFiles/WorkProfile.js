@@ -4,7 +4,6 @@ import * as React from 'react';
 //   mui
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
 import { Card, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
@@ -28,11 +27,10 @@ import { workProfileActions } from '../../store/slices/work-slice'
 
 import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
 import Loading from '../layouts/LoadingFile'
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(
@@ -66,22 +64,18 @@ const languageName = [
     'Kannad'
 ];
 const WorkProfile = (props) => {
+
     const rid = localStorage.getItem("r_id")
-    // const classes = useStyles();
-    const navigate = useNavigate()
-
     const dispatch = useDispatch()
-    // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
-    let { workMessage, workData, workError, workLoading } = useSelector((state) => ({ ...state.workProfileStore }))
 
+    let { workMessage, workData, workError, workLoading } = useSelector((state) => ({ ...state.workProfileStore }))
 
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
         horizontal: 'center',
     });
-    const { vertical, horizontal, open } = state;
+    const { open } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
@@ -130,14 +124,14 @@ const WorkProfile = (props) => {
     }, [workMessage, workError])
 
     useEffect(() => {
-        if (workData.length !==0) {
+        if (workData.length !== 0) {
             setValues({
                 porf_mbl: workData?.profession_mobile_number,
                 workTime: workData?.work_time,
                 study: workData?.education,
                 otherStudy: workData?.other_education
             })
-            let list = workData?.languages?.map((value, index) => {                
+            let list = workData?.languages?.map((value, index) => {
                 return value.language
             }).flat()
 
@@ -294,7 +288,6 @@ const WorkProfile = (props) => {
                                 open={open}
                                 autoHideDuration={6000}
                                 onClose={closeSnackbar}
-                            // key={vertical + horizontal}
                             >
                                 <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                     {snackMessage}
@@ -346,7 +339,7 @@ const WorkProfile = (props) => {
                                                 onChange={onChange}
                                                 error={errorEnable.porf_mbl}
                                                 helperText={errorEnable.porf_mbl && errorText}
-                                          
+
                                             />
                                         </Grid>
                                         <Grid xs={12} sm={6} item>
@@ -356,7 +349,7 @@ const WorkProfile = (props) => {
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
                                                     }}
-                                                    value={values.workTime}                                                    
+                                                    value={values.workTime}
                                                     onChange={onChange}
                                                 >
                                                     <MenuItem value="">---select---</MenuItem>

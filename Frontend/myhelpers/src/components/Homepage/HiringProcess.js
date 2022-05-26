@@ -1,28 +1,14 @@
 import React from 'react'
-import { Card, CardContent, Divider, Grid, Typography } from '@mui/material';
+import { Card, CardContent,  Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import { NavLink, useNavigate, useParams, Link } from 'react-router-dom';
+import {  useNavigate, } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import { useState, useEffect } from 'react';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import Fab from '@mui/material/Fab';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Zoom from '@mui/material/Zoom';
-import PropTypes from 'prop-types';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { useTheme } from '@mui/material/styles'
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import CardMedia from '@mui/material/CardMedia';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const ScrollButton = () => {
 

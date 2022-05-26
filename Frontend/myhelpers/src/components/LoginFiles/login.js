@@ -9,7 +9,7 @@ import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import { Card, Typography } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
 import abc from '../allImages/client4img.jpg';

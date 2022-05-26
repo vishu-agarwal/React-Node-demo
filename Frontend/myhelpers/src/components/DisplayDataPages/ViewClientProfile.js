@@ -8,23 +8,16 @@ import CardMedia from "@mui/material/CardMedia";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { Grid } from "@mui/material";
-import Tooltip from '@mui/material/Tooltip';
-import Rating from '@mui/material/Rating';
-import Divider from '@mui/material/Divider';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
 import Loading from '../layouts/LoadingFile'
 import { useSelector, useDispatch } from 'react-redux';
-
-import { workProfileActions } from '../../store/slices/work-slice'
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 import { profileActions } from '../../store/slices/profile-slice';
-import { fetchViewUserDataThunk, displayActions } from '../../store/slices/display-slice';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import { fetchViewUserDataThunk } from '../../store/slices/display-slice';
+import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(

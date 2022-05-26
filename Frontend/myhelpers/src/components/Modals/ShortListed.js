@@ -3,36 +3,20 @@ import * as React from 'react';
 
 //   mui
 import CardContent from '@mui/material/CardContent';
-import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
 
-import Button from '@mui/material/Button';
-
-import MenuItem from '@mui/material/MenuItem';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import FormControl from '@mui/material/FormControl';
-import { Backdrop, Card, Grid, InputLabel, Typography } from '@mui/material';
-import Select from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
-
-import ListItemText from '@mui/material/ListItemText';
+import {  Card, Grid,  Typography } from '@mui/material';
 
 import Loading from '../layouts/LoadingFile'
-// import DisplayWorkingFields from './DisplayWorkingFields';
 import { useState, useEffect } from 'react';
-// import workProfileActions from '../../store/slices/work-slice'
 
-// import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
 import { displayActions, fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
-import { workProfileActions } from '../../store/slices/work-slice'
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import CardJS from '../Card';
-// import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
 
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(
@@ -45,33 +29,27 @@ const Alert = React.forwardRef(function Alert(
 
 const ShortListed = (props) => {
     const rid = localStorage.getItem("r_id")
-    // const classes = useStyles();
-    const navigate = useNavigate()
-
     const dispatch = useDispatch()
     // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
     // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
     let { displayData, saveUser, hireUser, displayMessage, displayError, displayLoading } = useSelector((state) => ({ ...state.displayStore }))
-
 
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
         horizontal: 'center',
     });
-    const { vertical, horizontal, snackOpen } = state;
+    const {snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
     const [snackMessage, setSnackMessage] = useState('')
     const [snackColor, setSnackColor] = useState("info")
 
-
     useEffect(() => {
         dispatch(fetchAllThunk())
         dispatch(fetchSaveUserThunk(rid))
     }, [])
-
 
     useEffect(() => {
         if (displayMessage.length !== 0) {

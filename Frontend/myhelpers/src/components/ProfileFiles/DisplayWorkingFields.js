@@ -7,7 +7,6 @@ import TextField from '@mui/material/TextField';
 import { Grid } from '@mui/material';
 
 import InputLabel from '@mui/material/InputLabel';
-import { useEffect } from 'react';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import Select from '@mui/material/Select';
@@ -15,7 +14,6 @@ import MenuItem from '@mui/material/MenuItem';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FormHelperText from '@mui/material/FormHelperText';
-import Loading from '../layouts/LoadingFile'
 
 const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, setErrorEnable }) => {
 

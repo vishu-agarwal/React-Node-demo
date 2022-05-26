@@ -9,14 +9,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Fab from '@mui/material/Fab';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Zoom from '@mui/material/Zoom';
 import PropTypes from 'prop-types';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-import { NavLink, useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import WorkRequest from '../Modals/WorkRequests'
 import ShortListed from '../Modals/ShortListed';
@@ -24,7 +23,6 @@ import HiredHelper from '../Modals/HiredHelper';
 import { loginActions } from '../../store/slices/login-slice'
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
-import { profileActions } from '../../store/slices/profile-slice'
 import Loading from './LoadingFile';
 
 function ScrollTop(props) {
@@ -76,12 +74,10 @@ ScrollTop.propTypes = {
     window: PropTypes.func,
 };
 
-const pages = ['Home', 'Find Helpers', 'About Us', 'Profile'];
-
 const Header = (props) => {
     const dispatch = useDispatch()
     let navigate = useNavigate()
-    let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
+    let { userProfile, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     const role = localStorage.getItem("role")
     const rid = localStorage.getItem("r_id")
 
@@ -250,7 +246,7 @@ const Header = (props) => {
                             <Box sx={{ flexGrow: 0 }}>
 
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src={`http://localhost:3000/${userProfile[0]?.avatar}`} />
+                                    <Avatar alt="Remy Sharp" src={`http://localhost:3000/${avatar}`} />
                                 </IconButton>
 
                                 <Menu

@@ -3,36 +3,22 @@ import * as React from 'react';
 
 //   mui
 import CardContent from '@mui/material/CardContent';
-import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
 
-import Button from '@mui/material/Button';
 
-import MenuItem from '@mui/material/MenuItem';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import FormControl from '@mui/material/FormControl';
-import { Backdrop, Card, Grid, InputLabel, Typography } from '@mui/material';
-import Select from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
+import {  Card, Grid,  Typography } from '@mui/material';
 
-import ListItemText from '@mui/material/ListItemText';
 import Modal from '@mui/material/Modal';
-
-// import DisplayWorkingFields from './DisplayWorkingFields';
 import { useState, useEffect } from 'react';
-// import workProfileActions from '../../store/slices/work-slice'
 
 import CloseIcon from '@mui/icons-material/Close';
 import { fetchHelperRequestsThunk } from '../../store/slices/hireRequest-slice';
 import Loading from '../layouts/LoadingFile'
 
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './HireRequestCard';
-import HireRequestSlice from '../../store/slices/hireRequest-slice';
-// import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import { hireRequestActions } from '../../store/slices/hireRequest-slice'
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(
@@ -57,7 +43,7 @@ const HiredHelper = (props) => {
         vertical: 'top',
         horizontal: 'center',
     });
-    const { vertical, horizontal, snackOpen } = state;
+    const {  snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };

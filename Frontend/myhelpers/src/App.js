@@ -1,17 +1,12 @@
 //main file
 import './App.css';
-import Header from "./components/layouts/Header"
-
-
-
-import { useSelector } from 'react-redux'
 import {
   BrowserRouter, Routes, Route
 } from 'react-router-dom'
 
+import Header from "./components/layouts/Header"
 import Profile from './components/ProfileFiles/ClientProfile';
 import Footer from './components/layouts/Footer';
-// import PageNotFound from './components/layouts/PageNotFound';
 import About from './components/Homepage/AboutPage';
 
 import { lazy, Suspense, useEffect } from 'react';
@@ -23,8 +18,6 @@ import PrivateRoute from './RouteComponents/PrivateRoutes';
 const RolePage = lazy(() => import('./components/LoginFiles/Content'));
 const LoginPage = lazy(() => import('./components/LoginFiles/login'));
 const HomePage = lazy(() => import('./components/Homepage/HomePage'));
-
-// const ForgotPassword = lazy(() => import('components/ForgotPassword'));
 const NoFoundComponent = lazy(() => import('./components/layouts/PageNotFound'));
 
 const publicRoutes = [
@@ -36,13 +29,9 @@ const publicRoutes = [
     path: '/login/:role',
     Component: LoginPage
   },
-  // {
-  //   path: '/home/client',
-  //   element: HomePage,
-  // }
+  
 ]
 
-// element: lazy(() => import('./components/Homepage/HomePage')),
 const protectedRoutes = [
   {
     path: '/Client/home',

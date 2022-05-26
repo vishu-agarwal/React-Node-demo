@@ -43,7 +43,7 @@ const CardJS = (props) => {
         vertical: 'top',
         horizontal: 'center',
     });
-    const { vertical, horizontal, snackOpen } = state;
+    const {  snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
@@ -149,7 +149,6 @@ const CardJS = (props) => {
                             open={snackOpen}
                             autoHideDuration={6000}
                             onClose={closeSnackbar}
-                        // key={vertical + horizontal}
                         >
                             <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                 {snackMessage}
