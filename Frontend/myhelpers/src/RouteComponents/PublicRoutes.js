@@ -9,7 +9,7 @@ function PublicRoutes({ children, isAuthenticated, ...rest }) {
     const { isAuth, role } = useSelector(state => state.loginStore)
     if (!isAuth) {
         return (
-            <React.Fragment>
+            <React.Fragment >
                 {children}
             </React.Fragment>
         )

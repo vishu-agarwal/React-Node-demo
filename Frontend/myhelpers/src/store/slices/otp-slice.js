@@ -13,6 +13,7 @@ export const otpThunk = createAsyncThunk("otpLogin/otpThunk", async (arg) => {
             email: arg.email,
         };
         const otpRes = await axios.post(`/myhelpers/otp/${arg.role}`,data)
+        console.log(otpRes)
         return otpRes
     }
     catch (error) {

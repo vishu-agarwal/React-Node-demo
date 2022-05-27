@@ -180,6 +180,8 @@ const HireForm = (props) => {
                 }
                 else {
                     if (props.hireValues.toDate) {
+                        setErrorText("")
+                        setErrorEnable({ ...errorEnable, fromDate: false })
                         setErrorEnable({ ...errorEnable, toDate: true })
                         setErrorText("Again select date!")
                     }

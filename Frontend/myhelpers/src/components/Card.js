@@ -14,7 +14,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { displayActions, fetchAllThunk, starThunk, saveThunk } from '../store/slices/display-slice';
+import { displayActions, fetchAllThunk, fetchSaveUserThunk ,starThunk, saveThunk } from '../store/slices/display-slice';
 import { fetchUserProfileThunk } from "../store/slices/profile-slice";
 import Loading from './layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
@@ -43,7 +43,7 @@ const CardJS = (props) => {
         vertical: 'top',
         horizontal: 'center',
     });
-    const {  snackOpen } = state;
+    const { snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
@@ -77,7 +77,7 @@ const CardJS = (props) => {
     }
 
     const onViewClick = () => {
-        if (userProfile[0]?.is_profile) {
+        if (userProfile?.is_profile) {
             navigate(`/viewHelperDetails/${props.values.r_id}`)
         } else {
             setState({ snackOpen: true })
@@ -86,7 +86,7 @@ const CardJS = (props) => {
         }
     }
     const onRateClick = (event) => {
-        if (userProfile[0]?.is_profile) {
+        if (userProfile?.is_profile) {
             setStar(parseInt(event.target.value))
             const arg = {
                 user_id: props.values.r_id,
@@ -123,15 +123,15 @@ const CardJS = (props) => {
             <Card
                 // variant="outlined"
                 sx={{
-                    minWidth: {
+                    width: {
                         xs: 1.0, // 100%
-                        sm: 350,
-                        md: 400
+                        sm: 1.0,
+                        md: 330
                     },
                     // maxWidth: 375,
                     height: {
                         xs: 1.0, // 100%
-                        sm: 520,
+                        sm: 450,
                         md: 250,
                     },
                     marginLeft: 2,
@@ -170,29 +170,17 @@ const CardJS = (props) => {
                         </Grid>
                     </Grid>
                     <Grid container direction={'row'} justifyContent="center" >
-                        <Grid item xs={11} sm={6} md={4} alignItems="left">
+                        <Grid item xs={5} sm={6} md={4.5} alignItems="left">
                             <CardMedia
                                 component="img"
-                                height={150}
-                                sx={{ width: 110 }}
-                                // image={props.values.avatar[0]}
+                                height={"100%"}
+                                sx={{ width: "100%" }}
                                 image={`http://localhost:3001/${props.values.avatar}`}
                                 alt="Profile Image"
                             />
 
-                            {/* <Rating name="half-rating" 
-                                // value={parseInt(props.values.rate)}
-                                value={star}
-                                onChange={(val) =>
-                                    // setStar(parseFloat(val.target.value)),
-                                    onRateClick(val)
-                                }
-                                size="medium"
-                            // onClick={(val)=>onRateClick(val)}
-                            /> */}
-
                         </Grid>
-                        <Grid item xs={11} sm={8} md={7} marginLeft={2} align="left" >
+                        <Grid item xs={6} sm={8} md={7} marginLeft={1} align="left" >
                             <Typography variant="h5" component="div"></Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
                                 Mobile No : {props.values.profession_mbl}
@@ -217,18 +205,17 @@ const CardJS = (props) => {
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
                                 Prefer Time : {props.values.work_time}
-                            </Typography>                            
+                            </Typography>
                         </Grid>
                     </Grid>
-                    <Grid container direction={'row'} justifyContent="center" >
+                    <Grid container direction={'row'} justifyContent="center"  >
                         <Grid item xs={6} sm={12} md={4} >
                             <Rating name="half-rating"
                                 sx={{ float: "left" }}
-                                // value={parseInt(props.values.rate)}
+                                readOnly={Boolean(true)}
                                 value={star}
-                                onChange={onRateClick}
                                 size="medium"
-                            // onClick={(val)=>onRateClick(val)}
+                         
                             />
                         </Grid>
                         <Grid item xs={6} sm={12} md={8} align="" paddingLeft={0.5}>

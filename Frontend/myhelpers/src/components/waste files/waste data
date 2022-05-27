@@ -452,3 +452,92 @@ export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarTh
 //         </Suspense>
 
 // );
+
+
+{/* <Route path='/'
+              element={
+                <PublicRoute
+
+                  isAuthenticated={isToken}
+                >
+                  <RolePage />
+
+                </PublicRoute>
+              } >
+
+            </Route>
+            
+              <Route path='/login/:role'
+                element={
+                  <PublicRoute
+
+                    isAuthenticated={isToken}
+                  >
+                    <LoginPage />
+
+                  </PublicRoute>
+                } >
+
+            </Route> */}
+
+
+{/* <Route path='/'
+              element={
+                <PrivateRoute
+
+                  isAuthenticated={isToken}
+                >
+                  <ProtectedRoutes role={role} />
+                </PrivateRoute>
+              } >
+
+            </Route> */}
+{/* <PublicRoute
+            path="/"
+            isAuthenticated={isToken}
+          >
+            <Suspense fallback={<Loader />}>
+              <RolePage />
+            </Suspense>
+          </PublicRoute> */}
+{/* <PublicRoute
+                path="/login/:role"
+              isAuthenticated={isToken}
+              >
+                <LoginPage />
+              </PublicRoute> */}
+
+{/* <PrivateRoute
+                path="/profile"
+              isAuthenticated={isToken}
+              >
+                <Profile />
+            </PrivateRoute>
+            <PrivateRoute
+              path="/"
+              isAuthenticated={isToken}
+            >
+              <ProtectedRoutes role={role} />
+             </PrivateRoute> */}
+{/* <PrivateRoute
+              path="/viewHelperDetails/:rid"
+              isAuthenticated={isToken}
+            >
+              <ProtectedRoutes />
+            </PrivateRoute>
+            <PrivateRoute
+              path="/hiringProcess"
+              isAuthenticated={isToken}
+            >
+              <ProtectedRoutes />
+            </PrivateRoute>
+            <PrivateRoute
+              path="/viewClientDetails/:rid"
+              isAuthenticated={isToken}
+            >
+              <ProtectedRoutes />
+            </PrivateRoute>
+           */}
+{/* <Route path="*">
+                <NoFoundComponent />
+              </Route> */}

@@ -108,12 +108,12 @@ const WorkRequest = (props) => {
                                     hireRequestData.map((val, index) => {
                                         if (rid.charAt(0) === "H" && val.status === "pending!") {
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
-                                                <HireRequestCard values={val} />
+                                                <HireRequestCard values={val} closeModal={props.click} />
                                             </Grid>
                                         }
                                         else if (rid.charAt(0) === "C" && val.status !== "hired!") {
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
-                                                <HireRequestCard values={val} />
+                                                <HireRequestCard values={val} closeModal={props.click} />
                                             </Grid>
                                         }
                                     }

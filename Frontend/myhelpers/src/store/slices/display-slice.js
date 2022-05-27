@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-
+import axiosHeader from '../axiosHeader'
 const initialState = {
     displayData: [],
-    viewUserProfile: [],
+    viewUserProfile: {},
     userAvatar: [],
     saveUser: [],
     hireUser: [],
@@ -19,7 +19,7 @@ export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async 
     try {
         const fetchRes = await axios.get(`/myhelpers/fetchAllData/Client`, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken")
             },
         })
         return fetchRes
@@ -142,7 +142,7 @@ const displaySlice = createSlice({
         },
         [fetchViewUserDataThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            state.viewUserProfile = action.payload.data
+            state.viewUserProfile = action.payload.data[0]
         },
         [fetchViewUserDataThunk.rejected]: (state, error) => {
             state.displayLoading = false

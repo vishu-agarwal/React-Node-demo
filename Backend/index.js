@@ -1,9 +1,11 @@
 require("dotenv").config()
 const express = require("express")
 require("./mongooseConnection")
+// const cors = require("cors")
 
 const app = express()
 app.use(express.json())
+// app.use(cors())
 
 //store files image and pdf
 app.use('/image', express.static('image'))

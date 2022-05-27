@@ -53,7 +53,7 @@ const Login = () => {
 
     const [otp, setotp] = useState('');
 
-    const { logUser: logUser, error, token, loadingLogin } = useSelector((state) => {
+    const { logUser, error, token, loadingLogin } = useSelector((state) => {
         return { ...state.loginStore }
     });
 
@@ -90,9 +90,13 @@ const Login = () => {
 
     useEffect(() => {
         let redirectPath = ''
-        if (logUser.length) {
-           
-            !logUser.is_profile && navigate(`/profile`, { replace: true })
+        if (logUser.length !== 0) {
+            if (logUser?.r_id?.charAt(0) === 'C') {
+                redirectPath = '/Client/home'
+            } else {
+                redirectPath = '/Helper/home'
+            }
+            !logUser.is_profile ? navigate(`/profile`, { replace: true }) : navigate(`${redirectPath}`, { replace: true })
         }
     }, [logUser]);
 
@@ -111,16 +115,12 @@ const Login = () => {
         event.preventDefault();
         if (values.email.length !== 0) {
             if (otp == parseInt(otpUser)) {
-
                 dispatch(loginThunk(values));
-                // setValues((prevState) => {
-                //     return { ...prevState, email: '' };
-                // });
-                // setotp('');
             } else {
+                console.log("otp::", otp, otpUser)
                 setState({ snackOpen: true });
                 setSnackColor('error');
-                return setSnackMessage('Opps! \n OTP did not match.');
+                return setSnackMessage('Opps! OTP did not match.');
             }
         } else {
             setState({ snackOpen: true });
@@ -155,13 +155,16 @@ const Login = () => {
             <Card
                 elevation={16}
                 sx={{
-                    maxWidth: 600,
-                    minHeight: 350,
+                    minWidth: 
+                    {
+                        xs: 1.0,
+                        sm: 600,
+                        md:600
+                    }, minHeight: 350,
                     borderWidth: 3,
                     borderRadius: 6,
                     backgroundImage: `url(${abc})`,
                     backgroundRepeat: 'no-repeat',
-                    // borderColor: '#163758',
                     backgroundSize: '100%',
                     // marginTop: 15
                 }}

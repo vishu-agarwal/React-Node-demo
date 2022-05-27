@@ -10,7 +10,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
-import {  Card, Grid, InputLabel, Typography } from '@mui/material';
+import { Card, Grid, InputLabel, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,8 +22,8 @@ import { useEffect, useState } from 'react';
 import Loading from '../layouts/LoadingFile'
 import Divider from '@mui/material/Divider';
 
-import { profileActions } from '../../store/slices/profile-slice'
 import {
+    profileActions,
     createProfileThunk, avatarThunk,
     aadharThunk, fetchUserProfileThunk
 } from '../../store/slices/profile-slice';
@@ -49,7 +49,7 @@ const ClientProfile = () => {
     const dispatch = useDispatch()
 
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
-    let { r_id: logRid, role: logRole } = useSelector((state) => ({ ...state.loginStore }))
+    let { r_id: logRid, role: logRole, token } = useSelector((state) => ({ ...state.loginStore }))
 
     let rid = localStorage.getItem("r_id") ? localStorage.getItem("r_id") : logRid
     let role = localStorage.getItem("role") ? localStorage.getItem("role") : logRole
@@ -105,6 +105,9 @@ const ClientProfile = () => {
     const [openModal, setopenModal] = useState(false);
 
     useEffect(() => {
+        const arg = {
+            rid, token
+        }
         dispatch(fetchUserProfileThunk(rid))
     }, [])
 
@@ -133,49 +136,50 @@ const ClientProfile = () => {
     const [fieldsDisable, setDisable] = useState(false)
 
     useEffect(() => {
-        if (userProfile.length !== 0) {
 
-            setStar(userProfile[0]?.rating ?
-                userProfile[0].rating.map((id) =>
+        if (userProfile) {
+            console.log("fetch user profile", userProfile)
+            setStar(userProfile?.rating ?
+                userProfile.rating.map((id) =>
                     id.rate
                 ).reduce((prev, curr) => prev + curr, 0)
                 /
-                userProfile[0].rating.map((id) =>
+                userProfile.rating.map((id) =>
                     id.user_id
                 ).length
 
                 : 2)
-            
-            userProfile[0]?.email &&
-                setValues((prevState) => { return { ...prevState, email: userProfile[0].email } })
-            
-            userProfile[0]?.name && setValues((prevState) => {
+
+            userProfile?.email &&
+                setValues((prevState) => { return { ...prevState, email: userProfile.email } })
+
+            userProfile?.name && setValues((prevState) => {
                 return {
                     ...prevState,
-                    fname: userProfile[0]?.name.split(" ")[0],
-                    lname: userProfile[0]?.name.split(" ")[1],
-                    dob: userProfile[0]?.dob,
-                    altmbl: userProfile[0]?.alternate_mobile_number,
-                    mbl: userProfile[0]?.mobile_number,
-                    gender: userProfile[0]?.gender,
-                    married: userProfile[0]?.married,
-                    physic_dis: userProfile[0]?.physical_disable,
-                    house_no: userProfile[0]?.address.house_no,
-                    house_name: userProfile[0]?.address.house_name,
-                    street: userProfile[0]?.address.landmark,
-                    city: userProfile[0]?.address.city,
-                    state: userProfile[0]?.address?.state,
-                    pincode: userProfile[0]?.address?.pincode,
-                    about: userProfile[0]?.about,
+                    fname: userProfile?.name.split(" ")[0],
+                    lname: userProfile?.name.split(" ")[1],
+                    dob: userProfile?.dob,
+                    altmbl: userProfile?.alternate_mobile_number,
+                    mbl: userProfile?.mobile_number,
+                    gender: userProfile?.gender,
+                    married: userProfile?.married,
+                    physic_dis: userProfile?.physical_disable,
+                    house_no: userProfile?.address.house_no,
+                    house_name: userProfile?.address.house_name,
+                    street: userProfile?.address.landmark,
+                    city: userProfile?.address.city,
+                    state: userProfile?.address?.state,
+                    pincode: userProfile?.address?.pincode,
+                    about: userProfile?.about,
                 }
             })
-            userProfile[0]?.avatar && setfile({
+            userProfile?.avatar && setfile({
                 ...file,
-                dispFile: userProfile[0].avatar
+                dispFile: userProfile.avatar
             })
-            userProfile[0]?.aadhar_card && setaadhar({ ...aadhar, dispFile: userProfile[0].aadhar_card })
-            userProfile[0]?.name && setEditHide(false)
-            userProfile[0]?.name && setDisable(true)
+            userProfile?.aadhar_card && setaadhar({ ...aadhar, dispFile: userProfile.aadhar_card })
+            userProfile?.name && setEditHide(false)
+            userProfile?.name && setDisable(true)
         }
     }, [userProfile])
 
@@ -208,6 +212,7 @@ const ClientProfile = () => {
                 }
                 dispatch(createProfileThunk(argCreateProfile))
                 dispatch(aadharThunk(argAadhar))
+                // dispatch(fetchUserProfileThunk(rid))
                 setEditHide(false)
                 setDisable(true)
             }
@@ -231,6 +236,7 @@ const ClientProfile = () => {
             rid
         }
         dispatch(createProfileThunk(arg))
+        // dispatch(fetchUserProfileThunk(rid))
         //Edit button display
         setEditHide(false)
         setDisable(TouchRipple)
@@ -539,7 +545,7 @@ const ClientProfile = () => {
     }, [errorEnable, values, aadhar.dispFile])
     return (
         <Grid >
-            {profileLoading && <Loading isLoad={true} />  }
+            {profileLoading && <Loading isLoad={true} />}
             <Card
                 elevation={16}
                 sx={{
@@ -610,7 +616,7 @@ const ClientProfile = () => {
                                     </Grid>
                                     <Grid item xs={12} sm={12}>
                                         <Typography marginTop={1} gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'subtitle2' } }}>{values.email.toLowerCase()}</Typography>
-                                        {/* <Typography variant="h5"  >{userProfile.length !== 0 ? userProfile[0].email : ''}</Typography> */}
+                                       
                                         {role === "Helper" && <Rating name="half-rating"
                                             value={star}
                                             readOnly={Boolean(true)}

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 const initialState = {
-    userProfile: [],
+    userProfile: {},
     profileMessage: '',
     profileLoading: false,
     profileError: "",
@@ -76,7 +76,7 @@ export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileT
         const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
             {
                 headers: {
-                    Authorization: "Bearer " + varToken,
+                    Authorization: "Bearer " + localStorage.getItem("logToken")
                 },
             })
         return fetchUser
@@ -149,7 +149,7 @@ const profileSlice = createSlice({
                 state.profileMessage = action.payload.data
             }
             else {
-                state.userProfile = action.payload.data
+                state.userProfile = action.payload.data[0]
             }
         },
         [fetchUserProfileThunk.rejected]: (state, error) => {

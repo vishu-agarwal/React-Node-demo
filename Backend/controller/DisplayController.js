@@ -55,11 +55,13 @@ const updateStar = async (req, res) => {
                     { rating: rate },
                     { new: true }
                 )                
+                console.log("new update :: ", [updtStar])
                 return res.status(200).send([updtStar])
             }
             else if (findUser.rating[idIndex].user_id === req.params.rid) {
                 findUser.rating[idIndex].rate = req.body.rate
                 const update = await findUser.save();
+                console.log("old update :: ",[update])
                 return res.status(200).send([update]);
             }
         }

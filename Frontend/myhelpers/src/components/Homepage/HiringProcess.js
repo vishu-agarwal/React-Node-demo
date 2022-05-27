@@ -1,7 +1,7 @@
 import React from 'react'
-import { Card, CardContent,  Grid, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import {  useNavigate, } from 'react-router-dom';
+import { useNavigate, } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles'
@@ -43,7 +43,7 @@ const ScrollButton = () => {
     return (
         <Box mt="5%">
             <img
-                src={`${require("../allImages/down.gif")}`} onClick={scrollToBottom}
+                src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom}
                 sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
                 style={{
                     display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
@@ -58,14 +58,15 @@ const HiringProcess = (props) => {
     let navigate = useNavigate()
     const theme = useTheme();
     const dispatch = useDispatch()
+
     let { userProfile } = useSelector((state) => ({ ...state.profileStore }))
 
     const [openRequest, setOpenRequest] = useState(false)
     const [openHired, setOpenHired] = useState(false)
 
     useEffect(() => {
-        if (!userProfile[0]?.is_profile) {
-            navigate("/profile")
+        if (userProfile?.length) {
+            !userProfile?.is_profile && navigate("/profile")
         }
     }, [userProfile])
 
@@ -79,7 +80,7 @@ const HiringProcess = (props) => {
         setOpenRequest(false);
         setOpenHired(false)
     };
-    
+
     return (
         <div>
             {openRequest && <WorkRequest click={handleModelClose} />}

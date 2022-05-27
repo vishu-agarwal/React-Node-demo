@@ -8,7 +8,7 @@ import CardJS from "../Card"
 import { useSelector, useDispatch } from 'react-redux';
 import { displayActions, fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk } from '../../store/slices/display-slice';
 import { workProfileActions } from '../../store/slices/work-slice'
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import Pagination from '@mui/material/Pagination';
@@ -18,6 +18,7 @@ import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
+import TablePagination from '@mui/material/TablePagination';
 const Alert = React.forwardRef(function Alert(
     props,
     ref,
@@ -68,7 +69,7 @@ const DisplayData = () => {
     const rid = localStorage.getItem("r_id")
     const role = localStorage.getItem("role")
     const dispatch = useDispatch()
-    
+
     let { displayData, saveUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
 
     let rates, status, hireStatus
@@ -109,7 +110,7 @@ const DisplayData = () => {
 
     useEffect(() => {
         if (displayData.length !== 0) {
-            // console.log("displayData :: ", displayData)
+            console.log("displayData :: ", displayData)
         }
 
     }, [displayData])
@@ -149,6 +150,21 @@ const DisplayData = () => {
             dispatch(fetchSaveUserThunk(rid))
         }
     }
+    //pagination states
+
+    let cnt = 0;
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(4);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={5}>
             {displayLoading && <Loading isLoad={true} />}
@@ -177,6 +193,7 @@ const DisplayData = () => {
                                 color: "#163758"
                             }}
                             onInputChange={(e, values) => {
+                                setFilterWork("")
                                 setWorkSearch(values)
                             }}
                             renderInput={(params) =>
@@ -235,43 +252,58 @@ const DisplayData = () => {
 
                         }
                     </Grid>
-                    
-                    <Grid item xs={0} sm={5}>
+
+                    <Grid item xs={12} sm={3} display="flex" alignItems='center' >
+                        <Grid container item display="flex" justifyContent='right' >
+                            <Typography variant="h6"> Sort By : Age </Typography>
+                            <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("up", "dob")} >
+                                <ArrowUpwardRoundedIcon />
+                            </IconButton>
+                            <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("down", "dob")} >
+                                <ArrowDownwardRoundedIcon />
+                            </IconButton>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={2.5} display="flex" alignItems='center' >
-                        <Typography variant="h6"> Sort By : Age </Typography>
-                        <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("up", "dob")} >
-                            <ArrowUpwardRoundedIcon />
-                        </IconButton>
-                        <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("down", "dob")} >
-                            <ArrowDownwardRoundedIcon />
-                        </IconButton>
-                    </Grid>
+
                 </Grid>
             </Grid>
             <Grid container direction="row" spacing={2}>
-                {                    
-                    displayData.map((values, index) => {
-                        rates = values.rating[0] !== undefined ?
-                            values.rating[0]?.map((id) =>
-                                id.rate
-                            ).reduce((prev, curr) => prev + curr, 0)
-                            /
-                            values.rating[0]?.map((id) =>
-                                id.user_id
-                            ).length
+                {
+                    displayData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((values, index) => {
+                            rates = values.rating[0] !== undefined ?
+                                values.rating[0]?.map((id) =>
+                                    id.rate
+                                ).reduce((prev, curr) => prev + curr, 0)
+                                /
+                                values.rating[0]?.map((id) =>
+                                    id.user_id
+                                ).length
 
-                            : null;
-
-                        status = saveUser.length
-                            && !!saveUser.find((val) => values.r_id === val.user_id)
-                        
-                        return <Grid item xs={12} sm={4} md={3} key={index} >
-                            <CardJS values={values} rates={rates} saveStatus={status} />
-                        </Grid>
-                    })
+                                : null;
+                            status = saveUser.length
+                                && !!saveUser.find((val) => values.r_id === val.user_id)
+                            return <Grid item xs={12} sm={4} md={3} key={index} >
+                                <CardJS values={values} rates={rates} saveStatus={status} />
+                            </Grid>
+                        })
                 }
             </Grid>
+
+            <Grid item xs={12} sm={12} >
+                
+            <TablePagination
+                size="small"
+                rowsPerPageOptions={[8, 16, 24, 32, 40, 100]}
+                component="div"
+                count={displayData?.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </Grid>
+            
         </Grid >
     )
 }

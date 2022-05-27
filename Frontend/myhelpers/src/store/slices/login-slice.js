@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
+
 const initialState = {
     logUser: [],
     token: "",
@@ -31,8 +32,8 @@ export const loginThunk = createAsyncThunk("userLogin/loginThunk", async (arg) =
             role = 'Client'
         } else {
             role = 'Helper'
-
         }
+
         return { ...loginRes, role }
     }
     catch (error) {
@@ -48,8 +49,10 @@ const loginSlice = createSlice({
         },
         logoutReducer(state) {
             state.isAuth = false
-            state.logUser = null
+            state.logUser = []
             state.token = ""
+            state.r_id = ""
+            state.role = ""
         },
     },
     extraReducers: {

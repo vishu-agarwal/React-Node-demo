@@ -57,7 +57,7 @@ function ScrollTop(props) {
             <Box
                 onClick={handleClick}
                 role="presentation"
-                sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                sx={{ position: 'fixed', bottom: 50, right: 16 }}
             >
                 {children}
             </Box>
@@ -81,7 +81,7 @@ const Header = (props) => {
     const role = localStorage.getItem("role")
     const rid = localStorage.getItem("r_id")
 
-    const { isAuth } = useSelector(state => ({ ...state.loginStore }))
+    const { isAuth,token } = useSelector(state => ({ ...state.loginStore }))
 
     const [anchorElNav, setAnchorElNav] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(false);
@@ -91,12 +91,15 @@ const Header = (props) => {
     const [avatar, setAvatar] = useState("")
 
     useEffect(() => {
+        const arg = {
+            rid,token
+        }
         isAuth &&
         dispatch(fetchUserProfileThunk(rid))
     }, [rid])
 
     useEffect(() => {
-        userProfile[0]?.avatar && setAvatar(userProfile[0].avatar)
+        userProfile?.avatar && setAvatar(userProfile.avatar)
     }, [userProfile])
 
     const handleOpenNavMenu = (event) => {
@@ -183,11 +186,12 @@ const Header = (props) => {
                                         display: { xs: 'block', md: 'none' },
                                     }}
                                 >
-                                    {role === "Client" && <MenuItem onClick={() => navigate("/Client/home")}>Home</MenuItem>}
-                                    {role === "Helper" && <MenuItem onClick={() => navigate("/Helper/home")}>Home</MenuItem>}
+                                    {role === "Client" &&
+                                        <MenuItem onClick={() => navigate("/Client/home")}>Home</MenuItem>}
                                     {role === "Client" && <MenuItem onClick={() => navigate("/findHelper")}>Find Helpers</MenuItem>}
+                                    {role === "Helper" && <MenuItem onClick={() => navigate("/Helper/home")}>Home</MenuItem>}
+                                    <MenuItem onClick={() => { return (navigate("/about"), handleCloseNavMenu) }}>About</MenuItem>
                                     <MenuItem onClick={() => { return (navigate("/profile"), handleCloseNavMenu) }}>Profile</MenuItem>
-
                                 </Menu>
                             </Box>
                         }
@@ -233,7 +237,12 @@ const Header = (props) => {
                                     Home
                                 </Button>}
                                 <Button
-
+                                    onClick={() => navigate("/about")}
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    About Us
+                                </Button>
+                                <Button
                                     onClick={() => navigate("/profile")}
                                     sx={{ my: 2, color: 'white', display: 'block' }}
                                 >

@@ -94,24 +94,24 @@ const ViewClientProfile = () => {
     }, [displayMessage, displayError])
 
     useEffect(() => {
-        if (viewUserProfile.length !== 0) {
+        if (viewUserProfile) {
             setValues({
-                name: viewUserProfile[0]?.name,
-                dob: viewUserProfile[0]?.dob,
-                mbl: viewUserProfile[0]?.mobile_number,
-                altmbl: viewUserProfile[0]?.alternate_mobile_number,
-                email: viewUserProfile[0]?.email,
-                gender: viewUserProfile[0]?.gender,
-                married: viewUserProfile[0]?.married,
-                physic_dis: viewUserProfile[0]?.physical_disable,
-                house_no: viewUserProfile[0]?.address?.house_no,
-                house_name: viewUserProfile[0]?.address?.house_name,
-                street: viewUserProfile[0]?.address?.landmark,
-                city: viewUserProfile[0]?.address?.city,
-                state: viewUserProfile[0]?.address?.state,
-                pincode: viewUserProfile[0]?.address?.pincode,
-                about: viewUserProfile[0]?.about,
-                avatar: viewUserProfile[0]?.avatar
+                name: viewUserProfile?.name,
+                dob: viewUserProfile?.dob,
+                mbl: viewUserProfile?.mobile_number,
+                altmbl: viewUserProfile?.alternate_mobile_number,
+                email: viewUserProfile?.email,
+                gender: viewUserProfile?.gender,
+                married: viewUserProfile?.married,
+                physic_dis: viewUserProfile?.physical_disable,
+                house_no: viewUserProfile?.address?.house_no,
+                house_name: viewUserProfile?.address?.house_name,
+                street: viewUserProfile?.address?.landmark,
+                city: viewUserProfile?.address?.city,
+                state: viewUserProfile?.address?.state,
+                pincode: viewUserProfile?.address?.pincode,
+                about: viewUserProfile?.about,
+                avatar: viewUserProfile?.avatar
             })
         }
     }, [viewUserProfile])

@@ -46,7 +46,7 @@ const ScrollButton = () => {
     return (
         <Box>
             <img
-                src={`${require("../allImages/down.gif")}`} onClick={scrollToBottom}
+                src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom}
                 sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
                 style={{
                     display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
@@ -86,7 +86,7 @@ const AboutPage = (props) => {
                         <img src={require("../allImages/aboutimg.png")} width={"100%"} />
                     </div>
                     <div style={{ height: "99.5%", width: "100%", background: "", opacity: 0.5, position: "absolute", top: 0, }} align="center">
-                        <Box mt={"28%"} >
+                        <Box mt={"25%"} >
                             <Grid container justifyContent="center" >
                                 <ScrollButton />
                             </Grid>
@@ -144,48 +144,48 @@ const AboutPage = (props) => {
                         <Grid item xs={11} md={10} sm={11} marginTop={"1%"}>
                             <Grid container spacing={4} justifyContent="center" >
                                 <Grid item xs={6} sm={3} md={3}>
-                                    <Card elevation={12} sx={{ height: 200, width: 300 }}>
+                                    <Card elevation={12} sx={{ height: 170, width: 300 }}>
                                         <CardContent sx={{ padding: 0 }}>
                                             <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
                                                 53,500+
                                             </Typography>
-                                            <Typography style={{ fontWeight: 900 }} variant="h5"  >
+                                            <Typography style={{ fontWeight: 900 }} variant="h6"  >
                                                 Workers have joined My Helpers to connect directly with nearby Employers
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid>
                                 <Grid item xs={6} sm={3} md={3}>
-                                    <Card elevation={12} sx={{ height: 200, width: 300 }} >
+                                    <Card elevation={12} sx={{ height: 170, width: 300 }} >
                                         <CardContent sx={{ padding: 0 }}>
                                             <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
                                                 25,300+
                                             </Typography>
-                                            <Typography style={{ fontWeight: 900 }} variant="h5"  >
+                                            <Typography style={{ fontWeight: 900 }} variant="h6"  >
                                                 Workers have received employment offers directly from Users
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid>
                                 <Grid item xs={6} sm={3} md={3}>
-                                    <Card elevation={12} sx={{ height: 200, width: 300 }} >
+                                    <Card elevation={12} sx={{ height: 170, width: 300 }} >
                                         <CardContent sx={{ padding: 0 }}>
                                             < Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
                                                 20,500+
                                             </Typography>
-                                            <Typography style={{ fontWeight: 900 }} variant="h5" >
+                                            <Typography style={{ fontWeight: 900 }} variant="h6" >
                                                 Women Workers have received employment offers directly from nearby Employers
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid>
                                 <Grid item xs={6} sm={3} md={3}>
-                                    <Card elevation={12} sx={{ height: 200, width: 300 }}>
+                                    <Card elevation={12} sx={{ height: 170, width: 300 }}>
                                         <CardContent sx={{ padding: 0 }}>
                                             <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
                                                 1,26,300+
                                             </Typography>
-                                            <Typography style={{ fontWeight: 900 }} variant="h5"  >
+                                            <Typography style={{ fontWeight: 900 }} variant="h6"  >
                                                 Family members of Workers have been supported by the My Helpers initiative
                                             </Typography>
                                         </CardContent>

@@ -36,6 +36,7 @@ const HireRequestCard = (props) => {
             navigate(`/viewHelperDetails/${props.values.user_id}`)
             :
             navigate(`/viewClientDetails/${props.values.user_id}`)
+        props.closeModal()
     }
     const onAcceptHandler = () => {
         const arg = {

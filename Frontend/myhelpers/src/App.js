@@ -6,6 +6,7 @@ import {
 
 import Header from "./components/layouts/Header"
 import Profile from './components/ProfileFiles/ClientProfile';
+
 import Footer from './components/layouts/Footer';
 import About from './components/Homepage/AboutPage';
 
@@ -14,9 +15,10 @@ import Loader from './components/layouts/LoadingFile';
 import ProtectedRoutes from './RouteComponents/ProtectedRoutes'; //Authenticated routes
 import PublicRoute from './RouteComponents/PublicRoutes';
 import PrivateRoute from './RouteComponents/PrivateRoutes';
+import { height } from '@mui/system';
 
 const RolePage = lazy(() => import('./components/LoginFiles/Content'));
-const LoginPage = lazy(() => import('./components/LoginFiles/login'));
+const LoginPage = lazy(() => import('./components/LoginFiles/Login'));
 const HomePage = lazy(() => import('./components/Homepage/HomePage'));
 const NoFoundComponent = lazy(() => import('./components/layouts/PageNotFound'));
 
@@ -29,7 +31,7 @@ const publicRoutes = [
     path: '/login/:role',
     Component: LoginPage
   },
-  
+
 ]
 
 const protectedRoutes = [
@@ -66,13 +68,14 @@ const protectedRoutes = [
 ]
 
 function App() {
- 
+
   return (
     <BrowserRouter>
       <div className="App">
-        <Header />
-
-        <div className="xyz" aligm="center">
+        <div>
+          <Header />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 675 }}>
           <Suspense fallback={<Loader isLoad={true} />}>
             <Routes>
               {/* private route for both client and helper */}
@@ -82,6 +85,15 @@ function App() {
                   <PrivateRoute
                   >
                     <Profile />
+                  </PrivateRoute>
+                }
+              >
+              </Route>
+              <Route path='/about'
+                element={
+                  <PrivateRoute
+                  >
+                    <About />
                   </PrivateRoute>
                 }
               >
@@ -113,97 +125,12 @@ function App() {
               ))}
               <Route path='*'
                 element={<NoFoundComponent />} />
-              {/* <Route path='/'
-              element={
-                <PublicRoute
-
-                  isAuthenticated={isToken}
-                >
-                  <RolePage />
-
-                </PublicRoute>
-              } >
-
-            </Route>
-            
-              <Route path='/login/:role'
-                element={
-                  <PublicRoute
-
-                    isAuthenticated={isToken}
-                  >
-                    <LoginPage />
-
-                  </PublicRoute>
-                } >
-
-            </Route> */}
-
-
-              {/* <Route path='/'
-              element={
-                <PrivateRoute
-
-                  isAuthenticated={isToken}
-                >
-                  <ProtectedRoutes role={role} />
-                </PrivateRoute>
-              } >
-
-            </Route> */}
-              {/* <PublicRoute
-            path="/"
-            isAuthenticated={isToken}
-          >
-            <Suspense fallback={<Loader />}>
-              <RolePage />
-            </Suspense>
-          </PublicRoute> */}
-              {/* <PublicRoute
-                path="/login/:role"
-              isAuthenticated={isToken}
-              >
-                <LoginPage />
-              </PublicRoute> */}
-
-              {/* <PrivateRoute
-                path="/profile"
-              isAuthenticated={isToken}
-              >
-                <Profile />
-            </PrivateRoute>
-            <PrivateRoute
-              path="/"
-              isAuthenticated={isToken}
-            >
-              <ProtectedRoutes role={role} />
-             </PrivateRoute> */}
-              {/* <PrivateRoute
-              path="/viewHelperDetails/:rid"
-              isAuthenticated={isToken}
-            >
-              <ProtectedRoutes />
-            </PrivateRoute>
-            <PrivateRoute
-              path="/hiringProcess"
-              isAuthenticated={isToken}
-            >
-              <ProtectedRoutes />
-            </PrivateRoute>
-            <PrivateRoute
-              path="/viewClientDetails/:rid"
-              isAuthenticated={isToken}
-            >
-              <ProtectedRoutes />
-            </PrivateRoute>
-           */}
-              {/* <Route path="*">
-                <NoFoundComponent />
-              </Route> */}
             </Routes>
           </Suspense>
         </div>
-        <Footer />
+        <div >
+          <Footer />
+        </div>
       </div>
     </BrowserRouter>
   );

@@ -29,7 +29,6 @@ const fetchProfile = async (req, res) => {
             return res.status(200).send("Please create profile for move forward!")
         }
         else {
-            console.log(fetchProfileDetail)
             return res.status(200).send(fetchProfileDetail)
         }
 

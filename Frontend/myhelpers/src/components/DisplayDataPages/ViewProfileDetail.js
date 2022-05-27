@@ -27,7 +27,7 @@ import { fetchWorkThunk } from '../../store/slices/work-slice';
 import { workProfileActions } from '../../store/slices/work-slice'
 import { fetchSaveUserThunk, starThunk,  saveThunk, fetchViewUserDataThunk, displayActions } from '../../store/slices/display-slice';
 import { fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
-import profileActions from '../../store/slices/profile-slice'
+import {profileActions} from '../../store/slices/profile-slice'
 import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import HireForm from './HireForm';
 import Loading from '../layouts/LoadingFile'
@@ -173,8 +173,8 @@ const ViewProfileDetail = () => {
     }, [profileMessage, profileError, displayError, displayMessage, workError, workMessage, open])
 
     useEffect(() => {
-        if (viewUserProfile.length !== 0) {
-            if (workData.length !== 0) {
+        if (viewUserProfile) {
+            if (workData) {
                 let list =
                     workData.languages.map((value, index) => {
                         return value.language + ", "
@@ -183,37 +183,37 @@ const ViewProfileDetail = () => {
                     saveUser.length
                     && !!saveUser.find((val) => values.r_id === val.user_id))
                 setValues({
-                    name: userProfile[0]?.name,
-                    dob: viewUserProfile[0]?.dob,
-                    mbl: viewUserProfile[0]?.mobile_number,
-                    altmbl: viewUserProfile[0]?.alternate_mobile_number,
-                    email: viewUserProfile[0]?.email,
-                    gender: viewUserProfile[0]?.gender,
-                    married: viewUserProfile[0]?.married,
-                    physic_dis: viewUserProfile[0]?.physical_disable,
-                    house_no: viewUserProfile[0]?.address?.house_no,
-                    house_name: viewUserProfile[0]?.address?.house_name,
-                    street: viewUserProfile[0]?.address?.landmark,
-                    city: viewUserProfile[0]?.address?.city,
-                    state: viewUserProfile[0]?.address?.state,
-                    pincode: viewUserProfile[0]?.address?.pincode,
-                    about: viewUserProfile[0]?.about,
+                    name: userProfile?.name,
+                    dob: viewUserProfile?.dob,
+                    mbl: viewUserProfile?.mobile_number,
+                    altmbl: viewUserProfile?.alternate_mobile_number,
+                    email: viewUserProfile?.email,
+                    gender: viewUserProfile?.gender,
+                    married: viewUserProfile?.married,
+                    physic_dis: viewUserProfile?.physical_disable,
+                    house_no: viewUserProfile?.address?.house_no,
+                    house_name: viewUserProfile?.address?.house_name,
+                    street: viewUserProfile?.address?.landmark,
+                    city: viewUserProfile?.address?.city,
+                    state: viewUserProfile?.address?.state,
+                    pincode: viewUserProfile?.address?.pincode,
+                    about: viewUserProfile?.about,
                     porf_mbl: workData?.profession_mobile_number,
                     workTime: workData?.work_time,
                     study: workData?.education,
                     otherStudy: workData?.other_education,
                     language: list,
-                    avatar: viewUserProfile[0]?.avatar
+                    avatar: viewUserProfile?.avatar
                 })
                 let workDetails = workData?.work_details?.filter((data) => data)
                 setFields(workDetails)
 
-                setStar(viewUserProfile[0]?.rating.length ?
-                    viewUserProfile[0].rating.map((id) =>
+                setStar(viewUserProfile?.rating ?
+                    viewUserProfile.rating.map((id) =>
                         id.rate
                     ).reduce((prev, curr) => prev + curr, 0)
                     /
-                    viewUserProfile[0].rating?.map((id) =>
+                    viewUserProfile.rating?.map((id) =>
                         id.rate
                     ).length
                     : 2);
@@ -406,7 +406,7 @@ return (
                                     />
                                     <Grid container item xs={12} sm={12} md={12} justifyContent="center">
                                         <Button sx={{ marginTop: "4%", backgroundColor: "#163758" }} size="medium" variant="contained" onClick={onHireUser}>Hire</Button>
-                                        <HireForm open={open} hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData.length !== 0 ? workData.r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
+                                        <HireForm open={open} hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData?.length !== 0 ? workData.r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
                                     </Grid>
                                 </Grid>
                             </Grid>
