@@ -14,7 +14,7 @@ import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import Pagination from '@mui/material/Pagination';
 import debounce from 'lodash.debounce';
 import Typography from "@mui/material/Typography";
-import Loading from '../layouts/LoadingFile'
+import Loading from '../Layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -116,9 +116,7 @@ const DisplayData = () => {
     }, [displayData])
     useEffect(() => {
 
-        if (saveUser.length !== 0) {
-
-        }
+       
     }, [saveUser])
 
     const [sortField, setSortField] = useState('')
@@ -136,8 +134,9 @@ const DisplayData = () => {
                 workSearch,
                 filterWork: event.target.value.toLowerCase()
             }
-            const debouncedSave = debounce(() => (dispatch(searchThunk(arg)),
-                dispatch(fetchSaveUserThunk(rid))), 3000);
+            const debouncedSave = debounce(() => (dispatch(searchThunk(arg))), 2000);
+                // dispatch(fetchSaveUserThunk(rid))
+           
             debouncedSave();
         }
         else {
@@ -147,7 +146,7 @@ const DisplayData = () => {
                 filterWork: value
             }
             dispatch(searchThunk(arg))
-            dispatch(fetchSaveUserThunk(rid))
+            // dispatch(fetchSaveUserThunk(rid))
         }
     }
     //pagination states
@@ -283,7 +282,7 @@ const DisplayData = () => {
                                 : null;
                             status = saveUser.length
                                 && !!saveUser.find((val) => values.r_id === val.user_id)
-                            return <Grid item xs={12} sm={4} md={3} key={index} >
+                            return <Grid item xs={12} sm={12} md={4} lg={3} key={index} >
                                 <CardJS values={values} rates={rates} saveStatus={status} />
                             </Grid>
                         })

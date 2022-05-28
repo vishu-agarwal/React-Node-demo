@@ -137,6 +137,68 @@ return (
           </Box>
         </div>
       </Grid>
+      <Grid item xs={12} sm={12} md={12} margin={2} >
+        <Grid container justifyContent="center" >
+          <Grid item sm={12} xs={12} md={12}>
+            <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
+              How It Works ?
+            </Typography>
+          </Grid>
+          <Grid item xs={11} md={10} sm={11} marginTop={"1%"}>
+            <Grid container spacing={1} justifyContent="center" >
+              <Grid item xs={6} sm={4} md={2}>
+                <Grid container>
+
+                  <Grid item xs={12} sm={12} md={12} >
+                    <img src={require("../allImages/search.png")} onClick={() => navigate("/findHelper")} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={12}>
+                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Search</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={6} sm={4} md={2}>
+                <Grid container>
+
+                  <Grid item xs={12} sm={12} md={12} >
+                    <img src={require("../allImages/sortlist.png")} onClick={onShortlistClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                    {openShortlist && <ShortListed click={handleModelClose} />}
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={12}>
+                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Sortlist</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={6} sm={4} md={2}>
+                <Grid container>
+
+                  <Grid item xs={12} sm={12} md={12} >
+                    <img src={require("../allImages/request.png")} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                    {openRequest && <WorkRequest click={handleModelClose} />}
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={12}>
+                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Send Request</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={6} sm={4} md={2}>
+                <Grid container>
+
+                  <Grid item xs={12} sm={12} md={12} >
+                    <img src={require("../allImages/relax1.png")} onClick={onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                    {openHired && <HiredHelper click={handleModelClose} />}
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={12}>
+                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Hire</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+            </Grid>
+          </Grid>
+        </Grid>
+
+      </Grid>
       <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} backgroundColor="white">
         <Grid container justifyContent="center" >
           <Grid item sm={11} xs={11} md={11}  >
@@ -338,68 +400,7 @@ return (
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={12} md={12} margin={2} >
-        <Grid container justifyContent="center" >
-          <Grid item sm={12} xs={12} md={12}>
-            <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
-              How It Works ?
-            </Typography>
-          </Grid>
-          <Grid item xs={11} md={10} sm={11} marginTop={"1%"}>
-            <Grid container spacing={1} justifyContent="center" >
-              <Grid item xs={6} sm={4} md={2}>
-                <Grid container>
-
-                  <Grid item xs={12} sm={12} md={12} >
-                    <img src={require("../allImages/search.png")} onClick={() => navigate("/findHelper")} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={12}>
-                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Search</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={6} sm={4} md={2}>
-                <Grid container>
-
-                  <Grid item xs={12} sm={12} md={12} >
-                    <img src={require("../allImages/sortlist.png")} onClick={onShortlistClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
-                    {openShortlist && <ShortListed click={handleModelClose} />}
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={12}>
-                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Sortlist</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={6} sm={4} md={2}>
-                <Grid container>
-
-                  <Grid item xs={12} sm={12} md={12} >
-                    <img src={require("../allImages/request.png")} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
-                    {openRequest && <WorkRequest click={handleModelClose} />}
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={12}>
-                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Send Request</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={6} sm={4} md={2}>
-                <Grid container>
-
-                  <Grid item xs={12} sm={12} md={12} >
-                    <img src={require("../allImages/relax1.png")} onClick={onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
-                    {openHired && <HiredHelper click={handleModelClose} />}
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={12}>
-                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Hire</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-            </Grid>
-          </Grid>
-        </Grid>
-
-      </Grid>
+      
     </Grid>
   </div>
 )

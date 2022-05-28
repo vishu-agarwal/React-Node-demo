@@ -81,25 +81,25 @@ const Header = (props) => {
     const role = localStorage.getItem("role")
     const rid = localStorage.getItem("r_id")
 
-    const { isAuth,token } = useSelector(state => ({ ...state.loginStore }))
+    const { isAuth, token } = useSelector(state => ({ ...state.loginStore }))
 
     const [anchorElNav, setAnchorElNav] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(false);
     const [openRequest, setOpenRequest] = useState(false)
     const [openShortlist, setOpenShortlist] = useState(false)
     const [openHired, setOpenHired] = useState(false)
-    const [avatar, setAvatar] = useState("")
+    const [avatar, setAvatar] = useState(`${require("../allImages/profile.gif")}`)
 
     useEffect(() => {
         const arg = {
-            rid,token
+            rid, token
         }
         isAuth &&
-        dispatch(fetchUserProfileThunk(rid))
+            dispatch(fetchUserProfileThunk(rid))
     }, [rid])
 
     useEffect(() => {
-        userProfile?.avatar && setAvatar(userProfile.avatar)
+        userProfile?.avatar && setAvatar("http://localhost:3001/" + userProfile?.avatar)
     }, [userProfile])
 
     const handleOpenNavMenu = (event) => {
@@ -255,7 +255,7 @@ const Header = (props) => {
                             <Box sx={{ flexGrow: 0 }}>
 
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src={`http://localhost:3000/${avatar}`} />
+                                    <Avatar alt="Remy Sharp" src={`${avatar}`} />
                                 </IconButton>
 
                                 <Menu

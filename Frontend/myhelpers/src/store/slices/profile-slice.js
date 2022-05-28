@@ -149,7 +149,7 @@ const profileSlice = createSlice({
                 state.profileMessage = action.payload.data
             }
             else {
-                state.userProfile = action.payload.data[0]
+                state.userProfile = action.payload.data
             }
         },
         [fetchUserProfileThunk.rejected]: (state, error) => {

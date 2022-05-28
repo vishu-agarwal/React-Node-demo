@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 
 import {  Card, Grid,  Typography } from '@mui/material';
 
-import Loading from '../layouts/LoadingFile'
+import Loading from '../Layouts/LoadingFile'
 import { useState, useEffect } from 'react';
 
 import { displayActions, fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';

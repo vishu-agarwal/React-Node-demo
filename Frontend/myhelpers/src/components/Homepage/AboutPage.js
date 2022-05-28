@@ -141,9 +141,9 @@ const AboutPage = (props) => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} margin={2} >
                     <Grid container justifyContent="center" >
-                        <Grid item xs={11} md={10} sm={11} marginTop={"1%"}>
+                        <Grid item xs={11} md={11} lg={11} sm={11} marginTop={"1%"}>
                             <Grid container spacing={4} justifyContent="center" >
-                                <Grid item xs={6} sm={3} md={3}>
+                                <Grid item>
                                     <Card elevation={12} sx={{ height: 170, width: 300 }}>
                                         <CardContent sx={{ padding: 0 }}>
                                             <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
@@ -155,7 +155,7 @@ const AboutPage = (props) => {
                                         </CardContent>
                                     </Card>
                                 </Grid>
-                                <Grid item xs={6} sm={3} md={3}>
+                                <Grid item >
                                     <Card elevation={12} sx={{ height: 170, width: 300 }} >
                                         <CardContent sx={{ padding: 0 }}>
                                             <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
@@ -167,7 +167,7 @@ const AboutPage = (props) => {
                                         </CardContent>
                                     </Card>
                                 </Grid>
-                                <Grid item xs={6} sm={3} md={3}>
+                                <Grid item >
                                     <Card elevation={12} sx={{ height: 170, width: 300 }} >
                                         <CardContent sx={{ padding: 0 }}>
                                             < Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
@@ -179,7 +179,7 @@ const AboutPage = (props) => {
                                         </CardContent>
                                     </Card>
                                 </Grid>
-                                <Grid item xs={6} sm={3} md={3}>
+                                <Grid item >
                                     <Card elevation={12} sx={{ height: 170, width: 300 }}>
                                         <CardContent sx={{ padding: 0 }}>
                                             <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
@@ -195,7 +195,7 @@ const AboutPage = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={11} sm={11} md={11} margin={1} marginBottom={0} >
+                <Grid item xs={11} sm={11} md={11} margin={1} marginBottom={2} >
                     <Grid container justifyContent="center" >
                         <Grid item sm={12} xs={12} md={12}>
                             <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">

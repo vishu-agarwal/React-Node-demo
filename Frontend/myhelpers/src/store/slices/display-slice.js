@@ -36,6 +36,7 @@ export const fetchViewUserDataThunk = createAsyncThunk("displayAll/fetchViewUser
                     Authorization: "Bearer " + varToken,
                 },
             })
+        console.log(fetchUser)
         return fetchUser
     } catch (error) {
         throw new Error(error.response.data)
@@ -89,6 +90,13 @@ export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) =>
             }
         }
         )
+        // const state = getState()
+        // // console.log(fetchRes)
+        // console.log(state.displayStore.displayData)
+        // console.log("saves_uder:::", fetchRes.data, fetchRes.data.r_id, fetchRes.data.saved_user)
+        // state.displayStore.displayData.map((val) =>
+        //     if(val.r_id)
+        // )
         return fetchRes
     }
     catch (error) {
@@ -142,7 +150,7 @@ const displaySlice = createSlice({
         },
         [fetchViewUserDataThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            state.viewUserProfile = action.payload.data[0]
+            state.viewUserProfile = action.payload.data
         },
         [fetchViewUserDataThunk.rejected]: (state, error) => {
             state.displayLoading = false

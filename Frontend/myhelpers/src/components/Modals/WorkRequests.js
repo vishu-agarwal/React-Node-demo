@@ -3,14 +3,14 @@ import * as React from 'react';
 
 //   mui
 import CardContent from '@mui/material/CardContent';
-import {  Card, Grid,  Typography } from '@mui/material';
-import Loading from '../layouts/LoadingFile'
+import { Card, Grid, Typography } from '@mui/material';
+import Loading from '../Layouts/LoadingFile'
 import { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import { fetchHelperRequestsThunk } from '../../store/slices/hireRequest-slice';
 import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './HireRequestCard';
-import {hireRequestActions} from '../../store/slices/hireRequest-slice'
+import { hireRequestActions } from '../../store/slices/hireRequest-slice'
 import CloseIcon from '@mui/icons-material/Close';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -31,7 +31,7 @@ const WorkRequest = (props) => {
         vertical: 'top',
         horizontal: 'center',
     });
-    const {  snackOpen } = state;
+    const { snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
@@ -96,7 +96,7 @@ const WorkRequest = (props) => {
                                             Enquiry
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={12} sm={2} align="right">                                       
+                                    <Grid item xs={12} sm={2} align="right">
                                         <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
                                     </Grid>
                                 </Grid>
@@ -116,12 +116,21 @@ const WorkRequest = (props) => {
                                                 <HireRequestCard values={val} closeModal={props.click} />
                                             </Grid>
                                         }
+                                        else {
+                                            return <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }} >
+                                                <img
+                                                    src={require("../allImages/nodata.gif")}
+                                                    alt="Page No Found..."
+                                                    align="center"
+                                                />
+                                            </Grid>
+                                        }
                                     }
                                     )
                                     :
                                     <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }} >
                                         <img
-                                            src={require("../allImages/notfound.gif")}
+                                            src={require("../allImages/nodata.gif")}
                                             alt="Page No Found..."
                                             align="center"
                                         />

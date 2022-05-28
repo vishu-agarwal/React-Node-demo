@@ -18,15 +18,15 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { acceptRequestThunk, rejectRequestThunk, deleteRequestThunk } from "../../store/slices/hireRequest-slice"
+import { acceptRequestThunk, rejectRequestThunk, deleteRequestThunk, fetchHelperRequestsThunk } from "../../store/slices/hireRequest-slice"
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
 import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined';
 import hireRequestActions from '../../store/slices/hireRequest-slice'
-import Loading from '../layouts/LoadingFile'
+import Loading from '../Layouts/LoadingFile'
 
 const HireRequestCard = (props) => {
-    
+
     const navigate = useNavigate()
     const rid = localStorage.getItem("r_id")
     const dispatch = useDispatch()
@@ -44,6 +44,7 @@ const HireRequestCard = (props) => {
             rid
         }
         dispatch(acceptRequestThunk(arg))
+        dispatch(fetchHelperRequestsThunk(rid))
     }
     const onDeleteHandler = () => {
         const arg = {
@@ -51,6 +52,7 @@ const HireRequestCard = (props) => {
             rid
         }
         props.values.user_id.charAt(0) === "C" ? dispatch((rejectRequestThunk(arg))) : dispatch((deleteRequestThunk(arg)))
+        dispatch(fetchHelperRequestsThunk(rid))
     }
 
     return (
@@ -78,7 +80,7 @@ const HireRequestCard = (props) => {
                                     <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" />
                                 </IconButton>
                             </Tooltip>}
-                            
+
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
                             {props.values.status !== "hired!" && <Tooltip title="Delete">
@@ -93,7 +95,7 @@ const HireRequestCard = (props) => {
                         <Grid item xs={12} sm={12} align="left" paddingLeft={1}>
                             <Typography gutterBottom sx={{ fontSize: 15, textTransform: "capitalize" }} component={'div'} >
                                 Status : {
-                                    <Typography gutterBottom color={props.values.status === "hired!" ? "#00a152" : props.values.status === "pending!" ? "#faaf00" : "red"} sx={{ fontSize: 16,textTransform:"capitalize" }} display="inline"> {props.values.status}</Typography>
+                                    <Typography gutterBottom color={props.values.status === "hired!" ? "#00a152" : props.values.status === "pending!" ? "#faaf00" : "red"} sx={{ fontSize: 16, textTransform: "capitalize" }} display="inline"> {props.values.status}</Typography>
                                 }
                             </Typography>
                             {props.values.message ?

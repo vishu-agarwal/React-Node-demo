@@ -27,7 +27,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import "react-datepicker/dist/react-datepicker.css";
-import Loading from '../layouts/LoadingFile'
+import Loading from '../Layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 

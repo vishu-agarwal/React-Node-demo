@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 import { fetchHelperRequestsThunk } from '../../store/slices/hireRequest-slice';
-import Loading from '../layouts/LoadingFile'
+import Loading from '../Layouts/LoadingFile'
 
 import {  useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -134,9 +134,9 @@ const HiredHelper = (props) => {
                                             </Grid>
                                         }
                                         else {
-                                            <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                                            return <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
                                                 <img
-                                                    src={require("../allImages/notfound.gif")}
+                                                    src={require("../allImages/nodata.gif")}
                                                     alt="Page No Found..."
                                                     align="center"
                                                 />
@@ -147,7 +147,7 @@ const HiredHelper = (props) => {
                                     :
                                     <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
                                         <img
-                                            src={require("../allImages/notfound.gif")}
+                                            src={require("../allImages/nodata.gif")}
                                             alt="Page No Found..."
                                             align="center"
                                         />

@@ -9,9 +9,9 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
-import {  useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Loading from '../layouts/LoadingFile'
+import Loading from '../Layouts/LoadingFile'
 import { useSelector, useDispatch } from 'react-redux';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
@@ -41,7 +41,7 @@ const ViewClientProfile = () => {
     const dispatch = useDispatch()
 
     let { viewUserProfile, displayError, displayMessage, displayLoading } = useSelector((state) => ({ ...state.displayStore }))
-    
+
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
@@ -70,7 +70,7 @@ const ViewClientProfile = () => {
         state: '',
         pincode: '',
         about: '',
-        avatar: '',
+        avatar: `${require("../allImages/profile.gif")}`,
     });
     const [star, setStar] = useState(0)
     useEffect(() => {
@@ -111,7 +111,7 @@ const ViewClientProfile = () => {
                 state: viewUserProfile?.address?.state,
                 pincode: viewUserProfile?.address?.pincode,
                 about: viewUserProfile?.about,
-                avatar: viewUserProfile?.avatar
+                avatar: "http://localhost:3001/" + viewUserProfile?.avatar
             })
         }
     }, [viewUserProfile])
@@ -234,13 +234,13 @@ const ViewClientProfile = () => {
                                         <CardMedia
                                             component="img"
                                             sx={{ marginTop: "10%", width: 250, height: 250, borderRadius: "50%" }}
-                                            image={`http://localhost:3001/${values.avatar}`}
+                                            image={`${values.avatar}`}
                                             alt="Paella dish"
                                         />
                                         <Grid container item xs={12} sm={12} md={12}>
                                         </Grid>
-                                    </Grid>
-                                </Grid>
+                                    </Grid >
+                                </Grid >
                                 <Grid item xs={12} sm={11} md={5} sx={{ marginTop: "5%" }}>
                                     <Grid container direction={'row'} >
                                         <Grid item xs={4} sm={4} md={4} marginLeft={"3%"} align="left">
@@ -297,12 +297,12 @@ const ViewClientProfile = () => {
 
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+                            </Grid >
+                        </Grid >
+                    </Grid >
                 </CardContent >
             </Card >
-        </Container>
+        </Container >
     )
 }
 

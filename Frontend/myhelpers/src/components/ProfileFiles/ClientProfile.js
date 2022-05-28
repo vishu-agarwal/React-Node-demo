@@ -18,8 +18,8 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import WorkProfile from './WorkProfile';
 import { useEffect, useState } from 'react';
-// import axios from 'axios';
-import Loading from '../layouts/LoadingFile'
+
+import Loading from '../Layouts/LoadingFile'
 import Divider from '@mui/material/Divider';
 
 import {
@@ -32,6 +32,8 @@ import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import Rating from '@mui/material/Rating';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+
+const profileImg = require("../allImages/profile.gif")
 
 const Alert = React.forwardRef(function Alert(
     props,
@@ -94,7 +96,7 @@ const ClientProfile = () => {
 
     const [file, setfile] = useState({
         upldfile: [],
-        dispFile: ''
+        dispFile: profileImg
     })
 
     const [aadhar, setaadhar] = useState({
@@ -549,10 +551,7 @@ const ClientProfile = () => {
             <Card
                 elevation={16}
                 sx={{
-                    maxWidth: 1400, maxHeight: 5000,
-                    margin: '0 auto',
-                    marginTop: 9,
-                    borderWidth: 2,
+                    marginRight: 5, marginLeft: 5,
                     // borderColor:"#163758"
                 }}>
                 <CardContent>
@@ -603,7 +602,7 @@ const ClientProfile = () => {
                                                     // backgroundRepeat: "no-repeat",
                                                     // backgroundSize: "100%"
                                                     border: '3px solid #163758',
-                                                    backgroundColor: ""
+                                                   
                                                 }}
                                                 src={file.dispFile}
                                                 sx={{
@@ -616,7 +615,7 @@ const ClientProfile = () => {
                                     </Grid>
                                     <Grid item xs={12} sm={12}>
                                         <Typography marginTop={1} gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'subtitle2' } }}>{values.email.toLowerCase()}</Typography>
-                                       
+
                                         {role === "Helper" && <Rating name="half-rating"
                                             value={star}
                                             readOnly={Boolean(true)}
@@ -942,9 +941,9 @@ const ClientProfile = () => {
                                         />
                                     </Grid>
                                 </Grid>
-                                <Grid container spacing={2} justifyContent="center" marginTop={15} marginLeft={1} >
+                                <Grid container spacing={2} justifyContent="center" marginTop={13} marginLeft={1} >
                                     {role === "Helper" && !fieldsDisable &&
-                                        <Grid item xs={12} sm={6} align="left">
+                                        <Grid item xs={12} sm={6}  align="left">
                                             <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth size="large" >
                                                 {editHide ? "Add Work" : !fieldsDisable && "Update Work "}
                                             </Button>

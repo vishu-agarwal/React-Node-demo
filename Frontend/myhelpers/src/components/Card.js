@@ -14,9 +14,9 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { displayActions, fetchAllThunk, fetchSaveUserThunk ,starThunk, saveThunk } from '../store/slices/display-slice';
+import { displayActions, fetchAllThunk, fetchSaveUserThunk, saveThunk } from '../store/slices/display-slice';
 import { fetchUserProfileThunk } from "../store/slices/profile-slice";
-import Loading from './layouts/LoadingFile'
+import Loading from './Layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -85,23 +85,23 @@ const CardJS = (props) => {
             setSnackMessage("Pleasde first create your profile")
         }
     }
-    const onRateClick = (event) => {
-        if (userProfile?.is_profile) {
-            setStar(parseInt(event.target.value))
-            const arg = {
-                user_id: props.values.r_id,
-                rate: parseInt(event.target.value),
-                rid
-            }
-            dispatch(starThunk(arg))
-            dispatch(fetchAllThunk())
-        } else {
-            setState({ snackOpen: true })
-            setSnackColor("error")
-            setSnackMessage("Pleasde first create your profile")
-            dispatch(displayActions.errorReducer())
-        }
-    }
+    // const onRateClick = (event) => {
+    //     if (userProfile?.is_profile) {
+    //         setStar(parseInt(event.target.value))
+    //         const arg = {
+    //             user_id: props.values.r_id,
+    //             rate: parseInt(event.target.value),
+    //             rid
+    //         }
+    //         dispatch(starThunk(arg))
+    //         dispatch(fetchAllThunk())
+    //     } else {
+    //         setState({ snackOpen: true })
+    //         setSnackColor("error")
+    //         setSnackMessage("Pleasde first create your profile")
+    //         dispatch(displayActions.errorReducer())
+    //     }
+    // }
 
     useEffect(() => {
         setStar(props.rates)
@@ -215,7 +215,7 @@ const CardJS = (props) => {
                                 readOnly={Boolean(true)}
                                 value={star}
                                 size="medium"
-                         
+
                             />
                         </Grid>
                         <Grid item xs={6} sm={12} md={8} align="" paddingLeft={0.5}>

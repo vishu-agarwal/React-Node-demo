@@ -26,7 +26,7 @@ import { useState, useEffect } from 'react';
 import { workProfileActions } from '../../store/slices/work-slice'
 
 import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
-import Loading from '../layouts/LoadingFile'
+import Loading from '../Layouts/LoadingFile'
 import { useSelector, useDispatch } from 'react-redux';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 
