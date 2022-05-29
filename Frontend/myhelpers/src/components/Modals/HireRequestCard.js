@@ -32,11 +32,14 @@ const HireRequestCard = (props) => {
     const dispatch = useDispatch()
 
     const onViewClick = () => {
-        props.values.user_id.charAt(0) === "H" ?
+        if (props.values.user_id.charAt(0) === "H") {
             navigate(`/viewHelperDetails/${props.values.user_id}`)
-            :
+            props.closeModal()
+        }
+        else {
             navigate(`/viewClientDetails/${props.values.user_id}`)
-        props.closeModal()
+            props.closeModal()
+        }
     }
     const onAcceptHandler = () => {
         const arg = {
@@ -58,7 +61,7 @@ const HireRequestCard = (props) => {
     return (
         <>
             <Card sx={{
-                maxWidth: "90%", maxHeight: "90%",
+                width: 450, height: 230,
                 marginTop: 1,
 
             }} elevation={16}
@@ -74,10 +77,9 @@ const HireRequestCard = (props) => {
 
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
-
                             {props.values.user_id.charAt(0) === "C" && props.values.status === "pending!" &&
                                 <Tooltip title="Accepted">
-                                    < IconButton onClick={onAcceptHandler} aria-label="upload picture" component="span">
+                                    < IconButton onClick={onAcceptHandler} sx={{ padding: 0.5 }} aria-label="upload picture" component="span">
                                         <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" />
                                     </IconButton>
                                 </Tooltip>}
@@ -118,7 +120,7 @@ const HireRequestCard = (props) => {
                                 Date :  <CalendarMonthIcon color="info" sx={{ verticalAlign: "middle" }} /> {props.values.from_date} to {props.values.to_date}
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
-                                Time : <WatchLaterIcon color="info" sx={{ verticalAlign: "middle" }} /> {props.values.from_time} to {props.values.to_time}
+                                Time : <WatchLaterIcon color="info" sx={{ verticalAlign: "middle" }} /> {props.values.from_time ? props.values.from_time : "--"} to {props.values.to_time ? props.values.to_time : "--"}
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
                                 Description : {props.values.description}

@@ -153,7 +153,7 @@ const DisplayData = () => {
 
     let cnt = 0;
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(4);
+    const [rowsPerPage, setRowsPerPage] = React.useState(16);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -266,7 +266,7 @@ const DisplayData = () => {
 
                 </Grid>
             </Grid>
-            <Grid container direction="row" style={{ margin: 0, marginLeft: '0.5%' }} justifyContent="center" >
+            <Grid container direction="row" style={{ margin: 0, marginLeft: '0.5%' }} justifyContent="left" >
                 {
                     displayData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((values, index) => {
@@ -300,7 +300,7 @@ const DisplayData = () => {
 
                 <TablePagination
                     size="small"
-                    rowsPerPageOptions={[8, 16, 24, 32, 40, 100]}
+                    // rowsPerPageOptions={[8, 16, 24, 32, 40, 100]}
                     component="div"
                     count={displayData?.length}
                     rowsPerPage={rowsPerPage}

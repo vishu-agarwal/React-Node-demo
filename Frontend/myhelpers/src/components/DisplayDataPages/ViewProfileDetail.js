@@ -121,7 +121,6 @@ const ViewProfileDetail = () => {
             description: '',
         })
         setHireWork([])
-
     }, [])
     useEffect(() => {
 

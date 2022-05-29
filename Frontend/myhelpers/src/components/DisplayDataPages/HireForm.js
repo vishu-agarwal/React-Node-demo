@@ -68,7 +68,7 @@ const HireForm = (props) => {
         horizontal: 'center',
     });
 
-    const { vertical, horizontal, snackOpen } = state;
+    const {  snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
@@ -475,7 +475,7 @@ const HireForm = (props) => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={1} justifyContent="left" >
-                                        {!editHide && singleUser && singleUser.status === "pending!" &&
+                                        {!editHide && singleUser?.status === "pending!" &&
                                             <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
                                                 {fieldsDisable ?
                                                     <ModeEditIcon sx={{ color: "white", fontSize: 35 }} cursor="pointer" />
@@ -512,10 +512,11 @@ const HireForm = (props) => {
                                                     MenuProps={MenuProps}
                                                 >
                                                     {props.fields.map((row, index) => (
+                                                        console.log(props.work),
                                                         <MenuItem key={index} value={row.category}>
                                                             <Checkbox checked={props.work.indexOf(row.category) > -1} />
                                                             <ListItemText primary={row.category} />
-                                                        </MenuItem>
+                                                        </MenuItem> 
                                                     ))}
                                                 </Select>
                                                 <FormHelperText>{errorEnable.work && errorText}</FormHelperText>

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-
+// import store from "../storeToolkitIndex"
 
 const initialState = {
     logUser: [],
@@ -48,6 +48,7 @@ const loginSlice = createSlice({
             state.error = ""
         },
         logoutReducer(state) {
+
             state.isAuth = false
             state.logUser = []
             state.token = ""

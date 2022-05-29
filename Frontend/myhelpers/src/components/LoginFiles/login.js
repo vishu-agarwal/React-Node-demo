@@ -63,7 +63,7 @@ const Login = () => {
 
     useEffect(() => {
         if (otpUser.length !== 0) {
-            dispatch(otpActions.isOtpReducer());
+            dispatch(otpActions.isOtpReducer(true));
         }
     }, [otpUser]);
 
@@ -116,6 +116,7 @@ const Login = () => {
         if (values.email.length !== 0) {
             if (otp == parseInt(otpUser)) {
                 dispatch(loginThunk(values));
+                // dispatch(otpActions.isOtpReducer(false));
             } else {
                 console.log("otp::", otp, otpUser)
                 setState({ snackOpen: true });

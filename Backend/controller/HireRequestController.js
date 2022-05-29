@@ -7,7 +7,8 @@ async function requestMail(email, name, status) {
     // if staus == reject and accept email go to client
     //if status == delete email go to helper
     console.log(email, status, name)
-    const receiverMail = "vishakhaagarwal.dcs22n@vnsgu.ac.in"
+    const receiverMail = email
+        // "vishakhaagarwal.dcs22n@vnsgu.ac.in"
 
     let mailText = ""
     if (status === "accept") {

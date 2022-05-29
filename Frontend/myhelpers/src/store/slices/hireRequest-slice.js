@@ -136,13 +136,13 @@ const hireRequestSlice = createSlice({
         },
     },
     extraReducers: {
-        //workProfileData
+        //ceate or send request
         [sendHireRequestThunk.pending]: (state, action) => {
             state.requestLoading = true
         },
         [sendHireRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
-            state.hireRequestData = action.payload.data
+            state.singleUser = action.payload.data
             state.requestMessage="Your request send!"
         },
         [sendHireRequestThunk.rejected]: (state, error) => {
@@ -220,7 +220,7 @@ const hireRequestSlice = createSlice({
         },
         [updateHireRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
-            state.hireRequestData = action.payload.data
+            state.singleUser = action.payload.data
             state.requestMessage = "Your request updated!"
         },
         [updateHireRequestThunk.rejected]: (state, error) => {

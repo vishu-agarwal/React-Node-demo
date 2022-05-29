@@ -13,7 +13,7 @@ export const otpThunk = createAsyncThunk("otpLogin/otpThunk", async (arg) => {
             email: arg.email,
         };
         const otpRes = await axios.post(`/myhelpers/otp/${arg.role}`,data)
-        console.log(otpRes)
+        // console.log(otpRes)
         return otpRes
     }
     catch (error) {
@@ -27,8 +27,8 @@ const otpSlice = createSlice({
         errorReducer(state) {
             state.otpError = ""
         },
-        isOtpReducer(state) {
-            state.isOtp = true
+        isOtpReducer(state, action) {
+            state.isOtp = action.payload
         },
         messageReducer(state) {
             state.otpMessage = ""

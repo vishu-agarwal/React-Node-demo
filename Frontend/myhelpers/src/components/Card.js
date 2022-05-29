@@ -82,7 +82,7 @@ const CardJS = (props) => {
         } else {
             setState({ snackOpen: true })
             setSnackColor("error")
-            setSnackMessage("Pleasde first create your profile")
+            setSnackMessage("Pleasde first create your profile!")
         }
     }
 
@@ -99,8 +99,6 @@ const CardJS = (props) => {
 
     return (
         <Card
-
-            // variant="outlined"
             sx={{
                 width: {
                     xs: 400,
@@ -108,19 +106,14 @@ const CardJS = (props) => {
                     md: 450,
                     lg: 380,
                 },
-                // maxWidth: 375,
                 height: {
                     xs: 250,
                     sm: 250,
                     md: 250,
                     lg: 250,
                 },
-
-
                 marginTop: 2,
-
                 borderRadius: 5,
-
             }} elevation={24}
         >
             <CardContent sx={{ padding:1, height: "100%" }}>

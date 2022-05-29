@@ -120,7 +120,6 @@ const ClientProfile = () => {
             setState({ open: true });
             setSnackColor("info")
             setSnackMessage(profileMessage)
-            setClicked(true)
             dispatch(profileActions.messageReducer())
         }
         if (profileError.length !== 0) {
@@ -193,7 +192,8 @@ const ClientProfile = () => {
     };
     const profileSaveHandler = (e) => {
         e.preventDefault()
-        if (clicked || file.dispFile) {
+        console.log(clicked,file.dispFile)
+        if (clicked && file.dispFile) {
             if (aadhar.dispFile) {
                 const formdata = new FormData()
                 formdata.append('aadharCard', aadhar.upldfile)
@@ -214,6 +214,7 @@ const ClientProfile = () => {
                 }
                 dispatch(createProfileThunk(argCreateProfile))
                 dispatch(aadharThunk(argAadhar))
+                setClicked(false)
                 // dispatch(fetchUserProfileThunk(rid))
                 setEditHide(false)
                 setDisable(true)
@@ -288,6 +289,7 @@ const ClientProfile = () => {
             }
             dispatch(avatarThunk(argAvatar))
             setenable(false)
+            setClicked(true)
         }
         else {
             setState({ open: true });
@@ -549,9 +551,9 @@ const ClientProfile = () => {
         <Grid >
             {profileLoading && <Loading isLoad={true} />}
             <Card
-                elevation={16}
+                elevation={24}
                 sx={{
-                    marginRight: 5, marginLeft: 5,
+                    marginRight: 10, marginLeft: 10,
                     // borderColor:"#163758"
                 }}>
                 <CardContent>

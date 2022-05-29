@@ -56,7 +56,6 @@ const ShortListed = (props) => {
             setState({ snackOpen: true });
             setSnackColor("info")
             setSnackMessage(displayMessage)
-
             dispatch(displayActions.messageReducer())
 
         }

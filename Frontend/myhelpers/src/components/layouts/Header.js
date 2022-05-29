@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import WorkRequest from '../Modals/WorkRequests'
 import ShortListed from '../Modals/ShortListed';
 import HiredHelper from '../Modals/HiredHelper';
+import { otpActions } from '../../store/slices/otp-slice'
 import { loginActions } from '../../store/slices/login-slice'
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
@@ -81,7 +82,7 @@ const Header = (props) => {
     const role = localStorage.getItem("role")
     const rid = localStorage.getItem("r_id")
 
-    const { isAuth, token } = useSelector(state => ({ ...state.loginStore }))
+    const { isAuth } = useSelector(state => ({ ...state.loginStore }))
 
     const [anchorElNav, setAnchorElNav] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(false);
@@ -105,7 +106,9 @@ const Header = (props) => {
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
+    
     const handleOpenUserMenu = (event) => {
+        
         setAnchorElUser(event.currentTarget);
     };
 
@@ -134,9 +137,11 @@ const Header = (props) => {
         setOpenShortlist(false);
     };
     const onLogoutClick = () => {
+        handleCloseUserMenu()
         localStorage.removeItem("r_id")
         localStorage.removeItem("logToken")
         localStorage.removeItem("role")
+        dispatch(otpActions.isOtpReducer(false));
         dispatch(loginActions.logoutReducer())
         navigate("/")
     }
@@ -253,11 +258,9 @@ const Header = (props) => {
                         }
                         {isAuth &&
                             <Box sx={{ flexGrow: 0 }}>
-
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar alt="Remy Sharp" src={`${avatar}`} />
                                 </IconButton>
-
                                 <Menu
                                     sx={{ mt: '45px' }}
                                     id="menu-appbar"

@@ -12,20 +12,20 @@ import WorkRequest from '../Modals/WorkRequests';
 import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 
 import { useSelector, useDispatch } from 'react-redux';
-// const helperImages = [
-//   { image: require("../cook.jpg") },
-//   { image: require("../parent.png") },
-//   { image: require("../watchman.jpg") },
-//   { image: require("../laundary.jpg") },
-//   { image: require("../wash.jpg") },
-//   { image: require("../driver.jpg") },
-//   { image: require("../japa1.jpg") },
-//   { image: require("../elevator.jpg") },
-//   { label: require("../store.jpg") },
-//   { label: require("../peon.jpg") },
-//   { label: require("../cleaning.jpg") },
-//   { label: require("../gardner.jpg") },
-// ];
+const helperImages = [
+  { image: require("../allImages/cook.jpg") },
+  { image: require("../allImages/parent.png") },
+  { image: require("../allImages/wash.jpg") },
+  { image: require("../allImages/watchman.jpg")},
+  { image: require("../allImages/laundary.jpg") },
+  { image: require("../allImages/driver.jpg") },
+  { image: require("../allImages/cleaning.jpg") },
+  { image: require("../allImages/japa1.jpg") },
+  { label: require("../allImages/elevator.jpg") },
+  { label: require("../allImages/store.jpg") },
+  { label: require("../allImages/peon.jpg") },
+  { label: require("../allImages/gardner.jpg") },
+];
 
 
 const ScrollButton = () => {
@@ -137,7 +137,7 @@ const HomePage = () => {
               variant="contained"
               onClick={() => navigate("/findHelper")}
               // size="large"
-              sx={{
+              sx={{marginTop:{lg:"3%"},
                 width: "50%", height: { xs: "23%", sm: "15%", md: "10%", lg: "8%" },
                 backgroundColor: '#e91e1e', display: 'block'
               }}
@@ -218,25 +218,25 @@ const HomePage = () => {
                     Your Ultimate Helpers Hiring Platform
                   </Typography>
                 </Grid>
-                {/* {
-                  helperImages.map((val, index) => 
-                    
-                    <Grid item xs={6} sm={4} md={2} key = {index}>
-                      <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
-                        <CardContent sx={{ padding: 0 }}>
-                          <Grid container >
-                            <Grid item xs={12} sm={12} md={12} >
-                              <img src={val.image} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={12} >
-                              <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Cook/Chef</Typography>
-                            </Grid>
-                          </Grid>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  )
-                } */}
+                {
+                  // helperImages.map((val, index) => {
+                  //   return <Grid item xs={6} sm={4} md={2} key={index}>
+                  //     <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                  //       <CardContent sx={{ padding: 0 }}>
+                  //         <Grid container >
+                  //           <Grid item xs={12} sm={12} md={12} >
+                  //             <img src={val.image} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                  //           </Grid>
+                  //           <Grid item xs={12} sm={12} md={12} >
+                  //             <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Cook/Chef</Typography>
+                  //           </Grid>
+                  //         </Grid>
+                  //       </CardContent>
+                  //     </Card>
+                  //   </Grid>
+                  // }
+                  // )
+                }
                 <Grid item xs={6} sm={4} md={3} lg={2}>
                   <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
                     <CardContent sx={{ padding: 0 }}>
