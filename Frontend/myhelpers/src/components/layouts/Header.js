@@ -57,7 +57,7 @@ function ScrollTop(props) {
             <Box
                 onClick={handleClick}
                 role="presentation"
-                sx={{ position: 'fixed', bottom: 50, right: 16 }}
+                sx={{ position: 'fixed', bottom: 70, right: 16 }}
             >
                 {children}
             </Box>
@@ -91,9 +91,9 @@ const Header = (props) => {
     const [avatar, setAvatar] = useState(`${require("../allImages/profile.gif")}`)
 
     useEffect(() => {
-        const arg = {
-            rid, token
-        }
+        // const arg = {
+        //     rid
+        // }
         isAuth &&
             dispatch(fetchUserProfileThunk(rid))
     }, [rid])

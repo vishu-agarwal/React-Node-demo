@@ -625,7 +625,7 @@ const ClientProfile = () => {
                                 </Grid>
                             </Grid>
                             <Divider orientation="vertical" flexItem />
-                            <Grid item xs={12} sm={6} md={4.5} justifyContent="center"  >
+                            <Grid item xs={12} sm={12} md={4.5} justifyContent="center"  >
                                 <Grid container spacing={2} justifyContent="center" >
                                     <Grid xs={12} sm={12} margin={2} marginLeft={5} item align="left">
                                         <Typography variant='h4'>
@@ -818,7 +818,7 @@ const ClientProfile = () => {
                                 </Grid>
                             </Grid>
                             <Divider orientation="vertical" flexItem />
-                            <Grid item xs={12} sm={6} md={4} justifyContent="center"   >
+                            <Grid item xs={12} sm={12} md={4} justifyContent="center"   >
                                 <Grid container spacing={2} justifyContent="center" >
                                     <Grid xs={12} sm={12} margin={1} marginLeft={5} item align="left">
                                         <Typography variant='h6'>

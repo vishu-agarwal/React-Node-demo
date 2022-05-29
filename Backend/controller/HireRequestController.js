@@ -1,15 +1,77 @@
 const hireRequestModel = require("../model/HireRequestModel")
 const userModel = require("../model/UserModel");
+const nodemailer = require("nodemailer");
+
+//send mail request 
+async function requestMail(email, name, status) {
+    // if staus == reject and accept email go to client
+    //if status == delete email go to helper
+    console.log(email, status, name)
+    const receiverMail = "vishakhaagarwal.dcs22n@vnsgu.ac.in"
+
+    let mailText = ""
+    if (status === "accept") {
+        mailText = 'Congratulations! \n Your request from ' + name + ' is accepted. \n Thank you!'
+        console.log(mailText, "..text1")
+    }
+    else if (status === "reject") {
+        mailText = ' Sorry! \n Yyour request from ' + name + ' is rejected . \n Thank you!'
+        console.log(mailText, "..text2")
+    }
+    else if (status === "delete") {
+        mailText = ' Sorry! \n  Your request from ' + name + ' is deleted . \n Thank you!'
+        console.log(mailText, "..text3")
+    }
+    else if (status === "pending") {
+        mailText = ' Congratulation! \n You receive request from ' + name + '. \n Thank you!'
+        console.log(mailText, "..text4")
+    }
+    console.log(mailText, "text", receiverMail, "mail")
+    try {
+        let testAccount = await nodemailer.createTestAccount();
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "realadtest@gmail.com", // generated ethereal user
+                pass: "smartdevs@123", // generated ethereal password
+            },
+        });
+
+        let info = await transporter.sendMail({
+            from: 'realadtest@gmail.com', // sender address
+            to: receiverMail, // list of receivers
+            subject: "My Helpers request " + status, // Subject line
+            text: mailText, // plain text body
+        });
+
+        if (info) {
+            return mailText
+        }
+        else {
+            throw new Error("Some problem while sending email !")
+        }
+    } catch (error) {
+        return error.message;
+    }
+}
 
 // add hire request from hire form
 const createHireRequest = async (req, res) => {
     try {
         const r_id = req.params.rid
         const requested_user = req.body
+        const user = requested_user.find((val) => val.user_id)
+        // console.log(user, ".bidy....")
         const found = await hireRequestModel.findOne({ r_id: r_id })
         if (found) {
             const update = await hireRequestModel.findOneAndUpdate({ r_id: req.params.rid },
                 { requested_user: found.requested_user.concat(...req.body) }, { new: true })
+            //send email to helper
+            const email = await userModel.findOne({ r_id: user.user_id })
+            console.log(email, "email from create", email.email)
+            const name = await userModel.findOne({ r_id: req.params.rid })
+            await requestMail(email.email, name.name, "pending")
             return res.status(200).send(update)
         }
         else {
@@ -19,8 +81,14 @@ const createHireRequest = async (req, res) => {
             const hireDetail = { r_id, requested_user }
             const hireRequest = new hireRequestModel(hireDetail)
             await hireRequest.save()
+            //send email to helper
+            const email = await userModel.findOne({ r_id: user.user_id })
+            const name = await userModel.findOne({ r_id: req.params.rid })
+            await requestMail(email.email, name.name, "pending")
             return res.status(200).send(hireRequest)
         }
+
+
     } catch (error) {
         return res.status(400).send(error.message)
     }
@@ -108,8 +176,12 @@ const acceptClientRequest = async (req, res) => {
             if (found.requested_user[idIndex].user_id === req.params.rid) {
                 found.requested_user[idIndex].status = "hired!"
             }
-            const update = await found.save();            
-            return res.status(200).send();
+            const update = await found.save();
+            //send email to client
+            const email = await userModel.findOne({ r_id: req.params.cid })
+            const name = await userModel.findOne({ r_id: req.params.rid })
+            await requestMail(email.email, name.name, "accept")
+            return res.status(200).send(found);
         }
     } catch (error) {
         return res.status(400).send(error.message)
@@ -125,6 +197,10 @@ const rejectClientRequest = async (req, res) => {
                 found.requested_user[idIndex].status = "reject!"
             }
             const update = await found.save();
+            //email send to client
+            const email = await userModel.findOne({ r_id: req.params.cid })
+            const name = await userModel.findOne({ r_id: req.params.rid })
+            await requestMail(email.email, name.name, "reject")
             return res.status(200).send(update);
         }
     } catch (error) {
@@ -135,8 +211,16 @@ const rejectClientRequest = async (req, res) => {
 const deleteHelperRequest = async (req, res) => {
     const update = await hireRequestModel.findOneAndUpdate({ r_id: req.params.rid },
         { $pull: { requested_user: { user_id: req.params.hid } } }, { new: true })
+    //email send to helper
+    const email = await userModel.findOne({ r_id: req.params.hid })
+    // console.log("email..", email)
+    const name = await userModel.findOne({ r_id: req.params.rid })
+    // console.log("name..", name)
+    const mail = await requestMail(email.email, name.name, "delete")
+    // console.log(mail, "request mail...")
     return res.status(200).send(update)
 }
+
 // update hire request form
 const updateHireRequest = async (req, res) => {
     //which field are allowed to update

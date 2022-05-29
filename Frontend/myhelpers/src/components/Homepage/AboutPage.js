@@ -44,16 +44,15 @@ const ScrollButton = () => {
     window.addEventListener('scroll', toggleVisible);
 
     return (
-        <Box>
-            <img
-                src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom}
-                sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
-                style={{
-                    display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
-                    transition: "all .5s ease -in -out"
-                }}
-            />
-        </Box >
+        <img
+            src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom}
+            // sx={{ display: 'block' }}
+            style={{
+                width: "10%",
+                display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
+                transition: "all .5s ease -in -out"
+            }}
+        />
     );
 }
 
@@ -85,7 +84,7 @@ const AboutPage = (props) => {
                     <div>
                         <img src={require("../allImages/aboutimg.png")} width={"100%"} />
                     </div>
-                    <div style={{ height: "99.5%", width: "100%", background: "", opacity: 0.5, position: "absolute", top: 0, }} align="center">
+                    <div style={{ height: "99.5%", width: "100%", background: "", opacity: 1.0, position: "absolute", top: 0, }} align="center">
                         <Box mt={"25%"} >
                             <Grid container justifyContent="center" >
                                 <ScrollButton />
@@ -139,7 +138,7 @@ const AboutPage = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} margin={2} >
+                <Grid item xs={12} sm={12} md={12}  margin={2} >
                     <Grid container justifyContent="center" >
                         <Grid item xs={11} md={11} lg={11} sm={11} marginTop={"1%"}>
                             <Grid container spacing={4} justifyContent="center" >

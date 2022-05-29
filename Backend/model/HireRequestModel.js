@@ -4,7 +4,7 @@ const hireRequestSchema = new mongoose.Schema(
     {
         r_id: {
             type: String,
-            ref: 'tblC_Profile',
+            ref: 'users',
         },
         requested_user: [
             {
@@ -16,7 +16,7 @@ const hireRequestSchema = new mongoose.Schema(
                 from_time: String,
                 to_time: String,
                 description: String,
-                message : String
+                message: String
             }
         ]
     },

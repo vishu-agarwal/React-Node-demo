@@ -102,8 +102,7 @@ function App() {
                 <Route path={path}
                   key={`public-${path}`}
                   element={
-                    <PublicRoute
-                    >
+                    <PublicRoute>
                       <Component />
                     </PublicRoute>
                   }

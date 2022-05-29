@@ -108,7 +108,7 @@ const ViewProfileDetail = () => {
         // dispatch(fetchUserProfileThunk(rid))
         dispatch(fetchViewUserDataThunk(user_id))
         dispatch(fetchWorkThunk(user_id))
-        // dispatch(fetchSaveUserThunk(rid))
+        dispatch(fetchSaveUserThunk(rid))
     }, [user_id])
 
     useEffect(() => {
@@ -174,54 +174,55 @@ const ViewProfileDetail = () => {
     useEffect(() => {
         //Object.keys(viewUserProfile).length !== 0
         // if (Object.keys(viewUserProfile).length !== 1 && !displayLoading) {
-            if (viewUserProfile) {
+        if (viewUserProfile) {
 
-                if (workData.length !== 0) {
-                    let list =
-                        workData.languages.map((value, index) => {
-                            return value.language + ", "
-                        })
-                    setStatus(
-                        saveUser.length
-                        && !!saveUser.find((val) => values.r_id === val.user_id))
-                    setValues({
-                        name: userProfile?.name,
-                        dob: viewUserProfile?.dob,
-                        mbl: viewUserProfile?.mobile_number,
-                        altmbl: viewUserProfile?.alternate_mobile_number,
-                        email: viewUserProfile?.email,
-                        gender: viewUserProfile?.gender,
-                        married: viewUserProfile?.married,
-                        physic_dis: viewUserProfile?.physical_disable,
-                        house_no: viewUserProfile?.address?.house_no,
-                        house_name: viewUserProfile?.address?.house_name,
-                        street: viewUserProfile?.address?.landmark,
-                        city: viewUserProfile?.address?.city,
-                        state: viewUserProfile?.address?.state,
-                        pincode: viewUserProfile?.address?.pincode,
-                        about: viewUserProfile?.about,
-                        porf_mbl: workData?.profession_mobile_number,
-                        workTime: workData?.work_time,
-                        study: workData?.education,
-                        otherStudy: workData?.other_education,
-                        language: list,
-                        avatar: "http://localhost:3001/" + viewUserProfile?.avatar
+            if (workData.length !== 0) {
+                let list =
+                    workData.languages.map((value, index) => {
+                        return value.language + ", "
                     })
-                    let workDetails = workData?.work_details?.filter((data) => data)
-                    setFields(workDetails)
-
-                    setStar(viewUserProfile?.rating?.length ?
-                        viewUserProfile.rating.map((id) =>
-
-                            id.rate
-                        ).length
-                        : 2);
-                }
+                
+                const status1 = saveUser.length
+                    && !!saveUser.find((val) => val.user_id === viewUserProfile.r_id)
+                
+                setStatus(status1)
+                setValues({
+                    name: userProfile?.name,
+                    dob: viewUserProfile?.dob,
+                    mbl: viewUserProfile?.mobile_number,
+                    altmbl: viewUserProfile?.alternate_mobile_number,
+                    email: viewUserProfile?.email,
+                    gender: viewUserProfile?.gender,
+                    married: viewUserProfile?.married,
+                    physic_dis: viewUserProfile?.physical_disable,
+                    house_no: viewUserProfile?.address?.house_no,
+                    house_name: viewUserProfile?.address?.house_name,
+                    street: viewUserProfile?.address?.landmark,
+                    city: viewUserProfile?.address?.city,
+                    state: viewUserProfile?.address?.state,
+                    pincode: viewUserProfile?.address?.pincode,
+                    about: viewUserProfile?.about,
+                    porf_mbl: workData?.profession_mobile_number,
+                    workTime: workData?.work_time,
+                    study: workData?.education,
+                    otherStudy: workData?.other_education,
+                    language: list,
+                    avatar: "http://localhost:3001/" + viewUserProfile?.avatar
+                })
+                let workDetails = workData?.work_details?.filter((data) => data)
+                setFields(workDetails)
+                let rates = viewUserProfile?.rating?.length ?
+                    viewUserProfile.rating.find((id) =>
+                        rid === id.user_id && id.rate
+                    )
+                    : 0
+                setStar(rates.rate);
             }
-            else {
+        }
+        else {
 
-                navigate("*")
-            }
+            navigate("*")
+        }
         // }
     }, [viewUserProfile, workData, saveUser])
 

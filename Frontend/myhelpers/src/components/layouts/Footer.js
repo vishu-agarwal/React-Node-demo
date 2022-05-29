@@ -11,10 +11,10 @@ import LanguageIcon from '@mui/icons-material/Language';
 
 const Footer = () => {
   return (
-    <footer className="footer" sx={{ backgroundColor: "#163758" }}>
+    <footer className="footer" >
       <Grid container sx={{ width: "100%", height: 50 }} justifyContent={"center"} >
         <Grid item xs={11.5} sm={11.5} md={11.5} lg={11.5}>
-          <Grid container >
+          <Grid container sx={{ backgroundColor: "#163758" }} >
             <Grid item xs={4} sm={4} md={4} lg={4} align="left" paddingTop={2} >
               Designed By Vishakha Agarwal
             </Grid>

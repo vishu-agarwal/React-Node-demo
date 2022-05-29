@@ -116,7 +116,7 @@ const DisplayData = () => {
     }, [displayData])
     useEffect(() => {
 
-       
+
     }, [saveUser])
 
     const [sortField, setSortField] = useState('')
@@ -135,8 +135,8 @@ const DisplayData = () => {
                 filterWork: event.target.value.toLowerCase()
             }
             const debouncedSave = debounce(() => (dispatch(searchThunk(arg))), 2000);
-                // dispatch(fetchSaveUserThunk(rid))
-           
+            // dispatch(fetchSaveUserThunk(rid))
+
             debouncedSave();
         }
         else {
@@ -266,11 +266,12 @@ const DisplayData = () => {
 
                 </Grid>
             </Grid>
-            <Grid container direction="row" spacing={2}>
+            <Grid container direction="row" style={{ margin: 0, marginLeft: '0.5%' }} justifyContent="center" >
                 {
                     displayData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((values, index) => {
-                            rates = values.rating[0] !== undefined ?
+
+                            rates = values.rating[0].length !== 0 ?
                                 values.rating[0]?.map((id) =>
                                     id.rate
                                 ).reduce((prev, curr) => prev + curr, 0)
@@ -279,30 +280,36 @@ const DisplayData = () => {
                                     id.user_id
                                 ).length
 
-                                : null;
+                                : 2;
+
                             status = saveUser.length
                                 && !!saveUser.find((val) => values.r_id === val.user_id)
-                            return <Grid item xs={12} sm={12} md={4} lg={3} key={index} >
+
+                            return <Grid item xs={12} sm={12} md={6} lg={3} key={index} style={{ padding: 0 }} align="center" >
+
                                 <CardJS values={values} rates={rates} saveStatus={status} />
+
                             </Grid>
+
                         })
                 }
             </Grid>
 
+
             <Grid item xs={12} sm={12} >
-                
-            <TablePagination
-                size="small"
-                rowsPerPageOptions={[8, 16, 24, 32, 40, 100]}
-                component="div"
-                count={displayData?.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </Grid>
-            
+
+                <TablePagination
+                    size="small"
+                    rowsPerPageOptions={[8, 16, 24, 32, 40, 100]}
+                    component="div"
+                    count={displayData?.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Grid>
+
         </Grid >
     )
 }

@@ -41,18 +41,23 @@ const ScrollButton = () => {
     window.addEventListener('scroll', toggleVisible);
 
     return (
-        <Box mt="5%">
-            <img
-                src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom}
-                sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
-                style={{
-                    display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
-                    transition: "all .5s ease -in -out"
-                }}
-            />
-        </Box >
+        // <Box mt="5%">
+        // sx={{ display: 'block', color: "#1000ff", height: "0%", width: "7%" }}
+        // style={{
+        //     display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
+        //     transition: "all .5s ease -in -out"
+        // }}
+        <img src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom} style={{ width: "10%" }} />
+        // </Box >
     );
 }
+
+const imageList = [
+    { images: require("../allImages/request.png"), component: WorkRequest },
+    { images: require("../allImages/accept.png"), component: WorkRequest },
+    { images: require("../allImages/relax1.png"), component: HiredHelper },
+
+];
 
 const HiringProcess = (props) => {
     let navigate = useNavigate()
@@ -91,35 +96,36 @@ const HiringProcess = (props) => {
                     </div>
                     <div style={{ height: "99.5%", width: "100%", background: "#000000", opacity: 0.5, position: "absolute", top: 0, }} align="center">
 
-                        <Box mt={"5%"} >
-                            <Typography sx={{ typography: { sm: 'h4', xs: 'body2', md: 'h2', } }} style={{ fontWeight: 900, color: "white" }} >
-                                FIND YOUR SUITABLE WORK EASILY
+                        {/* <Box mt={sm:'3%'} > */}
+                        <Typography sx={{ typography: { sm: 'h6', xs: 'body2', md: 'h4', lg: 'h2' }, marginTop: { sm: "2%", xs: "2%", md: "5%" } }}
+                            style={{ fontWeight: 900, color: "white" }} >
+                            FIND YOUR SUITABLE WORK EASILY
+                        </Typography>
+                        <Grid container item xs={12} sm={6} md={4} justifyContent="center">
+                            <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} style={{ fontWeight: 900, color: "white" }}
+                                marginTop="1%" >
+                                Are you find work ? Now you don't have to roam around for work. You get calls and requests for work directly on your mobile.
                             </Typography>
-                            <Grid container item xs={12} sm={6} md={4} justifyContent="center">
-                                <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} style={{ fontWeight: 900, color: "white" }} marginTop={"1%"} >
-                                    Are you find work ? Now you don't have to roam around for work. You get calls and requests for work directly on your mobile.
-                                </Typography>
-                            </Grid>
-                            <Box mt={"2%"} >
-                                <Grid container item xs={12} sm={12} md={12} justifyContent="center">
-                                    <Button
-
-                                        // size="large"
-                                        // color="#163758"
-                                        variant="contained"
-                                        onClick={onRequestClick}
-                                        sx={{ button: 'sm: "medium" xs="small" md: "large" ', backgroundColor: '#ff001d', color: "white", display: 'block', width: "20%", height: 50 }}
-                                    >
-                                        SEE REQUESTS
-                                    </Button>
-                                </Grid>
-
-                            </Box>
-
-                            <Grid container justifyContent="center" >
-                                <ScrollButton />
-                            </Grid>
-                        </Box>
+                        </Grid>
+                        {/* <Box mt={"2%"} > */}
+                        <Grid container item xs={12} sm={12} md={12} justifyContent="center">
+                            <Button
+                                variant="contained"
+                                onClick={onRequestClick}
+                                sx={{
+                                    marginTop: { md: "2%" },
+                                    button: { sm: "medium", xs: "small", md: "large" }, backgroundColor: '#ff001d', color: "white",
+                                    display: 'block', width: { sm: '30%', xs: "30%", md: "20%", lg: "20%" }, height: 50
+                                }}
+                            >
+                                SEE REQUESTS
+                            </Button>
+                        </Grid>
+                        {/* </Box> */}
+                        <Grid container item justifyContent="center" sx={{ marginTop: { lg: "5%" } }} >
+                            <ScrollButton />
+                        </Grid>
+                        {/* </Box> */}
                     </div>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} backgroundColor="white">
@@ -153,13 +159,29 @@ const HiringProcess = (props) => {
                 <Grid item xs={12} sm={12} md={12} margin={2} >
                     <Grid container justifyContent="center" >
                         <Grid item sm={12} xs={12} md={12}>
-                            <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
+                            <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={0} variant="h3">
                                 How It Works ?
                             </Typography>
                         </Grid>
                         <Grid item xs={11} md={10} sm={11} marginTop={"1%"}>
-                            <Grid container spacing={2} justifyContent="center" >
-                                <Grid item xs={6} sm={4} md={2}>
+                            <Grid container spacing={3} justifyContent="center" >
+                                {
+                                    imageList.map(({images,component}) =>
+                                        <Grid item xs={6} sm={4} md={2} key={`${images}`}>
+                                            <Grid container>
+
+                                                <Grid item xs={12} sm={12} md={12} >
+                                                    <img src={images} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                                                    {openRequest && <component click={handleModelClose} />}
+                                                </Grid>
+                                                <Grid item xs={12} sm={12} md={12}>
+                                                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >See Request</Typography>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    )
+                                }
+                                {/* <Grid item xs={6} sm={4} md={2}>
                                     <Grid container>
 
                                         <Grid item xs={12} sm={12} md={12} >
@@ -193,7 +215,7 @@ const HiringProcess = (props) => {
                                             <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Join</Typography>
                                         </Grid>
                                     </Grid>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                     </Grid>

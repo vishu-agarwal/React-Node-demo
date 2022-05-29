@@ -75,11 +75,12 @@ const HireRequestCard = (props) => {
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
 
-                            {props.values.user_id.charAt(0) === "C" && props.values.status === "pending!" && <Tooltip title="Accepted">
-                                < IconButton onClick={onAcceptHandler} aria-label="upload picture" component="span">
-                                    <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" />
-                                </IconButton>
-                            </Tooltip>}
+                            {props.values.user_id.charAt(0) === "C" && props.values.status === "pending!" &&
+                                <Tooltip title="Accepted">
+                                    < IconButton onClick={onAcceptHandler} aria-label="upload picture" component="span">
+                                        <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" />
+                                    </IconButton>
+                                </Tooltip>}
 
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >

@@ -150,7 +150,7 @@ const displaySlice = createSlice({
         },
         [fetchViewUserDataThunk.fulfilled]: (state, action) => {
             state.displayLoading = false
-            state.viewUserProfile = action.payload.data
+            state.viewUserProfile = action.payload.data[0]
         },
         [fetchViewUserDataThunk.rejected]: (state, error) => {
             state.displayLoading = false
@@ -198,7 +198,7 @@ const displaySlice = createSlice({
         },
         [starThunk.fulfilled]: (state, action) => {
             state.profileLoading = false
-            state.viewUserProfile = action.payload.data
+            state.viewUserProfile = action.payload.data[0]
         },
         [starThunk.rejected]: (state, error) => {
             state.profileLoading = false
