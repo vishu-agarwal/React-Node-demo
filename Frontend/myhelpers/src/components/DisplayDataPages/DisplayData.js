@@ -166,154 +166,156 @@ const DisplayData = () => {
 
     return (
         <Grid container spacing={1} justifyContent="center" marginTop={2}>
-            {displayLoading && <Loading isLoad={true} />}
-            <Grid item xs={11} sm={11} >
-                <Grid container spacing={2} marginBottom={2}>
-                    <Snackbar
-                        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                        open={snackOpen}
-                        autoHideDuration={6000}
-                        onClose={closeSnackbar}
-                    >
-                        <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
-                            {snackMessage}
-                        </Alert>
-                    </Snackbar>
-                    <Grid item xs={12} sm={2}>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={workSearchBy}
-                            sx={{
-                                "& .MuiInputLabel-root": { color: '#163758' },//styles the label
-                                "& .MuiOutlinedInput-root": {
-                                    "& > fieldset": { borderColor: "#163758" },
-                                },
-                                color: "#163758"
-                            }}
-                            onInputChange={(e, values) => {
-                                setFilterWork("")
-                                setWorkSearch(values)
-                            }}
-                            renderInput={(params) =>
-                                <TextField
-                                    {...params} label="Search By"
-                                    value={workSearch}
-                                />}
-                        />
-                    </Grid>
-                    <Grid item xs={11} sm={2}>
-                        {
-                            workSearch === "" ?
-                                ""
-                                :
-                                workSearch === "Work Category" || workSearch === "Work Timing" || workSearch === "Gender" ?
-                                    <Autocomplete
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        sx={{
-                                            "& .MuiInputLabel-root": { color: '#163758' },//styles the label
-                                            "& .MuiOutlinedInput-root": {
-                                                "& > fieldset": { borderColor: "#163758" },
-                                            },
-                                            color: "#163758"
-                                        }}
-                                        value={filterWork}
-                                        options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ?
-                                            filterTime : workSearch === "Gender" ? filterGender : ['']}
-                                        onChange={onSearchChange}
-                                        renderInput={(params) => {
-                                            console.log("filterWork", filterWork, params)
-                                            return <TextField
-                                                {...params}
-                                                id="er"
-                                                label="Filter By"
+            {displayLoading ? <Loading isLoad={true} /> :
+                <>
+                    <Grid item xs={11} sm={11} >
+                        <Grid container spacing={2} marginBottom={2}>
+                            <Snackbar
+                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                open={snackOpen}
+                                autoHideDuration={6000}
+                                onClose={closeSnackbar}
+                            >
+                                <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                    {snackMessage}
+                                </Alert>
+                            </Snackbar>
+                            <Grid item xs={12} sm={2}>
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={workSearchBy}
+                                    sx={{
+                                        "& .MuiInputLabel-root": { color: '#163758' },//styles the label
+                                        "& .MuiOutlinedInput-root": {
+                                            "& > fieldset": { borderColor: "#163758" },
+                                        },
+                                        color: "#163758"
+                                    }}
+                                    onInputChange={(e, values) => {
+                                        setFilterWork("")
+                                        setWorkSearch(values)
+                                    }}
+                                    renderInput={(params) =>
+                                        <TextField
+                                            {...params} label="Search By"
+                                            value={workSearch}
+                                        />}
+                                />
+                            </Grid>
+                            <Grid item xs={11} sm={2}>
+                                {
+                                    workSearch === "" ?
+                                        ""
+                                        :
+                                        workSearch === "Work Category" || workSearch === "Work Timing" || workSearch === "Gender" ?
+                                            <Autocomplete
+                                                disablePortal
+                                                id="combo-box-demo"
+                                                sx={{
+                                                    "& .MuiInputLabel-root": { color: '#163758' },//styles the label
+                                                    "& .MuiOutlinedInput-root": {
+                                                        "& > fieldset": { borderColor: "#163758" },
+                                                    },
+                                                    color: "#163758"
+                                                }}
                                                 value={filterWork}
+                                                options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ?
+                                                    filterTime : workSearch === "Gender" ? filterGender : ['']}
+                                                onChange={onSearchChange}
+                                                renderInput={(params) => {
+                                                    console.log("filterWork", filterWork, params)
+                                                    return <TextField
+                                                        {...params}
+                                                        id="er"
+                                                        label="Filter By"
+                                                        value={filterWork}
+                                                    />
+                                                }
+
+                                                }
                                             />
-                                        }
+                                            :
+                                            <TextField
+                                                id="search-bar"
+                                                name="searchText"
+                                                className="text"
+                                                label={` ${workSearch === "Location" ? "Enter Pincode" : workSearch === "Name" ? "Enter Name" : "Search Input"}`}
+                                                variant="outlined"
+                                                placeholder="Search..."
+                                                fullWidth
+                                                sx={{
+                                                    "& .MuiInputLabel-root": { color: '#163758' },//styles the label
+                                                    "& .MuiOutlinedInput-root": {
+                                                        "& > fieldset": { borderColor: "#163758" },
+                                                    },
+                                                    color: "#163758"
+                                                }}
+                                                value={filterWork}
+                                                onChange={onSearchChange}
+                                            />
 
-                                        }
-                                    />
-                                    :
-                                    <TextField
-                                        id="search-bar"
-                                        name="searchText"
-                                        className="text"
-                                        label={` ${workSearch === "Location" ? "Enter Pincode" : workSearch === "Name" ? "Enter Name" : "Search Input"}`}
-                                        variant="outlined"
-                                        placeholder="Search..."
-                                        fullWidth
-                                        sx={{
-                                            "& .MuiInputLabel-root": { color: '#163758' },//styles the label
-                                            "& .MuiOutlinedInput-root": {
-                                                "& > fieldset": { borderColor: "#163758" },
-                                            },
-                                            color: "#163758"
-                                        }}
-                                        value={filterWork}
-                                        onChange={onSearchChange}
-                                    />
+                                }
+                            </Grid>
 
+                            <Grid item xs={12} sm={3} display="flex" alignItems='center' >
+                                <Grid container item display="flex" justifyContent='right' >
+                                    <Typography variant="h6"> Sort By : Age </Typography>
+                                    <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("up", "dob")} >
+                                        <ArrowUpwardRoundedIcon />
+                                    </IconButton>
+                                    <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("down", "dob")} >
+                                        <ArrowDownwardRoundedIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+                    </Grid>
+                    <Grid container direction="row" style={{ margin: 0, marginLeft: '0.5%' }} justifyContent="left" >
+                        {
+                            displayData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((values, index) => {
+
+                                    rates = values.rating[0].length !== 0 ?
+                                        values.rating[0]?.map((id) =>
+                                            id.rate
+                                        ).reduce((prev, curr) => prev + curr, 0)
+                                        /
+                                        values.rating[0]?.map((id) =>
+                                            id.user_id
+                                        ).length
+
+                                        : 2;
+
+                                    status = saveUser.length
+                                        && !!saveUser.find((val) => values.r_id === val.user_id)
+                                    console.log(values.r_id, "status", saveUser)
+                                    return <Grid item xs={12} sm={12} md={6} lg={3} key={index} style={{ padding: 0 }} align="center" >
+
+                                        <CardJS values={values} rates={rates} saveStatus={status} isModal={false} />
+
+                                    </Grid>
+
+                                })
                         }
                     </Grid>
 
-                    <Grid item xs={12} sm={3} display="flex" alignItems='center' >
-                        <Grid container item display="flex" justifyContent='right' >
-                            <Typography variant="h6"> Sort By : Age </Typography>
-                            <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("up", "dob")} >
-                                <ArrowUpwardRoundedIcon />
-                            </IconButton>
-                            <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("down", "dob")} >
-                                <ArrowDownwardRoundedIcon />
-                            </IconButton>
-                        </Grid>
+
+                    <Grid item xs={12} sm={12} >
+                        <TablePagination
+                            size="small"
+                            // rowsPerPageOptions={[8, 16, 24, 32, 40, 100]}
+                            component="div"
+                            count={displayData?.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
                     </Grid>
-
-                </Grid>
-            </Grid>
-            <Grid container direction="row" style={{ margin: 0, marginLeft: '0.5%' }} justifyContent="left" >
-                {
-                    displayData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((values, index) => {
-
-                            rates = values.rating[0].length !== 0 ?
-                                values.rating[0]?.map((id) =>
-                                    id.rate
-                                ).reduce((prev, curr) => prev + curr, 0)
-                                /
-                                values.rating[0]?.map((id) =>
-                                    id.user_id
-                                ).length
-
-                                : 2;
-
-                            status = saveUser.length
-                                && !!saveUser.find((val) => values.r_id === val.user_id)
-                            console.log(values.r_id, "status", saveUser)
-                            return <Grid item xs={12} sm={12} md={6} lg={3} key={index} style={{ padding: 0 }} align="center" >
-
-                                <CardJS values={values} rates={rates} saveStatus={status} isModal={false}/>
-
-                            </Grid>
-
-                        })
-                }
-            </Grid>
-
-
-            <Grid item xs={12} sm={12} >
-                <TablePagination
-                    size="small"
-                    // rowsPerPageOptions={[8, 16, 24, 32, 40, 100]}
-                    component="div"
-                    count={displayData?.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Grid>
-
+                </>
+            }
         </Grid >
     )
 }

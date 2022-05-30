@@ -273,190 +273,191 @@ const WorkProfile = (props) => {
             aria-describedby="modal-modal-description"
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-            <Grid >
-                {workLoading && <Loading isLoad={true} />}
-                <Card
-                    sx={{
-                        maxWidth: 760, maxHeight: 8000,
-                        margin: '0 auto',
-                        paddingTop: 0,
-                        borderRadius: 5,
-                    }}>
-                    <CardContent style={{ padding: 0 }}>
-                        <Grid container direction={'row'} >
-                            <Snackbar
-                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                                open={open}
-                                autoHideDuration={6000}
-                                onClose={closeSnackbar}
-                            >
-                                <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
-                                    {snackMessage}
-                                </Alert>
-                            </Snackbar>
-                            <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
-                                <Grid container direction={'row'} padding={2} >
-                                    <Grid item xs={12} sm={10} align="left" >
-                                        <Typography variant="h4" color="white" >
-                                            Work Profile
-                                        </Typography>
-                                    </Grid>
+            {workLoading ? <Loading isLoad={true} /> :
+                <Grid >
+                    <Card
+                        sx={{
+                            maxWidth: 760, maxHeight: 8000,
+                            margin: '0 auto',
+                            paddingTop: 0,
+                            borderRadius: 5,
+                        }}>
+                        <CardContent style={{ padding: 0 }}>
+                            <Grid container direction={'row'} >
+                                <Snackbar
+                                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                    open={open}
+                                    autoHideDuration={6000}
+                                    onClose={closeSnackbar}
+                                >
+                                    <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                        {snackMessage}
+                                    </Alert>
+                                </Snackbar>
+                                <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
+                                    <Grid container direction={'row'} padding={2} >
+                                        <Grid item xs={12} sm={10} align="left" >
+                                            <Typography variant="h4" color="white" >
+                                                Work Profile
+                                            </Typography>
+                                        </Grid>
 
-                                    <Grid item xs={12} sm={1} justifyContent="left" >
-                                        {!editHide &&
-                                            <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
-                                                {fieldsDisable ?
-                                                    <ModeEditIcon sx={{ color: "white", fontSize: 35 }} cursor="pointer" />
-                                                    :
-                                                    < CheckIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" />}
-                                            </IconButton>
-                                        }
-                                    </Grid>
-                                    <Grid item xs={12} sm={1} align="right">
-                                        {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
-                                        <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                        <Grid item xs={12} sm={1} justifyContent="left" >
+                                            {!editHide &&
+                                                <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
+                                                    {fieldsDisable ?
+                                                        <ModeEditIcon sx={{ color: "white", fontSize: 35 }} cursor="pointer" />
+                                                        :
+                                                        < CheckIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" />}
+                                                </IconButton>
+                                            }
+                                        </Grid>
+                                        <Grid item xs={12} sm={1} align="right">
+                                            {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
+                                            <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid container justifyContent="center">
-                            <Grid item xs={12} sm={12} md={12} margin={1} marginLeft={3} marginRight={3} align="center">
-                                <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>
-                                    {/* <Typography variant='subtitle1' marginLeft={1.5}  align='left' color='InfoText'>Personal Details : </Typography> */}
-                                    <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Working Details : </Typography>
-                                    <Grid container spacing={1}>
-                                        <Grid xs={12} sm={6} item>
-                                            <TextField
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                }}
-                                                required
-                                                variant='outlined'
-                                                name="mobileno"
-                                                label="Profession Monile No."
-                                                placeholder=''
-                                                fullWidth
-                                                value={values.porf_mbl}
-                                                onChange={onChange}
-                                                error={errorEnable.porf_mbl}
-                                                helperText={errorEnable.porf_mbl && errorText}
+                            <Grid container justifyContent="center">
+                                <Grid item xs={12} sm={12} md={12} margin={1} marginLeft={3} marginRight={3} align="center">
+                                    <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>
+                                        {/* <Typography variant='subtitle1' marginLeft={1.5}  align='left' color='InfoText'>Personal Details : </Typography> */}
+                                        <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Working Details : </Typography>
+                                        <Grid container spacing={1}>
+                                            <Grid xs={12} sm={6} item>
+                                                <TextField
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
+                                                    required
+                                                    variant='outlined'
+                                                    name="mobileno"
+                                                    label="Profession Monile No."
+                                                    placeholder=''
+                                                    fullWidth
+                                                    value={values.porf_mbl}
+                                                    onChange={onChange}
+                                                    error={errorEnable.porf_mbl}
+                                                    helperText={errorEnable.porf_mbl && errorText}
 
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={6} item>
+                                                <FormControl fullWidth error={errorEnable.workTime} >
+                                                    <InputLabel htmlFor="grouped-native-select">Working Time</InputLabel>
+                                                    <Select name="time" label="Working Time"
+                                                        inputProps={{
+                                                            readOnly: Boolean(fieldsDisable),
+                                                        }}
+                                                        value={values.workTime}
+                                                        onChange={onChange}
+                                                    >
+                                                        <MenuItem value="">---select---</MenuItem>
+                                                        <MenuItem value="Live In (24 Hrs)">Live In (24 Hrs)</MenuItem>
+                                                        <MenuItem value="Full Day (12 Hrs)">Full Day (12 Hrs)</MenuItem>
+                                                        <MenuItem value="Half Day (6 Hrs)">Half Day (6 Hrs)</MenuItem>
+                                                        <MenuItem value="Custom (1-4 Hrs)">Custom (1-4 Hrs)</MenuItem>
+                                                        <MenuItem value="Custom Night Shift (After 8 PM)">Custom Night Shift (After 8 PM)</MenuItem>
+                                                        <MenuItem value="Night Shift (12 Hrs)">Night Shift (12 Hrs)</MenuItem>
+                                                    </Select>
+                                                    <FormHelperText>{errorEnable.workTime && errorText}</FormHelperText>
+                                                </FormControl>
+                                            </Grid>
+                                        </Grid>
+                                        <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 2 }} align='left' color='InfoText'>Maximum 5 skills you can add : </Typography>
+                                        <Grid container spacing={1} style={{ maxHeight: '155px', overflowY: 'auto', minWidth: '750px' }}>
+                                            <DisplayWorkingFields
+                                                fields={fields}
+                                                setFields={setFields}
+                                                fieldsDisable={fieldsDisable}
+                                                errorEnable={errorEnable}
+                                                setErrorEnable={setErrorEnable}
                                             />
                                         </Grid>
-                                        <Grid xs={12} sm={6} item>
-                                            <FormControl fullWidth error={errorEnable.workTime} >
-                                                <InputLabel htmlFor="grouped-native-select">Working Time</InputLabel>
-                                                <Select name="time" label="Working Time"
-                                                    inputProps={{
-                                                        readOnly: Boolean(fieldsDisable),
-                                                    }}
-                                                    value={values.workTime}
-                                                    onChange={onChange}
-                                                >
-                                                    <MenuItem value="">---select---</MenuItem>
-                                                    <MenuItem value="Live In (24 Hrs)">Live In (24 Hrs)</MenuItem>
-                                                    <MenuItem value="Full Day (12 Hrs)">Full Day (12 Hrs)</MenuItem>
-                                                    <MenuItem value="Half Day (6 Hrs)">Half Day (6 Hrs)</MenuItem>
-                                                    <MenuItem value="Custom (1-4 Hrs)">Custom (1-4 Hrs)</MenuItem>
-                                                    <MenuItem value="Custom Night Shift (After 8 PM)">Custom Night Shift (After 8 PM)</MenuItem>
-                                                    <MenuItem value="Night Shift (12 Hrs)">Night Shift (12 Hrs)</MenuItem>
-                                                </Select>
-                                                <FormHelperText>{errorEnable.workTime && errorText}</FormHelperText>
-                                            </FormControl>
-                                        </Grid>
-                                    </Grid>
-                                    <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 2 }} align='left' color='InfoText'>Maximum 5 skills you can add : </Typography>
-                                    <Grid container spacing={1} style={{ maxHeight: '155px', overflowY: 'auto', minWidth: '750px' }}>
-                                        <DisplayWorkingFields
-                                            fields={fields}
-                                            setFields={setFields}
-                                            fieldsDisable={fieldsDisable}
-                                            errorEnable={errorEnable}
-                                            setErrorEnable={setErrorEnable}
-                                        />
-                                    </Grid>
-                                    <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Education Details : </Typography>
-                                    <Grid container spacing={1}>
-                                        <Grid xs={12} sm={12} item>
-                                            <FormControl fullWidth error={errorEnable.language}>
-                                                <InputLabel id="demo-multiple-checkbox-label">Language Known</InputLabel>
-                                                <Select
-                                                    inputProps={{
-                                                        readOnly: Boolean(fieldsDisable),
-                                                    }}
-                                                    labelId="demo-multiple-checkbox-label"
-                                                    id="langselect"
-                                                    multiple
-                                                    value={lang}
-                                                    onChange={langHandleChange}
-                                                    input={<OutlinedInput label="Language Known" />}
-                                                    renderValue={(selected) => selected.join(', ')}
-                                                    MenuProps={MenuProps}
-                                                >
-                                                    {languageName.map((name) => (
-                                                        <MenuItem key={name} value={name}>
-                                                            <Checkbox checked={lang?.indexOf(name) > -1} />
-                                                            <ListItemText primary={name} />
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                                <FormHelperText>{errorEnable.language && errorText}</FormHelperText>
-                                            </FormControl>
-                                        </Grid>
-                                        <Grid xs={12} sm={6} item>
-                                            <FormControl fullWidth error={errorEnable.study}>
-                                                <InputLabel htmlFor="grouped-native-select">Studied Upto</InputLabel>
-                                                <Select
-                                                    name="studyselect" label="Studied Upto"
-                                                    inputProps={{
-                                                        readOnly: Boolean(fieldsDisable),
-                                                    }}
-                                                    value={values.study}
-                                                    onChange={onChange}
-                                                >
-                                                    <MenuItem value="">---select---</MenuItem>
-                                                    <MenuItem value="Not Done">Not Done</MenuItem>
-                                                    <MenuItem value="1st - 5th Class">1st - 5th Class </MenuItem>
-                                                    <MenuItem value="6th - 9th Class">6th - 9th Class</MenuItem>
-                                                    <MenuItem value="10th Class">10th Class</MenuItem>
-                                                    <MenuItem value="12th Class">12th Class</MenuItem>
+                                        <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Education Details : </Typography>
+                                        <Grid container spacing={1}>
+                                            <Grid xs={12} sm={12} item>
+                                                <FormControl fullWidth error={errorEnable.language}>
+                                                    <InputLabel id="demo-multiple-checkbox-label">Language Known</InputLabel>
+                                                    <Select
+                                                        inputProps={{
+                                                            readOnly: Boolean(fieldsDisable),
+                                                        }}
+                                                        labelId="demo-multiple-checkbox-label"
+                                                        id="langselect"
+                                                        multiple
+                                                        value={lang}
+                                                        onChange={langHandleChange}
+                                                        input={<OutlinedInput label="Language Known" />}
+                                                        renderValue={(selected) => selected.join(', ')}
+                                                        MenuProps={MenuProps}
+                                                    >
+                                                        {languageName.map((name) => (
+                                                            <MenuItem key={name} value={name}>
+                                                                <Checkbox checked={lang?.indexOf(name) > -1} />
+                                                                <ListItemText primary={name} />
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                    <FormHelperText>{errorEnable.language && errorText}</FormHelperText>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid xs={12} sm={6} item>
+                                                <FormControl fullWidth error={errorEnable.study}>
+                                                    <InputLabel htmlFor="grouped-native-select">Studied Upto</InputLabel>
+                                                    <Select
+                                                        name="studyselect" label="Studied Upto"
+                                                        inputProps={{
+                                                            readOnly: Boolean(fieldsDisable),
+                                                        }}
+                                                        value={values.study}
+                                                        onChange={onChange}
+                                                    >
+                                                        <MenuItem value="">---select---</MenuItem>
+                                                        <MenuItem value="Not Done">Not Done</MenuItem>
+                                                        <MenuItem value="1st - 5th Class">1st - 5th Class </MenuItem>
+                                                        <MenuItem value="6th - 9th Class">6th - 9th Class</MenuItem>
+                                                        <MenuItem value="10th Class">10th Class</MenuItem>
+                                                        <MenuItem value="12th Class">12th Class</MenuItem>
 
-                                                </Select>
-                                                <FormHelperText>{errorEnable.study && errorText}</FormHelperText>
-                                            </FormControl>
+                                                    </Select>
+                                                    <FormHelperText>{errorEnable.study && errorText}</FormHelperText>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid xs={12} sm={6} item>
+                                                <TextField
+                                                    // disabled={fieldsDisable}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
+                                                    required
+                                                    variant='outlined'
+                                                    name="otherStudy"
+                                                    label="Other Education"
+                                                    placeholder='N/A or Other Education Name'
+                                                    fullWidth
+                                                    value={values.otherStudy}
+                                                    // onChange={(val) => { setValues((prevState) => { return { ...prevState, otherStudy: val.target.value } }) }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.otherStudy}
+                                                    helperText={errorEnable.otherStudy && errorText}
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid xs={12} sm={6} item>
-                                            <TextField
-                                                // disabled={fieldsDisable}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                }}
-                                                required
-                                                variant='outlined'
-                                                name="otherStudy"
-                                                label="Other Education"
-                                                placeholder='N/A or Other Education Name'
-                                                fullWidth
-                                                value={values.otherStudy}
-                                                // onChange={(val) => { setValues((prevState) => { return { ...prevState, otherStudy: val.target.value } }) }}
-                                                onChange={onChange}
-                                                error={errorEnable.otherStudy}
-                                                helperText={errorEnable.otherStudy && errorText}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    {(saveEnable || !editHide) && !fieldsDisable &&
-                                        <Grid xs={12} sm={12} item>
-                                            <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
-                                                {editHide ? "Save" : !fieldsDisable && "Update"}
-                                            </Button>
-                                        </Grid>
-                                    }
-                                </form>
-                            </Grid></Grid>
-                    </CardContent>
-                </Card>
-            </Grid>
+                                        {(saveEnable || !editHide) && !fieldsDisable &&
+                                            <Grid xs={12} sm={12} item>
+                                                <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
+                                                    {editHide ? "Save" : !fieldsDisable && "Update"}
+                                                </Button>
+                                            </Grid>
+                                        }
+                                    </form>
+                                </Grid></Grid>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            }
         </Modal>
     );
 }

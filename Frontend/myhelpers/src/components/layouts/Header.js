@@ -81,9 +81,8 @@ const Header = (props) => {
     let { userProfile, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     const role = localStorage.getItem("role")
     const rid = localStorage.getItem("r_id")
-
+    const [openModal, setOpenModel] = useState(false)
     const { isAuth } = useSelector(state => ({ ...state.loginStore }))
-
     const [anchorElNav, setAnchorElNav] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(false);
     const [openRequest, setOpenRequest] = useState(false)
@@ -106,9 +105,9 @@ const Header = (props) => {
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
-    
+
     const handleOpenUserMenu = (event) => {
-        
+
         setAnchorElUser(event.currentTarget);
     };
 
@@ -121,22 +120,27 @@ const Header = (props) => {
     };
     const onRequestClick = () => {
         handleCloseUserMenu()
+        setOpenModel(true)
         setOpenRequest(true)
     }
     const onShortlistClick = () => {
         handleCloseUserMenu()
+        setOpenModel(true)
         setOpenShortlist(true)
     }
     const onHireClick = () => {
+        setOpenModel(true)
         handleCloseUserMenu()
         setOpenHired(true)
     }
     const handleModelClose = () => {
+        setOpenModel(false)
         setOpenRequest(false);
         setOpenHired(false);
         setOpenShortlist(false);
     };
     const onLogoutClick = () => {
+
         handleCloseUserMenu()
         localStorage.removeItem("r_id")
         localStorage.removeItem("logToken")
@@ -287,9 +291,9 @@ const Header = (props) => {
                     </Toolbar>
                 </Container>
             </AppBar>
-            {openRequest && <WorkRequest click={handleModelClose} />}
-            {openShortlist && <ShortListed click={handleModelClose} />}
-            {openHired && <HiredHelper click={handleModelClose} />}
+            {openRequest && <WorkRequest click={handleModelClose} open={openModal} />}
+            {openShortlist && <ShortListed click={handleModelClose} open={openModal} />}
+            {openHired && <HiredHelper click={handleModelClose} open={openModal} />}
             <Toolbar id="back-to-top-anchor" />
             {
                 isAuth &&

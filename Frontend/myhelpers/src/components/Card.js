@@ -37,7 +37,7 @@ const CardJS = (props) => {
     let { displayLoading, displayError, displayMessage } = useSelector((state) => ({ ...state.displayStore }))
     let { userProfile, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
 
-    
+
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
@@ -116,7 +116,7 @@ const CardJS = (props) => {
                 borderRadius: 5,
             }} elevation={24}
         >
-            <CardContent sx={{ padding:1, height: "100%" }}>
+            <CardContent sx={{ padding: 1, height: "100%" }}>
                 <Grid container item height="100%" >
                     <Grid container direction={'row'}  >
                         <Snackbar
@@ -156,7 +156,7 @@ const CardJS = (props) => {
 
                         </Grid>
                         <Grid item xs={7.5} sm={7.5} md={7} lg={0} marginLeft={1} align="left" >
-                            
+
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
                                 Mobile No : {props.values.profession_mobile_number}
                             </Typography>
@@ -189,12 +189,12 @@ const CardJS = (props) => {
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid container direction={'row'} justifyContent="center" sx={{alignSelf:"end",marginBottom:2}}  >
+                    <Grid container direction={'row'} justifyContent="center" sx={{ alignSelf: "end", marginBottom: 2 }}  >
                         <Grid item xs={6} sm={6} md={6} >
                             <Rating name="half-rating"
                                 sx={{ float: "left" }}
                                 readOnly={Boolean(true)}
-                                value={props.rates }
+                                value={props.rates}
                                 size="medium"
                             />
                         </Grid>

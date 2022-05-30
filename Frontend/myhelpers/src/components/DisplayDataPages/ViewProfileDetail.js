@@ -21,7 +21,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-
+import debounce from 'lodash.debounce';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
 import { workProfileActions } from '../../store/slices/work-slice'
@@ -33,7 +33,7 @@ import HireForm from './HireForm';
 import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
+const profileImg = require("../allImages/profile.gif")
 const Alert = React.forwardRef(function Alert(
     props,
     ref,
@@ -51,7 +51,7 @@ const ViewProfileDetail = () => {
     let { workMessage, workData, workError, workLoading } = useSelector((state) => ({ ...state.workProfileStore }))
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     let { viewUserProfile, saveUser, displayError, displayMessage, displayLoading } = useSelector((state) => ({ ...state.displayStore }))
-
+    console.log("loading...", displayLoading)
     const rid = localStorage.getItem("r_id")
 
     const [state, setState] = useState({
@@ -103,7 +103,7 @@ const ViewProfileDetail = () => {
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState(false)
     const [star, setStar] = useState(0)
-
+    const [dataLoad, setDataLoad] = useState(true)
     useEffect(() => {
         // dispatch(fetchUserProfileThunk(rid))
         dispatch(fetchViewUserDataThunk(user_id))
@@ -280,264 +280,275 @@ const ViewProfileDetail = () => {
         }
         return age;
     }
+    useEffect(() => {
+
+        if (!displayLoading) {
+            setDataLoad(false)
+        }
+    }, [displayLoading])
+
+
     return (
 
-        Object.keys(viewUserProfile).length !== 0 ?
+        Object.keys(viewUserProfile).length !== 0 && !dataLoad ?
 
-        <Grid >
-            {(displayLoading || workLoading || profileLoading) && <Loading isLoad={true} />}
-            <Card elevation={16}
-                sx={{
-                    margin: 2,
+            <Grid >
+                {(displayLoading || workLoading || profileLoading) ? <Loading isLoad={true} /> :
+                    <Card elevation={16}
+                        sx={{
+                            margin: 2,
 
-                }}
-            >
-                <CardContent >
-                    <Grid container direction={'row'} justifyContent="center">
-                        <Snackbar
-                            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                            open={snackOpen}
-                            autoHideDuration={6000}
-                            onClose={closeSnackbar}
-                        >
-                            <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
-                                {snackMessage}
-                            </Alert>
-                        </Snackbar>
-                        <Grid item xs={11} sm={11} md={11} align="left" >
-                            <Button variant="contained" sx={{ backgroundColor: "#163758" }} onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
-                        </Grid>
-                        <Grid item xs={1} sm={1} justifyContent="right" >
-                            <Tooltip title="Save">
-                                {status ?
-                                    <BookmarkIcon fontSize="large" cursor="pointer" onClick={onSaveClick} />
-                                    :
-                                    <BookmarkBorderIcon fontSize="large" cursor="pointer" onClick={onSaveClick} />
-                                }
-                            </Tooltip>
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={12} >
-                            <Typography variant="h4" sx={{ fontWeight: 500, color: "#163758" }}> PROFILE</Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={12} >
-                            <Typography variant="h5" sx={{ fontWeight: 500, color: "#163758" }}> {values.email} </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={12} >
-                            <Rating sx={{ marginBottom: 2, marginLeft: 3 }} name="size-small" onChange={onRateClick} value={star} size="medium" />
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={12}>
-                            <Grid container justifyContent="center"  >
-                                <Grid item xs={12} sm={11} md={4} sx={{ marginTop: "2%" }}>
-                                    <Grid container direction={'row'} justifyContent="left" >
-                                        <Grid item xs={6} sm={6} md={6} align="left"  >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Name
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
-                                                : {values.name}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Mobile No.
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {values.mbl}
-                                            </Typography>
-                                        </Grid>
-
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Married
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {values.married === false ? "No" : "Yes"}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Physical Disability
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {values.physic_dis === false ? "No" : "Yes"}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Address
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom sx={{ textTransform: "capitalize" }} variant="h6"  >
-                                                : {values.house_no}, {values.house_name}, {values.street}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                City
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
-                                                : {values.city}, {values.pincode}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                State
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={6} align="left" >
-                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
-                                                : {values.state}
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
+                        }}
+                    >
+                        <CardContent >
+                            <Grid container direction={'row'} justifyContent="center">
+                                <Snackbar
+                                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                    open={snackOpen}
+                                    autoHideDuration={6000}
+                                    onClose={closeSnackbar}
+                                >
+                                    <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                        {snackMessage}
+                                    </Alert>
+                                </Snackbar>
+                                <Grid item xs={11} sm={11} md={11} align="left" >
+                                    <Button variant="contained" sx={{ backgroundColor: "#163758" }} onClick={() => navigate(-1)}><ArrowBackIosRoundedIcon /> Back</Button>
                                 </Grid>
-                                <Grid item xs={12} sm={12} md={3} >
-                                    <Grid container justifyContent="center" item xs={12} sm={12} md={12}>
-                                        <CardMedia
-                                            component="img"
-                                            sx={{ marginTop: "5%", width: 250, height: 250, borderRadius: "50%" }}
-                                            image={`${values.avatar}`}
-                                            alt="Paella dish"
-                                        />
-                                        <Grid container item xs={12} sm={12} md={12} justifyContent="center">
-                                            <Button sx={{ marginTop: "4%", backgroundColor: "#163758" }} size="medium" variant="contained" onClick={onHireUser}>Hire</Button>
-                                            <HireForm open={open} hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData.length !== 0 ? workData.r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
-                                        </Grid>
-                                    </Grid>
+                                <Grid item xs={1} sm={1} justifyContent="right" >
+                                    <Tooltip title="Save">
+                                        {status ?
+                                            <BookmarkIcon fontSize="large" cursor="pointer" onClick={onSaveClick} />
+                                            :
+                                            <BookmarkBorderIcon fontSize="large" cursor="pointer" onClick={onSaveClick} />
+                                        }
+                                    </Tooltip>
                                 </Grid>
-                                <Grid item xs={12} sm={11} md={5} sx={{ marginTop: "2%" }}>
-                                    <Grid container direction={'row'} justifyContent="right" >
-                                        <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Gender
-                                            </Typography>
+                                <Grid item xs={12} sm={12} md={12} >
+                                    <Typography variant="h4" sx={{ fontWeight: 500, color: "#163758" }}> PROFILE</Typography>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={12} >
+                                    <Typography variant="h5" sx={{ fontWeight: 500, color: "#163758" }}> {values.email} </Typography>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={12} >
+                                    <Rating sx={{ marginBottom: 2, marginLeft: 3 }} name="size-small" onChange={onRateClick} value={star} size="medium" />
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={12}>
+                                    <Grid container justifyContent="center"  >
+                                        <Grid item xs={12} sm={11} md={4} sx={{ marginTop: "2%" }}>
+                                            <Grid container direction={'row'} justifyContent="left" >
+                                                <Grid item xs={6} sm={6} md={6} align="left"  >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Name
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                        : {values.name}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Mobile No.
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        : {values.mbl}
+                                                    </Typography>
+                                                </Grid>
+
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Married
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        : {values.married === false ? "No" : "Yes"}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Physical Disability
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        : {values.physic_dis === false ? "No" : "Yes"}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Address
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom sx={{ textTransform: "capitalize" }} variant="h6"  >
+                                                        : {values.house_no}, {values.house_name}, {values.street}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        City
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                        : {values.city}, {values.pincode}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        State
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={6} align="left" >
+                                                    <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                        : {values.state}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={4} sm={4} md={7} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {values.gender}
-                                            </Typography>
+                                        <Grid item xs={12} sm={12} md={3} >
+                                            <Grid container justifyContent="center" item xs={12} sm={12} md={12}>
+                                                <CardMedia
+                                                    component="img"
+                                                    sx={{ marginTop: "5%", width: 250, height: 250, borderRadius: "50%" }}
+                                                    image={`${values.avatar}`}
+                                                    alt="Paella dish"
+                                                />
+                                                <Grid container item xs={12} sm={12} md={12} justifyContent="center">
+                                                    <Button sx={{ marginTop: "4%", backgroundColor: "#163758" }} size="medium" variant="contained" onClick={onHireUser}>Hire</Button>
+                                                    <HireForm open={open} hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData.length !== 0 ? workData.r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
+                                                </Grid>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Age
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4} sm={4} md={7} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {ageDate()} Years
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Profession No.
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4} sm={4} md={7} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {values.porf_mbl}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left">
-                                            <Typography gutterBottom variant="h6"  >
-                                                Alternate No.
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4} sm={4} md={7} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                : {values.altmbl}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Preffered Time
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4} sm={4} md={7} align="left" >
-                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
-                                                :  {values.workTime}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Languages
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4} sm={4} md={7} align="left" >
-                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
-                                                :  {values.language}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Education
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4} sm={4} md={7} align="left" >
-                                            <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
-                                                :  {values.study}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                Other Education
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4} sm={4} md={7} align="left" >
-                                            <Typography gutterBottom variant="h6"  >
-                                                :  {values.otherStudy}
-                                            </Typography>
+                                        <Grid item xs={12} sm={11} md={5} sx={{ marginTop: "2%" }}>
+                                            <Grid container direction={'row'} justifyContent="right" >
+                                                <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Gender
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={4} sm={4} md={7} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        : {values.gender}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Age
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={4} sm={4} md={7} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        : {ageDate()} Years
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Profession No.
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={4} sm={4} md={7} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        : {values.porf_mbl}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left">
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Alternate No.
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={4} sm={4} md={7} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        : {values.altmbl}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Preffered Time
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={4} sm={4} md={7} align="left" >
+                                                    <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                        :  {values.workTime}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Languages
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={4} sm={4} md={7} align="left" >
+                                                    <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                        :  {values.language}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Education
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={4} sm={4} md={7} align="left" >
+                                                    <Typography sx={{ textTransform: "capitalize" }} gutterBottom variant="h6"  >
+                                                        :  {values.study}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} sm={6} md={4} marginLeft={"3%"} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        Other Education
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={4} sm={4} md={7} align="left" >
+                                                    <Typography gutterBottom variant="h6"  >
+                                                        :  {values.otherStudy}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                    </Grid>
-                    <Divider textAlign="left" sx={{ marginTop: 2, marginBottom: 1 }}> </Divider>
-                    <Grid container direction={'row'} justifyContent="center">
-                        <Grid item xs={12} sm={12} md={10} align="center" >
-                            <TableContainer >
-                                <Table sx={{ maxWidth: "100%", maxHeight: "100%" }} size="small" aria-label="caption table">
-                                    <TableHead >
-                                        <TableRow sx={{ backgroundColor: "#163758" }} >
-                                            <TableCell sx={{ color: "white" }} >Skills</TableCell>
-                                            <TableCell sx={{ color: "white" }}>Experience</TableCell>
-                                            <TableCell sx={{ color: "white" }}>Price</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {fields.map((row, index) => (
-                                            <TableRow key={index}>
-                                                <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.category}</TableCell>
-                                                <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.experience}</TableCell>
-                                                <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.salary}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </Grid>
-                    </Grid>
-                </CardContent >
-            </Card >
+                            <Divider textAlign="left" sx={{ marginTop: 2, marginBottom: 1 }}> </Divider>
+                            <Grid container direction={'row'} justifyContent="center">
+                                <Grid item xs={12} sm={12} md={10} align="center" >
+                                    <TableContainer >
+                                        <Table sx={{ maxWidth: "100%", maxHeight: "100%" }} size="small" aria-label="caption table">
+                                            <TableHead >
+                                                <TableRow sx={{ backgroundColor: "#163758" }} >
+                                                    <TableCell sx={{ color: "white" }} >Skills</TableCell>
+                                                    <TableCell sx={{ color: "white" }}>Experience</TableCell>
+                                                    <TableCell sx={{ color: "white" }}>Price</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {fields.map((row, index) => (
+                                                    <TableRow key={index}>
+                                                        <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.category}</TableCell>
+                                                        <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.experience}</TableCell>
+                                                        <TableCell sx={{ fontSize: "100%", color: "black" }}>{row.salary}</TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </Grid>
+                            </Grid>
+                        </CardContent >
+                    </Card >}
             </Grid>
             :
-            <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
-                <img
-                    src={require("../allImages/nodata.gif")}
-                    alt="Page No Found..."
-                    align="center"
-                />
+            <Grid container>
+                {(displayLoading || workLoading || profileLoading) ? <Loading isLoad={true} /> :
+                    <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                        <img
+                            src={require("../allImages/nodata.gif")}
+                            alt="Page No Found..."
+                            align="center"
+                        />
+                    </Grid>}
             </Grid>
     )
 }

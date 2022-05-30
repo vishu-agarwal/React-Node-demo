@@ -78,7 +78,7 @@ const AboutPage = (props) => {
 
     return (
         <div>
-            {openRequest && <WorkRequest click={handleModelClose} />}
+            
             <Grid container justifyContent="center">
                 <Grid item xs={12} md={12} sm={12} style={{ position: "relative" }}>
                     <div>

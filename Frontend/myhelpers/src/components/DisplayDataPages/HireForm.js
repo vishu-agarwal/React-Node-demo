@@ -446,221 +446,222 @@ const HireForm = (props) => {
             aria-describedby="modal-modal-description"
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
+                {requestLoading ? <Loading isLoad={true} /> :
             <Grid >
-                {requestLoading && <Loading isLoad={true} />}
-                <Card
-                    sx={{
-                        minWidth: 500, minHeight: 600,
-                        margin: '0 auto',
-                        paddingTop: 0,
-                        borderRadius: 5,
-                    }}>
-                    <CardContent style={{ padding: 0 }}>
-                        <Grid container direction={'row'} >
-                            <Snackbar
-                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                                open={snackOpen}
-                                autoHideDuration={5000}
-                                onClose={closeSnackbar}
-                            >
-                                <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
-                                    {snackMessage}
-                                </Alert>
-                            </Snackbar>
-                            <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
-                                <Grid container direction={'row'} padding={2} >
-                                    <Grid item xs={12} sm={10} align="left" >
-                                        <Typography variant="h4" color="white" >
-                                            Enquiry
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12} sm={1} justifyContent="left" >
-                                        {!editHide && singleUser && singleUser.status === "pending!" &&
-                                            <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
-                                                {fieldsDisable ?
-                                                    <ModeEditIcon sx={{ color: "white", fontSize: 35 }} cursor="pointer" />
-                                                    :
-                                                    < CheckIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" />}
-                                            </IconButton>
-                                        }
-                                    </Grid>
-                                    <Grid item xs={12} sm={1} align="right">                                       
-                                        <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                    <Card
+                        sx={{
+                            minWidth: 500, minHeight: 600,
+                            margin: '0 auto',
+                            paddingTop: 0,
+                            borderRadius: 5,
+                        }}>
+                        <CardContent style={{ padding: 0 }}>
+                            <Grid container direction={'row'} >
+                                <Snackbar
+                                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                    open={snackOpen}
+                                    autoHideDuration={5000}
+                                    onClose={closeSnackbar}
+                                >
+                                    <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                        {snackMessage}
+                                    </Alert>
+                                </Snackbar>
+                                <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
+                                    <Grid container direction={'row'} padding={2} >
+                                        <Grid item xs={12} sm={10} align="left" >
+                                            <Typography variant="h4" color="white" >
+                                                Enquiry
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={12} sm={1} justifyContent="left" >
+                                            {!editHide && singleUser && singleUser.status === "pending!" &&
+                                                <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
+                                                    {fieldsDisable ?
+                                                        <ModeEditIcon sx={{ color: "white", fontSize: 35 }} cursor="pointer" />
+                                                        :
+                                                        < CheckIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" />}
+                                                </IconButton>
+                                            }
+                                        </Grid>
+                                        <Grid item xs={12} sm={1} align="right">
+                                            <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid container justifyContent="center">
-                            <Grid item xs={11} sm={11} md={11} margin={1} align="center">
-                                <form onSubmit={editHide ? onSendRequest : onUpdateRequest}>
-                                    <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Work : </Typography>
-                                    <Grid container spacing={1} >
-                                        <Grid xs={12} sm={12} item>
-                                            <FormControl fullWidth required error={errorEnable.work}>
-                                                <InputLabel id="demo-multiple-checkbox-label">Work</InputLabel>
-                                                <Select
-                                                    labelId="demo-multiple-checkbox-label"
-                                                    id="demo-multiple-checkbox"
-                                                    multiple
+                            <Grid container justifyContent="center">
+                                <Grid item xs={11} sm={11} md={11} margin={1} align="center">
+                                    <form onSubmit={editHide ? onSendRequest : onUpdateRequest}>
+                                        <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Work : </Typography>
+                                        <Grid container spacing={1} >
+                                            <Grid xs={12} sm={12} item>
+                                                <FormControl fullWidth required error={errorEnable.work}>
+                                                    <InputLabel id="demo-multiple-checkbox-label">Work</InputLabel>
+                                                    <Select
+                                                        labelId="demo-multiple-checkbox-label"
+                                                        id="demo-multiple-checkbox"
+                                                        multiple
+                                                        inputProps={{
+                                                            readOnly: Boolean(fieldsDisable),
+                                                        }}
+                                                        value={props.work}
+                                                        onChange={workChange}
+                                                        input={<OutlinedInput label="Select Work" />}
+                                                        renderValue={(selected) => selected.join(', ')}
+                                                        MenuProps={MenuProps}
+                                                    >
+                                                        {props.fields.map((row, index) => (
+                                                            <MenuItem key={index} value={row.category}>
+                                                                <Checkbox checked={props.work?.indexOf(row.category) > -1} />
+                                                                <ListItemText primary={row.category} />
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                    <FormHelperText>{errorEnable.work && errorText}</FormHelperText>
+                                                </FormControl>
+                                            </Grid>
+                                        </Grid>
+                                        <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Work Time : </Typography>
+                                        <Grid container spacing={1} >
+                                            <Grid xs={12} sm={12} item>
+                                                <TextField
+                                                    id="time"
+                                                    required
+                                                    name="time"
+                                                    fullWidth
+                                                    value={props.workTime}
+                                                    inputProps={{
+                                                        readOnly: Boolean(true),
+                                                    }}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                        <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Select Date : </Typography>
+                                        <Grid container spacing={1} >
+                                            <Grid xs={12} sm={6} item>
+                                                <TextField
+                                                    id="fromDate"
+                                                    label="From Date"
+                                                    type="date"
+                                                    required
+                                                    name="fromDate"
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
                                                     }}
-                                                    value={props.work}
-                                                    onChange={workChange}
-                                                    input={<OutlinedInput label="Select Work" />}
-                                                    renderValue={(selected) => selected.join(', ')}
-                                                    MenuProps={MenuProps}
-                                                >
-                                                    {props.fields.map((row, index) => (
-                                                        <MenuItem key={index} value={row.category}>
-                                                            <Checkbox checked={props.work?.indexOf(row.category) > -1} />
-                                                            <ListItemText primary={row.category} />
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                                <FormHelperText>{errorEnable.work && errorText}</FormHelperText>
-                                            </FormControl>
+                                                    fullWidth
+                                                    value={props.hireValues.fromDate}
+                                                    onChange={onChange}
+                                                    error={errorEnable.fromDate}
+                                                    helperText={errorEnable.fromDate && errorText}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={6} item>
+                                                <TextField
+                                                    id="toDate"
+                                                    label="To Date"
+                                                    type="date"
+                                                    required
+                                                    name="toDate"
+                                                    fullWidth
+                                                    value={props.hireValues.toDate}
+                                                    onChange={onChange}
+                                                    error={errorEnable.toDate}
+                                                    helperText={errorEnable.toDate && errorText}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                    <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Work Time : </Typography>
-                                    <Grid container spacing={1} >
-                                        <Grid xs={12} sm={12} item>
-                                            <TextField
-                                                id="time"
-                                                required
-                                                name="time"
-                                                fullWidth
-                                                value={props.workTime}
-                                                inputProps={{
-                                                    readOnly: Boolean(true),
-                                                }}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
+                                        <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Your Suitable Timming : </Typography>
+                                        <Grid container spacing={1}>
+                                            < Grid xs={12} sm={6} item>
+                                                <TextField
+                                                    id="fromTime"
+                                                    label="From Time"
+                                                    type="time"
+                                                    required
+                                                    name="fromTime"
+                                                    disabled={props.workTime === "Live In (24 Hrs)" ? true : false}
+                                                    fullWidth
+                                                    value={props.hireValues.fromTime}
+                                                    error={errorEnable.fromTime}
+                                                    helperText={errorEnable.fromTime && errorText}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
+                                                    onChange={onChange}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={6} item>
+                                                <TextField
+                                                    id="toTime"
+                                                    label="To Time"
+                                                    type="time"
+                                                    required
+                                                    name="toTime"
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
+                                                    disabled={props.workTime === "Live In (24 Hrs)" ? true : false}
+                                                    fullWidth
+                                                    value={props.hireValues.toTime}
+                                                    onChange={onChange}
+                                                    error={errorEnable.toTime}
+                                                    helperText={errorEnable.toTime && errorText}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                    <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Select Date : </Typography>
-                                    <Grid container spacing={1} >
-                                        <Grid xs={12} sm={6} item>
-                                            <TextField
-                                                id="fromDate"
-                                                label="From Date"
-                                                type="date"
-                                                required
-                                                name="fromDate"
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                }}
-                                                fullWidth
-                                                value={props.hireValues.fromDate}
-                                                onChange={onChange}
-                                                error={errorEnable.fromDate}
-                                                helperText={errorEnable.fromDate && errorText}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
+                                        <Grid container spacing={1} marginTop={1}>
+                                            <Grid xs={12} sm={12} item>
+                                                <TextField
+                                                    required
+                                                    multiline
+                                                    maxRows={3}
+                                                    inputProps={{
+                                                        maxLength: 100,
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
+                                                    variant='outlined'
+                                                    id="description"
+                                                    label="Add Any Description"
+                                                    fullWidth
+                                                    placeholder='Please type some work related information!'
+                                                    value={props.hireValues.description}
+                                                    onChange={(val) => { props.sethireValues((prevState) => { return { ...prevState, description: val.target.value } }) }}
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid xs={12} sm={6} item>
-                                            <TextField
-                                                id="toDate"
-                                                label="To Date"
-                                                type="date"
-                                                required
-                                                name="toDate"
-                                                fullWidth
-                                                value={props.hireValues.toDate}
-                                                onChange={onChange}
-                                                error={errorEnable.toDate}
-                                                helperText={errorEnable.toDate && errorText}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                }}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Your Suitable Timming : </Typography>
-                                    <Grid container spacing={1}>                                   
-                                        < Grid xs={12} sm={6} item>
-                                            <TextField
-                                                id="fromTime"
-                                                label="From Time"
-                                                type="time"
-                                                required
-                                                name="fromTime"
-                                                disabled={props.workTime === "Live In (24 Hrs)" ? true : false}
-                                                fullWidth
-                                                value={props.hireValues.fromTime}
-                                                error={errorEnable.fromTime}
-                                                helperText={errorEnable.fromTime && errorText}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                }}
-                                                onChange={onChange}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={6} item>
-                                            <TextField
-                                                id="toTime"
-                                                label="To Time"
-                                                type="time"
-                                                required
-                                                name="toTime"
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                }}
-                                                disabled={props.workTime === "Live In (24 Hrs)" ? true : false}
-                                                fullWidth
-                                                value={props.hireValues.toTime}
-                                                onChange={onChange}
-                                                error={errorEnable.toTime}
-                                                helperText={errorEnable.toTime && errorText}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container spacing={1} marginTop={1}>
-                                        <Grid xs={12} sm={12} item>
-                                            <TextField
-                                                required
-                                                multiline
-                                                maxRows={3}
-                                                inputProps={{
-                                                    maxLength: 100,
-                                                    readOnly: Boolean(fieldsDisable),
-                                                }}
-                                                variant='outlined'
-                                                id="description"
-                                                label="Add Any Description"
-                                                fullWidth
-                                                placeholder='Please type some work related information!'
-                                                value={props.hireValues.description}
-                                                onChange={(val) => { props.sethireValues((prevState) => { return { ...prevState, description: val.target.value } }) }}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    {(saveEnable || !editHide) && !fieldsDisable &&
-                                        <Grid xs={12} item>
-                                            <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
-                                                {editHide ? "Send" : !fieldsDisable && "Update and Send"}
-                                            </Button>
-                                        </Grid>
-                                    }
-                                </form>
+                                        {(saveEnable || !editHide) && !fieldsDisable &&
+                                            <Grid xs={12} item>
+                                                <Button type='submit' variant="contained" color='primary' fullWidth sx={{ marginTop: 2 }}>
+                                                    {editHide ? "Send" : !fieldsDisable && "Update and Send"}
+                                                </Button>
+                                            </Grid>
+                                        }
+                                    </form>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
             </Grid>
+                }
         </Modal>
     );
 }

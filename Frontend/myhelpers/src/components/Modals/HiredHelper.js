@@ -31,13 +31,12 @@ const Alert = React.forwardRef(function Alert(
 const HiredHelper = (props) => {
     const rid = localStorage.getItem("r_id")
     // const classes = useStyles();
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const role = localStorage.getItem("role")
     const dispatch = useDispatch()
 
     let { hireRequestData, requestMessage, requestError, requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
-
-
+    let [noData, setNoData] = useState(0)
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
@@ -79,71 +78,76 @@ const HiredHelper = (props) => {
         }
 
     }, [hireRequestData])
-
+    console.log("Hired helper.....")
     return (
         <Modal
-            open={true}
+            open={props.open}
             onClose={props.click}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-            <Grid padding={0} margin={0} >
-                {requestLoading && <Loading isLoad={true} />}
-                <Card
-                    sx={{
-                        width: 500, height: 650,
-                        padding: 0,
-                        borderRadius: 3,
-                    }}>
-                    <CardContent style={{ padding: 0 }}>
-                        <Grid container direction={'row'} >
-                            <Snackbar
-                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                                open={snackOpen}
-                                autoHideDuration={6000}
-                                onClose={closeSnackbar}
-                            >
-                                <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
-                                    {snackMessage}
-                                </Alert>
-                            </Snackbar>
-                            <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
-                                <Grid container direction={'row'} padding={2} >
-                                    <Grid item xs={12} sm={10} align="left" >
-                                        <Typography variant="h4" color="white" >
-                                            Hired
-                                        </Typography>
-                                    </Grid>
+            {requestLoading ? <Loading isLoad={true} /> :
+                <Grid padding={0} margin={0} >
+                    <Card
+                        sx={{
+                            width: 500, height: 650,
+                            padding: 0,
+                            borderRadius: 3,
+                        }}>
+                        <CardContent style={{ padding: 0 }}>
+                            <Grid container direction={'row'} >
+                                <Snackbar
+                                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                    open={snackOpen}
+                                    autoHideDuration={6000}
+                                    onClose={closeSnackbar}
+                                >
+                                    <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                        {snackMessage}
+                                    </Alert>
+                                </Snackbar>
+                                <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
+                                    <Grid container direction={'row'} padding={2} >
+                                        <Grid item xs={12} sm={10} align="left" >
+                                            <Typography variant="h4" color="white" >
+                                                Hired
+                                            </Typography>
+                                        </Grid>
 
-                                    <Grid item xs={12} sm={2} align="right">
+                                        <Grid item xs={12} sm={2} align="right">
 
-                                        <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                            <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid container style={{ maxHeight: '550px', overflow: 'auto' }}>
-                            {
-                                hireRequestData.length !== 0 ?
-                                    hireRequestData.map((val, index) => {
-                                        if (val.status === "hired!") {
-                                            return <Grid item xs={12} sm={12} align="center" key={index}>
-                                                <HireRequestCard values={val} closeModal={props.click}  />
-                                            </Grid>
+                            <Grid container style={{ maxHeight: '550px', overflow: 'auto' }}>
+                                {
+                                    hireRequestData.length !== 0 ?
+                                        hireRequestData.map((val, index) => {
+                                            if (val.status === "hired!") {
+                                                setNoData(noData++)
+                                                return <Grid item xs={12} sm={12} align="center" key={index}>
+                                                    <HireRequestCard values={val} closeModal={props.click} />
+                                                </Grid>
+                                            }
+                                            else {
+                                                return setNoData(0)
+                                            }
                                         }
-                                        else {
-                                            return <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }} key={index}>
-                                                <img
-                                                    src={require("../allImages/nodata.gif")}
-                                                    alt="Page No Found..."
-                                                    align="center"
-                                                />
-                                            </Grid>
-                                        }
-                                    }
-                                    )
-                                    :
+                                        )
+                                        :
+                                        <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                                            <img
+                                                src={require("../allImages/nodata.gif")}
+                                                alt="Page No Found..."
+                                                align="center"
+                                            />
+                                        </Grid>
+                                }
+                                {
+                                    noData === 0 &&
                                     <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
                                         <img
                                             src={require("../allImages/nodata.gif")}
@@ -151,11 +155,11 @@ const HiredHelper = (props) => {
                                             align="center"
                                         />
                                     </Grid>
-                            }
-                        </Grid>
-                    </CardContent>
-                </Card>
-            </Grid>
+                                }
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                </Grid>}
         </Modal >
     );
 }

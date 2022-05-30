@@ -541,3 +541,260 @@ export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarTh
 {/* <Route path="*">
                 <NoFoundComponent />
               </Route> */}
+
+
+
+
+
+{/* <Grid item xs={6} sm={4} md={3} lg={2}>
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/cook.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Cook/Chef</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+
+                <Grid item xs={6} sm={4} md={3} lg={2} >
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }} >
+                    <CardContent sx={{ padding: 0 }} cursor="pointer">
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/parent.png")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Parent Care Taker</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2} >
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/wash.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Vessels Cleaning</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2}>
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/watchman.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Watchman</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2}>
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/laundary.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Laundary</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2}>
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/driver.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Driver</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2}>
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/cleaning.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >House Cleaning</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2}  >
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/japa1.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Japa Maid</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2}>
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/elevator.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Lift Operator</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2}>
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/store.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Store Helper</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2}>
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/peon.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Peon</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={6} sm={4} md={3} lg={2}>
+                  <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
+                    <CardContent sx={{ padding: 0 }}>
+                      <Grid container >
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={require("../allImages/gardner.jpg")} onClick={() => navigate("/findHelper")} style={{ cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >Gardner</Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid> */}
+
+{/* <Grid item xs={6} sm={4} md={2}>
+                  <Grid container>
+
+                    <Grid item xs={12} sm={12} md={12} >
+                      <img src={require("../allImages/search.png")} onClick={() => navigate("/findHelper")} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                      <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Search</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Grid item xs={6} sm={4} md={2}>
+                  <Grid container>
+                    <Grid item xs={12} sm={12} md={12} >
+                      <img src={require("../allImages/sortlist.png")} onClick={onShortlistClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                      {openShortlist && <ShortListed click={handleModelClose} open={openModal}/>}
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                      <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Sortlist</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={6} sm={4} md={2}>
+                  <Grid container>
+
+                    <Grid item xs={12} sm={12} md={12} >
+                      <img src={require("../allImages/request.png")} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                      {openRequest && <WorkRequest click={handleModelClose} open={openModal} />}
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                      <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Send Request</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={6} sm={4} md={2}>
+                  <Grid container>
+
+                    <Grid item xs={12} sm={12} md={12} >
+                      <img src={require("../allImages/relax1.png")} onClick={onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                      {openHired && <HiredHelper click={handleModelClose} open={openModal} />}
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                      <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Hire</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid> */}
+
+{/* <Grid item xs={6} sm={4} md={2}>
+                                    <Grid container>
+
+                                        <Grid item xs={12} sm={12} md={12} >
+                                            <img src={require("../allImages/request.png")} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                                            {openRequest && <WorkRequest click={handleModelClose} />}
+                                        </Grid>
+                                        <Grid item xs={12} sm={12} md={12}>
+                                            <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >See Request</Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={6} sm={4} md={2}>
+                                    <Grid container>
+                                        <Grid item xs={12} sm={12} md={12} >
+                                            <img src={require("../allImages/accept.png")} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                                            {openRequest && <WorkRequest click={handleModelClose} />}
+                                        </Grid>
+                                        <Grid item xs={12} sm={12} md={12}>
+                                            <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Accept</Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={6} sm={4} md={2}>
+                                    <Grid container>
+                                        <Grid item xs={12} sm={12} md={12} >
+                                            <img src={require("../allImages/relax1.png")} onClick={onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                                            {openHired && <HiredHelper click={handleModelClose} />}
+                                        </Grid>
+                                        <Grid item xs={12} sm={12} md={12}>
+                                            <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Join</Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid> */}

@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CardMedia from '@mui/material/CardMedia';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
-
+import { lazy } from 'react';
 const ScrollButton = () => {
 
     const [visible, setVisible] = useState(true)
@@ -53,17 +53,15 @@ const ScrollButton = () => {
 }
 
 const imageList = [
-    { images: require("../allImages/request.png"), component: WorkRequest },
-    { images: require("../allImages/accept.png"), component: WorkRequest },
-    { images: require("../allImages/relax1.png"), component: HiredHelper },
-
+    { images: require("../allImages/request.png"), request: "work", text:"See Request" },
+    { images: require("../allImages/accept.png"), request: "work", text:"Accept" },
+    { images: require("../allImages/relax1.png"), request: "hire", text:"Join" },
 ];
 
 const HiringProcess = (props) => {
     let navigate = useNavigate()
     const theme = useTheme();
-    const dispatch = useDispatch()
-
+    const [openModal, setOpenModel] = useState(false)
     let { userProfile } = useSelector((state) => ({ ...state.profileStore }))
 
     const [openRequest, setOpenRequest] = useState(false)
@@ -76,21 +74,26 @@ const HiringProcess = (props) => {
     }, [userProfile])
 
     const onRequestClick = () => {
+        setOpenModel(true)
         setOpenRequest(true)
     }
     const onHireClick = () => {
+        setOpenModel(true)
         setOpenHired(true)
     }
     const handleModelClose = () => {
+        setOpenModel(false)
         setOpenRequest(false);
         setOpenHired(false)
     };
 
     return (
         <div>
-            {openRequest && <WorkRequest click={handleModelClose} />}
+
+            {/* {openRequest && <WorkRequest click={handleModelClose} />} */}
             <Grid container justifyContent="center">
                 <Grid item xs={12} md={12} sm={12} style={{ position: "relative" }}>
+             
                     <div>
                         <img src={require("../allImages/helperHome.jpg")} width={"100%"} />
                     </div>
@@ -166,60 +169,32 @@ const HiringProcess = (props) => {
                         <Grid item xs={11} md={10} sm={11} marginTop={"1%"}>
                             <Grid container spacing={3} justifyContent="center" >
                                 {
-                                    imageList.map(({images,component}) =>
-                                        <Grid item xs={6} sm={4} md={2} key={`${images}`}>
+                                    imageList.map((val) => {
+                                        
+                                        return <Grid item xs={6} sm={4} md={2} key={`${val.images}`}>
                                             <Grid container>
 
                                                 <Grid item xs={12} sm={12} md={12} >
-                                                    <img src={images} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
-                                                    {openRequest && <component click={handleModelClose} />}
+                                                    <img src={val.images} onClick={val.request === "work" ? onRequestClick : onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+
                                                 </Grid>
                                                 <Grid item xs={12} sm={12} md={12}>
-                                                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >See Request</Typography>
+                                                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >{val.text}</Typography>
                                                 </Grid>
                                             </Grid>
                                         </Grid>
+                                    }
                                     )
                                 }
-                                {/* <Grid item xs={6} sm={4} md={2}>
-                                    <Grid container>
-
-                                        <Grid item xs={12} sm={12} md={12} >
-                                            <img src={require("../allImages/request.png")} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
-                                            {openRequest && <WorkRequest click={handleModelClose} />}
-                                        </Grid>
-                                        <Grid item xs={12} sm={12} md={12}>
-                                            <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >See Request</Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={6} sm={4} md={2}>
-                                    <Grid container>
-
-                                        <Grid item xs={12} sm={12} md={12} >
-                                            <img src={require("../allImages/accept.png")} onClick={onRequestClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
-                                            {openRequest && <WorkRequest click={handleModelClose} />}
-                                        </Grid>
-                                        <Grid item xs={12} sm={12} md={12}>
-                                            <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Accept</Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                                <Grid item xs={6} sm={4} md={2}>
-                                    <Grid container>
-                                        <Grid item xs={12} sm={12} md={12} >
-                                            <img src={require("../allImages/relax1.png")} onClick={onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
-                                            {openHired && <HiredHelper click={handleModelClose} />}
-                                        </Grid>
-                                        <Grid item xs={12} sm={12} md={12}>
-                                            <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >Join</Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Grid> */}
+                                {openHired && <HiredHelper click={handleModelClose} open={openModal} />}
+                                {openRequest && <WorkRequest click={handleModelClose} open={openModal} />}
+                                
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
+                {/* {openRequest && <WorkRequest click={handleModelClose} />}
+                {openHired && <HiredHelper click={handleModelClose} />} */}
                 <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} >
                     <Typography style={{ fontWeight: 500, color: "#163758" }} marginTop={2} marginBottom={2} variant="h3">
                         Why should you find & hire Workers from My Helpers ?
