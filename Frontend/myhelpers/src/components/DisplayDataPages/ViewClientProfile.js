@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 import { useSelector, useDispatch } from 'react-redux';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
@@ -133,10 +133,10 @@ const ViewClientProfile = () => {
             <Card
                 elevation={16}
                 sx={{
-                    maxWidth: 1200, minHeight: 600,
-                    borderWidth: 3,
-                    borderRadius: 6,
-                    marginTop: 8,
+                    // maxWidth: 1200, minHeight: 600,
+                    // borderWidth: 3,
+                    // borderRadius: 6,
+                    marginTop: 0,
                 }}
             >
                 <CardContent >

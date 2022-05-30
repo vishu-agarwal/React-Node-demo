@@ -26,7 +26,7 @@ import { useState, useEffect } from 'react';
 import { workProfileActions } from '../../store/slices/work-slice'
 
 import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 import { useSelector, useDispatch } from 'react-redux';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 
@@ -204,6 +204,7 @@ const WorkProfile = (props) => {
             setErrorText("Please choose it!")
         }
         else {
+            setErrorText("")
             setErrorEnable({ ...errorEnable, language: false })
         }
     };
@@ -388,7 +389,7 @@ const WorkProfile = (props) => {
                                                     multiple
                                                     value={lang}
                                                     onChange={langHandleChange}
-                                                    input={<OutlinedInput label="TaLanguage Knowng" />}
+                                                    input={<OutlinedInput label="Language Known" />}
                                                     renderValue={(selected) => selected.join(', ')}
                                                     MenuProps={MenuProps}
                                                 >

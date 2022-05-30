@@ -4,7 +4,7 @@ import * as React from 'react';
 //   mui
 import CardContent from '@mui/material/CardContent';
 import { Card, Grid, Typography } from '@mui/material';
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 import { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import { fetchHelperRequestsThunk } from '../../store/slices/hireRequest-slice';
@@ -73,7 +73,7 @@ const WorkRequest = (props) => {
                 {requestLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
-                        minWidth: 500, minHeight: 650,
+                        width: 500, height: 650,
                         padding: 0,
                         borderRadius: 3,
                     }}>

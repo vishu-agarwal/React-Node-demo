@@ -4,14 +4,14 @@ import {
   BrowserRouter, Routes, Route
 } from 'react-router-dom'
 
-import Header from "./components/Layouts/Header"
+import Header from "./components/layouts/Header"
 import Profile from './components/ProfileFiles/ClientProfile';
 
-import Footer from './components/Layouts/Footer';
+import Footer from './components/layouts/Footer';
 import About from './components/Homepage/AboutPage';
 
 import { lazy, Suspense, useEffect } from 'react';
-import Loader from './components/Layouts/LoadingFile';
+import Loader from './components/layouts/LoadingFile';
 import ProtectedRoutes from './RouteComponents/ProtectedRoutes'; //Authenticated routes
 import PublicRoute from './RouteComponents/PublicRoutes';
 import PrivateRoute from './RouteComponents/PrivateRoutes';
@@ -20,7 +20,7 @@ import { height } from '@mui/system';
 const RolePage = lazy(() => import('./components/LoginFiles/Content'));
 const LoginPage = lazy(() => import('./components/LoginFiles/Login'));
 const HomePage = lazy(() => import('./components/Homepage/HomePage'));
-const NoFoundComponent = lazy(() => import('./components/Layouts/PageNotFound'));
+const NoFoundComponent = lazy(() => import('./components/layouts/PageNotFound'));
 
 const publicRoutes = [
   {

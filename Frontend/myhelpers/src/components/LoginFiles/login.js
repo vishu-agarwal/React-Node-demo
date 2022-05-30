@@ -22,7 +22,7 @@ import { otpThunk } from '../../store/slices/otp-slice';
 import { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Loading from '../Layouts/LoadingFile';
+import Loading from '../layouts/LoadingFile';
 import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(props, ref) {

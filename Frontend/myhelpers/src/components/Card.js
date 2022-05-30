@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { displayActions, fetchAllThunk, fetchSaveUserThunk, saveThunk } from '../store/slices/display-slice';
 import { fetchUserProfileThunk } from "../store/slices/profile-slice";
-import Loading from './Layouts/LoadingFile'
+import Loading from './layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -79,6 +79,7 @@ const CardJS = (props) => {
     const onViewClick = () => {
         if (userProfile?.is_profile) {
             navigate(`/viewHelperDetails/${props.values.r_id}`)
+            props.isModal && props.closeModal()
         } else {
             setState({ snackOpen: true })
             setSnackColor("error")
@@ -96,7 +97,6 @@ const CardJS = (props) => {
         }
         return age;
     }
-
     return (
         <Card
             sx={{
@@ -110,7 +110,7 @@ const CardJS = (props) => {
                     xs: 250,
                     sm: 250,
                     md: 250,
-                    lg: 250,
+                    lg: 270,
                 },
                 marginTop: 2,
                 borderRadius: 5,
@@ -148,7 +148,7 @@ const CardJS = (props) => {
                         <Grid item xs={4} sm={4} md={4.5} lg={0} align="left">
                             <CardMedia
                                 component="img"
-                                height={"100%"}
+                                height={"80%"}
                                 sx={{ width: "100%" }}
                                 image={`http://localhost:3001/${props.values.avatar}`}
                                 alt="Profile Image"
@@ -156,15 +156,21 @@ const CardJS = (props) => {
 
                         </Grid>
                         <Grid item xs={7.5} sm={7.5} md={7} lg={0} marginLeft={1} align="left" >
-                            <Typography variant="h5" component="div"></Typography>
+                            
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
                                 Mobile No : {props.values.profession_mobile_number}
+                            </Typography>
+                            <Typography gutterBottom sx={{ fontSize: 15 }} >
+                                Gender : {props.values.gender}
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
                                 {/* //yyyy-mm-dd */}
                                 Age : {
                                     ageDate()
                                 }
+                            </Typography>
+                            <Typography gutterBottom sx={{ fontSize: 15 }} >
+                                Location : {props.values.pincode}
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
                                 Work : {
@@ -179,7 +185,7 @@ const CardJS = (props) => {
                                 }
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
-                                Prefer Time : {props.values.work_time}
+                                Time : {props.values.work_time}
                             </Typography>
                         </Grid>
                     </Grid>

@@ -5,16 +5,16 @@ import * as React from 'react';
 import CardContent from '@mui/material/CardContent';
 
 
-import {  Card, Grid,  Typography } from '@mui/material';
+import { Card, Grid, Typography } from '@mui/material';
 
 import Modal from '@mui/material/Modal';
 import { useState, useEffect } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
 import { fetchHelperRequestsThunk } from '../../store/slices/hireRequest-slice';
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './HireRequestCard';
 import { hireRequestActions } from '../../store/slices/hireRequest-slice'
@@ -43,7 +43,7 @@ const HiredHelper = (props) => {
         vertical: 'top',
         horizontal: 'center',
     });
-    const {  snackOpen } = state;
+    const { snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
@@ -92,9 +92,8 @@ const HiredHelper = (props) => {
                 {requestLoading && <Loading isLoad={true} />}
                 <Card
                     sx={{
-                        minWidth: 500, minHeight: 650,
+                        width: 500, height: 650,
                         padding: 0,
-
                         borderRadius: 3,
                     }}>
                     <CardContent style={{ padding: 0 }}>
@@ -130,11 +129,11 @@ const HiredHelper = (props) => {
                                     hireRequestData.map((val, index) => {
                                         if (val.status === "hired!") {
                                             return <Grid item xs={12} sm={12} align="center" key={index}>
-                                                <HireRequestCard values={val} />
+                                                <HireRequestCard values={val} closeModal={props.click}  />
                                             </Grid>
                                         }
                                         else {
-                                            return <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                                            return <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }} key={index}>
                                                 <img
                                                     src={require("../allImages/nodata.gif")}
                                                     alt="Page No Found..."

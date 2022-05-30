@@ -19,7 +19,7 @@ import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import WorkProfile from './WorkProfile';
 import { useEffect, useState } from 'react';
 
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 import Divider from '@mui/material/Divider';
 
 import {

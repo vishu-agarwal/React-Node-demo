@@ -23,7 +23,7 @@ import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
 import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined';
 import hireRequestActions from '../../store/slices/hireRequest-slice'
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 
 const HireRequestCard = (props) => {
 
@@ -33,12 +33,12 @@ const HireRequestCard = (props) => {
 
     const onViewClick = () => {
         if (props.values.user_id.charAt(0) === "H") {
+            props.closeModal()
             navigate(`/viewHelperDetails/${props.values.user_id}`)
-            props.closeModal()
         }
-        else {
-            navigate(`/viewClientDetails/${props.values.user_id}`)
+        else if (props.values.user_id.charAt(0) === "C") {
             props.closeModal()
+            navigate(`/viewClientDetails/${props.values.user_id}`)
         }
     }
     const onAcceptHandler = () => {
@@ -69,12 +69,9 @@ const HireRequestCard = (props) => {
                 <CardContent >
                     <Grid container direction={'row'} spacing={1} >
                         <Grid item xs={10} sm={10}>
-
                             <Typography color="#ff6f00" variant="h5" paddingLeft={1} gutterBottom align="left">
                                 {String(props.values.name).toUpperCase()}
-
                             </Typography>
-
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
                             {props.values.user_id.charAt(0) === "C" && props.values.status === "pending!" &&
@@ -83,14 +80,12 @@ const HireRequestCard = (props) => {
                                         <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" />
                                     </IconButton>
                                 </Tooltip>}
-
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
                             {props.values.status !== "hired!" && <Tooltip title="Delete">
                                 < IconButton onClick={onDeleteHandler} aria-label="upload picture" component="span">
                                     <DeleteIcon fontSize="medium" color="error" />
                                 </IconButton>
-
                             </Tooltip>}
                         </Grid>
                     </Grid>

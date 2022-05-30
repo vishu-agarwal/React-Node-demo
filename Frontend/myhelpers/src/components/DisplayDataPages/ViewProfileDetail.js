@@ -30,7 +30,7 @@ import { fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slic
 import { profileActions } from '../../store/slices/profile-slice'
 import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import HireForm from './HireForm';
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -102,7 +102,7 @@ const ViewProfileDetail = () => {
     //for open module
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState(false)
-    const [star, setStar] = useState(2)
+    const [star, setStar] = useState(0)
 
     useEffect(() => {
         // dispatch(fetchUserProfileThunk(rid))
@@ -122,12 +122,12 @@ const ViewProfileDetail = () => {
         })
         setHireWork([])
     }, [])
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (saveUser.length !== 0) {
-            console.log("saveUser ::", saveUser);
-        }
-    }, [saveUser])
+    //     if (saveUser.length !== 0) {
+    //         console.log("saveUser ::", saveUser);
+    //     }
+    // }, [saveUser])
 
     useEffect(() => {
         const body = document.querySelector('body');
@@ -173,17 +173,18 @@ const ViewProfileDetail = () => {
     useEffect(() => {
         //Object.keys(viewUserProfile).length !== 0
         // if (Object.keys(viewUserProfile).length !== 1 && !displayLoading) {
-        if (viewUserProfile) {
+        console.log("viewProfile...", viewUserProfile, displayLoading)
+        if (Object.keys(viewUserProfile).length !== 0) {
 
             if (workData.length !== 0) {
                 let list =
                     workData.languages.map((value, index) => {
                         return value.language + ", "
                     })
-                
+
                 const status1 = saveUser.length
                     && !!saveUser.find((val) => val.user_id === viewUserProfile.r_id)
-                
+
                 setStatus(status1)
                 setValues({
                     name: userProfile?.name,
@@ -210,18 +211,20 @@ const ViewProfileDetail = () => {
                 })
                 let workDetails = workData?.work_details?.filter((data) => data)
                 setFields(workDetails)
+                let abx
                 let rates = viewUserProfile?.rating?.length ?
-                    viewUserProfile.rating.find((id) =>
-                        rid === id.user_id && id.rate
+                    abx = viewUserProfile.rating.find((id) => { return rid === id.user_id && id.rate }
                     )
                     : 0
-                setStar(rates.rate);
+                rates = abx === undefined ? 0 : rates.rate
+                // console.log("rates...",rates,abx)
+                setStar(rates);
             }
         }
-        else {
-
-            navigate("*")
-        }
+        // else if (!displayLoading && Object.keys(viewUserProfile).length === 0)
+        // {
+        //     navigate("*",{replace:true})
+        //     }
         // }
     }, [viewUserProfile, workData, saveUser])
 
@@ -278,7 +281,10 @@ const ViewProfileDetail = () => {
         return age;
     }
     return (
-        <Grid>
+
+        Object.keys(viewUserProfile).length !== 0 ?
+
+        <Grid >
             {(displayLoading || workLoading || profileLoading) && <Loading isLoad={true} />}
             <Card elevation={16}
                 sx={{
@@ -524,7 +530,15 @@ const ViewProfileDetail = () => {
                     </Grid>
                 </CardContent >
             </Card >
-        </Grid>
+            </Grid>
+            :
+            <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                <img
+                    src={require("../allImages/nodata.gif")}
+                    alt="Page No Found..."
+                    align="center"
+                />
+            </Grid>
     )
 }
 

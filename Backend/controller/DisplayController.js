@@ -24,9 +24,11 @@ const fetchAllData = async (req, res) => {
                         "work_details.category": 1,
                         "name": "$profile.name",
                         "dob": "$profile.dob",
+                        "gender": "$profile.gender",
                         "avatar": "$profile.avatar",
                         "rating": "$profile.rating",
-                        "saved_user": "$profile.saved_user"
+                        "saved_user": "$profile.saved_user",
+                        "pincode": "$profile.address.pincode"
                     }
                 },
             ])
@@ -175,11 +177,13 @@ const searching = async (req, res) => {
                         work_details: [val.work_details.map((cat) => { return { category: cat.category } })],
                         work_time: val.work_time,
                         profession_mobile_number: val.profession_mobile_number,
-                        name: res.map((val) => val.name),
-                        dob: res.map((val) => val.dob),
-                        avatar: res.map((val) => val.avatar),
+                        name: res.map((val) => val.name).toString(),
+                        pincode: res.map((val) => val.address.pincode).toString(),
+                        gender: res.map((val) => val.gender).toString(),
+                        dob: res.map((val) => val.dob).toString(),
+                        avatar: res.map((val) => val.avatar).toString(),
                         rating: res.map((val) => val.rating),
-                        status: val.status
+                        // status: val.status
                     })
                 }
             }
@@ -201,18 +205,21 @@ const searching = async (req, res) => {
                 const res = await workModel.find({ r_id: val.r_id });
                 if (res.length) {
                     fetch.push({
-                        r_id: res.map((val) => val.r_id),
+                        r_id: res.map((val) => val.r_id).toString(),
                         work_details: res.map((val) => val.work_details.map((cat) => { return { category: cat.category } })),
-                        work_time: res.map((val) => val.work_time),
-                        profession_mobile_number: res.map((val) => val.profession_mobile_number),
+                        work_time: res.map((val) => val.work_time).toString(),
+                        profession_mobile_number: res.map((val) => val.profession_mobile_number).toString(),
                         name: val.name,
                         dob: val.dob,
+                        gender: val.gender,
+                        pincode: val.address.pincode,
                         avatar: val.avatar,
                         rating: [val.rating],
-                        status: res.map((val) => val.status)
+                        // status: res.map((val) => val.status).toString()
                     })
                 }
             }
+            console.log("ftch,,,,,,", fetch)
             return res.status(200).send(fetch)
         }
     }
@@ -235,15 +242,15 @@ const sorting = async (req, res) => {
         const res = await workModel.find({ r_id: val.r_id });
         if (res.length) {
             fetch.push({
-                r_id: res.map((val) => val.r_id),
+                r_id: res.map((val) => val.r_id).toString(),
                 work_details: res.map((val) => val.work_details.map((cat) => { return { category: cat.category } })),
-                work_time: res.map((val) => val.work_time),
-                profession_mobile_number: res.map((val) => val.profession_mobile_number),
+                work_time: res.map((val) => val.work_time).toString(),
+                profession_mobile_number: res.map((val) => val.profession_mobile_number).toString(),
                 name: val.name,
                 dob: val.dob,
                 avatar: val.avatar,
                 rating: [val.rating],
-                status: res.map((val) => val.status),
+                // status: res.map((val) => val.status).toString(),
             })
         }
     }

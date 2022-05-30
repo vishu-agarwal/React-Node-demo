@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 
 import {  Card, Grid,  Typography } from '@mui/material';
 
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 import { useState, useEffect } from 'react';
 
 import { displayActions, fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
@@ -98,7 +98,6 @@ const ShortListed = (props) => {
                     sx={{
                         width: 500, height: 650,
                         padding: 0,
-
                         borderRadius: 3,
                     }}>
                     <CardContent style={{ padding: 0 }}>
@@ -144,10 +143,9 @@ const ShortListed = (props) => {
                                                         id.user_id
                                                     ).length
                                                     : null
-
                                                 hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
                                                 return <Grid marginBottom={1} item xs={12} sm={12} align="center" key={index}>
-                                                    <CardJS values={values} rates={rates} saveStatus={true} hireStatus={hireStatus} />
+                                                    <CardJS values={values} rates={rates} saveStatus={true} hireStatus={hireStatus} closeModal={props.click} isModal={true} />
                                                 </Grid>
                                             }
                                         })
@@ -155,7 +153,7 @@ const ShortListed = (props) => {
                                     :
                                     <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
                                         <img
-                                            src={require("../allImages/notfound.gif")}
+                                            src={require("../allImages/nodata.gif")}
                                             alt="Page No Found..."
                                             align="center"
                                         />

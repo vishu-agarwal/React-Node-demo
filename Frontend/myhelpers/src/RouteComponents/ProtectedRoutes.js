@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import Loader from '../components/Layouts/LoadingFile';
+import Loader from '../components/layouts/LoadingFile';
 import HiringProcess from '../components/Homepage/HiringProcess';
 import { useSelector } from 'react-redux';
 

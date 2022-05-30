@@ -14,7 +14,7 @@ import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 import Pagination from '@mui/material/Pagination';
 import debounce from 'lodash.debounce';
 import Typography from "@mui/material/Typography";
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -75,7 +75,7 @@ const DisplayData = () => {
     let rates, status, hireStatus
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
-
+    const [textSearch, setTextSearch] = useState('')
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
@@ -108,16 +108,16 @@ const DisplayData = () => {
         }
     }, [displayMessage, displayError])
 
-    useEffect(() => {
-        if (displayData.length !== 0) {
-            console.log("displayData :: ", displayData)
-        }
+    // useEffect(() => {
+    //     if (displayData.length !== 0) {
+    //         console.log("displayData :: ", displayData)
+    //     }
 
-    }, [displayData])
-    useEffect(() => {
+    // }, [displayData])
+    // useEffect(() => {
 
 
-    }, [saveUser])
+    // }, [saveUser])
 
     const [sortField, setSortField] = useState('')
     const onSortChange = (sort, field) => {
@@ -128,6 +128,7 @@ const DisplayData = () => {
         dispatch(fetchSaveUserThunk(rid))
     }
     const onSearchChange = (event, value) => {
+
         if (event.target.name === "searchText") {
             setFilterWork(event.target.value.toLowerCase())
             const arg = {
@@ -136,14 +137,13 @@ const DisplayData = () => {
             }
             const debouncedSave = debounce(() => (dispatch(searchThunk(arg))), 2000);
             // dispatch(fetchSaveUserThunk(rid))
-
             debouncedSave();
         }
         else {
             setFilterWork(value)
             const arg = {
                 workSearch,
-                filterWork: value
+                filterWork: value.label
             }
             dispatch(searchThunk(arg))
             // dispatch(fetchSaveUserThunk(rid))
@@ -165,7 +165,7 @@ const DisplayData = () => {
     };
 
     return (
-        <Grid container spacing={1} justifyContent="center" marginTop={5}>
+        <Grid container spacing={1} justifyContent="center" marginTop={2}>
             {displayLoading && <Loading isLoad={true} />}
             <Grid item xs={11} sm={11} >
                 <Grid container spacing={2} marginBottom={2}>
@@ -218,15 +218,20 @@ const DisplayData = () => {
                                             },
                                             color: "#163758"
                                         }}
+                                        value={filterWork}
                                         options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ?
                                             filterTime : workSearch === "Gender" ? filterGender : ['']}
-                                        onInputChange={onSearchChange}
-                                        renderInput={(params) =>
-                                            <TextField {...params}
+                                        onChange={onSearchChange}
+                                        renderInput={(params) => {
+                                            console.log("filterWork", filterWork, params)
+                                            return <TextField
+                                                {...params}
                                                 id="er"
                                                 label="Filter By"
                                                 value={filterWork}
                                             />
+                                        }
+
                                         }
                                     />
                                     :
@@ -284,10 +289,10 @@ const DisplayData = () => {
 
                             status = saveUser.length
                                 && !!saveUser.find((val) => values.r_id === val.user_id)
-
+                            console.log(values.r_id, "status", saveUser)
                             return <Grid item xs={12} sm={12} md={6} lg={3} key={index} style={{ padding: 0 }} align="center" >
 
-                                <CardJS values={values} rates={rates} saveStatus={status} />
+                                <CardJS values={values} rates={rates} saveStatus={status} isModal={false}/>
 
                             </Grid>
 
@@ -297,7 +302,6 @@ const DisplayData = () => {
 
 
             <Grid item xs={12} sm={12} >
-
                 <TablePagination
                     size="small"
                     // rowsPerPageOptions={[8, 16, 24, 32, 40, 100]}

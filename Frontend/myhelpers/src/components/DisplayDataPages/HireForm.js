@@ -27,7 +27,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import "react-datepicker/dist/react-datepicker.css";
-import Loading from '../Layouts/LoadingFile'
+import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -68,7 +68,7 @@ const HireForm = (props) => {
         horizontal: 'center',
     });
 
-    const {  snackOpen } = state;
+    const { vertical, horizontal, snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
@@ -475,7 +475,7 @@ const HireForm = (props) => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={1} justifyContent="left" >
-                                        {!editHide && singleUser?.status === "pending!" &&
+                                        {!editHide && singleUser && singleUser.status === "pending!" &&
                                             <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
                                                 {fieldsDisable ?
                                                     <ModeEditIcon sx={{ color: "white", fontSize: 35 }} cursor="pointer" />
@@ -507,16 +507,15 @@ const HireForm = (props) => {
                                                     }}
                                                     value={props.work}
                                                     onChange={workChange}
-                                                    input={<OutlinedInput label="Work" />}
+                                                    input={<OutlinedInput label="Select Work" />}
                                                     renderValue={(selected) => selected.join(', ')}
                                                     MenuProps={MenuProps}
                                                 >
                                                     {props.fields.map((row, index) => (
-                                                        console.log(props.work),
                                                         <MenuItem key={index} value={row.category}>
-                                                            <Checkbox checked={props.work.indexOf(row.category) > -1} />
+                                                            <Checkbox checked={props.work?.indexOf(row.category) > -1} />
                                                             <ListItemText primary={row.category} />
-                                                        </MenuItem> 
+                                                        </MenuItem>
                                                     ))}
                                                 </Select>
                                                 <FormHelperText>{errorEnable.work && errorText}</FormHelperText>
