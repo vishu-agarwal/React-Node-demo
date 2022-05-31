@@ -228,3 +228,7 @@ userSchema.pre('remove', async function (next) {
     await avatarModel.deleteMany({ r_id: user.r_id });
     next();
 });
+
+
+
+

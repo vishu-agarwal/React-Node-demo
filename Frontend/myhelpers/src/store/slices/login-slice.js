@@ -48,7 +48,6 @@ const loginSlice = createSlice({
             state.error = ""
         },
         logoutReducer(state) {
-
             state.isAuth = false
             state.logUser = []
             state.token = ""

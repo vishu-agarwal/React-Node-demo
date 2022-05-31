@@ -13,7 +13,6 @@ export const otpThunk = createAsyncThunk("otpLogin/otpThunk", async (arg) => {
             email: arg.email,
         };
         const otpRes = await axios.post(`/myhelpers/otp/${arg.role}`,data)
-        // console.log(otpRes)
         return otpRes
     }
     catch (error) {
@@ -33,6 +32,9 @@ const otpSlice = createSlice({
         messageReducer(state) {
             state.otpMessage = ""
         },
+        countCompleteReducer(state) {
+            state.otpUser=''
+        }
     },
     extraReducers: {
         [otpThunk.pending]: (state, action) => {

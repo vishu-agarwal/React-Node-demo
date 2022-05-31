@@ -97,6 +97,9 @@ const profileSlice = createSlice({
         messageReducer(state) {
             state.profileMessage = ""
         },
+        logoutEmpty(state) {
+            state.userProfile = {}
+        }
     },
     extraReducers: {
         //avatar

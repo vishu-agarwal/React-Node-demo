@@ -57,13 +57,11 @@ const updateStar = async (req, res) => {
                     { rating: rate },
                     { new: true }
                 )
-                console.log("new update :: ", [updtStar])
                 return res.status(200).send([updtStar])
             }
             else if (findUser.rating[idIndex].user_id === req.params.rid) {
                 findUser.rating[idIndex].rate = req.body.rate
                 const update = await findUser.save();
-                console.log("old update :: ", [update])
                 return res.status(200).send([update]);
             }
         }
@@ -96,44 +94,6 @@ const saveUserData = async (req, res) => {
     catch (error) {
         return res.status(400).send(error.message)
     }
-    // try {
-    //     const found = await userModel.findOne({ r_id: req.params.rid });
-    //     if (found) {
-    //         const findUser = await userModel.findOne({ r_id: req.body.user_id })
-    //         console.log(findUser)
-    //         const idIndex = findUser.saved_user.findIndex((c) => c.user_id === req.params.rid);
-    //         console.log(idIndex,"idIndex")
-    //         if (idIndex < 0) {
-    //             const updateSave = {
-    //                 user_id: req.params.rid                    
-    //             }
-    //             const save = findUser.saved_user.concat(updateSave)
-    //             const updtSave = await userModel.findOneAndUpdate(
-    //                 { r_id: req.body.user_id },
-    //                 { saved_user: save },
-    //                 { new: true }
-    //             )
-
-    //             // console.log("new update :: ", updtSave)
-    //             return res.status(200).send(updtSave)
-    //         }
-    //         else if (findUser.saved_user[idIndex].user_id === req.params.rid) {
-    //             const updtSave = await userModel.findOneAndUpdate(
-    //                 { r_id: req.body.user_id },
-    //                 { $pull: { saved_user: { user_id: req.params.rid } } },
-    //                 { new: true }
-    //             )
-    //             // console.log("old update :: ", updtSave)
-    //             return res.status(200).send(updtSave);
-    //         }
-    //     }
-    //     else {
-    //         throw new Error("Please first create your profile!")
-    //     }
-    // }
-    // catch (error) {
-    //     return res.status(400).send(error.message)
-    // }
 }
 // fetch saved user
 const fetchSaveUser = async (req, res) => {
@@ -219,7 +179,6 @@ const searching = async (req, res) => {
                     })
                 }
             }
-            console.log("ftch,,,,,,", fetch)
             return res.status(200).send(fetch)
         }
     }

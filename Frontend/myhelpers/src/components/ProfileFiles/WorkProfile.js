@@ -120,7 +120,6 @@ const WorkProfile = (props) => {
             setSnackMessage(workError)
             dispatch(workProfileActions.errorReducer())
         }
-
     }, [workMessage, workError])
 
     useEffect(() => {
@@ -131,7 +130,7 @@ const WorkProfile = (props) => {
                 study: workData?.education,
                 otherStudy: workData?.other_education
             })
-            let list = workData?.languages?.map((value, index) => {
+            let list = workData?.languages?.map((value) => {
                 return value.language
             }).flat()
 

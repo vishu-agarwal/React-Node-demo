@@ -13,12 +13,13 @@ const varToken = localStorage.getItem("logToken");
 //create work Details thunk
 export const sendHireRequestThunk = createAsyncThunk("hireRequest/sendHireRequestThunk", async (arg) => {
     try {
+        const work = arg.work.map(w => ({ work: w }));
         const data =
             [
                 {
                     user_id: arg.user_id,
                     status: "pending!",
-                    work: arg.work,
+                    works: work,
                     from_date: arg.values.fromDate,
                     to_date: arg.values.toDate,
                     from_time: arg.values.fromTime,
@@ -65,10 +66,11 @@ export const fetchSingleHireRequestThunk = createAsyncThunk("hireRequest/fetchSi
 //update work details thunk
 export const updateHireRequestThunk = createAsyncThunk("hireRequest/updateHireRequestThunk", async (arg) => {
     try {
+        const work = arg.work.map(w => ({ work: w }));
         const data = {
             user_id: arg.user_id,
             status: "pending!",
-            work: arg.work,
+            works: work,
             from_date: arg.values.fromDate,
             to_date: arg.values.toDate,
             from_time: arg.values.fromTime,
@@ -142,7 +144,8 @@ const hireRequestSlice = createSlice({
         },
         [sendHireRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
-            state.singleUser = action.payload.data
+            state.singleUser = action.payload.data[0]
+            console.log(state.singleUser,".....user")
             state.requestMessage="Your request send!"
         },
         [sendHireRequestThunk.rejected]: (state, error) => {
@@ -220,7 +223,8 @@ const hireRequestSlice = createSlice({
         },
         [updateHireRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
-            state.singleUser = action.payload.data
+            console.log("update slice single user",action.payload.data)
+            state.singleUser = action.payload.data[0]
             state.requestMessage = "Your request updated!"
         },
         [updateHireRequestThunk.rejected]: (state, error) => {

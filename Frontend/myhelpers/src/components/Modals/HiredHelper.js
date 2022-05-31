@@ -36,7 +36,7 @@ const HiredHelper = (props) => {
     const dispatch = useDispatch()
 
     let { hireRequestData, requestMessage, requestError, requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
-    let [noData, setNoData] = useState(0)
+    const filterHired = hireRequestData?.filter((val) => val.status === "hired!")
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
@@ -49,6 +49,14 @@ const HiredHelper = (props) => {
     const [snackMessage, setSnackMessage] = useState('')
     const [snackColor, setSnackColor] = useState("info")
 
+    useEffect(() => {
+        dispatch(fetchHelperRequestsThunk(rid))
+    }, [])
+
+    // useEffect(() => {
+    //     filterHired = hireRequestData?.filter((val) => val.status === "hired!")
+    //     console.log(filterHired, "...filterhire")
+    // }, [hireRequestData])
     useEffect(() => {
 
 
@@ -68,17 +76,13 @@ const HiredHelper = (props) => {
 
     }, [requestMessage, requestError])
 
-    useEffect(() => {
-        dispatch(fetchHelperRequestsThunk(rid))
-    }, [])
+    // useEffect(() => {
+    //     if (hireRequestData.length !== 0) {
+    //         console.log("hireRequestdata :: ", hireRequestData)
+    //     }
 
-    useEffect(() => {
-        if (hireRequestData.length !== 0) {
-            console.log("hireRequestdata :: ", hireRequestData)
-        }
-
-    }, [hireRequestData])
-    console.log("Hired helper.....")
+    // }, [hireRequestData])
+    // let checkNoData = false
     return (
         <Modal
             open={props.open}
@@ -87,79 +91,67 @@ const HiredHelper = (props) => {
             aria-describedby="modal-modal-description"
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-            {requestLoading ? <Loading isLoad={true} /> :
-                <Grid padding={0} margin={0} >
-                    <Card
-                        sx={{
-                            width: 500, height: 650,
-                            padding: 0,
-                            borderRadius: 3,
-                        }}>
-                        <CardContent style={{ padding: 0 }}>
-                            <Grid container direction={'row'} >
-                                <Snackbar
-                                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                                    open={snackOpen}
-                                    autoHideDuration={6000}
-                                    onClose={closeSnackbar}
-                                >
-                                    <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
-                                        {snackMessage}
-                                    </Alert>
-                                </Snackbar>
-                                <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
-                                    <Grid container direction={'row'} padding={2} >
-                                        <Grid item xs={12} sm={10} align="left" >
-                                            <Typography variant="h4" color="white" >
-                                                Hired
-                                            </Typography>
-                                        </Grid>
+            <div>
+                {requestLoading ? <Loading isLoad={true} /> :
+                    <Grid padding={0} margin={0} >
+                        <Card
+                            sx={{
+                                width: 500, height: 650,
+                                padding: 0,
+                                borderRadius: 3,
+                            }}>
+                            <CardContent style={{ padding: 0 }}>
+                                <Grid container direction={'row'} >
+                                    <Snackbar
+                                        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                        open={snackOpen}
+                                        autoHideDuration={6000}
+                                        onClose={closeSnackbar}
+                                    >
+                                        <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                            {snackMessage}
+                                        </Alert>
+                                    </Snackbar>
+                                    <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
+                                        <Grid container direction={'row'} padding={2} >
+                                            <Grid item xs={12} sm={10} align="left" >
+                                                <Typography variant="h4" color="white" >
+                                                    Hired
+                                                </Typography>
+                                            </Grid>
 
-                                        <Grid item xs={12} sm={2} align="right">
+                                            <Grid item xs={12} sm={2} align="right">
 
-                                            <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                                <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                            </Grid>
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid container style={{ maxHeight: '550px', overflow: 'auto' }}>
-                                {
-                                    hireRequestData.length !== 0 ?
-                                        hireRequestData.map((val, index) => {
-                                            if (val.status === "hired!") {
-                                                setNoData(noData++)
-                                                return <Grid item xs={12} sm={12} align="center" key={index}>
-                                                    <HireRequestCard values={val} closeModal={props.click} />
-                                                </Grid>
-                                            }
-                                            else {
-                                                return setNoData(0)
-                                            }
-                                        }
-                                        )
-                                        :
-                                        <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
-                                            <img
-                                                src={require("../allImages/nodata.gif")}
-                                                alt="Page No Found..."
-                                                align="center"
-                                            />
-                                        </Grid>
-                                }
-                                {
-                                    noData === 0 &&
-                                    <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
-                                        <img
-                                            src={require("../allImages/nodata.gif")}
-                                            alt="Page No Found..."
-                                            align="center"
-                                        />
-                                    </Grid>
-                                }
-                            </Grid>
-                        </CardContent>
-                    </Card>
-                </Grid>}
+                                <Grid container style={{ maxHeight: '550px', overflow: 'auto' }}>
+                                    {
+                                        // console.log(!requestLoading && filterHired, "grid...")
+                                        !requestLoading && (
+                                            filterHired.length !== 0 ?
+                                                filterHired.map((val, index) => {
+                                                    // if (val.status === "hired!") {
+                                                    return <Grid item xs={12} sm={12} marginBottom={1} align="center" key={index}>
+                                                        <HireRequestCard values={val} closeModal={props.click} />
+                                                    </Grid>
+                                                })
+                                                :
+                                                <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }}>
+                                                    <img
+                                                        src={require("../allImages/nodata.gif")}
+                                                        alt="Page No Found..."
+                                                        align="center"
+                                                    />
+                                                </Grid>)
+                                    }
+                                </Grid>
+                            </CardContent>
+                        </Card>
+                    </Grid>}
+            </div>
         </Modal >
     );
 }

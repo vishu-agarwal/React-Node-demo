@@ -77,6 +77,9 @@ const workSlice = createSlice({
         messageReducer(state) {
             state.workMessage = ""
         },
+        logoutEmpty(state) {
+            state.workData=[]
+        }
     },
     extraReducers: {
         //workProfileData

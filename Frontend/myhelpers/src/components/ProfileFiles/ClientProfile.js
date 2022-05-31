@@ -139,7 +139,6 @@ const ClientProfile = () => {
     useEffect(() => {
 
         if (userProfile) {
-            console.log("fetch user profile", userProfile)
             setStar(userProfile?.rating ?
                 userProfile.rating.map((id) =>
                     id.rate

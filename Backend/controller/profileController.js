@@ -28,17 +28,12 @@ const fetchProfile = async (req, res) => {
         let fetchProfileDetail = await userModel.find({ r_id: req.params.rid })
         console.log(fetchProfileDetail)
         if (fetchProfileDetail.length === 0) {
-            // console.log("view profile1")
             throw new Error("Please create profile for move forward!")
-            // return res.status(200).send({ data:"Please create profile for move forward!", status: false })
         }
         else {
-            // console.log("view profile2")
             return res.status(200).send(fetchProfileDetail)
         }
-
     } catch (error) {
-        // console.log("view profile3")
         return res.status(400).send({ data: error.message, status: false })
     }
 }

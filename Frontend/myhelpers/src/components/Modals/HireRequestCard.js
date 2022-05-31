@@ -93,7 +93,10 @@ const HireRequestCard = (props) => {
                         <Grid item xs={12} sm={12} align="left" paddingLeft={1}>
                             <Typography gutterBottom sx={{ fontSize: 15, textTransform: "capitalize" }} component={'div'} >
                                 Status : {
-                                    <Typography gutterBottom color={props.values.status === "hired!" ? "#00a152" : props.values.status === "pending!" ? "#faaf00" : "red"} sx={{ fontSize: 16, textTransform: "capitalize" }} display="inline"> {props.values.status}</Typography>
+                                    <Typography gutterBottom color={props.values.status === "hired!" ? "#00a152" : props.values.status === "pending!"
+                                        ? "#faaf00" : "red"} sx={{ fontSize: 16, textTransform: "capitalize" }} display="inline">
+                                        {props.values.status}
+                                    </Typography>
                                 }
                             </Typography>
                             {props.values.message ?
@@ -106,9 +109,11 @@ const HireRequestCard = (props) => {
                             }
                             <Typography gutterBottom sx={{ fontSize: 15, textTransform: "capitalize" }} >
                                 Work : {
-                                    props.values.work.map((value, index) => {
-                                        return value + ", "
-                                    })}
+                                    console.log(props.values)
+                                    // props.values.works.map((value, index) => {
+                                    //     return value.work + ", "
+                                    // })
+                                    }
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
                                 {/* //yyyy-mm-dd */}

@@ -51,7 +51,7 @@ const ViewProfileDetail = () => {
     let { workMessage, workData, workError, workLoading } = useSelector((state) => ({ ...state.workProfileStore }))
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     let { viewUserProfile, saveUser, displayError, displayMessage, displayLoading } = useSelector((state) => ({ ...state.displayStore }))
-    console.log("loading...", displayLoading)
+
     const rid = localStorage.getItem("r_id")
 
     const [state, setState] = useState({
@@ -90,15 +90,16 @@ const ViewProfileDetail = () => {
         avatar: `${require("../allImages/profile.gif")}`,
     });
 
-    const [hireValues, sethireValues] = useState({
-        fromDate: '',
-        toDate: '',
-        fromTime: '',
-        toTime: '',
-        description: '',
+    // const [hireValues, sethireValues] = useState({
+    //     fromDate: '',
+    //     toDate: '',
+    //     fromTime: '',
+    //     toTime: '',
+    //     description: '',
 
-    });
-    const [hireWork, setHireWork] = useState([]);
+    // });
+
+    // const [hireWork, setHireWork] = useState([]);
     //for open module
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState(false)
@@ -111,17 +112,17 @@ const ViewProfileDetail = () => {
         dispatch(fetchSaveUserThunk(rid))
     }, [user_id])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        sethireValues({
-            fromDate: '',
-            toDate: '',
-            fromTime: '',
-            toTime: '',
-            description: '',
-        })
-        setHireWork([])
-    }, [])
+    //     sethireValues({
+    //         fromDate: '',
+    //         toDate: '',
+    //         fromTime: '',
+    //         toTime: '',
+    //         description: '',
+    //     })
+    //     setHireWork([])
+    // }, [])
     // useEffect(() => {
 
     //     if (saveUser.length !== 0) {
@@ -170,15 +171,13 @@ const ViewProfileDetail = () => {
         }
 
     }, [profileMessage, profileError, displayError, displayMessage, workError, workMessage, open])
-    useEffect(() => {
-        //Object.keys(viewUserProfile).length !== 0
-        // if (Object.keys(viewUserProfile).length !== 1 && !displayLoading) {
-        console.log("viewProfile...", viewUserProfile, displayLoading)
-        if (Object.keys(viewUserProfile).length !== 0) {
 
+    useEffect(() => {
+       
+        if (Object.keys(viewUserProfile).length !== 0) {
             if (workData.length !== 0) {
                 let list =
-                    workData.languages.map((value, index) => {
+                    workData?.languages.map((value, index) => {
                         return value.language + ", "
                     })
 
@@ -211,23 +210,17 @@ const ViewProfileDetail = () => {
                 })
                 let workDetails = workData?.work_details?.filter((data) => data)
                 setFields(workDetails)
+
                 let abx
                 let rates = viewUserProfile?.rating?.length ?
                     abx = viewUserProfile.rating.find((id) => { return rid === id.user_id && id.rate }
                     )
                     : 0
                 rates = abx === undefined ? 0 : rates.rate
-                // console.log("rates...",rates,abx)
                 setStar(rates);
             }
         }
-        // else if (!displayLoading && Object.keys(viewUserProfile).length === 0)
-        // {
-        //     navigate("*",{replace:true})
-        //     }
-        // }
     }, [viewUserProfile, workData, saveUser])
-
 
     const [fields, setFields] = useState(
         [
@@ -257,16 +250,17 @@ const ViewProfileDetail = () => {
         // dispatch(fetchViewUserDataThunk(user_id))
     }
     //hire button enable disble
-    const [enableHire, setEnableHire] = useState(true)
+    // const [enableHire, setEnableHire] = useState(true)
 
     const onHireUser = () => {
         setOpen(true);
-        const arg = {
-            user_id: workData?.r_id,
-            rid
-        }
-        dispatch(fetchSingleHireRequestThunk(arg))
+        // const arg = {
+        //     user_id: workData?.r_id,
+        //     rid
+        // }
+        // dispatch(fetchSingleHireRequestThunk(arg))
     }
+    
     const handleClose = () => {
         setOpen(false);
     };
@@ -420,7 +414,7 @@ const ViewProfileDetail = () => {
                                                 />
                                                 <Grid container item xs={12} sm={12} md={12} justifyContent="center">
                                                     <Button sx={{ marginTop: "4%", backgroundColor: "#163758" }} size="medium" variant="contained" onClick={onHireUser}>Hire</Button>
-                                                    <HireForm open={open} hireValues={hireValues} sethireValues={sethireValues} work={hireWork} setWork={setHireWork} user_id={workData.length !== 0 ? workData.r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
+                                                    <HireForm open={open} user_id={workData.length !== 0 ? workData.r_id : ""} fields={fields} workTime={values.workTime} click={handleClose} />
                                                 </Grid>
                                             </Grid>
                                         </Grid>

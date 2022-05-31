@@ -151,9 +151,9 @@ const DisplayData = () => {
     }
     //pagination states
 
-    let cnt = 0;
+
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(16);
+    const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -224,7 +224,6 @@ const DisplayData = () => {
                                                     filterTime : workSearch === "Gender" ? filterGender : ['']}
                                                 onChange={onSearchChange}
                                                 renderInput={(params) => {
-                                                    console.log("filterWork", filterWork, params)
                                                     return <TextField
                                                         {...params}
                                                         id="er"
@@ -232,7 +231,6 @@ const DisplayData = () => {
                                                         value={filterWork}
                                                     />
                                                 }
-
                                                 }
                                             />
                                             :
@@ -290,7 +288,7 @@ const DisplayData = () => {
 
                                     status = saveUser.length
                                         && !!saveUser.find((val) => values.r_id === val.user_id)
-                                    console.log(values.r_id, "status", saveUser)
+
                                     return <Grid item xs={12} sm={12} md={6} lg={3} key={index} style={{ padding: 0 }} align="center" >
 
                                         <CardJS values={values} rates={rates} saveStatus={status} isModal={false} />
@@ -300,18 +298,31 @@ const DisplayData = () => {
                                 })
                         }
                     </Grid>
+                    {console.log(displayData?.length, "datalength")}
 
-
-                    <Grid item xs={12} sm={12} >
+                    <Grid item xs={12} sm={12}  sx={{color:"green"}}>
                         <TablePagination
-                            size="small"
-                            // rowsPerPageOptions={[8, 16, 24, 32, 40, 100]}
-                            component="div"
+                            // size="small"
+                            // // rowsPerPageOptions={[8]}
+                             component="div"
+                            // count={displayData?.length}
+                            // // rowsPerPage={rowsPerPage}
+                            // page={page}
+                            // onPageChange={handleChangePage}
+                            // onRowsPerPageChange={handleChangeRowsPerPage}
+                            // labelDisplayedRows={({ page }) => {
+                            //     return `Page: ${page + 1}`;
+                            // }}
                             count={displayData?.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
+                            rowsPerPageOptions={[8]}
+                            // labelRowsPerPage={<span>Rows:</span>}
+                            labelDisplayedRows={({ page }) => {
+                                return `Page: ${page+1}`;
+                            }}
                         />
                     </Grid>
                 </>

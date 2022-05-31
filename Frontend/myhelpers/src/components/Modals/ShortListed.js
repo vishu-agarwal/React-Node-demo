@@ -4,13 +4,13 @@ import * as React from 'react';
 //   mui
 import CardContent from '@mui/material/CardContent';
 
-import {  Card, Grid,  Typography } from '@mui/material';
+import { Card, Grid, Typography } from '@mui/material';
 
 import Loading from '../layouts/LoadingFile'
 import { useState, useEffect } from 'react';
 
 import { displayActions, fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import CardJS from '../Card';
 import CloseIcon from '@mui/icons-material/Close';
@@ -39,7 +39,7 @@ const ShortListed = (props) => {
         vertical: 'top',
         horizontal: 'center',
     });
-    const {snackOpen } = state;
+    const { snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
@@ -67,21 +67,21 @@ const ShortListed = (props) => {
         }
 
     }, [displayMessage, displayError])
-    useEffect(() => {
-        if (displayData.length !== 0) {
-            console.log("displayData :: ", displayData)
+    // useEffect(() => {
+    //     if (displayData.length !== 0) {
+    //         console.log("displayData :: ", displayData)
 
-        }
+    //     }
 
-    }, [displayData])
-    useEffect(() => {
+    // }, [displayData])
+    // useEffect(() => {
 
-        if (saveUser.length !== 0) {
-            console.log("saveUser ::", saveUser);
-            // saveUser.map((val)=> values.r_id === val.user_id)
-            // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
-        }
-    }, [saveUser])
+    //     if (saveUser.length !== 0) {
+    //         console.log("saveUser ::", saveUser);
+    //         // saveUser.map((val)=> values.r_id === val.user_id)
+    //         // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
+    //     }
+    // }, [saveUser])
 
     let rates, hireStatus
     return (
@@ -90,8 +90,9 @@ const ShortListed = (props) => {
             onClose={props.click}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            style={{ display: 'flex', alignItems: 'center',justifyContent:"center" }}
         >
+            <div>
             {displayLoading ? <Loading isLoad={true} /> :
                 <Grid padding={0} margin={0} >
                     <Card
@@ -127,8 +128,7 @@ const ShortListed = (props) => {
                                 </Grid>
                             </Grid>
                             <Grid container marginTop={0} marginBottom={0} style={{ height: '550px', overflow: 'auto' }}>
-                                {
-                                    // status = { saveUser.length !== 0 ? console.log(saveUser.user_id) ? true : false : false },
+                                    {                                        
                                     saveUser.length && displayData.length ?
                                         saveUser.map((val, index) =>
                                             displayData.map((values, index) => {
@@ -143,7 +143,9 @@ const ShortListed = (props) => {
                                                             id.user_id
                                                         ).length
                                                         : null
+
                                                     hireStatus = hireUser.lenght !== 0 ? hireUser.filter(val => values.r_id === val.user_id).map((val) => val.status) : ''
+
                                                     return <Grid marginBottom={1} item xs={12} sm={12} align="center" key={index}>
                                                         <CardJS values={values} rates={rates} saveStatus={true} hireStatus={hireStatus} closeModal={props.click} isModal={true} />
                                                     </Grid>
@@ -162,7 +164,8 @@ const ShortListed = (props) => {
                             </Grid>
                         </CardContent>
                     </Card>
-                </Grid>}
+                    </Grid>}
+            </div>
         </Modal >
     );
 }

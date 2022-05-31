@@ -4,7 +4,7 @@ import React from 'react';
 //   mui
 
 // import Card from '@mui/material/Card';
-
+import Countdown from 'react-countdown';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import { Card, Typography } from '@mui/material';
@@ -29,6 +29,9 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+
+
+
 const Login = () => {
     const params = useParams();
     const navigate = useNavigate();
@@ -38,7 +41,7 @@ const Login = () => {
         email: '',
         role: params.role,
     });
-    
+
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
@@ -102,6 +105,7 @@ const Login = () => {
 
     const sendOtpHandler = () => {
         if (values.email.length !== 0) {
+            dispatch(otpActions.isOtpReducer(false));
             dispatch(otpThunk(values));
         } else {
             setState({ snackOpen: true });
@@ -114,11 +118,12 @@ const Login = () => {
 
         event.preventDefault();
         if (values.email.length !== 0) {
+            // not use 3 equals beacuse if parseInt
             if (otp == parseInt(otpUser)) {
                 dispatch(loginThunk(values));
-                // dispatch(otpActions.isOtpReducer(false));
+                dispatch(otpActions.isOtpReducer(false));
+                dispatch(otpActions.countCompleteReducer());
             } else {
-                console.log("otp::", otp, otpUser)
                 setState({ snackOpen: true });
                 setSnackColor('error');
                 return setSnackMessage('Opps! OTP did not match.');
@@ -150,17 +155,36 @@ const Login = () => {
             setErrorText('Please enter valid Email address!');
         }
     };
+
+    // Renderer callback with condition
+    const renderer = ({ minutes, seconds, completed }) => {
+        if (completed) {
+            // Render a complete state
+            dispatch(otpActions.countCompleteReducer());
+            dispatch(otpActions.isOtpReducer(false));
+            <div>Too lale...</div>;
+        }
+        else {
+            // Render a countdown
+            return (
+                <span>
+                    {minutes}:{seconds}
+                </span>
+            );
+        }
+    };
+
     return (
         <Grid align="center">
             {(loadingOtp || loadingLogin) && <Loading isLoad={true} />}
             <Card
                 elevation={16}
                 sx={{
-                    minWidth: 
+                    minWidth:
                     {
                         xs: 1.0,
                         sm: 600,
-                        md:600
+                        md: 600
                     }, minHeight: 350,
                     borderWidth: 3,
                     borderRadius: 6,
@@ -186,7 +210,7 @@ const Login = () => {
                                 {snackMessage}
                             </Alert>
                         </Snackbar>
-                        <Grid item xs={6} sm={12} align="left">
+                        <Grid item xs={10} sm={10} align="left">
                             <NavLink to="/" style={{ textDecoration: 'none' }}>
                                 <ArrowBackIcon
                                     cusror="pointer"
@@ -194,6 +218,9 @@ const Login = () => {
                                     fontSize="large"
                                 />
                             </NavLink>
+                        </Grid>
+                        <Grid item xs={2} sm={2} alignItems="left" sx={{ color: "#163758", fontSize: "22px" }}>
+                            {isOtp && <Countdown date={Date.now() + 20000} renderer={renderer} />}
                         </Grid>
                     </Grid>
 

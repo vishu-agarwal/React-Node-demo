@@ -200,7 +200,6 @@ const HomePage = () => {
                 </Grid>
                 {
                   helperImages.map((val, index) => {
-                    console.log("values image...", val.image, index)
                     return <Grid item xs={6} sm={4} md={2} key={index}>
                       <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
                         <CardContent sx={{ padding: 0 }}>

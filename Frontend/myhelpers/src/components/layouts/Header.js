@@ -23,7 +23,8 @@ import HiredHelper from '../Modals/HiredHelper';
 import { otpActions } from '../../store/slices/otp-slice'
 import { loginActions } from '../../store/slices/login-slice'
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
+import { fetchUserProfileThunk, profileActions } from '../../store/slices/profile-slice';
+import { workProfileActions } from '../../store/slices/work-slice'
 import Loading from './LoadingFile';
 
 function ScrollTop(props) {
@@ -119,6 +120,7 @@ const Header = (props) => {
         setAnchorElUser(null);
     };
     const onRequestClick = () => {
+        
         handleCloseUserMenu()
         setOpenModel(true)
         setOpenRequest(true)
@@ -140,13 +142,14 @@ const Header = (props) => {
         setOpenShortlist(false);
     };
     const onLogoutClick = () => {
-
         handleCloseUserMenu()
         localStorage.removeItem("r_id")
         localStorage.removeItem("logToken")
         localStorage.removeItem("role")
         dispatch(otpActions.isOtpReducer(false));
         dispatch(loginActions.logoutReducer())
+        dispatch(profileActions.logoutEmpty())
+        dispatch(workProfileActions.logoutEmpty())
         navigate("/")
     }
 
