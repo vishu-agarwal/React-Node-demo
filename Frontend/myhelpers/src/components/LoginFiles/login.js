@@ -20,6 +20,7 @@ import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Loading from '../layouts/LoadingFile';
 import MuiAlert from '@mui/material/Alert';
+import debounce from 'lodash.debounce';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -60,7 +61,9 @@ const Login = () => {
     useEffect(() => {
         if (otpUser.length !== 0) {
             dispatch(otpActions.isOtpReducer(true));
-            setCounter(10)
+            setCounter(59)
+            const debouncedSave = debounce(() => (dispatch(otpActions.countCompleteReducer())), 60000);
+            debouncedSave();
         }
     }, [otpUser]);
 
@@ -206,7 +209,7 @@ const Login = () => {
                         {isOtp && <Grid item xs={4} sm={4} align="left">
                             <Typography fontWeight={500} align="center" color='textSecondary'>
                                 Resend OTP in
-                                <span style={{ color: "#163758", fontWeight: "bold",fontSize:"20px" }}> 00:{counter}</span>
+                                <span style={{ color: "#163758", fontWeight: "bold", fontSize: "20px" }}> 00:{counter}</span>
                             </Typography>
                         </Grid>}
                     </Grid>
@@ -298,7 +301,7 @@ const Login = () => {
                                     <Button
                                         onClick={sendOtpHandler}
                                         fullWidth
-                                        sx={{ marginTop: 1, color:"#163758",fontWeight:"bold" }}
+                                        sx={{ marginTop: 1, color: "#163758", fontWeight: "bold" }}
                                     >
                                         Resend Otp
                                     </Button>

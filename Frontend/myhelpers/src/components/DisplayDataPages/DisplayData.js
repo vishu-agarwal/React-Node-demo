@@ -26,26 +26,6 @@ const Alert = React.forwardRef(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const styles = theme => ({
-    root: {
-        backgroundColor: theme.palette.secondary.dark,
-    },
-    tablePagination: {
-    },
-    tablePaginationCaption: {
-        color: 'white'
-    },
-    tablePaginationSelectIcon: {
-        color: 'white'
-    },
-    tablePaginationSelect: {
-        color: 'white'
-    },
-    tablePaginationActions: {
-        color: 'white',
-    },
-})
-
 const workSearchBy = [
     // { label: 'All' },
     { label: 'Work Category' },

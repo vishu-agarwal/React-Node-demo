@@ -111,7 +111,7 @@ const searching = async (req, res) => {
 
     let field2 = ""
     field === "Location" ?
-        field = "address.pincode"
+        field = "address[pincode]"
         : field === "Name" ?
             field = "name"
             : field === "Gender" ?
@@ -151,6 +151,7 @@ const searching = async (req, res) => {
     }
     else if (field) {
         let found
+        console.log("field name....", field, "search...", req.query.searchValue)
         field === "gender" ? found = await userModel.find({ [field]: req.query.searchValue })
             :
             found = await userModel.find({ $where: `/^${req.query.searchValue}.*/.test(this.${field})` })
