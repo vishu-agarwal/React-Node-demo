@@ -155,40 +155,6 @@ const HomePage = () => {
             {/* </Box> */}
           </div>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} margin={2} >
-          <Grid container justifyContent="center" >
-            <Grid item sm={12} xs={12} md={12}>
-              <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
-                How It Works ?
-              </Typography>
-            </Grid>
-            <Grid item xs={11} md={10} sm={11} marginTop={"1%"}>
-              <Grid container spacing={1} justifyContent="center" >
-                {
-                  imageList.map((val) => {
-                    const click = val.request === "search" ? () => navigate("/findHelper") : val.request === "sortlist" ?
-                      onShortlistClick : val.request === "request" ? onRequestClick : val.request === "hire" && onHireClick
-                    return <Grid item xs={6} sm={4} md={2} key={`${val.images}`}>
-                      <Grid container>
-                        <Grid item xs={12} sm={12} md={12} >
-                          <img src={val.images} onClick={click} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
-                        </Grid>
-                        <Grid item xs={12} sm={12} md={12}>
-                          <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >{val.text}</Typography>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  }
-                  )
-                }
-                {openShortlist && <ShortListed click={handleModelClose} open={openModal} />}
-                {openRequest && <WorkRequest click={handleModelClose} open={openModal} />}
-                {openHired && <HiredHelper click={handleModelClose} open={openModal} />}
-              </Grid>
-            </Grid>
-          </Grid>
-
-        </Grid>
         <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} backgroundColor="white">
           <Grid container justifyContent="center" >
             <Grid item sm={11} xs={11} md={11}  >
@@ -221,7 +187,39 @@ const HomePage = () => {
             </Grid>
           </Grid>
         </Grid>
-
+        <Grid item xs={12} sm={12} md={12} margin={2} marginBottom={5} >
+          <Grid container justifyContent="center" >
+            <Grid item sm={12} xs={12} md={12}>
+              <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
+                How It Works ?
+              </Typography>
+            </Grid>
+            <Grid item xs={11} md={10} sm={11} marginTop={"1%"}>
+              <Grid container spacing={1} justifyContent="center" >
+                {
+                  imageList.map((val) => {
+                    const click = val.request === "search" ? () => navigate("/findHelper") : val.request === "sortlist" ?
+                      onShortlistClick : val.request === "request" ? onRequestClick : val.request === "hire" && onHireClick
+                    return <Grid item xs={6} sm={4} md={2} key={`${val.images}`}>
+                      <Grid container>
+                        <Grid item xs={12} sm={12} md={12} >
+                          <img src={val.images} onClick={click} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12}>
+                          <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >{val.text}</Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  }
+                  )
+                }
+                {openShortlist && <ShortListed click={handleModelClose} open={openModal} />}
+                {openRequest && <WorkRequest click={handleModelClose} open={openModal} />}
+                {openHired && <HiredHelper click={handleModelClose} open={openModal} />}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>        
       </Grid>
     </div>
   )

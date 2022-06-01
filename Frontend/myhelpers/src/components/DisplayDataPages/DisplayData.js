@@ -26,6 +26,26 @@ const Alert = React.forwardRef(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const styles = theme => ({
+    root: {
+        backgroundColor: theme.palette.secondary.dark,
+    },
+    tablePagination: {
+    },
+    tablePaginationCaption: {
+        color: 'white'
+    },
+    tablePaginationSelectIcon: {
+        color: 'white'
+    },
+    tablePaginationSelect: {
+        color: 'white'
+    },
+    tablePaginationActions: {
+        color: 'white',
+    },
+})
+
 const workSearchBy = [
     // { label: 'All' },
     { label: 'Work Category' },
@@ -36,6 +56,7 @@ const workSearchBy = [
 ];
 
 const filterCategory = [
+    { label: ' ' },
     { label: 'Cook(2 Adult, 1 Child)' },
     { label: 'Sweeping(1 BHK)' },
     { label: 'Mopping(1 BHK)' },
@@ -53,6 +74,7 @@ const filterCategory = [
 ];
 
 const filterTime = [
+    { label: ' ' },
     { label: 'Live In (24 Hrs)' },
     { label: 'Full Day (12 Hrs)' },
     { label: 'Half Day (6 Hrs)' },
@@ -72,16 +94,15 @@ const DisplayData = () => {
 
     let { displayData, saveUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
 
-    let rates, status, hireStatus
+    let rates, status
     const [workSearch, setWorkSearch] = useState('')
     const [filterWork, setFilterWork] = useState('')
-    const [textSearch, setTextSearch] = useState('')
     const [state, setState] = useState({
         snackOpen: false,
         vertical: 'top',
         horizontal: 'center',
     });
-    const { vertical, horizontal, snackOpen } = state;
+    const { snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
@@ -108,18 +129,6 @@ const DisplayData = () => {
         }
     }, [displayMessage, displayError])
 
-    // useEffect(() => {
-    //     if (displayData.length !== 0) {
-    //         console.log("displayData :: ", displayData)
-    //     }
-
-    // }, [displayData])
-    // useEffect(() => {
-
-
-    // }, [saveUser])
-
-    const [sortField, setSortField] = useState('')
     const onSortChange = (sort, field) => {
         const arg = {
             sort, field
@@ -128,7 +137,6 @@ const DisplayData = () => {
         dispatch(fetchSaveUserThunk(rid))
     }
     const onSearchChange = (event, value) => {
-
         if (event.target.name === "searchText") {
             setFilterWork(event.target.value.toLowerCase())
             const arg = {
@@ -136,7 +144,6 @@ const DisplayData = () => {
                 filterWork: event.target.value.toLowerCase()
             }
             const debouncedSave = debounce(() => (dispatch(searchThunk(arg))), 2000);
-            // dispatch(fetchSaveUserThunk(rid))
             debouncedSave();
         }
         else {
@@ -146,12 +153,9 @@ const DisplayData = () => {
                 filterWork: value.label
             }
             dispatch(searchThunk(arg))
-            // dispatch(fetchSaveUserThunk(rid))
         }
     }
     //pagination states
-
-
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
@@ -165,8 +169,8 @@ const DisplayData = () => {
     };
 
     return (
-        <Grid container spacing={1} justifyContent="center" marginTop={2}>
-            {displayLoading ? <Loading isLoad={true} /> :
+        <Grid container spacing={1} justifyContent="center" alignSelf="baseline" marginTop={2}>
+            {displayLoading && <Loading isLoad={true} />}
                 <>
                     <Grid item xs={11} sm={11} >
                         <Grid container spacing={2} marginBottom={2}>
@@ -219,7 +223,8 @@ const DisplayData = () => {
                                                     },
                                                     color: "#163758"
                                                 }}
-                                                value={filterWork}
+                                            value={filterWork}
+                                             getOptionSelected={(option, value) => {option.id === value.id}}
                                                 options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ?
                                                     filterTime : workSearch === "Gender" ? filterGender : ['']}
                                                 onChange={onSearchChange}
@@ -230,8 +235,7 @@ const DisplayData = () => {
                                                         label="Filter By"
                                                         value={filterWork}
                                                     />
-                                                }
-                                                }
+                                                }}
                                             />
                                             :
                                             <TextField
@@ -251,13 +255,10 @@ const DisplayData = () => {
                                                 }}
                                                 value={filterWork}
                                                 onChange={onSearchChange}
-                                            />
-
-                                }
+                                            />}
                             </Grid>
-
-                            <Grid item xs={12} sm={3} display="flex" alignItems='center' >
-                                <Grid container item display="flex" justifyContent='right' >
+                            <Grid item xs={12} sm={4} display="flex" alignItems='center' >
+                                <Grid container item display="flex" justifyContent='center' >
                                     <Typography variant="h6"> Sort By : Age </Typography>
                                     <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("up", "dob")} >
                                         <ArrowUpwardRoundedIcon />
@@ -267,14 +268,37 @@ const DisplayData = () => {
                                     </IconButton>
                                 </Grid>
                             </Grid>
-
+                            <Grid item xs={12} sm={3.5} display="flex" alignItems='center' >
+                                <Grid container item display="flex" justifyContent={{ xs: "center", sm: "centre", md: "right" }} >
+                                    <TablePagination
+                                        style={{ color: "#163758", fontWeight: 900, fontSize: "30px" }}
+                                        component="div"
+                                        count={displayData?.length}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onPageChange={handleChangePage}
+                                        onRowsPerPageChange={handleChangeRowsPerPage}
+                                        rowsPerPageOptions={[8]}
+                                        //={row => <div style={{fontSize: 14}}>{props.labelDisplayedRows(row)}</div>}
+                                        labelDisplayedRows={({ page }) => {
+                                            return<div style={{fontSize:"1.2rem",fontWeight:"500"}}> Page: {page + 1} </div>
+                                        }}
+                                        SelectProps={{
+                                            inputProps: {
+                                                "aria-label": "page number"
+                                            }
+                                        }}
+                                        showFirstButton={true}
+                                        showLastButton={true}
+                                    />
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                     <Grid container direction="row" style={{ margin: 0, marginLeft: '0.5%' }} justifyContent="left" >
                         {
                             displayData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((values, index) => {
-
                                     rates = values.rating[0].length !== 0 ?
                                         values.rating[0]?.map((id) =>
                                             id.rate
@@ -283,50 +307,18 @@ const DisplayData = () => {
                                         values.rating[0]?.map((id) =>
                                             id.user_id
                                         ).length
-
                                         : 2;
 
                                     status = saveUser.length
                                         && !!saveUser.find((val) => values.r_id === val.user_id)
 
                                     return <Grid item xs={12} sm={12} md={6} lg={3} key={index} style={{ padding: 0 }} align="center" >
-
                                         <CardJS values={values} rates={rates} saveStatus={status} isModal={false} />
-
                                     </Grid>
-
                                 })
                         }
                     </Grid>
-                    {console.log(displayData?.length, "datalength")}
-
-                    <Grid item xs={12} sm={12}  sx={{color:"green"}}>
-                        <TablePagination
-                            // size="small"
-                            // // rowsPerPageOptions={[8]}
-                             component="div"
-                            // count={displayData?.length}
-                            // // rowsPerPage={rowsPerPage}
-                            // page={page}
-                            // onPageChange={handleChangePage}
-                            // onRowsPerPageChange={handleChangeRowsPerPage}
-                            // labelDisplayedRows={({ page }) => {
-                            //     return `Page: ${page + 1}`;
-                            // }}
-                            count={displayData?.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            rowsPerPageOptions={[8]}
-                            // labelRowsPerPage={<span>Rows:</span>}
-                            labelDisplayedRows={({ page }) => {
-                                return `Page: ${page+1}`;
-                            }}
-                        />
-                    </Grid>
-                </>
-            }
+            </>
         </Grid >
     )
 }
