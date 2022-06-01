@@ -1,10 +1,6 @@
 //header file
 import React from 'react';
 
-//   mui
-
-// import Card from '@mui/material/Card';
-import Countdown from 'react-countdown';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import { Card, Typography } from '@mui/material';
@@ -28,9 +24,6 @@ import MuiAlert from '@mui/material/Alert';
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-
-
 
 const Login = () => {
     const params = useParams();
@@ -67,6 +60,7 @@ const Login = () => {
     useEffect(() => {
         if (otpUser.length !== 0) {
             dispatch(otpActions.isOtpReducer(true));
+            setCounter(10)
         }
     }, [otpUser]);
 
@@ -115,11 +109,11 @@ const Login = () => {
     };
 
     const loginSubmitHandler = (event) => {
-
         event.preventDefault();
         if (values.email.length !== 0) {
             // not use 3 equals beacuse if parseInt
             if (otp == parseInt(otpUser)) {
+                setCounter(0)
                 dispatch(loginThunk(values));
                 dispatch(otpActions.isOtpReducer(false));
                 dispatch(otpActions.countCompleteReducer());
@@ -156,23 +150,13 @@ const Login = () => {
         }
     };
 
-    // Renderer callback with condition
-    const renderer = ({ minutes, seconds, completed }) => {
-        if (completed) {
-            // Render a complete state
-            dispatch(otpActions.countCompleteReducer());
-            dispatch(otpActions.isOtpReducer(false));
-            <div>Too lale...</div>;
-        }
-        else {
-            // Render a countdown
-            return (
-                <span>
-                    {minutes}:{seconds}
-                </span>
-            );
-        }
-    };
+    // Timer 
+    const [counter, setCounter] = useState(0);
+    useEffect(() => {
+        const timer =
+            counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+    }, [counter]);
 
     return (
         <Grid align="center">
@@ -210,7 +194,7 @@ const Login = () => {
                                 {snackMessage}
                             </Alert>
                         </Snackbar>
-                        <Grid item xs={10} sm={10} align="left">
+                        <Grid item xs={8} sm={8} align="left">
                             <NavLink to="/" style={{ textDecoration: 'none' }}>
                                 <ArrowBackIcon
                                     cusror="pointer"
@@ -219,11 +203,13 @@ const Login = () => {
                                 />
                             </NavLink>
                         </Grid>
-                        <Grid item xs={2} sm={2} alignItems="left" sx={{ color: "#163758", fontSize: "22px" }}>
-                            {isOtp && <Countdown date={Date.now() + 20000} renderer={renderer} />}
-                        </Grid>
+                        {isOtp && <Grid item xs={4} sm={4} align="left">
+                            <Typography fontWeight={500} align="center" color='textSecondary'>
+                                Resend OTP in
+                                <span style={{ color: "#163758", fontWeight: "bold",fontSize:"20px" }}> 00:{counter}</span>
+                            </Typography>
+                        </Grid>}
                     </Grid>
-
                     <Grid align="center">
                         <Typography variant="h4" fontWeight="1000" fontSize="30px">
                             Sign In as {values.role}
@@ -308,12 +294,11 @@ const Login = () => {
                                         Login
                                     </Button>
                                 )}
-                                {isOtp && (
+                                {counter === 0 && isOtp && (
                                     <Button
                                         onClick={sendOtpHandler}
-                                        color="primary"
                                         fullWidth
-                                        sx={{ marginTop: 1 }}
+                                        sx={{ marginTop: 1, color:"#163758",fontWeight:"bold" }}
                                     >
                                         Resend Otp
                                     </Button>

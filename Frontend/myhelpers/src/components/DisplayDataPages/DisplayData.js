@@ -224,7 +224,10 @@ const DisplayData = () => {
                                                     color: "#163758"
                                                 }}
                                             value={filterWork}
-                                             getOptionSelected={(option, value) => {option.id === value.id}}
+                                            getOptionSelected={(option, value) => {
+                                                return option.id === value.id
+                                            
+                                            }}
                                                 options={workSearch === "Work Category" ? filterCategory : workSearch === "Work Timing" ?
                                                     filterTime : workSearch === "Gender" ? filterGender : ['']}
                                                 onChange={onSearchChange}

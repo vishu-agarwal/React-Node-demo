@@ -124,9 +124,8 @@ const fetchHireRequest = async (req, res) => {
                         })
                     }
                 }
-                console.log("fethch all requests ", hireRequest)
-                return res.status(200).send(hireRequest)
             }
+            // return res.status(200).send(hireRequest)
         }
         else if (req.params.rid.charAt(0) === "H") {
             const found = await hireRequestModel.find({ "requested_user.user_id": req.params.rid })
@@ -148,12 +147,10 @@ const fetchHireRequest = async (req, res) => {
                         })
                     }
                 }
-                console.log("helper requests", hireRequest)
-                return res.status(200).send(hireRequest)
+                // return res.status(200).send(hireRequest)
             }
         }
-        // return res.status(200).send(hireRequest)
-
+        return res.status(200).send(hireRequest)
     } catch (error) {
         res.status(400).send(error.message)
     }

@@ -26,6 +26,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserProfileThunk, profileActions } from '../../store/slices/profile-slice';
 import { workProfileActions } from '../../store/slices/work-slice'
 import Loading from './LoadingFile';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 function ScrollTop(props) {
     const { children, window } = props;
@@ -120,7 +129,7 @@ const Header = (props) => {
         setAnchorElUser(null);
     };
     const onRequestClick = () => {
-        
+
         handleCloseUserMenu()
         setOpenModel(true)
         setOpenRequest(true)
@@ -199,11 +208,16 @@ const Header = (props) => {
                                     }}
                                 >
                                     {role === "Client" &&
-                                        <MenuItem onClick={() => navigate("/Client/home")}>Home</MenuItem>}
-                                    {role === "Client" && <MenuItem onClick={() => navigate("/findHelper")}>Find Helpers</MenuItem>}
-                                    {role === "Helper" && <MenuItem onClick={() => navigate("/Helper/home")}>Home</MenuItem>}
-                                    <MenuItem onClick={() => { return (navigate("/about"), handleCloseNavMenu) }}>About</MenuItem>
-                                    <MenuItem onClick={() => { return (navigate("/profile"), handleCloseNavMenu) }}>Profile</MenuItem>
+                                        <MenuItem onClick={() => navigate("/Client/home")}>
+                                            <HomeIcon sx={{ marginRight: 1 }} />Home</MenuItem>}
+                                    {role === "Client" && <MenuItem onClick={() => navigate("/findHelper")}>
+                                        <PersonSearchIcon sx={{ marginRight: 1 }} />Find Helpers</MenuItem>}
+                                    {role === "Helper" && <MenuItem onClick={() => navigate("/Helper/home")}>
+                                        <HomeIcon sx={{ marginRight: 1 }} /> Home</MenuItem>}
+                                    <MenuItem onClick={() => { return (navigate("/about"), handleCloseNavMenu) }}>
+                                        <InfoIcon sx={{ marginRight: 1 }} /> About Us</MenuItem>
+                                    <MenuItem onClick={() => { return (navigate("/profile"), handleCloseNavMenu) }}>
+                                        <AccountCircleIcon sx={{ marginRight: 1 }} />Profile</MenuItem>
                                 </Menu>
                             </Box>
                         }
@@ -227,38 +241,38 @@ const Header = (props) => {
                                         <Button
 
                                             onClick={() => navigate("/Client/home")}
-                                            sx={{ my: 2, color: 'white', display: 'block' }}
+                                            sx={{ my: 2, color: 'white' }}
                                         >
-                                            Home
+                                            <HomeIcon sx={{ marginRight: 1 }} />Home
                                         </Button>
 
                                         <Button
 
                                             onClick={() => navigate("/findHelper")}
-                                            sx={{ my: 2, color: 'white', display: 'block' }}
+                                            sx={{ my: 2, color: 'white' }}
                                         >
-                                            Find Helpers
+                                            <PersonSearchIcon sx={{ marginRight: 1 }} /> Find Helpers
                                         </Button>
                                     </>
                                 }
                                 {role === "Helper" && <Button
 
                                     onClick={() => navigate("/Helper/home")}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                    sx={{ my: 2, color: 'white' }}
                                 >
-                                    Home
+                                    <HomeIcon sx={{ marginRight: 1 }} /> Home
                                 </Button>}
                                 <Button
                                     onClick={() => navigate("/about")}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                    sx={{ my: 2, color: 'white' }}
                                 >
-                                    About Us
+                                    <GroupsIcon sx={{ marginRight: 1 }} />  About Us
                                 </Button>
                                 <Button
                                     onClick={() => navigate("/profile")}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                    sx={{ my: 2, color: 'white' }}
                                 >
-                                    Profile
+                                    <AccountCircleIcon sx={{ marginRight: 1 }} /> Profile
                                 </Button>
                                 {/* ))} */}
                             </Box>
@@ -284,10 +298,14 @@ const Header = (props) => {
                                     open={Boolean(anchorElUser)}
                                     onClose={handleCloseUserMenu}
                                 >
-                                    <MenuItem onClick={onRequestClick}>Requests</MenuItem>
-                                    {role === "Client" && <MenuItem onClick={onShortlistClick} >Shortlisted</MenuItem>}
-                                    <MenuItem onClick={onHireClick}>Hired</MenuItem>
-                                    <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
+                                    <MenuItem onClick={onRequestClick}>
+                                        <ListAltIcon sx={{ marginRight: 1 }} />Enquiry</MenuItem>
+                                    {role === "Client" && <MenuItem onClick={onShortlistClick} >
+                                        <BookmarkIcon sx={{ marginRight: 1 }} />Shortlisted</MenuItem>}
+                                    <MenuItem onClick={onHireClick}>
+                                        <HandshakeIcon sx={{ marginRight: 1 }} />Hired</MenuItem>
+                                    <MenuItem onClick={onLogoutClick}>
+                                        <ExitToAppIcon sx={{ marginRight: 1 }} /> Logout</MenuItem>
                                 </Menu>
                             </Box>
                         }

@@ -143,7 +143,6 @@ const searching = async (req, res) => {
                         dob: res.map((val) => val.dob).toString(),
                         avatar: res.map((val) => val.avatar).toString(),
                         rating: res.map((val) => val.rating),
-                        // status: val.status
                     })
                 }
             }
@@ -175,7 +174,6 @@ const searching = async (req, res) => {
                         pincode: val.address.pincode,
                         avatar: val.avatar,
                         rating: [val.rating],
-                        // status: res.map((val) => val.status).toString()
                     })
                 }
             }
@@ -209,7 +207,6 @@ const sorting = async (req, res) => {
                 dob: val.dob,
                 avatar: val.avatar,
                 rating: [val.rating],
-                // status: res.map((val) => val.status).toString(),
             })
         }
     }
