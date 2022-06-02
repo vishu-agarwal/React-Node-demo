@@ -96,7 +96,6 @@ const HireForm = (props) => {
             user_id: props.user_id,
             rid
         }
-        console.log("argument ::",arg)
         dispatch(fetchSingleHireRequestThunk(arg))
     }, [props.user_id])
 
@@ -127,7 +126,6 @@ const HireForm = (props) => {
             let list = singleUser?.works?.map((value) => {
                 return value.work
             }).flat()
-            console.log("work from useEffect",list)
             setWork(
                 list
             );
@@ -151,7 +149,6 @@ const HireForm = (props) => {
     }
 
     const onUpdateRequest = (e) => {
-        console.log(work, "...props")
         e.preventDefault()
         const arg = {
             user_id: props.user_id,
@@ -159,7 +156,6 @@ const HireForm = (props) => {
             work: work,
             rid
         }
-        console.log(arg, ".dfhsdjhfjh")
         dispatch(updateHireRequestThunk(arg))
         setEditHide(false)
         setDisable(TouchRipple)
@@ -181,7 +177,6 @@ const HireForm = (props) => {
         const {
             target: { value },
         } = event;
-        console.log(typeof value === 'string' ? value.split(',') : value,"fhjfhj")
         setWork(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,

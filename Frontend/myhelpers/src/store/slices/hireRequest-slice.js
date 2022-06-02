@@ -53,13 +53,11 @@ export const fetchHelperRequestsThunk = createAsyncThunk("hireRequest/fetchHelpe
 })
 export const fetchSingleHireRequestThunk = createAsyncThunk("hireRequest/fetchSingleHireRequestThunk", async (arg) => {
     try {
-        console.log("arg",arg)
         const fetchHelperRes = await axios.get(`/myhelpers/fetchSingleHireRequest/${arg.rid}/${arg.user_id}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
-        console.log(fetchHelperRes,"...")
         return fetchHelperRes
     } catch (error) {
         throw new Error(error.response.data)
@@ -227,7 +225,6 @@ const hireRequestSlice = createSlice({
         },
         [updateHireRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
-            console.log("update slice single user",action.payload.data)
             state.singleUser = action.payload.data[0]
             state.requestMessage = "Your request updated!"
         },

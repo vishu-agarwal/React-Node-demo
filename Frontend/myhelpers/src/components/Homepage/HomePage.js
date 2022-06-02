@@ -79,14 +79,6 @@ const HomePage = () => {
   const [openShortlist, setOpenShortlist] = useState(false)
   const [openHired, setOpenHired] = useState(false)
   const [openModal, setOpenModel] = useState(false)
-  //   useEffect(() => {
-  //     (!userProfile?.is_profile || !logUser?.is_profile)
-  //     &&
-  //       navigate("/profile")
-  //     console.log("navigate")
-
-  // }, [])
-
 
   const onRequestClick = () => {
     setOpenModel(true)

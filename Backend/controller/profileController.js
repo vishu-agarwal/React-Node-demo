@@ -26,7 +26,6 @@ const fetchProfile = async (req, res) => {
 
     try {
         let fetchProfileDetail = await userModel.find({ r_id: req.params.rid })
-        console.log(fetchProfileDetail)
         if (fetchProfileDetail.length === 0) {
             throw new Error("Please create profile for move forward!")
         }

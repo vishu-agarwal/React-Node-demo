@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-
-console.log('Client Profile model file ...............');
 const regModel = require('../model/tblReg');
 const avatarModel = require('../model/tblProfileAvatar')
 const clientSchema = new mongoose.Schema(
@@ -134,7 +132,6 @@ const clientSchema = new mongoose.Schema(
 // check alternate password and registered no is not same
 clientSchema.statics.findByCredentials = async (mob_num, r_id) => {
   const ismbl = await regModel.find({ r_id, mob_num }); //short hand syntax
-  // console.log(ismbl);
   if (ismbl.length !== 0) {
     throw new Error(
       'Alternate Mobile No. should be different from Registerd/Login Number.'

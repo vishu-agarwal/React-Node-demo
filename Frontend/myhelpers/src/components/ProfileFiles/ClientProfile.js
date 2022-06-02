@@ -183,7 +183,6 @@ const ClientProfile = () => {
     };
     const profileSaveHandler = (e) => {
         e.preventDefault()
-        console.log(clicked, file.dispFile)
         if (clicked && file.dispFile) {
             if (aadhar.dispFile) {
                 const formdata = new FormData()

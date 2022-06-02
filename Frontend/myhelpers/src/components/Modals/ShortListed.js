@@ -67,21 +67,6 @@ const ShortListed = (props) => {
         }
 
     }, [displayMessage, displayError])
-    // useEffect(() => {
-    //     if (displayData.length !== 0) {
-    //         console.log("displayData :: ", displayData)
-
-    //     }
-
-    // }, [displayData])
-    // useEffect(() => {
-
-    //     if (saveUser.length !== 0) {
-    //         console.log("saveUser ::", saveUser);
-    //         // saveUser.map((val)=> values.r_id === val.user_id)
-    //         // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
-    //     }
-    // }, [saveUser])
 
     let rates, hireStatus
     return (

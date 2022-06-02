@@ -53,10 +53,6 @@ const HiredHelper = (props) => {
         dispatch(fetchHelperRequestsThunk(rid))
     }, [])
 
-    // useEffect(() => {
-    //     filterHired = hireRequestData?.filter((val) => val.status === "hired!")
-    //     console.log(filterHired, "...filterhire")
-    // }, [hireRequestData])
     useEffect(() => {
 
 
@@ -76,13 +72,6 @@ const HiredHelper = (props) => {
 
     }, [requestMessage, requestError])
 
-    // useEffect(() => {
-    //     if (hireRequestData.length !== 0) {
-    //         console.log("hireRequestdata :: ", hireRequestData)
-    //     }
-
-    // }, [hireRequestData])
-    // let checkNoData = false
     return (
         <Modal
             open={props.open}

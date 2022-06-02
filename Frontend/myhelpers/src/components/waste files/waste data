@@ -840,3 +840,44 @@ export const fetchAllAvatarThunk = createAsyncThunk("displayAll/fetchAllAvatarTh
                                             align="center"
                                         />
                                     </Grid>} */}
+                                      //   useEffect(() => {
+  //     (!userProfile?.is_profile || !logUser?.is_profile)
+  //     &&
+  //       navigate("/profile")
+  //     console.log("navigate")
+
+  // }, [])
+
+
+
+    // useEffect(() => {
+    //     filterHired = hireRequestData?.filter((val) => val.status === "hired!")
+    //     console.log(filterHired, "...filterhire")
+    // }, [hireRequestData])
+
+       // useEffect(() => {
+    //     if (hireRequestData.length !== 0) {
+    //         console.log("hireRequestdata :: ", hireRequestData)
+    //     }
+
+    // }, [hireRequestData])
+    // let checkNoData = false
+
+
+        // useEffect(() => {
+    //     if (displayData.length !== 0) {
+    //         console.log("displayData :: ", displayData)
+
+    //     }
+
+    // }, [displayData])
+    // useEffect(() => {
+
+    //     if (saveUser.length !== 0) {
+    //         console.log("saveUser ::", saveUser);
+    //         // saveUser.map((val)=> values.r_id === val.user_id)
+    //         // console.log("saveUser ::", saveUser.length !== 0 ? saveUser.map((val)=>console.log("H110"===val.user_id)):null);
+    //     }
+    // }, [saveUser])
+
+

@@ -13,19 +13,19 @@ async function requestMail(email, name, status) {
     let mailText = ""
     if (status === "accept") {
         mailText = 'Congratulations! \n Your request from ' + name + ' is accepted. \n Thank you!'
-        console.log(mailText, "..text1")
+        console.log(mailText, "..mail accept")
     }
     else if (status === "reject") {
         mailText = ' Sorry! \n Your request from ' + name + ' is rejected .'
-        console.log(mailText, "..text2")
+        console.log(mailText, "..mail reject")
     }
     else if (status === "delete") {
         mailText = ' Sorry! \n  Your request from ' + name + ' is deleted .'
-        console.log(mailText, "..text3")
+        console.log(mailText, "..mail delete")
     }
     else if (status === "pending") {
         mailText = ' Congratulation! \n You receive a request from ' + name + '. \n Thank you!'
-        console.log(mailText, "..text4")
+        console.log(mailText, "..mail pending")
     }
     console.log(mailText, "text", receiverMail, "mail")
     try {
