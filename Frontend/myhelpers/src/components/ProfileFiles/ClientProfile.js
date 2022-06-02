@@ -1,7 +1,4 @@
-
-//header file
 import * as React from 'react';
-//   mui
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -18,10 +15,8 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import WorkProfile from './WorkProfile';
 import { useEffect, useState } from 'react';
-
 import Loading from '../layouts/LoadingFile'
 import Divider from '@mui/material/Divider';
-
 import {
     profileActions,
     createProfileThunk, avatarThunk,
@@ -51,7 +46,7 @@ const ClientProfile = () => {
     const dispatch = useDispatch()
 
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
-    let { r_id: logRid, role: logRole, token } = useSelector((state) => ({ ...state.loginStore }))
+    let { r_id: logRid, role: logRole } = useSelector((state) => ({ ...state.loginStore }))
 
     let rid = localStorage.getItem("r_id") ? localStorage.getItem("r_id") : logRid
     let role = localStorage.getItem("role") ? localStorage.getItem("role") : logRole
@@ -107,9 +102,6 @@ const ClientProfile = () => {
     const [openModal, setopenModal] = useState(false);
 
     useEffect(() => {
-        const arg = {
-            rid, token
-        }
         dispatch(fetchUserProfileThunk(rid))
     }, [])
 
@@ -214,7 +206,6 @@ const ClientProfile = () => {
                 dispatch(createProfileThunk(argCreateProfile))
                 dispatch(aadharThunk(argAadhar))
                 setClicked(false)
-                // dispatch(fetchUserProfileThunk(rid))
                 setEditHide(false)
                 setDisable(true)
             }
@@ -238,7 +229,6 @@ const ClientProfile = () => {
             rid
         }
         dispatch(createProfileThunk(arg))
-        // dispatch(fetchUserProfileThunk(rid))
         //Edit button display
         setEditHide(false)
         setDisable(TouchRipple)
@@ -559,413 +549,413 @@ const ClientProfile = () => {
     return (
         <Grid >
             {profileLoading ? <Loading isLoad={true} /> :
-                <Card
-                    elevation={24}
-                    sx={{
-                        marginRight: 2, marginLeft: 2
-                    }}>
-                    <CardContent sx={{ padding: 0 }}>
-                        <Grid container justifyContent="left">
-                            <Grid item xs={12} sm={4} align="left" margin={2}>
-                                {!editHide &&
-                                    <Button variant="contained" sx={{ fontSize: 20 }} color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>
-                                }
+                <div>
+                    <Card
+                        elevation={24}
+                        sx={{
+                            marginRight: 2, marginLeft: 2,
+                            height:{lg:590}
+                        }}>
+                        <div sx={{ padding: 0 }}>
+                            <Grid container justifyContent="left">
+                                <WorkProfile click={handleClose} open={openModal} />
+                                <Grid item xs={12} sm={4} align="left" margin={2}>
+                                    {!editHide &&
+                                        <Button variant="contained" sx={{ fontSize: 16 }} color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>
+                                    }
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        {openModal && <WorkProfile click={handleClose} open={openModal} />}
-                        <form onSubmit={editHide ? profileSaveHandler : onUpdateProfileHandler}>
-                            <Grid container direction={'row'}>
-                                <Grid item xs={12} sm={12} md={3} justifyContent="center" >
-                                    <Grid container>
-                                        <Snackbar
-                                            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                                            open={open}
-                                            autoHideDuration={4000}
-                                            onClose={closeSnackbar}
-                                        >
-                                            <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
-                                                {snackMessage}
-                                            </Alert>
-                                        </Snackbar>
-                                        <Grid item sm={12} xs={12} marginTop={10}>
-                                            <Badge
-                                                overlap="circular"
-                                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                                badgeContent={
-                                                    <label htmlFor="icon-button-file">
-                                                        <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} disabled={fieldsDisable} />
-                                                        <IconButton aria-label="upload picture" component="span" >
-                                                            <EditRoundedIcon sx={{ color: "#163758" }} fontSize="large" />
-                                                        </IconButton>
-                                                    </label>
-                                                }
+                            <form onSubmit={editHide ? profileSaveHandler : onUpdateProfileHandler}>
+                                <Grid container direction={'row'}>
+                                    <Grid item xs={12} sm={12} md={3} justifyContent="center" >
+                                        <Grid container>
+                                            <Snackbar
+                                                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                                                open={open}
+                                                autoHideDuration={4000}
+                                                onClose={closeSnackbar}
                                             >
-                                                <Avatar alt="Profile*"
-                                                    style={{
-                                                        border: '3px solid #163758'
+                                                <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
+                                                    {snackMessage}
+                                                </Alert>
+                                            </Snackbar>
+                                            <Grid item sm={12} xs={12} marginTop={10}>
+                                                <Badge
+                                                    overlap="circular"
+                                                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                                    badgeContent={
+                                                        <label htmlFor="icon-button-file">
+                                                            <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} disabled={fieldsDisable} />
+                                                            <IconButton aria-label="upload picture" component="span" >
+                                                                <EditRoundedIcon sx={{ color: "#163758" }} fontSize="large" />
+                                                            </IconButton>
+                                                        </label>
+                                                    }
+                                                >
+                                                    <Avatar alt="Profile*"
+                                                        style={{
+                                                            border: '3px solid #163758'
+                                                        }}
+                                                        src={file.dispFile || profileImg}
+                                                        sx={{
+                                                            marginTop: 0, width: 200, height: 250
+                                                        }} />
+                                                </Badge>
+                                            </Grid>
+                                            <Grid item sm={12} xs={12}>
+                                                {enable && <Button variant="contained" sx={{ marginTop: 2, backgroundColor: "#03a9f4" }} onClick={avatarSubmit}>Upload Photo </Button>}
+                                            </Grid>
+                                            <Grid item xs={12} sm={12}>
+                                                <Typography marginTop={1} gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'subtitle2' } }}>
+                                                    {values.email.toLowerCase()}</Typography>
+                                                {role === "Helper" && <Rating name="half-rating"
+                                                    value={star}
+                                                    readOnly={Boolean(true)}
+                                                    size="medium"
+                                                />}
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                    <Divider orientation="vertical" flexItem />
+                                    <Grid item xs={12} sm={12} md={4.5} justifyContent="center"  >
+                                        <Grid container spacing={2} justifyContent="center" >
+                                            <Grid xs={12} sm={12} margin={1} marginLeft={5} item align="left">
+                                                <Typography variant='h4'>
+                                                    Profile Settings
+                                                </Typography>
+                                                <Typography marginLeft={1.5} sx={{ marginBottom: 1, color: "orange" }}
+                                                    align='left' > {(saveEnable && !fieldsDisable) ?
+                                                        "Require to fill all the fields." : "Click on edit button for update profile."}</Typography>
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="firstname"
+                                                    label="First Name"
+                                                    fullWidth
+                                                    value={values.fname}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        style: { textTransform: "capitalize" }
                                                     }}
-                                                    src={file.dispFile || profileImg}
-                                                    sx={{
-                                                        marginTop: 0, width: 200, height: 250
-                                                    }} />
-                                            </Badge>
-                                        </Grid>
-                                        <Grid item sm={12} xs={12}>
-                                            {enable && <Button variant="contained" sx={{ marginTop: 2, backgroundColor: "#03a9f4" }} onClick={avatarSubmit}>Upload Photo </Button>}
-                                        </Grid>
-                                        <Grid item xs={12} sm={12}>
-                                            <Typography marginTop={1} gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'subtitle2' } }}>
-                                                {values.email.toLowerCase()}</Typography>
-                                            {role === "Helper" && <Rating name="half-rating"
-                                                value={star}
-                                                readOnly={Boolean(true)}
-                                                size="medium"
-                                            />}
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                                <Divider orientation="vertical" flexItem />
-                                <Grid item xs={12} sm={12} md={4.5} justifyContent="center"  >
-                                    <Grid container spacing={2} justifyContent="center" >
-                                        <Grid xs={12} sm={12} margin={1} marginLeft={5} item align="left">
-                                            <Typography variant='h4'>
-                                                Profile Settings
-                                            </Typography>
-                                            <Typography marginLeft={1.5} sx={{ marginBottom: 1, color: "orange" }}
-                                                align='left' > {(saveEnable && !fieldsDisable) ?
-                                                    "Require to fill all the fields." : "Click on edit button for update profile."}</Typography>
-                                        </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="firstname"
-                                                label="First Name"
-                                                fullWidth
-                                                value={values.fname}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    style: { textTransform: "capitalize" }
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.fname}
-                                                helperText={errorEnable.fname && errorText} />
-                                        </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="lastname"
-                                                label="Last Name"
-                                                fullWidth
-                                                value={values.lname}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    style: { textTransform: "capitalize" }
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.lname}
-                                                helperText={errorEnable.lname && errorText}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="mob"
-                                                label="Mobile Number"
-                                                fullWidth
-                                                value={values.mbl}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    maxLength: 10
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.mbl}
-                                                helperText={errorEnable.mbl && errorText}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="alt-mob"
-                                                label="Alternate Number"
-                                                fullWidth
-                                                value={values.altmbl}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    maxLength: 10
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.altmbl}
-                                                helperText={errorEnable.altmbl && errorText}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={11} item>
-                                            <TextField
-                                                id="dob"
-                                                size="medium"
-                                                label="Date Of Birthday"
-                                                type="date"
-                                                required
-                                                fullWidth
-                                                value={values.dob}
-                                                onChange={onChange}
-                                                error={errorEnable.dob}
-                                                helperText={errorEnable.dob && errorText}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                }}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={3.5} item >
-                                            <div align="left"><InputLabel >Gender *</InputLabel></div>
-                                            <RadioGroup
-                                                row
-                                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                                name="gender"
-                                                value={values.gender}
-                                                onChange={(val) => {
-                                                    !fieldsDisable && setValues((prevState) => { return { ...prevState, gender: val.target.value } })
-                                                }}
-                                            >
-                                                <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                                                <FormControlLabel value="Female" control={<Radio />} label="Female" />
-                                                <FormControlLabel value="Other" control={<Radio />} label="Other" />
-                                            </RadioGroup>
-                                        </Grid>
-                                        <Grid xs={12} sm={3.5} item>
-                                            <div align="left"><InputLabel >Marital Status *</InputLabel></div>
-                                            <RadioGroup
-                                                row
-                                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                                name="married"
-                                                value={values.married}
-                                                onChange={(val) => {
-                                                    !fieldsDisable && setValues((prevState) => { return { ...prevState, married: val.target.value } })
-                                                }}
-                                            >
-                                                <FormControlLabel
-                                                    value="true"
-
-                                                    control={<Radio />}
-                                                    label="Yes"
+                                                    onChange={onChange}
+                                                    error={errorEnable.fname}
+                                                    helperText={errorEnable.fname && errorText} />
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="lastname"
+                                                    label="Last Name"
+                                                    fullWidth
+                                                    value={values.lname}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        style: { textTransform: "capitalize" }
+                                                    }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.lname}
+                                                    helperText={errorEnable.lname && errorText}
                                                 />
-                                                <FormControlLabel
-                                                    value="false"
-
-                                                    control={<Radio />}
-                                                    label="No"
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="mob"
+                                                    label="Mobile Number"
+                                                    fullWidth
+                                                    value={values.mbl}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        maxLength: 10
+                                                    }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.mbl}
+                                                    helperText={errorEnable.mbl && errorText}
                                                 />
-                                            </RadioGroup>
-                                        </Grid>
-                                        <Grid xs={12} sm={3.5} item>
-                                            <div align="left"><InputLabel >Any Phiysical Disability *</InputLabel></div>
-                                            <RadioGroup
-                                                row
-                                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                                name="disability"
-                                                value={values.physic_dis}
-                                                onChange={(val) => { !fieldsDisable && setValues((prevState) => { return { ...prevState, physic_dis: val.target.value } }) }}
-                                            >
-                                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
-                                                <FormControlLabel value="false" control={<Radio />} label="No" />
-                                            </RadioGroup>
-                                        </Grid>
-                                        <Grid xs={12} sm={11} item >
-                                            <Grid container justifyContent="center">
-                                                <Grid xs={12} sm={4} item align="left">
-                                                    <label htmlFor="contained-button-file">
-                                                        <Input id="contained-button-file" type="file" name="aadharCard"
-                                                            disabled={fieldsDisable}
-                                                            ref={hiddenFileInput}
-                                                            onChange={onAadharChange}
-                                                            style={{ display: 'none' }}
-                                                        />
-                                                        <Typography color="primary" variant="button" style={{ cursor: "pointer" }} >
-                                                            Choose Aadhar
-                                                        </Typography>
-                                                    </label>
-                                                </Grid>
-                                                <Grid xs={12} sm={8} item align="left" >
-                                                    {aadhar.dispFile ?
-                                                        <>
-                                                            {!editHide &&
-                                                                < IconButton sx={{ padding: 0 }} onClick={onAadharView} aria-label="upload picture" component="div">
-                                                                    <VisibilityRoundedIcon color="info" size="large" />
-                                                                </IconButton>
-                                                            }
-                                                            <Typography marginLeft={1} variant="caption">{aadhar.dispFile}</Typography>
-                                                        </>
-                                                        :
-                                                        <Typography variant="body2" align="right" marginTop={0.5} color="secondary" >1 MB size PDF file only!</Typography>
-                                                    }
-                                                    {aadhar.dispFile && !fieldsDisable &&
-                                                        <IconButton sx={{ padding: 0 }} onClick={onCancel} aria-label="upload picture" component="div">
-                                                            <CancelSharpIcon color="error" fontSize="medium" />
-                                                        </IconButton>
-                                                    }
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="alt-mob"
+                                                    label="Alternate Number"
+                                                    fullWidth
+                                                    value={values.altmbl}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        maxLength: 10
+                                                    }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.altmbl}
+                                                    helperText={errorEnable.altmbl && errorText}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={11} item>
+                                                <TextField
+                                                    id="dob"
+                                                    size="medium"
+                                                    label="Date Of Birthday"
+                                                    type="date"
+                                                    required
+                                                    fullWidth
+                                                    value={values.dob}
+                                                    onChange={onChange}
+                                                    error={errorEnable.dob}
+                                                    helperText={errorEnable.dob && errorText}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={3.5} item >
+                                                <div align="left"><InputLabel >Gender *</InputLabel></div>
+                                                <RadioGroup
+                                                    row
+                                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                                    name="gender"
+                                                    value={values.gender}
+                                                    onChange={(val) => {
+                                                        !fieldsDisable && setValues((prevState) => { return { ...prevState, gender: val.target.value } })
+                                                    }}
+                                                >
+                                                    <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                                                    <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                                                    <FormControlLabel value="Other" control={<Radio />} label="Other" />
+                                                </RadioGroup>
+                                            </Grid>
+                                            <Grid xs={12} sm={3.5} item>
+                                                <div align="left"><InputLabel >Marital Status *</InputLabel></div>
+                                                <RadioGroup
+                                                    row
+                                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                                    name="married"
+                                                    value={values.married}
+                                                    onChange={(val) => {
+                                                        !fieldsDisable && setValues((prevState) => { return { ...prevState, married: val.target.value } })
+                                                    }}
+                                                >
+                                                    <FormControlLabel
+                                                        value="true"
+                                                        control={<Radio />}
+                                                        label="Yes" />
+                                                    <FormControlLabel
+                                                        value="false"
+                                                        control={<Radio />}
+                                                        label="No" />
+                                                </RadioGroup>
+                                            </Grid>
+                                            <Grid xs={12} sm={3.5} item>
+                                                <div align="left"><InputLabel >Any Phiysical Disability *</InputLabel></div>
+                                                <RadioGroup
+                                                    row
+                                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                                    name="disability"
+                                                    value={values.physic_dis}
+                                                    onChange={(val) => { !fieldsDisable && setValues((prevState) => { return { ...prevState, physic_dis: val.target.value } }) }}
+                                                >
+                                                    <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                                    <FormControlLabel value="false" control={<Radio />} label="No" />
+                                                </RadioGroup>
+                                            </Grid>
+                                            <Grid xs={12} sm={11} item >
+                                                <Grid container justifyContent="center">
+                                                    <Grid xs={12} sm={4} item align="left">
+                                                        <label htmlFor="contained-button-file">
+                                                            <Input id="contained-button-file" type="file" name="aadharCard"
+                                                                disabled={fieldsDisable}
+                                                                ref={hiddenFileInput}
+                                                                onChange={onAadharChange}
+                                                                style={{ display: 'none' }}
+                                                            />
+                                                            <Typography color="primary" variant="button" style={{ cursor: "pointer" }} >
+                                                                Choose Aadhar
+                                                            </Typography>
+                                                        </label>
+                                                    </Grid>
+                                                    <Grid xs={12} sm={8} item align="left" >
+                                                        {aadhar.dispFile ?
+                                                            <>
+                                                                {!editHide &&
+                                                                    < IconButton sx={{ padding: 0 }} onClick={onAadharView} aria-label="upload picture" component="div">
+                                                                        <VisibilityRoundedIcon color="info" size="large" />
+                                                                    </IconButton>
+                                                                }
+                                                                <Typography marginLeft={1} variant="caption">{aadhar.dispFile}</Typography>
+                                                            </>
+                                                            :
+                                                            <Typography variant="body2" align="right" marginTop={0.5} color="secondary">
+                                                                1 MB size PDF file only!</Typography>
+                                                        }
+                                                        {aadhar.dispFile && !fieldsDisable &&
+                                                            <IconButton sx={{ padding: 0 }} onClick={onCancel} aria-label="upload picture" component="div">
+                                                                <CancelSharpIcon color="error" fontSize="medium" />
+                                                            </IconButton>
+                                                        }
+                                                    </Grid>
                                                 </Grid>
                                             </Grid>
                                         </Grid>
                                     </Grid>
-                                </Grid>
-                                <Divider orientation="vertical" flexItem />
-                                <Grid item xs={12} sm={12} md={4} justifyContent="center"   >
-                                    <Grid container spacing={2} justifyContent="center" >
-                                        <Grid xs={12} sm={12} margin={1} marginLeft={5} item align="left">
-                                            <Typography variant='h6'>
-                                                Address Details
-                                            </Typography>
+                                    <Divider orientation="vertical" flexItem />
+                                    <Grid item xs={12} sm={12} md={4} justifyContent="center"   >
+                                        <Grid container spacing={2} justifyContent="center" >
+                                            <Grid xs={12} sm={12} margin={1} marginLeft={5} item align="left">
+                                                <Typography variant='h6'>
+                                                    Address Details
+                                                </Typography>
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="house-No"
+                                                    label="House/Flat-No."
+                                                    placeholder='A-101'
+                                                    fullWidth
+                                                    value={values.house_no}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        style: { textTransform: "capitalize" }
+                                                    }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.house_no}
+                                                    helperText={errorEnable.house_no && errorText}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="housename"
+                                                    label="House/Appartment Name"
+                                                    fullWidth
+                                                    value={values.house_name}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        style: { textTransform: "capitalize" }
+                                                    }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.house_name}
+                                                    helperText={errorEnable.house_name && errorText}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="street"
+                                                    label="Landmark/Area/Street"
+                                                    fullWidth
+                                                    value={values.street}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        style: { textTransform: "capitalize" }
+                                                    }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.street}
+                                                    helperText={errorEnable.street && errorText}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="city"
+                                                    label="City"
+                                                    fullWidth
+                                                    value={values.city}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        style: { textTransform: "capitalize" }
+                                                    }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.city}
+                                                    helperText={errorEnable.city && errorText}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="state"
+                                                    label="State"
+                                                    fullWidth
+                                                    value={values.state}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        style: { textTransform: "capitalize" }
+                                                    }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.state}
+                                                    helperText={errorEnable.state && errorText}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={5.5} item>
+                                                <TextField
+                                                    required
+                                                    variant='outlined'
+                                                    id="pincode"
+                                                    label="Pincode"
+                                                    fullWidth
+                                                    value={values.pincode}
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                    }}
+                                                    onChange={onChange}
+                                                    error={errorEnable.pincode}
+                                                    helperText={errorEnable.pincode && errorText}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} sm={11} item>
+                                                <TextField
+                                                    required
+                                                    multiline
+                                                    maxRows={3}
+                                                    variant='outlined'
+                                                    id="about"
+                                                    label="About you"
+                                                    fullWidth
+                                                    inputProps={{
+                                                        readOnly: Boolean(fieldsDisable),
+                                                        maxLength: 100,
+                                                        style: { textTransform: "capitalize" }
+                                                    }}
+                                                    placeholder='Please type some information about you OR what you want!'
+                                                    value={values.about}
+                                                    onChange={(event) => setValues((prevState) => { return { ...prevState, about: event.target.value } })}
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="house-No"
-                                                label="House/Flat-No."
-                                                placeholder='A-101'
-                                                fullWidth
-                                                value={values.house_no}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    style: { textTransform: "capitalize" }
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.house_no}
-                                                helperText={errorEnable.house_no && errorText}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="housename"
-                                                label="House/Appartment Name"
-                                                fullWidth
-                                                value={values.house_name}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    style: { textTransform: "capitalize" }
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.house_name}
-                                                helperText={errorEnable.house_name && errorText}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="street"
-                                                label="Landmark/Area/Street"
-                                                fullWidth
-                                                value={values.street}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    style: { textTransform: "capitalize" }
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.street}
-                                                helperText={errorEnable.street && errorText}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="city"
-                                                label="City"
-                                                fullWidth
-                                                value={values.city}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    style: { textTransform: "capitalize" }
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.city}
-                                                helperText={errorEnable.city && errorText}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="state"
-                                                label="State"
-                                                fullWidth
-                                                value={values.state}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    style: { textTransform: "capitalize" }
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.state}
-                                                helperText={errorEnable.state && errorText}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={5.5} item>
-                                            <TextField
-                                                required
-                                                variant='outlined'
-                                                id="pincode"
-                                                label="Pincode"
-                                                fullWidth
-                                                value={values.pincode}
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                }}
-                                                onChange={onChange}
-                                                error={errorEnable.pincode}
-                                                helperText={errorEnable.pincode && errorText}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} sm={11} item>
-                                            <TextField
-                                                required
-                                                multiline
-                                                maxRows={3}
-                                                variant='outlined'
-                                                id="about"
-                                                label="About you"
-                                                fullWidth
-                                                inputProps={{
-                                                    readOnly: Boolean(fieldsDisable),
-                                                    maxLength: 100,
-                                                    style: { textTransform: "capitalize" }
-                                                }}
-                                                placeholder='Please type some information about you OR what you want!'
-                                                value={values.about}
-                                                onChange={(event) => setValues((prevState) => { return { ...prevState, about: event.target.value } })}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container spacing={2} justifyContent="center" marginTop={13} marginLeft={1} >
-                                        {role === "Helper" && !fieldsDisable &&
-                                            <Grid item xs={12} sm={6} align="left">
-                                                <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth size="large" >
-                                                    {editHide ? "Add Work" : !fieldsDisable && "Update Work "}
-                                                </Button>
+                                        <Grid container spacing={2} justifyContent="center" marginTop={13} marginLeft={1} >
+                                            {role === "Helper" && !fieldsDisable &&
+                                                <Grid item xs={12} sm={6} align="left">
+                                                    <Button variant="contained" color='primary' onClick={addWorkHandler} fullWidth size="large" >
+                                                        {editHide ? "Add Work" : !fieldsDisable && "Update Work "}
+                                                    </Button>
 
-                                            </Grid>
-                                        }
-                                        {saveEnable && !fieldsDisable &&
-                                            <Grid xs={12} sm={6} item align="right">
-                                                <Button type='submit' variant="contained" color='primary' size="large" fullWidth >
-                                                    {editHide ? "Save" : !fieldsDisable && "Update"}
-                                                </Button>
-                                            </Grid>
-                                        }
+                                                </Grid>
+                                            }
+                                            {saveEnable && !fieldsDisable &&
+                                                <Grid xs={12} sm={6} item align="right">
+                                                    <Button type='submit' variant="contained" color='primary' size="large" fullWidth >
+                                                        {editHide ? "Save" : !fieldsDisable && "Update"}
+                                                    </Button>
+                                                </Grid>
+                                            }
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                        </form>
-                    </CardContent>
-                </Card>
+                            </form>
+                        </div>
+                    </Card>
+                </div>
             }
         </Grid >
     );

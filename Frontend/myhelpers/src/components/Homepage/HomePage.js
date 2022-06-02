@@ -9,8 +9,6 @@ import Box from '@mui/material/Box';
 import ShortListed from '../Modals/ShortListed';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
-import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
-
 import { useSelector, useDispatch } from 'react-redux';
 const helperImages = [
   { image: require("../allImages/cook.jpg"), text: "Cook/Chef" },

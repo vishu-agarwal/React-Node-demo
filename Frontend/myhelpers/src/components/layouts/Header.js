@@ -37,8 +37,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import GroupsIcon from '@mui/icons-material/Groups';
 
 function ScrollTop(props) {
-    const { children, window } = props;
-
+    const { children, window } = props
     // Note that you normally won't need to set the window ref as useScrollTrigger
     // will default to window.
     // This is only being set here because the demo is in an iframe.
@@ -46,9 +45,7 @@ function ScrollTop(props) {
         target: window ? window() : undefined,
         disableHysteresis: true,
         threshold: 100,
-
     });
-
     const handleClick = (event) => {
         const anchor = (event.target.ownerDocument || document).querySelector(
             '#back-to-top-anchor',
@@ -61,8 +58,6 @@ function ScrollTop(props) {
             });
         }
     };
-
-
     return (
         <Zoom in={trigger}>
             <Box
@@ -101,9 +96,6 @@ const Header = (props) => {
     const [avatar, setAvatar] = useState(`${require("../allImages/profile.gif")}`)
 
     useEffect(() => {
-        // const arg = {
-        //     rid
-        // }
         isAuth &&
             dispatch(fetchUserProfileThunk(rid))
     }, [rid])
@@ -169,11 +161,10 @@ const Header = (props) => {
                     {profileLoading && <Loading isLoad={true} />}
                     <Toolbar disableGutters>
                         <Typography
-                            variant="h4"
+                            fontSize={25}
                             noWrap
                             component="div"
                             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-                            fontFamily="cursive"
                         >
                             My Helpers
                         </Typography>
@@ -239,42 +230,30 @@ const Header = (props) => {
                                 {role === "Client" &&
                                     <>
                                         <Button
-
                                             onClick={() => navigate("/Client/home")}
-                                            sx={{ my: 2, color: 'white' }}
-                                        >
+                                            sx={{ my: 2, color: 'white' }}>
                                             <HomeIcon sx={{ marginRight: 1 }} />Home
                                         </Button>
-
                                         <Button
-
                                             onClick={() => navigate("/findHelper")}
-                                            sx={{ my: 2, color: 'white' }}
-                                        >
+                                            sx={{ my: 2, color: 'white' }}>
                                             <PersonSearchIcon sx={{ marginRight: 1 }} /> Find Helpers
                                         </Button>
                                     </>
                                 }
                                 {role === "Helper" && <Button
-
                                     onClick={() => navigate("/Helper/home")}
                                     sx={{ my: 2, color: 'white' }}
                                 >
-                                    <HomeIcon sx={{ marginRight: 1 }} /> Home
-                                </Button>}
+                                    <HomeIcon sx={{ marginRight: 1 }} /> Home</Button>}
                                 <Button
                                     onClick={() => navigate("/about")}
-                                    sx={{ my: 2, color: 'white' }}
-                                >
-                                    <GroupsIcon sx={{ marginRight: 1 }} />  About Us
-                                </Button>
+                                    sx={{ my: 2, color: 'white' }}>
+                                    <GroupsIcon sx={{ marginRight: 1 }} /> About Us </Button>
                                 <Button
                                     onClick={() => navigate("/profile")}
-                                    sx={{ my: 2, color: 'white' }}
-                                >
-                                    <AccountCircleIcon sx={{ marginRight: 1 }} /> Profile
-                                </Button>
-                                {/* ))} */}
+                                    sx={{ my: 2, color: 'white' }}>
+                                    <AccountCircleIcon sx={{ marginRight: 1 }} /> Profile </Button>
                             </Box>
                         }
                         {isAuth &&

@@ -7,11 +7,9 @@ import IconButton from "@mui/material/IconButton";
 import CardJS from "../Card"
 import { useSelector, useDispatch } from 'react-redux';
 import { displayActions, fetchAllThunk, fetchSaveUserThunk, searchThunk, sortThunk } from '../../store/slices/display-slice';
-import { workProfileActions } from '../../store/slices/work-slice'
 import { useNavigate } from 'react-router-dom';
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
-import Pagination from '@mui/material/Pagination';
 import debounce from 'lodash.debounce';
 import Typography from "@mui/material/Typography";
 import Loading from '../layouts/LoadingFile'

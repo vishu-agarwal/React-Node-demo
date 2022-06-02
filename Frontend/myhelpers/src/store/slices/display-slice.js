@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import axiosHeader from '../axiosHeader'
 const initialState = {
     displayData: [],
     viewUserProfile: {},
-    userAvatar: [],
+    // userAvatar: [],
     saveUser: [],
     hireUser: [],
     displayMessage: '',
@@ -46,7 +45,7 @@ export const fetchSaveUserThunk = createAsyncThunk("displayAll/fetchSaveUserThun
     try {
         const fetchRes = await axios.get(`/myhelpers/fetchSaveUser/${arg}`, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             },
         })
         return fetchRes

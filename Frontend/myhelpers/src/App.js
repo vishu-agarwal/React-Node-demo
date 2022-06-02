@@ -1,21 +1,16 @@
-//main file
 import './App.css';
 import {
   BrowserRouter, Routes, Route
 } from 'react-router-dom'
-
 import Header from "./components/layouts/Header"
 import Profile from './components/ProfileFiles/ClientProfile';
-
 import Footer from './components/layouts/Footer';
 import About from './components/Homepage/AboutPage';
-
 import { lazy, Suspense, useEffect } from 'react';
 import Loader from './components/layouts/LoadingFile';
 import ProtectedRoutes from './RouteComponents/ProtectedRoutes'; //Authenticated routes
 import PublicRoute from './RouteComponents/PublicRoutes';
 import PrivateRoute from './RouteComponents/PrivateRoutes';
-import { height } from '@mui/system';
 
 const RolePage = lazy(() => import('./components/LoginFiles/Content'));
 const LoginPage = lazy(() => import('./components/LoginFiles/Login'));
@@ -31,7 +26,6 @@ const publicRoutes = [
     path: '/login/:role',
     Component: LoginPage
   },
-
 ]
 
 const protectedRoutes = [
@@ -68,7 +62,6 @@ const protectedRoutes = [
 ]
 
 function App() {
-
   return (
     <BrowserRouter>
       <div className="App">
@@ -79,11 +72,9 @@ function App() {
           <Suspense fallback={<Loader isLoad={true} />}>
             <Routes>
               {/* private route for both client and helper */}
-              {/* <Route path="/about" element={<About />} /> */}
               <Route path='/profile'
                 element={
-                  <PrivateRoute
-                  >
+                  <PrivateRoute>
                     <Profile />
                   </PrivateRoute>
                 }
@@ -91,8 +82,7 @@ function App() {
               </Route>
               <Route path='/about'
                 element={
-                  <PrivateRoute
-                  >
+                  <PrivateRoute>
                     <About />
                   </PrivateRoute>
                 }
@@ -113,8 +103,7 @@ function App() {
                   key={`private-${path}`}
                   path={path}
                   element={
-                    <PrivateRoute
-                    >
+                    <PrivateRoute>
                       <ProtectedRoutes role={role}>
                         <Component />
                       </ProtectedRoutes>

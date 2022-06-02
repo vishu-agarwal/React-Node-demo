@@ -273,8 +273,8 @@ const WorkProfile = (props) => {
             aria-describedby="modal-modal-description"
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-            {workLoading ? <Loading isLoad={true} /> :
-                <Grid >
+            <Grid >
+                {workLoading ? <Loading isLoad={true} /> :
                     <Card
                         sx={{
                             maxWidth: 760, maxHeight: 8000,
@@ -311,7 +311,7 @@ const WorkProfile = (props) => {
                                                 </IconButton>
                                             }
                                         </Grid>
-                                        <Grid item xs={12} sm={1} align="right">                                            
+                                        <Grid item xs={12} sm={1} align="right">
                                             <CloseIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" onClick={props.click} />
                                         </Grid>
                                     </Grid>
@@ -319,10 +319,10 @@ const WorkProfile = (props) => {
                             </Grid>
                             <Grid container justifyContent="center">
                                 <Grid item xs={12} sm={12} md={12} margin={1} marginLeft={3} marginRight={3} align="center">
-                                    <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>   
+                                    <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>
                                         <Typography marginLeft={1.5} sx={{ marginBottom: 1, color: "orange" }}
                                             align='center' > {(saveEnable || !editHide) && !fieldsDisable ?
-                                                "Require to fill all the fields." : "Click on edit button for update profile."}</Typography>    
+                                                "Require to fill all the fields." : "Click on edit button for update profile."}</Typography>
                                         <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }}
                                             align='left' color='InfoText'>Working Details : </Typography>
                                         <Grid container spacing={1}>
@@ -348,7 +348,7 @@ const WorkProfile = (props) => {
                                                 <FormControl fullWidth error={errorEnable.workTime} >
                                                     <InputLabel htmlFor="grouped-native-select">Working Time *</InputLabel>
                                                     <Select name="time" label="Working Time *"
-                                                        
+
                                                         inputProps={{
                                                             readOnly: Boolean(fieldsDisable),
                                                         }}
@@ -438,7 +438,7 @@ const WorkProfile = (props) => {
                                                     label="Other Education"
                                                     placeholder='N/A or Other Education Name'
                                                     fullWidth
-                                                    value={values.otherStudy}                                                   
+                                                    value={values.otherStudy}
                                                     onChange={onChange}
                                                     error={errorEnable.otherStudy}
                                                     helperText={errorEnable.otherStudy && errorText}
@@ -453,12 +453,13 @@ const WorkProfile = (props) => {
                                             </Grid>
                                         }
                                     </form>
-                                </Grid></Grid>
+                                </Grid>
+                            </Grid>
                         </CardContent>
-                    </Card>
-                </Grid>
-            }
-        </Modal>
+                    </Card >
+                }
+            </Grid >
+        </Modal >
     );
 }
 

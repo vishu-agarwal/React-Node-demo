@@ -89,7 +89,6 @@ const HireForm = (props) => {
 
     useEffect(() => {
         setCategories(props.fields.map((row) => row.category))
-        // console.log("catehfjsdhfjd", categories)
     }, [props.fields])
 
     useEffect(() => {

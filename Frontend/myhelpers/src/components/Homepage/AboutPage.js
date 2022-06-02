@@ -46,25 +46,7 @@ const ScrollButton = () => {
     );
 }
 
-const AboutPage = (props) => {
-
-    let navigate = useNavigate()
-    const theme = useTheme();
-    const [openRequest, setOpenRequest] = useState(false)
-
-    const [openHired, setOpenHired] = useState(false)
-    const onRequestClick = () => {
-        setOpenRequest(true)
-    }
-
-    const onHireClick = () => {
-        setOpenHired(true)
-    }
-
-    const handleModelClose = () => {
-        setOpenRequest(false);
-        setOpenHired(false);
-    };
+const AboutPage = () => {
 
     return (
         <div>
