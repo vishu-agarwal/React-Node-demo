@@ -53,11 +53,13 @@ export const fetchHelperRequestsThunk = createAsyncThunk("hireRequest/fetchHelpe
 })
 export const fetchSingleHireRequestThunk = createAsyncThunk("hireRequest/fetchSingleHireRequestThunk", async (arg) => {
     try {
+        console.log("arg",arg)
         const fetchHelperRes = await axios.get(`/myhelpers/fetchSingleHireRequest/${arg.rid}/${arg.user_id}`, {
             headers: {
                 Authorization: "Bearer " + varToken,
             },
         })
+        console.log(fetchHelperRes,"...")
         return fetchHelperRes
     } catch (error) {
         throw new Error(error.response.data)
@@ -136,6 +138,9 @@ const hireRequestSlice = createSlice({
         messageReducer(state) {
             state.requestMessage = ""
         },
+        emptySingleUser(state) {
+            state.singleUser = []
+        }
     },
     extraReducers: {
         //ceate or send request
@@ -145,7 +150,6 @@ const hireRequestSlice = createSlice({
         [sendHireRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
             state.singleUser = action.payload.data[0]
-            console.log(state.singleUser,".....user")
             state.requestMessage="Your request send!"
         },
         [sendHireRequestThunk.rejected]: (state, error) => {
@@ -187,7 +191,7 @@ const hireRequestSlice = createSlice({
         },
         [acceptRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
-            state.message = action.payload.data
+            state.requestMessage = action.payload.data
         },
         [acceptRequestThunk.rejected]: (state, error) => {
             state.requestLoading = false
@@ -199,7 +203,7 @@ const hireRequestSlice = createSlice({
         },
         [rejectRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
-            state.message = action.payload.data
+            state.requestMessage = action.payload.data
         },
         [rejectRequestThunk.rejected]: (state, error) => {
             state.requestLoading = false
@@ -211,7 +215,7 @@ const hireRequestSlice = createSlice({
         },
         [deleteRequestThunk.fulfilled]: (state, action) => {
             state.requestLoading = false
-            state.message = action.payload.data
+            state.requestMessage = action.payload.data
         },
         [deleteRequestThunk.rejected]: (state, error) => {
             state.requestLoading = false

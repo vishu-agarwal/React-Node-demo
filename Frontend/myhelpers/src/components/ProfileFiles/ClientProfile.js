@@ -384,25 +384,35 @@ const ClientProfile = () => {
             }
         }
         else if (event.target.id === "dob") {
-            var today = new Date();
-            var birthDate = new Date(event.target.value);
-            var age = today.getFullYear() - birthDate.getFullYear();
-            var m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
+            if (role === "Helper") {
+                var today = new Date();
+                var birthDate = new Date(event.target.value);
+                var age = today.getFullYear() - birthDate.getFullYear();
+                var m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                if (age >= 18) {
+                    setErrorEnable({ ...errorEnable, dob: false })
+                    setValues((prevState) => {
+                        return {
+                            ...prevState,
+                            dob: birthDate.toISOString().split('T')[0]
+                        }
+                    })
+                }
+                else {
+                    setErrorEnable({ ...errorEnable, dob: true })
+                    setErrorText("Age should me 18 or more than!")
+                }
             }
-            if (age >= 18) {
-                setErrorEnable({ ...errorEnable, dob: false })
+            else {
                 setValues((prevState) => {
                     return {
                         ...prevState,
-                        dob: birthDate.toISOString().split('T')[0]
+                        dob: event.target.value
                     }
                 })
-            }
-            else {
-                setErrorEnable({ ...errorEnable, dob: true })
-                setErrorText("Age should me 18 or more than!")
             }
         }
         else if (event.target.id === "alt-mob") {
@@ -422,7 +432,7 @@ const ClientProfile = () => {
             }
             else {
                 setErrorEnable({ ...errorEnable, altmbl: true })
-                setErrorText("Please enter valid Mobile No.!")
+                setErrorText("Start with [6-9] and 10 digits mobile no.!")
             }
         }
         else if (event.target.id === "mob") {
@@ -442,7 +452,7 @@ const ClientProfile = () => {
             }
             else {
                 setErrorEnable({ ...errorEnable, mbl: true })
-                setErrorText("Please enter valid Mobile No.!")
+                setErrorText("Start with [6-9] and 10 digits mobile no.!")
             }
         }
         else if (event.target.id === "house-No") {
@@ -552,14 +562,13 @@ const ClientProfile = () => {
                 <Card
                     elevation={24}
                     sx={{
-                        marginRight: 10, marginLeft: 10,
-                        // borderColor:"#163758"
+                        marginRight: 2, marginLeft: 2
                     }}>
-                    <CardContent>
+                    <CardContent sx={{ padding: 0 }}>
                         <Grid container justifyContent="left">
-                            <Grid item xs={12} sm={4} align="left" >
+                            <Grid item xs={12} sm={4} align="left" margin={2}>
                                 {!editHide &&
-                                    <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>
+                                    <Button variant="contained" sx={{ fontSize: 20 }} color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>
                                 }
                             </Grid>
                         </Grid>
@@ -568,20 +577,16 @@ const ClientProfile = () => {
                             <Grid container direction={'row'}>
                                 <Grid item xs={12} sm={12} md={3} justifyContent="center" >
                                     <Grid container>
-                                        {/* <Grid item xs={12} sm={3} justifyContent="left" >
-                                        {editHide && <Button variant="contained" color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>}
-                                    </Grid> */}
                                         <Snackbar
                                             anchorOrigin={{ vertical: "top", horizontal: "center" }}
                                             open={open}
-                                            autoHideDuration={6000}
+                                            autoHideDuration={4000}
                                             onClose={closeSnackbar}
                                         >
                                             <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
                                                 {snackMessage}
                                             </Alert>
                                         </Snackbar>
-
                                         <Grid item sm={12} xs={12} marginTop={10}>
                                             <Badge
                                                 overlap="circular"
@@ -590,22 +595,16 @@ const ClientProfile = () => {
                                                     <label htmlFor="icon-button-file">
                                                         <Input accept="image/*" id="icon-button-file" type="file" name="avatar" onChange={onAvatarChang} disabled={fieldsDisable} />
                                                         <IconButton aria-label="upload picture" component="span" >
-
                                                             <EditRoundedIcon sx={{ color: "#163758" }} fontSize="large" />
-
                                                         </IconButton>
                                                     </label>
                                                 }
                                             >
                                                 <Avatar alt="Profile*"
                                                     style={{
-                                                        // backgroundImage: `url(${profileImg})`,
-                                                        // backgroundRepeat: "no-repeat",
-                                                        // backgroundSize: "100%"
-                                                        border: '3px solid #163758',
-
+                                                        border: '3px solid #163758'
                                                     }}
-                                                    src={userProfile.is_profile ? file.dispFile : profileImg}
+                                                    src={file.dispFile || profileImg}
                                                     sx={{
                                                         marginTop: 0, width: 200, height: 250
                                                     }} />
@@ -615,8 +614,8 @@ const ClientProfile = () => {
                                             {enable && <Button variant="contained" sx={{ marginTop: 2, backgroundColor: "#03a9f4" }} onClick={avatarSubmit}>Upload Photo </Button>}
                                         </Grid>
                                         <Grid item xs={12} sm={12}>
-                                            <Typography marginTop={1} gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'subtitle2' } }}>{values.email.toLowerCase()}</Typography>
-
+                                            <Typography marginTop={1} gutterBottom sx={{ typography: { sm: 'body2', xs: 'h6', md: 'subtitle2' } }}>
+                                                {values.email.toLowerCase()}</Typography>
                                             {role === "Helper" && <Rating name="half-rating"
                                                 value={star}
                                                 readOnly={Boolean(true)}
@@ -628,10 +627,13 @@ const ClientProfile = () => {
                                 <Divider orientation="vertical" flexItem />
                                 <Grid item xs={12} sm={12} md={4.5} justifyContent="center"  >
                                     <Grid container spacing={2} justifyContent="center" >
-                                        <Grid xs={12} sm={12} margin={2} marginLeft={5} item align="left">
+                                        <Grid xs={12} sm={12} margin={1} marginLeft={5} item align="left">
                                             <Typography variant='h4'>
                                                 Profile Settings
                                             </Typography>
+                                            <Typography marginLeft={1.5} sx={{ marginBottom: 1, color: "orange" }}
+                                                align='left' > {(saveEnable && !fieldsDisable) ?
+                                                    "Require to fill all the fields." : "Click on edit button for update profile."}</Typography>
                                         </Grid>
                                         <Grid xs={12} sm={5.5} item>
                                             <TextField
@@ -640,9 +642,10 @@ const ClientProfile = () => {
                                                 id="firstname"
                                                 label="First Name"
                                                 fullWidth
-                                                value={values.fname.toUpperCase()}
+                                                value={values.fname}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
+                                                    style: { textTransform: "capitalize" }
                                                 }}
                                                 onChange={onChange}
                                                 error={errorEnable.fname}
@@ -655,10 +658,10 @@ const ClientProfile = () => {
                                                 id="lastname"
                                                 label="Last Name"
                                                 fullWidth
-                                                value={values.lname.toUpperCase()}
+                                                value={values.lname}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
-
+                                                    style: { textTransform: "capitalize" }
                                                 }}
                                                 onChange={onChange}
                                                 error={errorEnable.lname}
@@ -675,15 +678,13 @@ const ClientProfile = () => {
                                                 value={values.mbl}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
-
+                                                    maxLength: 10
                                                 }}
                                                 onChange={onChange}
                                                 error={errorEnable.mbl}
                                                 helperText={errorEnable.mbl && errorText}
                                             />
-
                                         </Grid>
-
                                         <Grid xs={12} sm={5.5} item>
                                             <TextField
                                                 required
@@ -694,7 +695,7 @@ const ClientProfile = () => {
                                                 value={values.altmbl}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
-
+                                                    maxLength: 10
                                                 }}
                                                 onChange={onChange}
                                                 error={errorEnable.altmbl}
@@ -709,14 +710,12 @@ const ClientProfile = () => {
                                                 type="date"
                                                 required
                                                 fullWidth
-
                                                 value={values.dob}
                                                 onChange={onChange}
                                                 error={errorEnable.dob}
                                                 helperText={errorEnable.dob && errorText}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
-
                                                 }}
                                                 InputLabelProps={{
                                                     shrink: true,
@@ -724,14 +723,15 @@ const ClientProfile = () => {
                                             />
                                         </Grid>
                                         <Grid xs={12} sm={3.5} item >
-                                            <div align="left"><InputLabel >Gender</InputLabel></div>
+                                            <div align="left"><InputLabel >Gender *</InputLabel></div>
                                             <RadioGroup
                                                 row
-
                                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                                 name="gender"
                                                 value={values.gender}
-                                                onChange={(val) => { !fieldsDisable && setValues((prevState) => { return { ...prevState, gender: val.target.value } }) }}
+                                                onChange={(val) => {
+                                                    !fieldsDisable && setValues((prevState) => { return { ...prevState, gender: val.target.value } })
+                                                }}
                                             >
                                                 <FormControlLabel value="Male" control={<Radio />} label="Male" />
                                                 <FormControlLabel value="Female" control={<Radio />} label="Female" />
@@ -739,14 +739,15 @@ const ClientProfile = () => {
                                             </RadioGroup>
                                         </Grid>
                                         <Grid xs={12} sm={3.5} item>
-                                            <div align="left"><InputLabel >Marital Status</InputLabel></div>
+                                            <div align="left"><InputLabel >Marital Status *</InputLabel></div>
                                             <RadioGroup
                                                 row
-
                                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                                 name="married"
                                                 value={values.married}
-                                                onChange={(val) => { !fieldsDisable && setValues((prevState) => { return { ...prevState, married: val.target.value } }) }}
+                                                onChange={(val) => {
+                                                    !fieldsDisable && setValues((prevState) => { return { ...prevState, married: val.target.value } })
+                                                }}
                                             >
                                                 <FormControlLabel
                                                     value="true"
@@ -763,10 +764,9 @@ const ClientProfile = () => {
                                             </RadioGroup>
                                         </Grid>
                                         <Grid xs={12} sm={3.5} item>
-                                            <div align="left"><InputLabel >Any Phiysical Disability</InputLabel></div>
+                                            <div align="left"><InputLabel >Any Phiysical Disability *</InputLabel></div>
                                             <RadioGroup
                                                 row
-
                                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                                 name="disability"
                                                 value={values.physic_dis}
@@ -784,11 +784,10 @@ const ClientProfile = () => {
                                                             disabled={fieldsDisable}
                                                             ref={hiddenFileInput}
                                                             onChange={onAadharChange}
-                                                            // disabled={fieldsDisable}
                                                             style={{ display: 'none' }}
                                                         />
-                                                        <Typography color="primary" variant="button" style={{ fontWeight: 800, cursor: "pointer" }} >
-                                                            Upload Aadhar
+                                                        <Typography color="primary" variant="button" style={{ cursor: "pointer" }} >
+                                                            Choose Aadhar
                                                         </Typography>
                                                     </label>
                                                 </Grid>
@@ -813,9 +812,6 @@ const ClientProfile = () => {
                                                 </Grid>
                                             </Grid>
                                         </Grid>
-                                        <Grid xs={11} sm={11} item align="left" color="#b71c1c">
-                                            {/* <Typography variant="body2" display="block">1 MB size PDF file only!</Typography> */}
-                                        </Grid>
                                     </Grid>
                                 </Grid>
                                 <Divider orientation="vertical" flexItem />
@@ -834,9 +830,10 @@ const ClientProfile = () => {
                                                 label="House/Flat-No."
                                                 placeholder='A-101'
                                                 fullWidth
-                                                value={values.house_no.toUpperCase()}
+                                                value={values.house_no}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
+                                                    style: { textTransform: "capitalize" }
                                                 }}
                                                 onChange={onChange}
                                                 error={errorEnable.house_no}
@@ -850,9 +847,10 @@ const ClientProfile = () => {
                                                 id="housename"
                                                 label="House/Appartment Name"
                                                 fullWidth
-                                                value={values.house_name.toUpperCase()}
+                                                value={values.house_name}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
+                                                    style: { textTransform: "capitalize" }
                                                 }}
                                                 onChange={onChange}
                                                 error={errorEnable.house_name}
@@ -866,9 +864,10 @@ const ClientProfile = () => {
                                                 id="street"
                                                 label="Landmark/Area/Street"
                                                 fullWidth
-                                                value={values.street.toUpperCase()}
+                                                value={values.street}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
+                                                    style: { textTransform: "capitalize" }
                                                 }}
                                                 onChange={onChange}
                                                 error={errorEnable.street}
@@ -882,9 +881,10 @@ const ClientProfile = () => {
                                                 id="city"
                                                 label="City"
                                                 fullWidth
-                                                value={values.city.toUpperCase()}
+                                                value={values.city}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
+                                                    style: { textTransform: "capitalize" }
                                                 }}
                                                 onChange={onChange}
                                                 error={errorEnable.city}
@@ -898,9 +898,10 @@ const ClientProfile = () => {
                                                 id="state"
                                                 label="State"
                                                 fullWidth
-                                                value={values.state.toUpperCase()}
+                                                value={values.state}
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
+                                                    style: { textTransform: "capitalize" }
                                                 }}
                                                 onChange={onChange}
                                                 error={errorEnable.state}
@@ -934,7 +935,8 @@ const ClientProfile = () => {
                                                 fullWidth
                                                 inputProps={{
                                                     readOnly: Boolean(fieldsDisable),
-                                                    maxLength: 100
+                                                    maxLength: 100,
+                                                    style: { textTransform: "capitalize" }
                                                 }}
                                                 placeholder='Please type some information about you OR what you want!'
                                                 value={values.about}

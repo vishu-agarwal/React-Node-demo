@@ -97,8 +97,9 @@ const HireForm = (props) => {
             user_id: props.user_id,
             rid
         }
+        console.log("argument ::",arg)
         dispatch(fetchSingleHireRequestThunk(arg))
-    },[])
+    }, [props.user_id])
 
     useEffect(() => {
         if (requestMessage.length !== 0) {
@@ -147,6 +148,7 @@ const HireForm = (props) => {
         dispatch(sendHireRequestThunk(arg))
         setEditHide(false)
         setDisable(true)
+        props.click()
     }
 
     const onUpdateRequest = (e) => {
@@ -478,7 +480,7 @@ const HireForm = (props) => {
                     <Grid >
                         <Card
                             sx={{
-                                minWidth: 500, minHeight: 600,
+                                minWidth: 500, minHeight: 610,
                                 margin: '0 auto',
                                 paddingTop: 0,
                                 borderRadius: 5,
@@ -488,7 +490,7 @@ const HireForm = (props) => {
                                     <Snackbar
                                         anchorOrigin={{ vertical: "top", horizontal: "center" }}
                                         open={snackOpen}
-                                        autoHideDuration={5000}
+                                        autoHideDuration={4000}
                                         onClose={closeSnackbar}
                                     >
                                         <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
@@ -496,24 +498,24 @@ const HireForm = (props) => {
                                         </Alert>
                                     </Snackbar>
                                     <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
-                                        <Grid container direction={'row'} padding={2} >
+                                        <Grid container direction={'row'} padding={1.5} >
                                             <Grid item xs={12} sm={10} align="left" >
-                                                <Typography variant="h4" color="white" >
-                                                    Enquiry
+                                                <Typography fontSize={25} color="white" >
+                                                    Enquiry Form
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={12} sm={1} justifyContent="left" >
                                                 {!editHide && singleUser && singleUser.status === "pending!" &&
                                                     <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
                                                         {fieldsDisable ?
-                                                            <ModeEditIcon sx={{ color: "white", fontSize: 35 }} cursor="pointer" />
+                                                            <ModeEditIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" />
                                                             :
-                                                            < CheckIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" />}
+                                                            < CheckIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" />}
                                                     </IconButton>
                                                 }
                                             </Grid>
                                             <Grid item xs={12} sm={1} align="right">
-                                                <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                                <CloseIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" onClick={props.click} />
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -521,11 +523,17 @@ const HireForm = (props) => {
                                 <Grid container justifyContent="center">
                                     <Grid item xs={11} sm={11} md={11} margin={1} align="center">
                                         <form onSubmit={editHide ? onSendRequest : onUpdateRequest}>
-                                            <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Work : </Typography>
+                                            
+                                            <Typography marginLeft={1.5} sx={{ marginBottom: 1,color:"orange" }}
+                                                align='center' > {(saveEnable || !editHide) && !fieldsDisable ?
+                                                    "Require to fill all the fields." : "Click on edit button for update profile."} </Typography>
+                                            
+                                            <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }}
+                                                align='left' color='InfoText'>Work : </Typography>
                                             <Grid container spacing={1} >
                                                 <Grid xs={12} sm={12} item>
                                                     <FormControl fullWidth required error={errorEnable.work}>
-                                                        <InputLabel id="demo-multiple-checkbox-label">Select Work</InputLabel>
+                                                        <InputLabel id="demo-multiple-checkbox-label">Select Work </InputLabel>
                                                         <Select
                                                             labelId="demo-multiple-checkbox-label"
                                                             id="demo-multiple-checkbox"
@@ -535,7 +543,7 @@ const HireForm = (props) => {
                                                             }}
                                                             value={work}
                                                             onChange={workChange}
-                                                            input={<OutlinedInput label="Select Work" />}
+                                                            input={<OutlinedInput label="Select Work " />}
                                                             renderValue={(selected) => selected.join(', ')}
                                                             MenuProps={MenuProps}
                                                         >

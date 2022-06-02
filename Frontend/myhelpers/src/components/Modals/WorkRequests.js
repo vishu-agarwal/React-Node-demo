@@ -1,7 +1,4 @@
-//header file
 import * as React from 'react';
-
-//   mui
 import CardContent from '@mui/material/CardContent';
 import { Card, Grid, Typography } from '@mui/material';
 import Loading from '../layouts/LoadingFile'
@@ -59,12 +56,6 @@ const WorkRequest = (props) => {
         }
     }, [requestMessage, requestError])
 
-    // useEffect(() => {
-    //     if (hireRequestData.length !== 0) {
-    //         console.log("hireRequestdata :: ", hireRequestData)
-    //     }
-    // }, [hireRequestData])
-    let checkNoData = false
     return (
         <Modal
             open={props.open}
@@ -87,7 +78,7 @@ const WorkRequest = (props) => {
                                     <Snackbar
                                         anchorOrigin={{ vertical: "top", horizontal: "center" }}
                                         open={snackOpen}
-                                        autoHideDuration={6000}
+                                        autoHideDuration={4000}
                                         onClose={closeSnackbar}
                                     >
                                         <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
@@ -97,23 +88,20 @@ const WorkRequest = (props) => {
                                     <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
                                         <Grid container direction={'row'} padding={2} >
                                             <Grid item xs={12} sm={10} align="left" >
-                                                <Typography variant="h4" color="white" >
+                                                <Typography fontSize={25} color="white" >
                                                     Enquiry
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={12} sm={2} align="right">
-                                                <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                                <CloseIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" onClick={props.click} />
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid container justifyContent="center" style={{ maxHeight: '550px', overflow: 'auto' }}>
                                     {
-                                        // console.log("client", filterClient),
-                                        // console.log("helper",filterHelper)
                                         (!requestLoading && rid.charAt(0) === 'C') ? (filterClient.length !== 0 ?
                                             filterClient.map((val, index) => {
-
                                                 return <Grid item xs={12} sm={12} marginBottom={1} align="center" key={index}>
                                                     <HireRequestCard values={val} closeModal={props.click} />
                                                 </Grid>
@@ -127,7 +115,6 @@ const WorkRequest = (props) => {
                                                 />
                                             </Grid>)
                                             : (
-
                                                 (!requestLoading && filterHelper.length !== 0) ?
                                                     filterHelper.map((val, index) => {
 
@@ -144,41 +131,7 @@ const WorkRequest = (props) => {
                                                         />
                                                     </Grid>
                                             )
-
-                                        // hireRequestData.length !== 0 ?
-                                        //     hireRequestData.map((val, index) => {
-                                        //         if (rid.charAt(0) === "H" && val.status === "pending!") {
-                                        //             return <Grid item xs={12} sm={12} align="center" key={index}>
-                                        //                 <HireRequestCard values={val} closeModal={props.click} />
-                                        //             </Grid>
-                                        //         }
-                                        //         else if (rid.charAt(0) === "C" && val.status !== "hired!") {
-                                        //             return <Grid item xs={12} sm={12} align="center" key={index}>
-                                        //                 <HireRequestCard values={val} closeModal={props.click} />
-                                        //             </Grid>
-                                        //         }
-                                        //         else {
-                                        //             if (!checkNoData) return checkNoData = true
-                                        //         }
-                                        //     }
-                                        //     )
-                                        //     :
-                                        //     <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }} >
-                                        //         <img
-                                        //             src={require("../allImages/nodata.gif")}
-                                        //             alt="Page No Found..."
-                                        //             align="center"
-                                        //         />
-                                        //     </Grid>
                                     }
-                                    {/* {checkNoData && <Grid item xs={12} sm={12} align="center" padding={0} sx={{ margin: 0 }} >
-                                        <img
-                                            src={require("../allImages/nodata.gif")}
-                                            alt="Page No Found..."
-                                            align="center"
-                                        />
-                                    </Grid>} */}
-
                                 </Grid>
                             </CardContent>
                         </Card>

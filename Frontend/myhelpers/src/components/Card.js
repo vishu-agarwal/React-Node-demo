@@ -101,16 +101,16 @@ const CardJS = (props) => {
         <Card
             sx={{
                 width: {
-                    xs: 400,
+                    xs: 320,
                     sm: 430,
                     md: 450,
-                    lg: 380,
+                    lg: 340,
                 },
                 height: {
-                    xs: 250,
-                    sm: 250,
-                    md: 250,
-                    lg: 270,
+                    xs: 280,
+                    sm: 280,
+                    md: 280,
+                    lg: 300,
                 },
                 marginTop: 2,
                 borderRadius: 5,
@@ -130,7 +130,7 @@ const CardJS = (props) => {
                             </Alert>
                         </Snackbar>
                         <Grid item xs={11} sm={11} md={11} align="left" alignSelf={"top"} >
-                            <Typography color="#163758" variant="h6"  >
+                            <Typography color="#163758" variant="h6" onClick={onViewClick} style={{cursor:"pointer"}}>
                                 {String(props.values.name).toUpperCase()}
                             </Typography>
                         </Grid>
@@ -153,7 +153,6 @@ const CardJS = (props) => {
                                 image={`http://localhost:3001/${props.values.avatar}`}
                                 alt="Profile Image"
                             />
-
                         </Grid>
                         <Grid item xs={7.5} sm={7.5} md={7} lg={0} marginLeft={1} align="left" >
 

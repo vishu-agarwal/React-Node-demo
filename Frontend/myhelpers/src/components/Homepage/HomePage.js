@@ -111,7 +111,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <Grid container justifyContent="center">
+      <Grid container justifyContent="center" marginBottom={2}>
         <Grid item xs={12} md={12} sm={12} style={{ position: "relative" }}>
           <div>
             <img src={require("../allImages/homeImg.png")} height={"100%"} width={"100%"} />
@@ -123,27 +123,21 @@ const HomePage = () => {
             height: "99.5%", width: "35.3%", background: "#000000", opacity: 0.5,
             position: "absolute", top: 0, left: "70%", transform: "translateX(-15%)"
           }} align="center">
-            {/* <Box mt={"15%"} > */}
             <Grid container item xs={12} sm={6} md={10} justifyContent="center">
-              <Typography sx={{ typography: { sm: 'h6', xs: 'body2', md: 'h4', lg: 'h2' }, marginTop: { lg: "10%", sm: "5%" } }}
-                style={{ fontWeight: 900, color: "white" }} >
+              <Typography sx={{ typography: { sm: 'h6', xs: 'body2', md: 'h4', lg: 'h3' }, marginTop: { lg: "15%", sm: "5%" } }}
+                style={{ color: "white" }} >
                 FIND YOUR RIGHT HELPER EASILY
               </Typography>
             </Grid>
             <Grid container item xs={12} sm={6} md={8} justifyContent="center">
-              <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6', lg: "h5" }, marginTop: { lg: "2%", sm: "1%" } }}
-                style={{ fontWeight: 900, color: "white" }}  >
+              <Typography sx={{ typography: { sm: 'caption', xs: 'caption', md: 'h6', lg: "h6" }, marginTop: { lg: "5%", sm: "1%" } }}
+                style={{ color: "white" }}  >
                 Need skilled help service? Book with us and we will ensure you have safe, secure and responsible manpower.
               </Typography>
             </Grid>
-            {/* </Box> */}
-            {/* <Box mt={"5%"} > */}
             <Button
-              // color="#163758"
-
               variant="contained"
               onClick={() => navigate("/findHelper")}
-              // size="large"
               sx={{
                 marginTop: { lg: "3%" },
                 width: "50%", height: { xs: "23%", sm: "15%", md: "10%", lg: "8%" },
@@ -152,7 +146,6 @@ const HomePage = () => {
             >
               Find Helpers
             </Button>
-            {/* </Box> */}
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} backgroundColor="white">
@@ -160,13 +153,13 @@ const HomePage = () => {
             <Grid item sm={11} xs={11} md={11}  >
               <Grid container spacing={2} marginBottom={3} >
                 <Grid item sm={12} xs={12} md={12}  >
-                  <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
+                  <Typography style={{ color: "#163758" }} marginTop={1} fontSize="35px">
                     Your Ultimate Helpers Hiring Platform
                   </Typography>
                 </Grid>
                 {
                   helperImages.map((val, index) => {
-                    return <Grid item xs={6} sm={4} md={2} key={index}>
+                    return <Grid item xs={6} sm={4} md={3} lg={2} key={index}>
                       <Card elevation={12} sx={{ backgroundColor: "#a0bfdb" }}>
                         <CardContent sx={{ padding: 0 }}>
                           <Grid container >
@@ -190,7 +183,7 @@ const HomePage = () => {
         <Grid item xs={12} sm={12} md={12} margin={2} marginBottom={5} >
           <Grid container justifyContent="center" >
             <Grid item sm={12} xs={12} md={12}>
-              <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
+              <Typography style={{ color: "#163758" }} marginTop={1} fontSize="35px">
                 How It Works ?
               </Typography>
             </Grid>
@@ -200,26 +193,26 @@ const HomePage = () => {
                   imageList.map((val) => {
                     const click = val.request === "search" ? () => navigate("/findHelper") : val.request === "sortlist" ?
                       onShortlistClick : val.request === "request" ? onRequestClick : val.request === "hire" && onHireClick
-                    return <Grid item xs={6} sm={4} md={2} key={`${val.images}`}>
-                      <Grid container>
+                    return <Grid item xs={6} sm={3} md={3} lg={2} key={`${val.images}`}>
+                      <Grid container >
                         <Grid item xs={12} sm={12} md={12} >
-                          <img src={val.images} onClick={click} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                          <img src={val.images} onClick={click} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"80%"} />
                         </Grid>
                         <Grid item xs={12} sm={12} md={12}>
-                          <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >{val.text}</Typography>
+                          <Typography paddingTop={2} variant="h5" color="#163758" >{val.text}</Typography>
                         </Grid>
                       </Grid>
                     </Grid>
                   }
                   )
                 }
-                {openShortlist && <ShortListed click={handleModelClose} open={openModal} />}
-                {openRequest && <WorkRequest click={handleModelClose} open={openModal} />}
-                {openHired && <HiredHelper click={handleModelClose} open={openModal} />}
               </Grid>
+              {openShortlist && <ShortListed click={handleModelClose} open={openModal} />}
+              {openRequest && <WorkRequest click={handleModelClose} open={openModal} />}
+              {openHired && <HiredHelper click={handleModelClose} open={openModal} />}
             </Grid>
           </Grid>
-        </Grid>        
+        </Grid>
       </Grid>
     </div>
   )

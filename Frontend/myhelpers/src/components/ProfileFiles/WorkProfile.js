@@ -54,12 +54,12 @@ const languageName = [
     'Hindi',
     'English',
     'Gujarati',
-    'Marthi',
+    'Marathi',
     'Marwadi',
     'Bengali',
     'Telugu',
     'Tamil',
-    'Punjab',
+    'Punjabi',
     'Malyalam',
     'Kannad'
 ];
@@ -157,6 +157,7 @@ const WorkProfile = (props) => {
         //Edit button display
         setEditHide(false)
         setDisable(true)
+        props.click()
     }
 
     const onUpdateWorkSubmit = (e) => {
@@ -250,7 +251,7 @@ const WorkProfile = (props) => {
             }
             else {
                 setErrorEnable({ ...errorEnable, porf_mbl: true })
-                setErrorText("Please enter valid Mobile No.!")
+                setErrorText("Start with [6-9] and 10 digits mobile no.!")
             }
         }
         else {
@@ -286,7 +287,7 @@ const WorkProfile = (props) => {
                                 <Snackbar
                                     anchorOrigin={{ vertical: "top", horizontal: "center" }}
                                     open={open}
-                                    autoHideDuration={6000}
+                                    autoHideDuration={4000}
                                     onClose={closeSnackbar}
                                 >
                                     <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
@@ -294,58 +295,60 @@ const WorkProfile = (props) => {
                                     </Alert>
                                 </Snackbar>
                                 <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
-                                    <Grid container direction={'row'} padding={2} >
+                                    <Grid container direction={'row'} padding={1.5} >
                                         <Grid item xs={12} sm={10} align="left" >
-                                            <Typography variant="h4" color="white" >
-                                                Work Profile
+                                            <Typography fontSize={25} color="white" >
+                                                Work Profile Form
                                             </Typography>
                                         </Grid>
-
-                                        <Grid item xs={12} sm={1} justifyContent="left" >
+                                        <Grid item xs={12} sm={1} align="right" >
                                             {!editHide &&
                                                 <IconButton onClick={onEditClick} sx={{ padding: 0 }}>
                                                     {fieldsDisable ?
-                                                        <ModeEditIcon sx={{ color: "white", fontSize: 35 }} cursor="pointer" />
+                                                        <ModeEditIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" />
                                                         :
-                                                        < CheckIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" />}
+                                                        < CheckIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" />}
                                                 </IconButton>
                                             }
                                         </Grid>
-                                        <Grid item xs={12} sm={1} align="right">
-                                            {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
-                                            <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                        <Grid item xs={12} sm={1} align="right">                                            
+                                            <CloseIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" onClick={props.click} />
                                         </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
                             <Grid container justifyContent="center">
                                 <Grid item xs={12} sm={12} md={12} margin={1} marginLeft={3} marginRight={3} align="center">
-                                    <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>
-                                        {/* <Typography variant='subtitle1' marginLeft={1.5}  align='left' color='InfoText'>Personal Details : </Typography> */}
-                                        <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }} align='left' color='InfoText'>Working Details : </Typography>
+                                    <form onSubmit={editHide ? onSaveWorkSubmit : onUpdateWorkSubmit}>   
+                                        <Typography marginLeft={1.5} sx={{ marginBottom: 1, color: "orange" }}
+                                            align='center' > {(saveEnable || !editHide) && !fieldsDisable ?
+                                                "Require to fill all the fields." : "Click on edit button for update profile."}</Typography>    
+                                        <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }}
+                                            align='left' color='InfoText'>Working Details : </Typography>
                                         <Grid container spacing={1}>
                                             <Grid xs={12} sm={6} item>
                                                 <TextField
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
+                                                        maxLength: 10
                                                     }}
                                                     required
                                                     variant='outlined'
                                                     name="mobileno"
-                                                    label="Profession Monile No."
+                                                    label="Profession Mobile No "
                                                     placeholder=''
                                                     fullWidth
                                                     value={values.porf_mbl}
                                                     onChange={onChange}
                                                     error={errorEnable.porf_mbl}
                                                     helperText={errorEnable.porf_mbl && errorText}
-
                                                 />
                                             </Grid>
                                             <Grid xs={12} sm={6} item>
                                                 <FormControl fullWidth error={errorEnable.workTime} >
-                                                    <InputLabel htmlFor="grouped-native-select">Working Time</InputLabel>
-                                                    <Select name="time" label="Working Time"
+                                                    <InputLabel htmlFor="grouped-native-select">Working Time *</InputLabel>
+                                                    <Select name="time" label="Working Time *"
+                                                        
                                                         inputProps={{
                                                             readOnly: Boolean(fieldsDisable),
                                                         }}
@@ -378,7 +381,7 @@ const WorkProfile = (props) => {
                                         <Grid container spacing={1}>
                                             <Grid xs={12} sm={12} item>
                                                 <FormControl fullWidth error={errorEnable.language}>
-                                                    <InputLabel id="demo-multiple-checkbox-label">Language Known</InputLabel>
+                                                    <InputLabel id="demo-multiple-checkbox-label">Language Known *</InputLabel>
                                                     <Select
                                                         inputProps={{
                                                             readOnly: Boolean(fieldsDisable),
@@ -388,7 +391,7 @@ const WorkProfile = (props) => {
                                                         multiple
                                                         value={lang}
                                                         onChange={langHandleChange}
-                                                        input={<OutlinedInput label="Language Known" />}
+                                                        input={<OutlinedInput label="Language Known *" />}
                                                         renderValue={(selected) => selected.join(', ')}
                                                         MenuProps={MenuProps}
                                                     >
@@ -404,9 +407,9 @@ const WorkProfile = (props) => {
                                             </Grid>
                                             <Grid xs={12} sm={6} item>
                                                 <FormControl fullWidth error={errorEnable.study}>
-                                                    <InputLabel htmlFor="grouped-native-select">Studied Upto</InputLabel>
+                                                    <InputLabel htmlFor="grouped-native-select">Studied Upto *</InputLabel>
                                                     <Select
-                                                        name="studyselect" label="Studied Upto"
+                                                        name="studyselect" label="Studied Upto *"
                                                         inputProps={{
                                                             readOnly: Boolean(fieldsDisable),
                                                         }}
@@ -426,7 +429,6 @@ const WorkProfile = (props) => {
                                             </Grid>
                                             <Grid xs={12} sm={6} item>
                                                 <TextField
-                                                    // disabled={fieldsDisable}
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
                                                     }}
@@ -436,8 +438,7 @@ const WorkProfile = (props) => {
                                                     label="Other Education"
                                                     placeholder='N/A or Other Education Name'
                                                     fullWidth
-                                                    value={values.otherStudy}
-                                                    // onChange={(val) => { setValues((prevState) => { return { ...prevState, otherStudy: val.target.value } }) }}
+                                                    value={values.otherStudy}                                                   
                                                     onChange={onChange}
                                                     error={errorEnable.otherStudy}
                                                     helperText={errorEnable.otherStudy && errorText}

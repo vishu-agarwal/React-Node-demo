@@ -50,7 +50,7 @@ const Login = () => {
 
     const [otp, setotp] = useState('');
 
-    const { logUser, error, token, loadingLogin } = useSelector((state) => {
+    const { logUser, error,  loadingLogin } = useSelector((state) => {
         return { ...state.loginStore }
     });
 
@@ -62,7 +62,13 @@ const Login = () => {
         if (otpUser.length !== 0) {
             dispatch(otpActions.isOtpReducer(true));
             setCounter(59)
-            const debouncedSave = debounce(() => (dispatch(otpActions.countCompleteReducer())), 60000);
+            const debouncedSave = debounce(() => {
+                dispatch(otpActions.countCompleteReducer())
+                setotp()
+                setState({ snackOpen: true });
+                setSnackColor('info');
+                setSnackMessage("Otp is expired!\nResend it!");
+            }, 61000);
             debouncedSave();
         }
     }, [otpUser]);
@@ -134,22 +140,36 @@ const Login = () => {
     const [errorText, setErrorText] = useState('');
     const [errorEnable, setErrorEnable] = useState({
         email: false,
+        otp:false
     });
 
-    const onChangeEmail = (event) => {
-        setValues((prevState) => {
-            return { ...prevState, email: event.target.value.toLowerCase() };
-        });
-        if (
-            /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/.test(
-                event.target.value
-            )
-        ) {
-            setErrorText("")
-            setErrorEnable({ ...errorEnable, email: false });
-        } else {
-            setErrorEnable({ ...errorEnable, email: true });
-            setErrorText('Please enter valid Email address!');
+    const onChangeText = (event) => {
+        if (event.target.name === "email") {
+            setValues((prevState) => {
+                return { ...prevState, email: event.target.value.toLowerCase() };
+            });
+            if (
+                /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*$/.test(
+                    event.target.value
+                )
+            ) {
+                setErrorText("")
+                setErrorEnable({ ...errorEnable, email: false });
+            } else {
+                setErrorEnable({ ...errorEnable, email: true });
+                setErrorText('Please enter valid Email address!');
+            }
+        }
+        else if (event.target.name === "otp") {
+            setotp(event.target.value);
+            if (/^[0-9]{6}$/.test(event.target.value)
+            ) {
+                setErrorText("")
+                setErrorEnable({ ...errorEnable, otp: false });
+            } else {
+                setErrorEnable({ ...errorEnable, otp: true });
+                setErrorText('Only numbers are allowed!');
+            }
         }
     };
 
@@ -178,7 +198,6 @@ const Login = () => {
                     backgroundImage: `url(${abc})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: '100%',
-                    // marginTop: 15
                 }}
             >
                 <CardContent>
@@ -186,7 +205,7 @@ const Login = () => {
                         <Snackbar
                             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                             open={snackOpen}
-                            autoHideDuration={2000}
+                            autoHideDuration={3000}
                             onClose={closeSnackbar}
                         >
                             <Alert
@@ -207,14 +226,14 @@ const Login = () => {
                             </NavLink>
                         </Grid>
                         {isOtp && <Grid item xs={4} sm={4} align="left">
-                            <Typography fontWeight={500} align="center" color='textSecondary'>
+                            <Typography align="center" color='textSecondary'>
                                 Resend OTP in
                                 <span style={{ color: "#163758", fontWeight: "bold", fontSize: "20px" }}> 00:{counter}</span>
                             </Typography>
                         </Grid>}
                     </Grid>
                     <Grid align="center">
-                        <Typography variant="h4" fontWeight="1000" fontSize="30px">
+                        <Typography fontSize="30px">
                             Sign In as {values.role}
                         </Typography>
                         <form onSubmit={loginSubmitHandler}>
@@ -224,9 +243,10 @@ const Login = () => {
                                         required
                                         fullWidth
                                         id="email"
+                                        name="email"
                                         label="Email Address"
                                         value={values.email.toLowerCase()}
-                                        onChange={onChangeEmail}
+                                        onChange={onChangeText}
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
@@ -252,11 +272,10 @@ const Login = () => {
                                             required
                                             fullWidth
                                             id="otp"
+                                            name="otp"
                                             label="One Time Password (OTP)"
                                             value={otp}
-                                            onChange={(val) => {
-                                                setotp(val.target.value);
-                                            }}
+                                            onChange={onChangeText}
                                             sx={{
                                                 '& .MuiInputLabel-root': { color: '#163758' }, //styles the label
                                                 '& .MuiOutlinedInput-root': {
@@ -265,6 +284,11 @@ const Login = () => {
                                                 marginTop: 2,
                                                 color: '#163758',
                                             }}
+                                            inputProps={{
+                                                maxLength: 6
+                                            }}
+                                            error={errorEnable.otp}
+                                            helperText={errorEnable.otp && errorText}
                                         />
                                     )}
                                 </Grid>

@@ -106,7 +106,7 @@ const ShortListed = (props) => {
                                 <Snackbar
                                     anchorOrigin={{ vertical: "top", horizontal: "center" }}
                                     open={snackOpen}
-                                    autoHideDuration={6000}
+                                    autoHideDuration={4000}
                                     onClose={closeSnackbar}
                                 >
                                     <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
@@ -116,13 +116,13 @@ const ShortListed = (props) => {
                                 <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
                                     <Grid container direction={'row'} padding={2} >
                                         <Grid item xs={12} sm={10} align="left" >
-                                            <Typography variant="h4" color="white" >
+                                            <Typography fontSize={25} color="white" >
                                                 Sortlist
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={12} sm={2} align="right">
                                             {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
-                                            <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                            <CloseIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" onClick={props.click} />
                                         </Grid>
                                     </Grid>
                                 </Grid>

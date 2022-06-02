@@ -20,10 +20,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { acceptRequestThunk, rejectRequestThunk, deleteRequestThunk, fetchHelperRequestsThunk } from "../../store/slices/hireRequest-slice"
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
-import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
-import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined';
-import hireRequestActions from '../../store/slices/hireRequest-slice'
-import Loading from '../layouts/LoadingFile'
 
 const HireRequestCard = (props) => {
 
@@ -63,7 +59,7 @@ const HireRequestCard = (props) => {
             <Card sx={{
                 width: 450, height: 230,
                 marginTop: 1,
-
+                marginBottom: 1
             }} elevation={16}
             >
                 <CardContent >
@@ -77,7 +73,7 @@ const HireRequestCard = (props) => {
                             {props.values.user_id.charAt(0) === "C" && props.values.status === "pending!" &&
                                 <Tooltip title="Accepted">
                                     < IconButton onClick={onAcceptHandler} sx={{ padding: 0.5 }} aria-label="upload picture" component="span">
-                                        <CheckIcon fontWeight="fontWeightBold" fontSize="large" color="success" />
+                                        <CheckIcon fontWeight="bold" fontSize="large" color="success" />
                                     </IconButton>
                                 </Tooltip>}
                         </Grid>
@@ -109,11 +105,10 @@ const HireRequestCard = (props) => {
                             }
                             <Typography gutterBottom sx={{ fontSize: 15, textTransform: "capitalize" }} >
                                 Work : {
-                                    console.log(props.values)
-                                    // props.values.works.map((value, index) => {
-                                    //     return value.work + ", "
-                                    // })
-                                    }
+                                    props.values.works.map((value, index) => {
+                                        return value.work + ", "
+                                    })
+                                }
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }}  >
                                 {/* //yyyy-mm-dd */}

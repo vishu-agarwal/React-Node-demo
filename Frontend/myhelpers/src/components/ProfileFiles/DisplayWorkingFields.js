@@ -89,7 +89,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                         <Fragment key={i}>
                             <Grid xs={12} sm={4} item>
                                 <FormControl fullWidth error={errorEnable.category}>
-                                    <InputLabel htmlFor="grouped-native-select">Working Category</InputLabel>
+                                    <InputLabel htmlFor="grouped-native-select">Working Category *</InputLabel>
                                     <Select
                                         inputProps={{
                                             readOnly: Boolean(fieldsDisable),
@@ -97,7 +97,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                         name="category"
                                         value={x.category}
                                         onChange={e => handleChange(e, i)}
-                                        label="Working Category">
+                                        label="Working Category *">
                                         <MenuItem value="">---select---</MenuItem>
                                         <MenuItem value="Cook(2 Adult, 1 Child)">Cook(2 Adult, 1 Child)</MenuItem>
                                         <MenuItem value="Sweeping(1 BHK)">Sweeping(1 BHK)</MenuItem>
@@ -119,8 +119,8 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                             </Grid>
                             <Grid xs={12} sm={3.5} item>
                                 <FormControl fullWidth error={errorEnable.experience}>
-                                    <InputLabel htmlFor="grouped-native-select">Experience</InputLabel>
-                                    <Select label="Experience"
+                                    <InputLabel htmlFor="grouped-native-select">Experience *</InputLabel>
+                                    <Select label="Experience *"
                                         inputProps={{
                                             readOnly: Boolean(fieldsDisable),
                                         }}

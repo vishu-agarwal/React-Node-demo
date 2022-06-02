@@ -16,15 +16,15 @@ async function requestMail(email, name, status) {
         console.log(mailText, "..text1")
     }
     else if (status === "reject") {
-        mailText = ' Sorry! \n Yyour request from ' + name + ' is rejected . \n Thank you!'
+        mailText = ' Sorry! \n Your request from ' + name + ' is rejected .'
         console.log(mailText, "..text2")
     }
     else if (status === "delete") {
-        mailText = ' Sorry! \n  Your request from ' + name + ' is deleted . \n Thank you!'
+        mailText = ' Sorry! \n  Your request from ' + name + ' is deleted .'
         console.log(mailText, "..text3")
     }
     else if (status === "pending") {
-        mailText = ' Congratulation! \n You receive request from ' + name + '. \n Thank you!'
+        mailText = ' Congratulation! \n You receive a request from ' + name + '. \n Thank you!'
         console.log(mailText, "..text4")
     }
     console.log(mailText, "text", receiverMail, "mail")
@@ -72,7 +72,6 @@ const createHireRequest = async (req, res) => {
             const email = await userModel.findOne({ r_id: user.user_id })
             const name = await userModel.findOne({ r_id: req.params.rid })
             await requestMail(email.email, name.name, "pending")
-            // return res.status(200).send(update)
         }
         else {
             if (!r_id.charAt(0) === "H") {
@@ -85,7 +84,6 @@ const createHireRequest = async (req, res) => {
             const email = await userModel.findOne({ r_id: user.user_id })
             const name = await userModel.findOne({ r_id: req.params.rid })
             await requestMail(email.email, name.name, "pending")
-            // return res.status(200).send(hireRequest)
         }
         if (hireRequest) {
             const foundHelper = hireRequest.requested_user.filter((val) => {
@@ -125,7 +123,6 @@ const fetchHireRequest = async (req, res) => {
                     }
                 }
             }
-            // return res.status(200).send(hireRequest)
         }
         else if (req.params.rid.charAt(0) === "H") {
             const found = await hireRequestModel.find({ "requested_user.user_id": req.params.rid })
@@ -147,7 +144,6 @@ const fetchHireRequest = async (req, res) => {
                         })
                     }
                 }
-                // return res.status(200).send(hireRequest)
             }
         }
         return res.status(200).send(hireRequest)
@@ -188,7 +184,7 @@ const acceptClientRequest = async (req, res) => {
             const email = await userModel.findOne({ r_id: req.params.cid })
             const name = await userModel.findOne({ r_id: req.params.rid })
             await requestMail(email.email, name.name, "accept")
-            return res.status(200).send("You accept request of " + name.name + " !");
+            return res.status(200).send("You accept request of " + email.name.toUpperCase() + " !");
         }
     } catch (error) {
         return res.status(400).send(error.message)
@@ -208,7 +204,7 @@ const rejectClientRequest = async (req, res) => {
             const email = await userModel.findOne({ r_id: req.params.cid })
             const name = await userModel.findOne({ r_id: req.params.rid })
             await requestMail(email.email, name.name, "reject")
-            return res.status(200).send("You reject request of " + name.name + " !");
+            return res.status(200).send("You reject request of " + email.name.toUpperCase() + " !");
         }
     } catch (error) {
         res.status(400).send(error.message)
@@ -220,12 +216,9 @@ const deleteHelperRequest = async (req, res) => {
         { $pull: { requested_user: { user_id: req.params.hid } } }, { new: true })
     //email send to helper
     const email = await userModel.findOne({ r_id: req.params.hid })
-    // console.log("email..", email)
     const name = await userModel.findOne({ r_id: req.params.rid })
-    // console.log("name..", name)
     const mail = await requestMail(email.email, name.name, "delete")
-    // console.log(mail, "request mail...")
-    return res.status(200).send("You delete request for " + name.name + " !")
+    return res.status(200).send("You delete request of " + email.name.toUpperCase() + " !")
 }
 
 // update hire request form
@@ -240,14 +233,12 @@ const updateHireRequest = async (req, res) => {
                 const update = await hireRequestModel.findOneAndUpdate({ r_id: req.params.rid },
                     { requested_user: user }, { new: true })
                 if (update) {
-                    console.log("update,,,1", update)
                     const foundHelper = update.requested_user.filter((val) => {
                         if (val.user_id === req.body.user_id) {
                             return val
                         }
                     })
                     if (foundHelper.length) {
-                        console.log("foundHelper,,,2", foundHelper)
                         return res.status(200).send(foundHelper)
                     }
                 }
@@ -261,7 +252,6 @@ const updateHireRequest = async (req, res) => {
                     found.requested_user[idIndex].to_time = req.body.to_time,
                     found.requested_user[idIndex].description = req.body.description
                 const update = await found.save();
-                console.log("update,,,2",update)
                 if (update) {
                     const foundHelper = update.requested_user.filter((val) => {
                         if (val.user_id === req.body.user_id) {
@@ -273,7 +263,6 @@ const updateHireRequest = async (req, res) => {
                         return res.status(200).send(foundHelper)
                     }
                 }
-                // return res.status(200).send(update);
             }
         }
     } catch (error) {

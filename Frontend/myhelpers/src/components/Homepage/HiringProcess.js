@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CardMedia from '@mui/material/CardMedia';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const ScrollButton = () => {
 
@@ -29,7 +30,7 @@ const ScrollButton = () => {
         });
     };
     window.addEventListener('scroll', toggleVisible);
-    return (        
+    return (
         <img src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom} style={{ width: "10%" }} />
     );
 }
@@ -44,7 +45,7 @@ const HiringProcess = (props) => {
     let navigate = useNavigate()
 
     let { userProfile } = useSelector((state) => ({ ...state.profileStore }))
-    
+
     const [openModal, setOpenModel] = useState(false)
     const [openRequest, setOpenRequest] = useState(false)
     const [openHired, setOpenHired] = useState(false)
@@ -71,18 +72,18 @@ const HiringProcess = (props) => {
 
     return (
         <div>
-            <Grid container justifyContent="center">
+            <Grid container justifyContent="center" marginBottom={5}>
                 <Grid item xs={12} md={12} sm={12} style={{ position: "relative" }}>
                     <div>
                         <img src={require("../allImages/helperHome.jpg")} width={"100%"} />
                     </div>
                     <div style={{ height: "99.5%", width: "100%", background: "#000000", opacity: 0.5, position: "absolute", top: 0, }} align="center">
-                        <Typography sx={{ typography: { sm: 'h6', xs: 'body2', md: 'h4', lg: 'h2' }, marginTop: { sm: "2%", xs: "2%", md: "5%" } }}
-                            style={{ fontWeight: 900, color: "white" }} >
+                        <Typography sx={{ typography: { sm: 'h6', xs: 'body2', md: 'h4', lg: 'h3' }, marginTop: { sm: "1%", xs: "0%", md: "2%" } }}
+                            style={{ color: "white" }} >
                             FIND YOUR SUITABLE WORK EASILY
                         </Typography>
                         <Grid container item xs={12} sm={6} md={4} justifyContent="center">
-                            <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} style={{ fontWeight: 900, color: "white" }}
+                            <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} style={{ color: "white" }}
                                 marginTop="1%" >
                                 Are you find work ? Now you don't have to roam around for work. You get calls and requests for work directly on your mobile.
                             </Typography>
@@ -94,13 +95,22 @@ const HiringProcess = (props) => {
                                 sx={{
                                     marginTop: { md: "2%" },
                                     button: { sm: "medium", xs: "small", md: "large" }, backgroundColor: '#ff001d', color: "white",
+                                    fontSize: "1rem",
                                     display: 'block', width: { sm: '30%', xs: "30%", md: "20%", lg: "20%" }, height: 50
                                 }}
                             >
-                                SEE REQUESTS
+                                Create Profile
                             </Button>
                         </Grid>
-                        <Grid container item justifyContent="center" sx={{ marginTop: { lg: "5%" } }} >
+                        <Grid container item xs={12} sm={6} md={4} justifyContent="center" sx={{ border: "2px solid white" }} marginTop="1.5%">
+                            <Typography align="center" sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }}
+                                style={{ color: "white", margin: "2%" }}>
+                                -&gt; 1st step login has completed. <br />
+                                -&gt; Next step is create your profile for getting work requests from users. <br />
+                                -&gt; If already created then ignore it.
+                            </Typography>
+                        </Grid>
+                        <Grid container item justifyContent="center" >
                             <ScrollButton />
                         </Grid>
                     </div>
@@ -112,7 +122,7 @@ const HiringProcess = (props) => {
                                 <CardContent sx={{ padding: 0 }}>
                                     <Grid container >
                                         <Grid item xs={12} sm={12} md={12} >
-                                            <Typography style={{ fontWeight: 600 }} marginTop={1} variant="h5">
+                                            <Typography marginTop={1} fontSize="22px">
                                                 Are you less educated? Or are you not educated? It is always difficult for you to find work. My Helpers helps
                                                 you find work as per your choice. This service is absolutely free for you.
                                                 Now you don't have to roam around for work. For work, you will get a requests from clients on My Helpers site.
@@ -129,7 +139,7 @@ const HiringProcess = (props) => {
                 <Grid item xs={12} sm={12} md={12} margin={2} >
                     <Grid container justifyContent="center" >
                         <Grid item sm={12} xs={12} md={12}>
-                            <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={0} variant="h3">
+                            <Typography style={{ color: "#163758" }} marginTop={0} variant="h4">
                                 How It Works ?
                             </Typography>
                         </Grid>
@@ -140,10 +150,10 @@ const HiringProcess = (props) => {
                                         return <Grid item xs={6} sm={4} md={2} key={`${val.images}`}>
                                             <Grid container>
                                                 <Grid item xs={12} sm={12} md={12} >
-                                                    <img src={val.images} onClick={val.request === "work" ? onRequestClick : onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"100%"} />
+                                                    <img src={val.images} onClick={val.request === "work" ? onRequestClick : onHireClick} style={{ borderRadius: "50%", cursor: "pointer" }} height={"100%"} width={"80%"} />
                                                 </Grid>
                                                 <Grid item xs={12} sm={12} md={12}>
-                                                    <Typography paddingTop={2} style={{ fontWeight: 900 }} variant="h5" color="#163758" >{val.text}</Typography>
+                                                    <Typography paddingTop={2} variant="h5" color="#163758" >{val.text}</Typography>
                                                 </Grid>
                                             </Grid>
                                         </Grid>
@@ -157,7 +167,7 @@ const HiringProcess = (props) => {
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} margin={1} marginBottom={0} >
-                    <Typography style={{ fontWeight: 500, color: "#163758" }} marginTop={2} marginBottom={2} variant="h3">
+                    <Typography style={{ color: "#163758" }} marginTop={2} marginBottom={2} variant="h4">
                         Why should you find & hire Workers from My Helpers ?
                     </Typography>
                     <Grid container justifyContent="center" >
@@ -174,7 +184,7 @@ const HiringProcess = (props) => {
                                             />
                                         </Grid>
                                         <Grid item xs={12} sm={12} md={8} align="left"  >
-                                            <Typography style={{ fontWeight: 600, textAlign: "justify" }} margin={2} variant="h6">
+                                            <Typography style={{ textAlign: "justify" }} margin={2} fontSize="1.2rem">
                                                 Simple choices affect the world we live in.
                                                 We are flooded with multiple choices for things we consume every day - Which Tea/Coffee? Which Cereal? Which Car? What kind of Fruits & Vegetables? Etc.
                                                 At times, these simple choices we make every moment affect our environment, planet or a group of individuals or community, directly or indirectly. Or else, they are just simple means of earning financial gains.

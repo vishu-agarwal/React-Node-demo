@@ -1,16 +1,13 @@
 import React from 'react'
-import { Card, CardContent,  Grid, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { useState, useEffect } from 'react';
-// import { Button } from "../../App.css"
+import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import WorkRequest from '../Modals/WorkRequests';
 
 
 const ScrollButton = () => {
@@ -28,12 +25,7 @@ const ScrollButton = () => {
     };
 
     const scrollToBottom = () => {
-        // window.scrollTo({
-        //     top: document.documentElement.scrollHeight,
-        //     behavior: 'auto'
-        //     /* you can also use 'auto' behaviour 
-        //        in place of 'smooth' */
-        // });
+        
         window.scroll({
             top: document.documentElement.offsetHeight,
             left: 0,
@@ -44,9 +36,7 @@ const ScrollButton = () => {
     window.addEventListener('scroll', toggleVisible);
 
     return (
-        <img
-            src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom}
-            // sx={{ display: 'block' }}
+        <img src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom}
             style={{
                 width: "10%",
                 display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
@@ -78,7 +68,7 @@ const AboutPage = (props) => {
 
     return (
         <div>
-            
+
             <Grid container justifyContent="center">
                 <Grid item xs={12} md={12} sm={12} style={{ position: "relative" }}>
                     <div>
@@ -99,7 +89,7 @@ const AboutPage = (props) => {
                                 <CardContent sx={{ padding: 0 }}>
                                     <Grid container justifyContent="center" >
                                         <Grid item xs={11} sm={10} md={10} >
-                                            <Typography style={{ fontWeight: 600, color: "", textAlign: "justify" }} marginTop={1} variant="h5">
+                                            <Typography style={{ textAlign: "justify" }} marginTop={1} fontSize="18px">
                                                 My Helpers is the first social impact startup dedicated to eradicate placement
                                                 fees and human trafficking for the purpose of forced labour.
                                                 Its impact has been recognised by many organisations, including the International Labour Organisation.
@@ -114,20 +104,20 @@ const AboutPage = (props) => {
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={11} sm={10} md={10} >
-                                            <Typography style={{ fontWeight: 600, color: "", textAlign: "justify" }} marginTop={5} variant="h5">
+                                            <Typography style={{ textAlign: "justify" }} marginTop={5} fontSize="18px">
                                                 My Helpers provides an online platform, we aim to improve Indian domestic workers' living and working conditions,
                                                 enable millions of migrant domestic workers to have access to the job market for free
                                                 and foster the disappearance of unethical recruitment agencies.
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={11} sm={10} md={10} >
-                                            <Typography style={{ fontWeight: 600, color: "", textAlign: "justify" }} marginTop={5} variant="h5">
+                                            <Typography style={{ textAlign: "justify" }} marginTop={5} fontSize="18px">
                                                 As an user, You can browse thousands of domestic helper profiles who meet your specific needs
                                                 and adapt to your personal habits and values.
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={12} sm={10} md={10} >
-                                            <Typography style={{ fontWeight: 600, color: "", textAlign: "justify" }} marginTop={5} variant="h5">
+                                            <Typography style={{ textAlign: "justify" }} marginTop={5} fontSize="18px">
                                                 As a domestic helper, You can answer to hundreds of employer job ads to find the family
                                                 that will best match your experience and your wishes, for free.
                                             </Typography>
@@ -138,53 +128,53 @@ const AboutPage = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={12}  margin={2} >
+                <Grid item xs={12} sm={12} md={12} margin={2} >
                     <Grid container justifyContent="center" >
                         <Grid item xs={11} md={11} lg={11} sm={11} marginTop={"1%"}>
                             <Grid container spacing={4} justifyContent="center" >
-                                <Grid item>
+                                <Grid item lg={3} align="center">
                                     <Card elevation={12} sx={{ height: 170, width: 300 }}>
                                         <CardContent sx={{ padding: 0 }}>
-                                            <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
+                                            <Typography marginTop={2} fontSize="2rem" color="#163758" >
                                                 53,500+
                                             </Typography>
-                                            <Typography style={{ fontWeight: 900 }} variant="h6"  >
+                                            <Typography >
                                                 Workers have joined My Helpers to connect directly with nearby Employers
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid>
-                                <Grid item >
+                                <Grid item lg={3}>
                                     <Card elevation={12} sx={{ height: 170, width: 300 }} >
                                         <CardContent sx={{ padding: 0 }}>
-                                            <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
+                                            <Typography marginTop={2} fontSize="2rem" color="#163758" >
                                                 25,300+
                                             </Typography>
-                                            <Typography style={{ fontWeight: 900 }} variant="h6"  >
+                                            <Typography>
                                                 Workers have received employment offers directly from Users
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid>
-                                <Grid item >
+                                <Grid item lg={3} >
                                     <Card elevation={12} sx={{ height: 170, width: 300 }} >
                                         <CardContent sx={{ padding: 0 }}>
-                                            < Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
+                                            < Typography marginTop={2} fontSize="2rem" color="#163758" >
                                                 20,500+
                                             </Typography>
-                                            <Typography style={{ fontWeight: 900 }} variant="h6" >
+                                            <Typography  >
                                                 Women Workers have received employment offers directly from nearby Employers
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid>
-                                <Grid item >
+                                <Grid item lg={3}>
                                     <Card elevation={12} sx={{ height: 170, width: 300 }}>
-                                        <CardContent sx={{ padding: 0 }}>
-                                            <Typography marginTop={2} style={{ fontWeight: 900 }} variant="h4" color="#163758" >
+                                        <CardContent sx={{ padding: 0 }} display="flex" >
+                                            <Typography marginTop={2} fontSize="2rem" color="#163758" >
                                                 1,26,300+
                                             </Typography>
-                                            <Typography style={{ fontWeight: 900 }} variant="h6"  >
+                                            <Typography >
                                                 Family members of Workers have been supported by the My Helpers initiative
                                             </Typography>
                                         </CardContent>
@@ -197,7 +187,7 @@ const AboutPage = (props) => {
                 <Grid item xs={11} sm={11} md={11} margin={1} marginBottom={2} >
                     <Grid container justifyContent="center" >
                         <Grid item sm={12} xs={12} md={12}>
-                            <Typography style={{ fontWeight: 900, color: "#163758" }} marginTop={1} variant="h3">
+                            <Typography style={{ color: "#163758" }} marginTop={1} variant="h4">
                                 Why My Helpers ?
                             </Typography>
                         </Grid>

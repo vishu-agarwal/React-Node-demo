@@ -105,7 +105,7 @@ const HiredHelper = (props) => {
                                     <Snackbar
                                         anchorOrigin={{ vertical: "top", horizontal: "center" }}
                                         open={snackOpen}
-                                        autoHideDuration={6000}
+                                        autoHideDuration={4000}
                                         onClose={closeSnackbar}
                                     >
                                         <Alert onClose={closeSnackbar} severity={snackColor} sx={{ width: '100%' }}>
@@ -113,27 +113,25 @@ const HiredHelper = (props) => {
                                         </Alert>
                                     </Snackbar>
                                     <Grid item xs={12} sm={12} md={12} backgroundColor="#163758">
-                                        <Grid container direction={'row'} padding={2} >
+                                        <Grid container direction={'row'} padding={1.5} >
                                             <Grid item xs={12} sm={10} align="left" >
-                                                <Typography variant="h4" color="white" >
+                                                <Typography fontSize={25} color="white" >
                                                     Hired
                                                 </Typography>
                                             </Grid>
 
                                             <Grid item xs={12} sm={2} align="right">
 
-                                                <CloseIcon sx={{ color: "white", fontSize: 40 }} cursor="pointer" onClick={props.click} />
+                                                <CloseIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" onClick={props.click} />
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid container style={{ maxHeight: '550px', overflow: 'auto' }}>
                                     {
-                                        // console.log(!requestLoading && filterHired, "grid...")
                                         !requestLoading && (
                                             filterHired.length !== 0 ?
                                                 filterHired.map((val, index) => {
-                                                    // if (val.status === "hired!") {
                                                     return <Grid item xs={12} sm={12} marginBottom={1} align="center" key={index}>
                                                         <HireRequestCard values={val} closeModal={props.click} />
                                                     </Grid>

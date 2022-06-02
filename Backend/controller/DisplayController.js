@@ -111,7 +111,7 @@ const searching = async (req, res) => {
 
     let field2 = ""
     field === "Location" ?
-        field = "address[pincode]"
+        field = "address.pincode"
         : field === "Name" ?
             field = "name"
             : field === "Gender" ?
@@ -153,8 +153,12 @@ const searching = async (req, res) => {
         let found
         console.log("field name....", field, "search...", req.query.searchValue)
         field === "gender" ? found = await userModel.find({ [field]: req.query.searchValue })
-            :
-            found = await userModel.find({ $where: `/^${req.query.searchValue}.*/.test(this.${field})` })
+            : field === "name" ?
+                found = await userModel.find({ $where: `/^${req.query.searchValue}.*/.test(this.${field})` }) : null
+        // : found = await userModel.find({ "address.pincode":  })
+        // console.log(found);
+        // : found = await userModel.find({ "address.pincode": { '$regex': '^[0-9]*$', '$options': 'i' } )
+        // found = await userModel.find({ 'address.pincode': { $regex: `/^${req.query.searchValue}.*/` } })
         if (found.length === 0) {
             req.params.role = "Client"
             return fetchAllData(req, res)

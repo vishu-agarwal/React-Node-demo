@@ -29,14 +29,18 @@ const Content = () => {
           // marginTop: 15
         }}>
         <CardContent>
-          <Typography variant="h4" fontWeight='1000' fontSize='30px'> Login As ?</Typography>
+          <Typography variant="h4"  fontSize='30px'> Login As ?</Typography>
           <div>
-            <NavLink to="/login/Client" style={{ textDecoration: 'none' }}><Button variant="contained" style={{ marginTop: "35px", minHeight: '50px', backgroundColor:'#163758' ,fontSize: '25px' }} defaultValue='client' fullWidth sx={{ marginTop: 2 }}>
+            <NavLink to="/login/Client" style={{ textDecoration: 'none' }}><Button variant="contained"
+              style={{ marginTop: "35px", minHeight: '50px', backgroundColor: '#163758', fontSize: '18px' }}
+              defaultValue='client' fullWidth sx={{ marginTop: 2 }}>
               I want to hire Helpers !
             </Button></NavLink>
           </div>
           <div>
-            <NavLink to="/login/Helper" style={{ textDecoration: 'none' }}><Button variant="contained" style={{ minHeight: '50px', fontSize: '25px', backgroundColor:'#163758' }} defaultValue='helper' fullWidth sx={{ marginTop: 2 }}>
+            <NavLink to="/login/Helper" style={{ textDecoration: 'none' }}><Button variant="contained"
+              style={{ minHeight: '50px', fontSize: '18px', backgroundColor: '#163758' }}
+              defaultValue='helper' fullWidth sx={{ marginTop: 2 }}>
               I want to do Work !
             </Button></NavLink>
           </div>
