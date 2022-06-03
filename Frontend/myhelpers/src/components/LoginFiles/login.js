@@ -1,6 +1,4 @@
-//header file
 import React from 'react';
-
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import { Card, Typography } from '@mui/material';
@@ -64,11 +62,11 @@ const Login = () => {
             setCounter(59)
             const debouncedSave = debounce(() => {
                 dispatch(otpActions.countCompleteReducer())
-                setotp()
+                setotp("")
                 setState({ snackOpen: true });
                 setSnackColor('info');
                 setSnackMessage("Otp is expired!\nResend it!");
-            }, 61000);
+            }, 60000);
             debouncedSave();
         }
     }, [otpUser]);

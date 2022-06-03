@@ -1,21 +1,13 @@
-//header file
 import * as React from 'react';
-
-//   mui
 import CardContent from '@mui/material/CardContent';
-
 import { Card, Grid, Typography } from '@mui/material';
-
 import Loading from '../layouts/LoadingFile'
 import { useState, useEffect } from 'react';
-
 import { displayActions, fetchAllThunk, fetchSaveUserThunk } from '../../store/slices/display-slice';
-import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import CardJS from '../Card';
 import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
-
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -30,8 +22,7 @@ const Alert = React.forwardRef(function Alert(
 const ShortListed = (props) => {
     const rid = localStorage.getItem("r_id")
     const dispatch = useDispatch()
-    // let { message, userProfile, error } = useSelector((state) => ({ ...state.profileStore }))
-    // let { message, workData, error } = useSelector((state) => ({ ...state.workProfileStore }))
+
     let { displayData, saveUser, hireUser, displayMessage, displayError, displayLoading } = useSelector((state) => ({ ...state.displayStore }))
 
     const [state, setState] = useState({
@@ -106,7 +97,6 @@ const ShortListed = (props) => {
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={12} sm={2} align="right">
-                                            {/* <Button variant="contained" color="error" onClick={props.click}>Close</Button> */}
                                             <CloseIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" onClick={props.click} />
                                         </Grid>
                                     </Grid>

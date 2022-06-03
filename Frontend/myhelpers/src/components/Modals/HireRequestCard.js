@@ -1,24 +1,16 @@
 import * as React from "react";
-
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import CheckIcon from '@mui/icons-material/Check';
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { Grid, IconButton } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import Rating from '@mui/material/Rating';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
-import { acceptRequestThunk, rejectRequestThunk, deleteRequestThunk, fetchHelperRequestsThunk } from "../../store/slices/hireRequest-slice"
+import {  useDispatch } from 'react-redux';
+import { acceptRequestThunk, rejectRequestThunk, deleteRequestThunk, fetchHelperRequestsThunk, hireRequestActions } from "../../store/slices/hireRequest-slice"
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
 
 const HireRequestCard = (props) => {
@@ -50,8 +42,14 @@ const HireRequestCard = (props) => {
             user_id: props.values.user_id,
             rid
         }
-        props.values.user_id.charAt(0) === "C" ? dispatch((rejectRequestThunk(arg))) : dispatch((deleteRequestThunk(arg)))
-        dispatch(fetchHelperRequestsThunk(rid))
+        if (props.values.user_id.charAt(0) === "C") {
+            dispatch((rejectRequestThunk(arg)))
+            dispatch(fetchHelperRequestsThunk(rid))
+        } else {
+            dispatch(hireRequestActions.emptySingleUser())
+            dispatch((deleteRequestThunk(arg)))
+            dispatch(fetchHelperRequestsThunk(rid))
+        }
     }
 
     return (
@@ -70,7 +68,8 @@ const HireRequestCard = (props) => {
                             </Typography>
                         </Grid>
                         <Grid item xs={1} sm={1} justifyContent="right" >
-                            {props.values.user_id.charAt(0) === "C" && props.values.status === "pending!" &&
+                            {!props.message.length &&
+                                props.values.user_id.charAt(0) === "C" && props.values.status === "pending!" &&
                                 <Tooltip title="Accepted">
                                     < IconButton onClick={onAcceptHandler} sx={{ padding: 0.5 }} aria-label="upload picture" component="span">
                                         <CheckIcon fontWeight="bold" fontSize="large" color="success" />
@@ -87,21 +86,24 @@ const HireRequestCard = (props) => {
                     </Grid>
                     <Grid container direction={'row'} >
                         <Grid item xs={12} sm={12} align="left" paddingLeft={1}>
-                            <Typography gutterBottom sx={{ fontSize: 15, textTransform: "capitalize" }} component={'div'} >
-                                Status : {
-                                    <Typography gutterBottom color={props.values.status === "hired!" ? "#00a152" : props.values.status === "pending!"
-                                        ? "#faaf00" : "red"} sx={{ fontSize: 16, textTransform: "capitalize" }} display="inline">
-                                        {props.values.status}
-                                    </Typography>
-                                }
-                            </Typography>
-                            {props.values.message ?
-                                <>
-                                    <Typography gutterBottom sx={{ fontSize: 15 }}  >Message : </Typography>
-                                    <Typography gutterBottom color="error" sx={{ fontSize: 16 }} display="inline"> {props.values.message}</Typography>
-                                </>
-                                :
-                                ""
+                            {!props.message.length &&
+                                <Typography gutterBottom sx={{ fontSize: 15, textTransform: "capitalize" }} component={'div'} >
+                                    Status : {
+                                        <Typography gutterBottom color={props.values.status === "hired!" ? "#00a152" : props.values.status === "pending!"
+                                            ? "#faaf00" : "red"} sx={{ fontSize: 16, textTransform: "capitalize" }} display="inline">
+                                            {props.values.status}
+                                        </Typography>
+                                    }
+                                </Typography>
+                            }
+                            {props.message.length !== 0 &&
+                                <Typography gutterBottom sx={{ fontSize: 15 }} component={'div'} >
+                                    Message : {
+                                        <Typography gutterBottom color={"red"} sx={{ fontSize: 16 }} display="inline">
+                                            {props.message}
+                                        </Typography>
+                                    }
+                                </Typography>
                             }
                             <Typography gutterBottom sx={{ fontSize: 15, textTransform: "capitalize" }} >
                                 Work : {

@@ -57,39 +57,39 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
-        address: 
-            {
-                state: {
-                    type: String,
-                    trim: true,
-                    lowercase: true,
-                },
-                city: {
-                    type: String,
-                    trim: true,
-                    lowercase: true,
-                },
-                pincode: {
-                    type: Number,
-                    min: 6,
-                    trim: true,
-                },
-                landmark: {
-                    type: String,
-                    lowercase: true,
-                    trim: true,
-                },
-                house_name: {
-                    type: String,
-                    lowercase: true,
-                    trim: true,
-                },
-                house_no: {
-                    type: String,
-                    uppercase: true,
-                    trim: true,
-                },
+        address:
+        {
+            state: {
+                type: String,
+                trim: true,
+                lowercase: true,
             },
+            city: {
+                type: String,
+                trim: true,
+                lowercase: true,
+            },
+            pincode: {
+                type: String,
+                min: 6,
+                trim: true,
+            },
+            landmark: {
+                type: String,
+                lowercase: true,
+                trim: true,
+            },
+            house_name: {
+                type: String,
+                lowercase: true,
+                trim: true,
+            },
+            house_no: {
+                type: String,
+                uppercase: true,
+                trim: true,
+            },
+        },
         alternate_mobile_number: {
             type: Number,
             trim: true,

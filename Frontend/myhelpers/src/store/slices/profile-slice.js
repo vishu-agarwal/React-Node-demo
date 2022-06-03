@@ -9,13 +9,12 @@ const initialState = {
     email: "",
     avatar: []
 }
-const varToken = localStorage.getItem("logToken");
 
 export const avatarThunk = createAsyncThunk("userProfile/avatarThunk", async (arg) => {
     try {
         const res = await axios.post(`/myhelper/upldAvatar/${arg.rid}`, arg.formdata, {
             headers: {
-                Authorization: "Bearer " + varToken
+                Authorization: "Bearer " + localStorage.getItem("logToken")
             },
         }, arg.config)
         return res
@@ -27,7 +26,7 @@ export const aadharThunk = createAsyncThunk("userProfile/aadharThunk", async (ar
     try {
         const res = await axios.post(`/myhelper/upldAadhar/${arg.rid}`, arg.formdata, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             },
         }, arg.config)
         return res
@@ -60,7 +59,7 @@ export const createProfileThunk = createAsyncThunk("userProfile/createProfileThu
         };
         const userRes = await axios.post(`/myhelpers/crtProfile/${arg.rid}`, data, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             },
         })
         return userRes
@@ -84,7 +83,6 @@ export const fetchUserProfileThunk = createAsyncThunk("userProfile/fetchProfileT
         throw new Error(error.response.data)
     }
 })
-
 
 const profileSlice = createSlice({
     name: 'userProfile',
@@ -158,9 +156,7 @@ const profileSlice = createSlice({
         [fetchUserProfileThunk.rejected]: (state, error) => {
             state.profileLoading = false
             state.profileError = error.error.message
-        },
-        
-        
+        },      
     }
 })
 

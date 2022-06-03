@@ -87,7 +87,7 @@ const loginController = async (req, res) => {
         const found = await userModel.findOne({ email: req.body.email });
         const user = new userModel(found)
         const token = await user.generateAuthToken()
-        const removeOtp = await userModel.findOneAndUpdate({email:found.email},{otp:''},{new:true})
+        const removeOtp = await userModel.findOneAndUpdate({email:found.email},{otp:' '},{new:true})
         return res.status(200).send({ removeOtp, token })
     }
     catch (error) {

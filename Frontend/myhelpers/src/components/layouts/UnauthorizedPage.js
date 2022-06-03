@@ -1,6 +1,4 @@
-import { ThemeProvider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-// import theme from "../Theme";
 
 export default function UnauthorisedPage() {
     return (
@@ -15,14 +13,12 @@ export default function UnauthorisedPage() {
                 height: "100%",
             }}
         >
-
             <Box
                 spacing={0}
                 direction="row"
                 alignItems="center"
                 justifyContent="center"
                 marginLeft="25%"
-                // paddingTop="45px"
                 paddingBottom="45px"
                 align="center"
             >
@@ -35,6 +31,5 @@ export default function UnauthorisedPage() {
                 />
             </Box>
         </Box>
-
     );
 }

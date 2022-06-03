@@ -11,8 +11,6 @@ const initialState = {
     displayError: "",
 }
 
-const varToken = localStorage.getItem("logToken");
-
 //fetch all data of helpers
 export const fetchAllThunk = createAsyncThunk("displayAll/fetchAllThunk", async (arg) => {
     try {
@@ -32,7 +30,7 @@ export const fetchViewUserDataThunk = createAsyncThunk("displayAll/fetchViewUser
         const fetchUser = await axios.get(`/myhelpers/userProfile/fetch/${arg}`,
             {
                 headers: {
-                    Authorization: "Bearer " + varToken,
+                    Authorization: "Bearer " + localStorage.getItem("logToken"),
                 },
             })
         return fetchUser
@@ -57,7 +55,7 @@ export const searchThunk = createAsyncThunk("displayAll/searchThunk", async (arg
     try {
         const fetchRes = await axios.get(`/myhelpers/search?field=${arg.workSearch}&searchValue=${arg.filterWork}`, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             },
         })
         return fetchRes
@@ -69,7 +67,7 @@ export const sortThunk = createAsyncThunk("displayAll/sortThunk", async (arg) =>
     try {
         const fetchRes = await axios.get(`/myhelpers/sort?field=${arg.field}&sortValue=${arg.sort}`, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             },
         })
         return fetchRes
@@ -84,7 +82,7 @@ export const saveThunk = createAsyncThunk("displayAll/saveThunk", async (arg) =>
         }
         const fetchRes = await axios.post(`/myhelpers/saveUser/${arg.rid}`, data, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             }
         }
         )
@@ -102,7 +100,7 @@ export const starThunk = createAsyncThunk("displayAll/starThunk", async (arg) =>
         }
         const res = await axios.put(`/myhelper/updateStar/${arg.rid}`, data, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             },
         })
         return res;

@@ -1,7 +1,7 @@
 //footer file
 import React from 'react'
 import '../../App.css';
-import { Card, Grid, Typography } from '@mui/material';
+import {  Grid } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
@@ -18,7 +18,6 @@ const Footer = () => {
             <Grid item xs={4} sm={4} md={4} lg={4} align="left" paddingTop={2} >
               Designed By Vishakha Agarwal
             </Grid>
-
             <Grid item xs={4} sm={4} md={4} lg={4} align="center" paddingTop={2} >
               <FacebookIcon sx={{ cursor: "pointer" }} /> <InstagramIcon sx={{ cursor: "pointer" }} />
               <WhatsAppIcon sx={{ cursor: "pointer" }} /> <TwitterIcon sx={{ cursor: "pointer" }} />
@@ -30,7 +29,6 @@ const Footer = () => {
           </Grid >
         </Grid>
       </Grid>
-
     </footer >
   )
 }

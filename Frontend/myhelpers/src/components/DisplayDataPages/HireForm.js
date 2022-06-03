@@ -1,9 +1,7 @@
 import * as React from 'react';
-//   mui
 import Modal from '@mui/material/Modal';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
 import { Card, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
@@ -20,12 +18,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from 'react';
 import { hireRequestActions } from '../../store/slices/hireRequest-slice'
 import { sendHireRequestThunk, updateHireRequestThunk, fetchSingleHireRequestThunk } from '../../store/slices/hireRequest-slice';
-import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import CheckIcon from '@mui/icons-material/Check';
 import FormHelperText from '@mui/material/FormHelperText';
-
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
@@ -36,10 +32,6 @@ const Alert = React.forwardRef(function Alert(
     ref,
 ) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-const Input = styled('input')({
-    display: 'none',
 });
 
 const ITEM_HEIGHT = 48;
@@ -516,12 +508,10 @@ const HireForm = (props) => {
                                 </Grid>
                                 <Grid container justifyContent="center">
                                     <Grid item xs={11} sm={11} md={11} margin={1} align="center">
-                                        <form onSubmit={editHide ? onSendRequest : onUpdateRequest}>
-                                            
+                                        <form onSubmit={editHide ? onSendRequest : onUpdateRequest}>                                            
                                             <Typography marginLeft={1.5} sx={{ marginBottom: 1,color:"orange" }}
-                                                align='center' > {(saveEnable || !editHide) && !fieldsDisable ?
-                                                    "Require to fill all the fields." : "Click on edit button for update profile."} </Typography>
-                                            
+                                                align='center' > {!fieldsDisable?
+                                                    "Require to fill all the fields." : "Click on edit button for update profile."} </Typography>                                            
                                             <Typography variant='subtitle1' marginLeft={1.5} sx={{ marginBottom: 1 }}
                                                 align='left' color='InfoText'>Work : </Typography>
                                             <Grid container spacing={1} >

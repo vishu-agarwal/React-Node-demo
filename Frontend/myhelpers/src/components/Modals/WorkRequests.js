@@ -22,6 +22,7 @@ const Alert = React.forwardRef(function Alert(
 const WorkRequest = (props) => {
     const rid = localStorage.getItem("r_id")
     const dispatch = useDispatch()
+
     let { requestMessage, hireRequestData, requestError, requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
     const filterHelper = hireRequestData?.filter((val) => rid.charAt(0) === "H" && val.status === "pending!")
     const filterClient = hireRequestData?.filter((val) => rid.charAt(0) === "C" && val.status !== "hired!")
@@ -41,6 +42,7 @@ const WorkRequest = (props) => {
     useEffect(() => {
         dispatch(fetchHelperRequestsThunk(rid))
     }, [])
+
     useEffect(() => {
         if (requestMessage.length !== 0) {
             setState({ snackOpen: true });
@@ -56,6 +58,13 @@ const WorkRequest = (props) => {
         }
     }, [requestMessage, requestError])
 
+    function convert(str) {
+        var date = new Date(str),
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + date.getDate()).slice(-2);
+        return [date.getFullYear(), mnth, day].join("-");
+    }
+    var message = ""
     return (
         <Modal
             open={props.open}
@@ -102,8 +111,22 @@ const WorkRequest = (props) => {
                                     {
                                         (!requestLoading && rid.charAt(0) === 'C') ? (filterClient.length !== 0 ?
                                             filterClient.map((val, index) => {
-                                                return <Grid item xs={12} sm={12} marginBottom={1} align="center" key={index}>
-                                                    <HireRequestCard values={val} closeModal={props.click} />
+                                                const today = new Date()
+                                                const nextTime = new Date(today.setTime(today.getTime() + 1 * 60 * 60 * 1000))
+                                                const nowTime = nextTime.getHours() + ":" + nextTime.getMinutes() + ":" + nextTime.getSeconds()
+                                                console.log(convert(today), "today", val.to_date, nowTime, "time", val.to_time)
+                                                console.log(val.to_date < convert(today))
+                                                if (val.to_date < convert(today)) {
+                                                    message = "Request date expired !"
+                                                }
+                                                else if (val.to_time < nowTime) {
+                                                    message = "Request time expired !"
+                                                }
+                                                else {
+                                                    message = ""
+                                                }
+                                                return <Grid item xs={12} sm={12} marginBottom={1} align="center" key={index} >
+                                                    <HireRequestCard values={val} closeModal={props.click} message={message} />
                                                 </Grid>
                                             })
                                             :
@@ -117,9 +140,22 @@ const WorkRequest = (props) => {
                                             : (
                                                 (!requestLoading && filterHelper.length !== 0) ?
                                                     filterHelper.map((val, index) => {
-
+                                                        const today = new Date()
+                                                        const nextTime = new Date(today.setTime(today.getTime() + 1 * 60 * 60 * 1000))
+                                                        const nowTime = nextTime.getHours() + ":" + nextTime.getMinutes() + ":" + nextTime.getSeconds()
+                                                        console.log(convert(today), "today", val.to_date, nowTime, "time", val.to_time)
+                                                        console.log(val.to_date < convert(today))
+                                                        if (val.to_date < convert(today)) {
+                                                            message = "Request date expired !"
+                                                        }
+                                                        else if (val.to_time < nowTime) {
+                                                            message = "Request time expired !"
+                                                        }
+                                                        else {
+                                                            message = ""
+                                                        }
                                                         return <Grid item xs={12} sm={12} align="center" key={index}>
-                                                            <HireRequestCard values={val} closeModal={props.click} />
+                                                            <HireRequestCard values={val} closeModal={props.click} message={message} />
                                                         </Grid>
                                                     })
                                                     :
@@ -129,8 +165,7 @@ const WorkRequest = (props) => {
                                                             alt="Page No Found..."
                                                             align="center"
                                                         />
-                                                    </Grid>
-                                            )
+                                                    </Grid>)
                                     }
                                 </Grid>
                             </CardContent>

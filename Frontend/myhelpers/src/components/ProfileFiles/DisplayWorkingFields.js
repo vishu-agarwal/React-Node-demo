@@ -1,11 +1,8 @@
 
 import { Fragment, useState } from 'react';
 import React from 'react'
-
 import TextField from '@mui/material/TextField';
-
 import { Grid } from '@mui/material';
-
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
@@ -18,6 +15,8 @@ import FormHelperText from '@mui/material/FormHelperText';
 const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, setErrorEnable }) => {
 
     const [errorText, setErrorText] = useState("");
+    const [disable, setDisable] = useState(false)
+    let [count, setCount] = useState(1)
 
     const handleChange = (e, index) => {
         const { name, value } = e.target
@@ -46,7 +45,6 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
             }
         }
         if (name === "salary") {
-            // list[index][name] = value
             list[index] = { ...list[index], [name]: value }
             setFields(list)
             if (/^[0-9]{1,6}$/.test(list[index][name])) {
@@ -67,8 +65,6 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
         setFields(list);
         setCount(count - 1)
     };
-    let [count, setCount] = useState(1)
-
     const handleAdd = () => {
         if (count === 4) {
             setDisable(true)
@@ -80,7 +76,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
         }])
         setCount(count + 1)
     }
-    const [disable, setDisable] = useState(false)
+
     return (
         <Fragment >
             {
@@ -151,7 +147,7 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                                     value={x.salary}
                                     onChange={e => handleChange(e, i)}
                                     error={errorEnable.salary}
-                                    helperText={(errorEnable.salary && errorText) || "Per Day"}
+                                    helperText={(errorEnable.salary && errorText) || "Per day/Per hour"}
                                     label="Expected salary Range"
                                     fullWidth
                                 />
@@ -174,7 +170,6 @@ const DisplayWorkingFields = ({ fields, setFields, fieldsDisable, errorEnable, s
                     );
                 })
             }
-
         </Fragment>
     )
 }

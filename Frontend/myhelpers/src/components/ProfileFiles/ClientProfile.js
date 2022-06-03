@@ -1,5 +1,4 @@
 import * as React from 'react';
-import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
@@ -44,12 +43,11 @@ const Input = styled('input')({
 const ClientProfile = () => {
 
     const dispatch = useDispatch()
+    let rid = localStorage.getItem("r_id") ? localStorage.getItem("r_id") : logRid
+    let role = localStorage.getItem("role") ? localStorage.getItem("role") : logRole
 
     let { userProfile, profileError, profileMessage, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
     let { r_id: logRid, role: logRole } = useSelector((state) => ({ ...state.loginStore }))
-
-    let rid = localStorage.getItem("r_id") ? localStorage.getItem("r_id") : logRid
-    let role = localStorage.getItem("role") ? localStorage.getItem("role") : logRole
 
     const [state, setState] = useState({
         open: false,
@@ -183,7 +181,7 @@ const ClientProfile = () => {
     };
     const profileSaveHandler = (e) => {
         e.preventDefault()
-        if (clicked && file.dispFile) {
+        if (clicked && file.dispFile ) {
             if (aadhar.dispFile) {
                 const formdata = new FormData()
                 formdata.append('aadharCard', aadhar.upldfile)
@@ -552,12 +550,12 @@ const ClientProfile = () => {
                     <Card
                         elevation={24}
                         sx={{
-                            marginRight: 2, marginLeft: 2,
-                            height:{lg:590}
+                            margin: 2,
+                            height:{lg:600}
                         }}>
                         <div sx={{ padding: 0 }}>
                             <Grid container justifyContent="left">
-                                <WorkProfile click={handleClose} open={openModal} />
+                                {openModal && <WorkProfile click={handleClose} open={openModal} />}
                                 <Grid item xs={12} sm={4} align="left" margin={2}>
                                     {!editHide &&
                                         <Button variant="contained" sx={{ fontSize: 16 }} color="info" onClick={onEditClick}>{fieldsDisable ? "Edit" : "Done"}</Button>
@@ -623,8 +621,8 @@ const ClientProfile = () => {
                                                     Profile Settings
                                                 </Typography>
                                                 <Typography marginLeft={1.5} sx={{ marginBottom: 1, color: "orange" }}
-                                                    align='left' > {(saveEnable && !fieldsDisable) ?
-                                                        "Require to fill all the fields." : "Click on edit button for update profile."}</Typography>
+                                                    align='left' > { !fieldsDisable ?
+                                                        "Require to fill all the fields and choose aadhar card" : "Click on edit button for update profile."}</Typography>
                                             </Grid>
                                             <Grid xs={12} sm={5.5} item>
                                                 <TextField
@@ -818,10 +816,9 @@ const ClientProfile = () => {
                                                     label="House/Flat-No."
                                                     placeholder='A-101'
                                                     fullWidth
-                                                    value={values.house_no}
+                                                    value={values.house_no.toUpperCase()}
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
-                                                        style: { textTransform: "capitalize" }
                                                     }}
                                                     onChange={onChange}
                                                     error={errorEnable.house_no}

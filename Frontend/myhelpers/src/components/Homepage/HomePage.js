@@ -2,14 +2,12 @@ import React from 'react'
 import { Card, CardContent, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
-import { useState, useEffect } from 'react';
-import "../../App.css"
-import Box from '@mui/material/Box';
+import { useState } from 'react';
+import "../../App.css";
 import ShortListed from '../Modals/ShortListed';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
-import { useSelector, useDispatch } from 'react-redux';
+
 const helperImages = [
   { image: require("../allImages/cook.jpg"), text: "Cook/Chef" },
   { image: require("../allImages/parent.png"), text: "Parent Care Taker" },
@@ -59,7 +57,6 @@ const ScrollButton = () => {
   return (
     <img
       src={`${require("../allImages/down1.gif")}`} onClick={scrollToBottom}
-      // sx={{ display: 'block' }}
       style={{
         width: "10%",
         display: visible ? 'inline' : 'none', cursor: "pointer", animation: "movebtn 3s ease-in -out infinite",
@@ -70,11 +67,7 @@ const ScrollButton = () => {
 }
 const HomePage = () => {
   let navigate = useNavigate()
-  const dispatch = useDispatch()
-
-  let { userProfile } = useSelector((state) => ({ ...state.profileStore }))
-  let { logUser } = useSelector((state) => ({ ...state.loginStore }))
-
+  
   const [openRequest, setOpenRequest] = useState(false)
   const [openShortlist, setOpenShortlist] = useState(false)
   const [openHired, setOpenHired] = useState(false)
@@ -154,10 +147,11 @@ const HomePage = () => {
                         <CardContent sx={{ padding: 0 }}>
                           <Grid container >
                             <Grid item xs={12} sm={12} md={12} >
-                              <img src={val.image} style={{ cursor: "pointer" }} onClick={() => navigate("/findHelper")} height={"100%"} width={"100%"} />
+                              <img src={val.image} height={"100%"} width={"100%"} />
                             </Grid>
                             <Grid item xs={12} sm={12} md={12} >
-                              <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >{val.text}</Typography>
+                              <Typography sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }} paddingTop={2} variant="h6" color="#ffffff" >
+                                {val.text}</Typography>
                             </Grid>
                           </Grid>
                         </CardContent>

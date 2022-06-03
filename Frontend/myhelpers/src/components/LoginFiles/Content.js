@@ -1,8 +1,4 @@
-//header file
 import React from 'react'
-
-//   mui
-
 import CardContent from '@mui/material/CardContent';
 import { Card, Container, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -14,19 +10,14 @@ const Content = () => {
   return (
     <Container align="center" >
       <Card
-        // variant="outlined"
         elevation={24}
         sx={{
           maxWidth: 600, minHeight: 350,
-
           borderWidth: 3,
-          borderRadius: 6,
-          
+          borderRadius: 6,          
           backgroundImage: `url(${abc})`,
           backgroundRepeat: "no-repeat",
-          // borderColor: "#163758",
           backgroundSize: "100%",
-          // marginTop: 15
         }}>
         <CardContent>
           <Typography variant="h4"  fontSize='30px'> Login As ?</Typography>
@@ -46,7 +37,7 @@ const Content = () => {
           </div>
         </CardContent>
       </Card>
-    </Container >
+    </Container>
   );
 }
 

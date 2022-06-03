@@ -3,11 +3,10 @@ import { Card, CardContent, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useNavigate, } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CardMedia from '@mui/material/CardMedia';
 import HiredHelper from '../Modals/HiredHelper';
 import WorkRequest from '../Modals/WorkRequests';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const ScrollButton = () => {
 
@@ -91,7 +90,7 @@ const HiringProcess = (props) => {
                         <Grid container item xs={12} sm={12} md={12} justifyContent="center">
                             <Button
                                 variant="contained"
-                                onClick={onRequestClick}
+                                onClick={()=>navigate("/profile")}
                                 sx={{
                                     marginTop: { md: "2%" },
                                     button: { sm: "medium", xs: "small", md: "large" }, backgroundColor: '#ff001d', color: "white",
@@ -102,7 +101,7 @@ const HiringProcess = (props) => {
                                 Create Profile
                             </Button>
                         </Grid>
-                        <Grid container item xs={12} sm={6} md={4} justifyContent="center" sx={{ border: "2px solid white" }} marginTop="1.5%">
+                        <Grid container item xs={12} sm={6} md={4} justifyContent="center" sx={{ border: "3px solid white" }} marginTop="1.5%">
                             <Typography align="center" sx={{ typography: { sm: 'body2', xs: 'caption', md: 'h6' } }}
                                 style={{ color: "white", margin: "2%" }}>
                                 -&gt; 1st step login has completed. <br />

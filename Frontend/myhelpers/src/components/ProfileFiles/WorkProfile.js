@@ -1,7 +1,4 @@
-//header file
 import * as React from 'react';
-
-//   mui
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import { Card, Grid, Typography } from '@mui/material';
@@ -10,10 +7,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
-
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-
 import ListItemText from '@mui/material/ListItemText';
 import FormHelperText from '@mui/material/FormHelperText';
 import IconButton from '@mui/material/IconButton';
@@ -24,12 +19,10 @@ import CheckIcon from '@mui/icons-material/Check';
 import DisplayWorkingFields from './DisplayWorkingFields';
 import { useState, useEffect } from 'react';
 import { workProfileActions } from '../../store/slices/work-slice'
-
 import { workProfileThunk, fetchWorkThunk, updateWorkThunk } from '../../store/slices/work-slice';
 import Loading from '../layouts/LoadingFile'
 import { useSelector, useDispatch } from 'react-redux';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
-
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -50,6 +43,7 @@ const MenuProps = {
         },
     },
 };
+
 const languageName = [
     'Hindi',
     'English',

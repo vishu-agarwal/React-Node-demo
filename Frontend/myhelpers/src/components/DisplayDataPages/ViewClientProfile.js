@@ -5,7 +5,6 @@ import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
@@ -26,17 +25,11 @@ const Alert = React.forwardRef(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-// function createData(skill, experience, price) {
-//     return { skill, experience, price };
-// }
-
 const ViewClientProfile = () => {
 
     const navigate = useNavigate()
     const params = useParams()
     const user_id = params.rid;
-    const rid = localStorage.getItem("r_id")
-    const role = localStorage.getItem("role")
     const dispatch = useDispatch()
 
     let { viewUserProfile, displayError, displayMessage, displayLoading } = useSelector((state) => ({ ...state.displayStore }))
@@ -46,13 +39,12 @@ const ViewClientProfile = () => {
         vertical: 'top',
         horizontal: 'center',
     });
-    const { vertical, horizontal, snackOpen } = state;
+    const {  snackOpen } = state;
     const closeSnackbar = () => {
         setState({ ...state, snackOpen: false });
     };
     const [snackMessage, setSnackMessage] = useState('')
     const [snackColor, setSnackColor] = useState("info")
-
     const [values, setValues] = useState({
         name: '',
         dob: '',
@@ -75,7 +67,6 @@ const ViewClientProfile = () => {
     useEffect(() => {
         dispatch(fetchViewUserDataThunk(user_id))
     }, [user_id])
-
     useEffect(() => {
 
         if (!displayLoading) {
@@ -119,7 +110,6 @@ const ViewClientProfile = () => {
             })
         }
     }, [viewUserProfile])
-
     const ageDate = () => {
         var today = new Date();
         var birthDate = new Date(values.dob);
@@ -133,13 +123,11 @@ const ViewClientProfile = () => {
 
     return (
         Object.keys(viewUserProfile).length !== 0 && !dataLoad ?
-
             <Grid >
                 {displayLoading ? <Loading isLoad={true} /> :
-                    <Card elevation={16}
+                    <Card elevation={0}
                         sx={{
-                            margin: 2,
-                            minHeight: 550
+                            margin: 2                            
                         }}
                     >
                         <CardContent >
@@ -163,7 +151,6 @@ const ViewClientProfile = () => {
                                 <Grid item xs={12} sm={12} md={12} >
                                     <Typography variant="h5" sx={{ color: "#163758" }}> {values.email} </Typography>
                                 </Grid>
-
                                 <Grid item xs={12} sm={12} md={12}>
                                     <Grid container justifyContent="center"  >
                                         <Grid item xs={12} sm={11} md={4} sx={{ marginTop: "3%" }}>

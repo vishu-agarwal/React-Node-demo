@@ -15,8 +15,8 @@ import Typography from "@mui/material/Typography";
 import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
 import TablePagination from '@mui/material/TablePagination';
+
 const Alert = React.forwardRef(function Alert(
     props,
     ref,
@@ -28,7 +28,7 @@ const workSearchBy = [
     // { label: 'All' },
     { label: 'Work Category' },
     { label: 'Work Timing' },
-    { label: 'Location' },
+    // { label: 'Location' },
     { label: 'Name' },
     { label: 'Gender' },
 ];
@@ -65,9 +65,7 @@ const filterGender = [
     { label: 'Female' },
 ];
 const DisplayData = () => {
-    const navigate = useNavigate()
     const rid = localStorage.getItem("r_id")
-    const role = localStorage.getItem("role")
     const dispatch = useDispatch()
 
     let { displayData, saveUser, displayMessage, displayLoading, displayError } = useSelector((state) => ({ ...state.displayStore }))
@@ -185,7 +183,7 @@ const DisplayData = () => {
                                 />}
                         />
                     </Grid>
-                    <Grid item xs={11} sm={6} lg={2}>
+                    <Grid item xs={11} sm={6} lg={2.5}>
                         {
                             workSearch === "" ?
                                 ""
@@ -238,7 +236,7 @@ const DisplayData = () => {
                                         onChange={onSearchChange}
                                     />}
                     </Grid>
-                    <Grid item xs={12} sm={6} lg={4} display="flex" alignItems='center' >
+                    <Grid item xs={12} sm={6} lg={3.5} display="flex" alignItems='center' >
                         <Grid container item display="flex" justifyContent='center' >
                             <Typography variant="h6"> Sort By : Age </Typography>
                             <IconButton aria-label="Example" size="medium" sx={{ color: "#163758" }} onClick={() => onSortChange("up", "dob")} >

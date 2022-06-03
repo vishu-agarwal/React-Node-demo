@@ -1,9 +1,13 @@
-import { ThemeProvider, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-// import theme from "../Theme";
+import { Grid} from '@mui/material';
+import Button from "@mui/material/Button";
+import { useNavigate } from 'react-router-dom';
+import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
 
 export default function PageNotFound() {
+  const navigate = useNavigate()
   return (
+
       <Box
         spacing={0}
         direction="row"
@@ -14,8 +18,7 @@ export default function PageNotFound() {
           width: "100%",
           height: "100%",
         }}
-      >
-        
+      >        
         <Box
           spacing={0}
           direction="row"
@@ -30,10 +33,15 @@ export default function PageNotFound() {
             src={require("./pagenotfound4.gif")}
             alt="Page No Found..."
             height={"100%"}
-            width={700}
+            width={"60%"}
             align="center"
-          />
+        />
         </Box>
+        <Grid container style={{ opacity: 1.0, position: "absolute", top: "25%" }} justifyContent="center">
+          <Grid item xs={1} sm={1} md={1} align="left" >
+          <Button variant="contained" sx={{ backgroundColor: "#163758",height:50 }} fullWidth onClick={() => navigate("/")}><ArrowBackIosRoundedIcon />Back</Button>
+          </Grid>
+        </Grid>
       </Box>
     
   );

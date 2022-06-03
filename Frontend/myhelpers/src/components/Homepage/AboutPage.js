@@ -1,14 +1,11 @@
 import React from 'react'
 import { Card, CardContent, Grid, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
 
 const ScrollButton = () => {
 
@@ -50,7 +47,6 @@ const AboutPage = () => {
 
     return (
         <div>
-
             <Grid container justifyContent="center">
                 <Grid item xs={12} md={12} sm={12} style={{ position: "relative" }}>
                     <div>

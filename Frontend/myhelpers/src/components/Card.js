@@ -1,7 +1,5 @@
 import * as React from "react";
-
 import Card from "@mui/material/Card";
-import Container from "@mui/material/Container";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
@@ -14,12 +12,9 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { displayActions, fetchAllThunk, fetchSaveUserThunk, saveThunk } from '../store/slices/display-slice';
-import { fetchUserProfileThunk } from "../store/slices/profile-slice";
-import Loading from './layouts/LoadingFile'
+import { displayActions,  saveThunk } from '../store/slices/display-slice';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
 
 const Alert = React.forwardRef(function Alert(
     props,
@@ -34,9 +29,8 @@ const CardJS = (props) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    let { displayLoading, displayError, displayMessage } = useSelector((state) => ({ ...state.displayStore }))
-    let { userProfile, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
-
+    let {  displayError, displayMessage } = useSelector((state) => ({ ...state.displayStore }))
+    let { userProfile, } = useSelector((state) => ({ ...state.profileStore }))
 
     const [state, setState] = useState({
         snackOpen: false,
@@ -83,7 +77,7 @@ const CardJS = (props) => {
         } else {
             setState({ snackOpen: true })
             setSnackColor("error")
-            setSnackMessage("Pleasde first create your profile!")
+            setSnackMessage("Please first create your profile!")
         }
     }
 
@@ -167,9 +161,6 @@ const CardJS = (props) => {
                                 Age : {
                                     ageDate()
                                 }
-                            </Typography>
-                            <Typography gutterBottom sx={{ fontSize: 15 }} >
-                                Location : {props.values.pincode}
                             </Typography>
                             <Typography gutterBottom sx={{ fontSize: 15 }} >
                                 Work : {

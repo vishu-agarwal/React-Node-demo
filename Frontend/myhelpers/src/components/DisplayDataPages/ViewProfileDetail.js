@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -20,14 +19,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import debounce from 'lodash.debounce';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWorkThunk } from '../../store/slices/work-slice';
 import { workProfileActions } from '../../store/slices/work-slice'
 import { fetchSaveUserThunk, starThunk, saveThunk, fetchViewUserDataThunk, displayActions } from '../../store/slices/display-slice';
 import { hireRequestActions } from '../../store/slices/hireRequest-slice';
 import { profileActions } from '../../store/slices/profile-slice'
-import { fetchUserProfileThunk } from '../../store/slices/profile-slice';
 import HireForm from './HireForm';
 import Loading from '../layouts/LoadingFile'
 import Snackbar from '@mui/material/Snackbar';
@@ -244,7 +241,6 @@ const ViewProfileDetail = () => {
         }
     }, [displayLoading])
 
-
     return (
         Object.keys(viewUserProfile).length !== 0 && !dataLoad ?
             <Grid >
@@ -252,7 +248,6 @@ const ViewProfileDetail = () => {
                     <Card elevation={16}
                         sx={{
                             margin: 2,
-
                         }}
                     >
                         <CardContent >

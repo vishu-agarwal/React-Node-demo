@@ -28,7 +28,6 @@ const fetchAllData = async (req, res) => {
                         "avatar": "$profile.avatar",
                         "rating": "$profile.rating",
                         "saved_user": "$profile.saved_user",
-                        "pincode": "$profile.address.pincode"
                     }
                 },
             ])
@@ -138,7 +137,6 @@ const searching = async (req, res) => {
                         work_time: val.work_time,
                         profession_mobile_number: val.profession_mobile_number,
                         name: res.map((val) => val.name).toString(),
-                        pincode: res.map((val) => val.address.pincode).toString(),
                         gender: res.map((val) => val.gender).toString(),
                         dob: res.map((val) => val.dob).toString(),
                         avatar: res.map((val) => val.avatar).toString(),
@@ -153,12 +151,7 @@ const searching = async (req, res) => {
         let found
         console.log("field name....", field, "search...", req.query.searchValue)
         field === "gender" ? found = await userModel.find({ [field]: req.query.searchValue })
-            : field === "name" ?
-                found = await userModel.find({ $where: `/^${req.query.searchValue}.*/.test(this.${field})` }) : null
-        // : found = await userModel.find({ "address.pincode":  })
-        // console.log(found);
-        // : found = await userModel.find({ "address.pincode": { '$regex': '^[0-9]*$', '$options': 'i' } )
-        // found = await userModel.find({ 'address.pincode': { $regex: `/^${req.query.searchValue}.*/` } })
+        : found = await userModel.find({ $where: `/^${req.query.searchValue}.*/.test(this.${field})` }) 
         if (found.length === 0) {
             req.params.role = "Client"
             return fetchAllData(req, res)
@@ -176,7 +169,6 @@ const searching = async (req, res) => {
                         name: val.name,
                         dob: val.dob,
                         gender: val.gender,
-                        pincode: val.address.pincode,
                         avatar: val.avatar,
                         rating: [val.rating],
                     })
@@ -209,6 +201,7 @@ const sorting = async (req, res) => {
                 work_time: res.map((val) => val.work_time).toString(),
                 profession_mobile_number: res.map((val) => val.profession_mobile_number).toString(),
                 name: val.name,
+                gender: val.gender,
                 dob: val.dob,
                 avatar: val.avatar,
                 rating: [val.rating],

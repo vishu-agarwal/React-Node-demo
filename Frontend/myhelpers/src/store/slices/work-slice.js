@@ -7,7 +7,7 @@ const initialState = {
     workLoading: false,
     workError: ""
 }
-const varToken = localStorage.getItem("logToken");
+
 //create work Details thunk
 export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk", async (arg) => {
     try {
@@ -22,7 +22,7 @@ export const workProfileThunk = createAsyncThunk("workProfile/workProfileThunk",
         };
         const workDataRes = await axios.post(`/myhelpers/createWorkProfile/${arg.rid}`, data, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             },
         })
         return workDataRes
@@ -36,7 +36,7 @@ export const fetchWorkThunk = createAsyncThunk("workProfile/fetchWorkThunk", asy
     try {
         const fetchRes = await axios.get(`/myhelpers/fetchWorkDetail/${arg}`, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             },
         })
         return fetchRes
@@ -58,7 +58,7 @@ export const updateWorkThunk = createAsyncThunk("workProfile/updateWorkThunk", a
         };
         const updateRes = await axios.put(`/myhelpers/updateWorkDetail/${arg.rid}`, data, {
             headers: {
-                Authorization: "Bearer " + varToken,
+                Authorization: "Bearer " + localStorage.getItem("logToken"),
             },
         })
         return updateRes

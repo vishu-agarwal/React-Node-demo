@@ -1,20 +1,11 @@
-//header file
 import * as React from 'react';
-
-//   mui
 import CardContent from '@mui/material/CardContent';
-
-
 import { Card, Grid, Typography } from '@mui/material';
-
 import Modal from '@mui/material/Modal';
 import { useState, useEffect } from 'react';
-
 import CloseIcon from '@mui/icons-material/Close';
 import { fetchHelperRequestsThunk } from '../../store/slices/hireRequest-slice';
-import Loading from '../layouts/LoadingFile'
-
-import { useNavigate } from 'react-router-dom';
+import Loading from '../layouts/LoadingFile';
 import { useSelector, useDispatch } from 'react-redux';
 import HireRequestCard from './HireRequestCard';
 import { hireRequestActions } from '../../store/slices/hireRequest-slice'
@@ -30,9 +21,6 @@ const Alert = React.forwardRef(function Alert(
 
 const HiredHelper = (props) => {
     const rid = localStorage.getItem("r_id")
-    // const classes = useStyles();
-    // const navigate = useNavigate()
-    const role = localStorage.getItem("role")
     const dispatch = useDispatch()
 
     let { hireRequestData, requestMessage, requestError, requestLoading } = useSelector((state) => ({ ...state.hireRequestStore }))
@@ -54,8 +42,6 @@ const HiredHelper = (props) => {
     }, [])
 
     useEffect(() => {
-
-
         if (requestMessage.length !== 0) {
             setState({ snackOpen: true });
             setSnackColor("info")
@@ -108,9 +94,7 @@ const HiredHelper = (props) => {
                                                     Hired
                                                 </Typography>
                                             </Grid>
-
                                             <Grid item xs={12} sm={2} align="right">
-
                                                 <CloseIcon sx={{ color: "white", fontSize: 30 }} cursor="pointer" onClick={props.click} />
                                             </Grid>
                                         </Grid>

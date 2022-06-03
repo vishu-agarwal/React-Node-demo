@@ -1,17 +1,14 @@
 import './App.css';
-import {
-  BrowserRouter, Routes, Route
-} from 'react-router-dom'
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import Header from "./components/layouts/Header"
 import Profile from './components/ProfileFiles/ClientProfile';
 import Footer from './components/layouts/Footer';
 import About from './components/Homepage/AboutPage';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import Loader from './components/layouts/LoadingFile';
 import ProtectedRoutes from './RouteComponents/ProtectedRoutes'; //Authenticated routes
 import PublicRoute from './RouteComponents/PublicRoutes';
 import PrivateRoute from './RouteComponents/PrivateRoutes';
-
 const RolePage = lazy(() => import('./components/LoginFiles/Content'));
 const LoginPage = lazy(() => import('./components/LoginFiles/Login'));
 const HomePage = lazy(() => import('./components/Homepage/HomePage'));
