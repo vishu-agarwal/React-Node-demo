@@ -104,7 +104,7 @@ const CardJS = (props) => {
                     xs: 280,
                     sm: 280,
                     md: 280,
-                    lg: 300,
+                    lg: 280,
                 },
                 marginTop: 2,
                 borderRadius: 5,

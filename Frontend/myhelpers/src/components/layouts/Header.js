@@ -79,11 +79,14 @@ ScrollTop.propTypes = {
 const Header = (props) => {
     const dispatch = useDispatch()
     let navigate = useNavigate()
+
     let { userProfile, profileLoading } = useSelector((state) => ({ ...state.profileStore }))
+    const { isAuth } = useSelector(state => ({ ...state.loginStore }))
+
     const role = localStorage.getItem("role")
     const rid = localStorage.getItem("r_id")
+
     const [openModal, setOpenModel] = useState(false)
-    const { isAuth } = useSelector(state => ({ ...state.loginStore }))
     const [anchorElNav, setAnchorElNav] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(false);
     const [openRequest, setOpenRequest] = useState(false)
@@ -93,11 +96,11 @@ const Header = (props) => {
 
     useEffect(() => {
         isAuth &&
-            dispatch(fetchUserProfileThunk(rid))
-    }, [rid])
+            dispatch(fetchUserProfileThunk(localStorage.getItem("r_id")));
+    }, [isAuth])
 
     useEffect(() => {
-        userProfile?.avatar && setAvatar("http://localhost:3001/" + userProfile?.avatar)
+        setAvatar(userProfile?.avatar ? "http://localhost:3001/" + userProfile?.avatar : `${require("../allImages/profile.gif")}`)
     }, [userProfile])
 
     const handleOpenNavMenu = (event) => {

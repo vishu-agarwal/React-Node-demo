@@ -28,6 +28,7 @@ const fetchAllData = async (req, res) => {
                         "avatar": "$profile.avatar",
                         "rating": "$profile.rating",
                         "saved_user": "$profile.saved_user",
+                        "is_profile":"$profile.is_profile"
                     }
                 },
             ])
@@ -141,6 +142,7 @@ const searching = async (req, res) => {
                         dob: res.map((val) => val.dob).toString(),
                         avatar: res.map((val) => val.avatar).toString(),
                         rating: res.map((val) => val.rating),
+                        is_profile: res.map((val) => val.is_profile).toString(),
                     })
                 }
             }
@@ -149,7 +151,6 @@ const searching = async (req, res) => {
     }
     else if (field) {
         let found
-        console.log("field name....", field, "search...", req.query.searchValue)
         field === "gender" ? found = await userModel.find({ [field]: req.query.searchValue })
         : found = await userModel.find({ $where: `/^${req.query.searchValue}.*/.test(this.${field})` }) 
         if (found.length === 0) {
@@ -171,6 +172,7 @@ const searching = async (req, res) => {
                         gender: val.gender,
                         avatar: val.avatar,
                         rating: [val.rating],
+                        is_profile: val.is_profile
                     })
                 }
             }
@@ -205,6 +207,7 @@ const sorting = async (req, res) => {
                 dob: val.dob,
                 avatar: val.avatar,
                 rating: [val.rating],
+                is_profile: val.is_profile
             })
         }
     }

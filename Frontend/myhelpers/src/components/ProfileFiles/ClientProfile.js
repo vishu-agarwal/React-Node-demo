@@ -911,7 +911,7 @@ const ClientProfile = () => {
                                             </Grid>
                                             <Grid xs={12} sm={11} item>
                                                 <TextField
-                                                    required
+                                                    
                                                     multiline
                                                     maxRows={3}
                                                     variant='outlined'
@@ -921,7 +921,6 @@ const ClientProfile = () => {
                                                     inputProps={{
                                                         readOnly: Boolean(fieldsDisable),
                                                         maxLength: 100,
-                                                        style: { textTransform: "capitalize" }
                                                     }}
                                                     placeholder='Please type some information about you OR what you want!'
                                                     value={values.about}

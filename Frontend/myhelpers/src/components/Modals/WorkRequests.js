@@ -11,6 +11,7 @@ import { hireRequestActions } from '../../store/slices/hireRequest-slice'
 import CloseIcon from '@mui/icons-material/Close';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { ClassNames } from '@emotion/react';
 
 const Alert = React.forwardRef(function Alert(
     props,
@@ -114,13 +115,16 @@ const WorkRequest = (props) => {
                                                 const today = new Date()
                                                 const nextTime = new Date(today.setTime(today.getTime() + 1 * 60 * 60 * 1000))
                                                 const nowTime = nextTime.getHours() + ":" + nextTime.getMinutes() + ":" + nextTime.getSeconds()
-                                                console.log(convert(today), "today", val.to_date, nowTime, "time", val.to_time)
-                                                console.log(val.to_date < convert(today))
                                                 if (val.to_date < convert(today)) {
                                                     message = "Request date expired !"
                                                 }
-                                                else if (val.to_time < nowTime) {
-                                                    message = "Request time expired !"
+                                                else if (val.to_time.length) {
+                                                    if (val.to_time < nowTime) {
+                                                        message = "Request time expired !"
+                                                    }
+                                                    else {
+                                                        message = ""
+                                                    }
                                                 }
                                                 else {
                                                     message = ""
@@ -143,13 +147,16 @@ const WorkRequest = (props) => {
                                                         const today = new Date()
                                                         const nextTime = new Date(today.setTime(today.getTime() + 1 * 60 * 60 * 1000))
                                                         const nowTime = nextTime.getHours() + ":" + nextTime.getMinutes() + ":" + nextTime.getSeconds()
-                                                        console.log(convert(today), "today", val.to_date, nowTime, "time", val.to_time)
-                                                        console.log(val.to_date < convert(today))
                                                         if (val.to_date < convert(today)) {
                                                             message = "Request date expired !"
                                                         }
-                                                        else if (val.to_time < nowTime) {
-                                                            message = "Request time expired !"
+                                                        else if (val.to_time.length) {
+                                                            if (val.to_time < nowTime) {
+                                                                message = "Request time expired !"
+                                                            }
+                                                            else {
+                                                                message = ""
+                                                            }
                                                         }
                                                         else {
                                                             message = ""

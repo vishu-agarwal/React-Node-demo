@@ -273,6 +273,7 @@ const DisplayData = () => {
                 {
                     displayData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((values, index) => {
+                            if (values.is_profile) {
                             rates = values.rating[0].length !== 0 ?
                                 values.rating[0]?.map((id) =>
                                     id.rate
@@ -288,7 +289,7 @@ const DisplayData = () => {
 
                             return <Grid item xs={12} sm={12} md={6} lg={3} key={index} style={{ padding: 0 }} align="center" >
                                 <CardJS values={values} rates={rates} saveStatus={status} isModal={false} />
-                            </Grid>
+                            </Grid>}
                         })
                 }
             </Grid>
